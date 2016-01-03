@@ -24,10 +24,7 @@ function monitorKeyUp(e){
 }
 
 function ensureWindowEvent(e){
-    if (!e) {
-        return window.event;
-    }
-    return e;
+    return e?e:window.event;
 }
 
 function isValidModifier(e) {

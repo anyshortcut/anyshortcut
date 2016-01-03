@@ -1,0 +1,11 @@
+{
+    "extension_name":{
+        "message":"Shurl"
+    },
+    "extension_description":{
+        "message":"一个可以通过快捷键启动网页的插件!"
+    },
+    "popup_default_title":{
+        "message":"用快捷键打开任何网页！"
+    }
+}

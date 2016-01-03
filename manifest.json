@@ -1,14 +1,15 @@
 {
   "manifest_version": 2,
 
-  "name": "Shurl",
-  "description": "This extension help you quickly launch url by keyboard shotcuts",
+  "name": "__MSG_extension_name__",
+  "description": "__MSG_extension_description__",
   "version": "1.0",
+  "default_locale":"en",
 
   "browser_action": {
     "default_icon": "images/icon.png",
     "default_popup": "popup.html",
-    "default_title": "Go to website use shortcut"
+    "default_title": "__MSG_popup_default_title__"
   },
 
   "icons":{
@@ -21,9 +22,11 @@
   },
 
   "permissions":[
-    "contextMenus"
+    "contextMenus",
+    "storage"
   ],
   "homepage_url":"http://www.geowind.cn",
+  "options_page":"options.html",
   "options_ui":{
       "page":"options.html",
       "chrome_style":false
