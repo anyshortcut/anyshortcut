@@ -18,6 +18,8 @@ function monitorKeyUp(e){
             notifyKeyEventPopup(e);
             if (e.keyCode == 90) {
                 window.open("http://www.geowind.cn");
+            } else if (e.keyCode == 71){
+                window.open("http://www.google.com.sg");
             }
         }
     // }

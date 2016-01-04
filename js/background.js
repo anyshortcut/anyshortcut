@@ -15,6 +15,10 @@ function onMenuClickHandler(info,tab){
     }
 }
 
+function onMessageReceiver(message, sender, sendResponse){
+    console.log("chrome.runtime.onMessage.",message);
+}
+
 chrome.contextMenus.create({
     "title":"Set keyboard shortcut to launch this website quickly...",
     "type":"normal",
@@ -28,3 +32,5 @@ chrome.contextMenus.create({
 
 
 chrome.contextMenus.onClicked.addListener(onMenuClickHandler);
+
+chrome.runtime.onMessage.addListener(onMessageReceiver);
