@@ -3,19 +3,6 @@
 <html>
   <head>
     <title>Quickly launch website by keyboard shotcuts</title>
-    <style>
-      body {
-        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-        font-size: 100%;
-      }
-      #status {
-        /* avoid an excessively wide status text */
-        white-space: pre;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 400px;
-      }
-    </style>
 
     <!--
       - JavaScript and HTML must be in separate files: see our Content Security
@@ -24,8 +11,23 @@
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
     <script src="js/popup.js"></script>
+    <link rel="stylesheet" href="css/popup.css">
   </head>
   <body>
       <h5>You can launch website quickly by keyboard shortcuts</h5>
+
+      <p>
+          Specify the shortcut:
+      </p>
+      <div>
+          <span><strong>ALT</strong></span>
+          <span>+</span>
+          <span><strong>SHIFT</strong></span>
+          <span>+</span>
+          <span><input id="shortcut_key" placeholder="key" maxlength="1" required/></span>
+          <br/>
+          <input id="bind_shortcut_button" type="button" value="Save"  onclick="bindShortcut()"/>
+      </div>
+
   </body>
 </html>

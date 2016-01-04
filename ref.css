@@ -1,0 +1,108 @@
+@-webkit-keyframes rotate {
+    from {
+        -webkit-transform: rotate(0)
+    }
+    to {
+        -webkit-transform: rotate(360deg)
+    }
+}
+@-moz-keyframes rotate {
+    from {
+        -moz-transform: rotate(0)
+    }
+    to {
+        -moz-transform: rotate(360deg)
+    }
+}
+@keyframes rotate {
+    from {
+        -webkit-transform: rotate(0);
+        -moz-transform: rotate(0);
+        -ms-transform: rotate(0);
+        -o-transform: rotate(0);
+        transform: rotate(0)
+    }
+    to {
+        -webkit-transform: rotate(360deg);
+        -moz-transform: rotate(360deg);
+        -ms-transform: rotate(360deg);
+        -o-transform: rotate(360deg);
+        transform: rotate(360deg)
+    }
+}
+* {
+    margin: 0;
+    padding: 0
+}
+body {
+    font-family: proxima-nova, 'Proxima Nova', sans-serif
+}
+body, iframe {
+    width: 550px;
+    height: 550px
+}
+iframe {
+    border: none
+}
+.loader {
+    min-height: 40px;
+    min-width: 40px;
+    opacity: 1
+}
+.loader.m-hide {
+    opacity: 0;
+    pointer-events: none
+}
+.loader:before {
+    content: '';
+    display: block;
+    height: 40px;
+    width: 40px;
+    background-image: url(chrome-extension://likjafohlgffamccflcidmedfongmkee/common/loader/loader.png);
+    background-repeat: no-repeat;
+    -webkit-animation-name: rotate;
+    -moz-animation-name: rotate;
+    animation-name: rotate;
+    -webkit-animation-duration: 1.2s;
+    -moz-animation-duration: 1.2s;
+    animation-duration: 1.2s;
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    -webkit-animation-timing-function: linear;
+    -moz-animation-timing-function: linear;
+    animation-timing-function: linear;
+    -webkit-transition: opacity .1s ease;
+    -moz-transition: opacity .1s ease;
+    transition: opacity .1s ease;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -20px;
+    margin-top: -20px
+}
+@media (min--moz-device-pixel-ratio:1.3), (-o-min-device-pixel-ratio:2.6/2), (-webkit-min-device-pixel-ratio:1.3), (min-device-pixel-ratio:1.3), (min-resolution:1.3dppx) {
+    .loader:before {
+        background-image: url(chrome-extension://likjafohlgffamccflcidmedfongmkee/common/loader/loader@2x.png);
+        background-size: 40px
+    }
+}
+header {
+    background: #534540;
+    color: #C4BFBD;
+    height: 54px;
+    line-height: 54px
+}
+header ul {
+    list-style: none
+}
+header ul li {
+    cursor: pointer;
+    font-size: 16px;
+    float: left;
+    text-align: center;
+    width: 50%
+}
+header ul li.current, header ul li:hover {
+    background: #fff
+}

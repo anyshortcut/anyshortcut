@@ -1,0 +1,29 @@
+body {
+  font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+  font-size: 100%;
+  width: 300px;
+  height: 300px;
+  text-align: center;
+}
+#status {
+  /* avoid an excessively wide status text */
+  white-space: pre;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  max-width: 400px;
+}
+#shortcut_key{
+    border-color: rgb(61, 149, 92);
+    width: 35px;
+    text-align: center;
+}
+#bind_shortcut_button {
+    background-color: rgb(61, 149, 92);
+    text-align: center;
+    padding: 10px;
+    color: white;
+    align-self: center;
+    border: none;
+    margin: 20px;
+    width: 80%;
+}
