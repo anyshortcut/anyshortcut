@@ -1,4 +1,5 @@
 console.log("background javascript file");
+console.log("keycode",keycode_dictionary);
 var storage = chrome.storage.local;
 var keyBindingMaps;
 

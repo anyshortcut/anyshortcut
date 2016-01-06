@@ -1,39 +1,39 @@
 {
-  "manifest_version": 2,
+    "manifest_version": 2,
 
-  "name": "__MSG_extension_name__",
-  "description": "__MSG_extension_description__",
-  "version": "1.0",
-  "default_locale":"en",
+    "name": "__MSG_extension_name__",
+    "description": "__MSG_extension_description__",
+    "version": "1.0",
+    "default_locale": "en",
 
-  "browser_action": {
-    "default_icon": "images/icon.png",
-    "default_popup": "popup.html",
-    "default_title": "__MSG_popup_default_title__"
-  },
+    "browser_action": {
+        "default_icon": "images/icon.png",
+        "default_popup": "popup.html",
+        "default_title": "__MSG_popup_default_title__"
+    },
 
-  "icons":{
-      "16":"images/icon16.png"
-  },
+    "icons": {
+        "16": "images/icon16.png"
+    },
 
-  "background":{
-    "scripts":["js/background.js"],
-    "persistent":true
-  },
+    "background": {
+        "scripts": ["js/keycode.js", "js/background.js"],
+        "persistent": true
+    },
 
-  "permissions":[
-    "activeTab",
-    "contextMenus",
-    "storage"
-  ],
-  "homepage_url":"http://www.geowind.cn",
-  "options_page":"options.html",
-  "options_ui":{
-      "page":"options.html",
-      "chrome_style":false
-  },
-  "content_scripts":[{
-      "matches":["<all_urls>"],
-      "js":["js/keyeventmonitor.js"]
+    "permissions": [
+        "activeTab",
+        "contextMenus",
+        "storage"
+    ],
+    "homepage_url": "http://www.geowind.cn",
+    "options_page": "options.html",
+    "options_ui": {
+        "page": "options.html",
+        "chrome_style": false
+    },
+    "content_scripts": [{
+        "matches": ["<all_urls>"],
+        "js": ["js/keycode.js", "js/keyeventmonitor.js"]
     }]
 }
