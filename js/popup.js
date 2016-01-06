@@ -1,14 +1,22 @@
-
 /**
  * Bind shortcut with current actived tab url.
  */
-function handleShortcutBinding(){
-    getCurrentTabUrl(function(url){
+function handleShortcutBinding() {
+    getCurrentTabUrl(function(url) {
         renderStatus(url);
-        
-        var key = document.getElementById('shortcut_key').value;
-        var binding = {"shortcut_key":key,"url":url};
-    })
+
+        var key = document.getElementById('shortcut_key').value.toUpperCase();
+        chrome.runtime.sendMessage({key:url}, function(response) {
+            if (chrome.runtime.lastError) {
+                alert("error");
+            }
+
+            console.log(response);
+            renderStatus(response);
+
+        });
+
+    });
 }
 
 /**
@@ -66,12 +74,12 @@ function getCurrentTabUrl(callback) {
 // chrome.runtime.sendMessage("Hello",function(response){
 //     document.write(response);
 // });
-chrome.runtime.onMessage.addListener(function(message, sender, callback){
+chrome.runtime.onMessage.addListener(function(message, sender, callback) {
     // document.write(response);
-    console.log("chrome.runtime.onMessage.",message);
+    console.log("chrome.runtime.onMessage.", message);
 });
 
 //Add click event handler for bind shortcut button after the window was loaded.
-window.addEventListener("load",function(initialized){
-    document.getElementById("bind_shortcut_button").addEventListener("click",handleShortcutBinding);
+window.addEventListener("load", function(initialized) {
+    document.getElementById("bind_shortcut_button").addEventListener("click", handleShortcutBinding);
 });

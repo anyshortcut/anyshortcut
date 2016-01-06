@@ -1,21 +1,23 @@
 body {
-  font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-  font-size: 100%;
-  width: 300px;
-  height: 300px;
-  text-align: center;
+    font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 100%;
+    width: 300px;
+    height: 300px;
+    text-align: center;
 }
 #status {
-  /* avoid an excessively wide status text */
-  white-space: pre;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  max-width: 400px;
+    /* avoid an excessively wide status text */
+    white-space: pre;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 400px;
 }
-#shortcut_key{
+#shortcut_key {
     border-color: rgb(61, 149, 92);
     width: 35px;
     text-align: center;
+    font-weight: bold;
+    font-size: medium;
 }
 #bind_shortcut_button {
     background-color: rgb(61, 149, 92);
