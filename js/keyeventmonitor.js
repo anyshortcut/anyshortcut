@@ -1,17 +1,15 @@
 function monitorKeyUp(e) {
     e = keyCodeHelper.ensureWindowEvent(e);
 
-    console.log("key:", keyCodeHelper.dictionaries[e.keyCode]);
-
-    if (isValidModifier(e)) {
-        if (e.keyCode == 90) {
-            window.open("http://www.geowind.cn");
-        } else if (e.keyCode == 71) {
-            window.open("http://www.google.com.sg");
-        }
-
-        chrome.runtime.sendMessage("key_code", function(keyCodes) {
-            console.log(keyCodes);
+    if (isValidModifier(e) && keyCodeHelper.isValidKeyCode(e.keyCode)) {
+        var message = {};
+        //A flag to tell backgound.js the message is from Content Script.
+        message.request = true;
+        var keyCodeChar = String.fromCharCode(e.keyCode);
+        message.key = keyCodeChar;
+        chrome.runtime.sendMessage(message, function(url) {
+            console.log(keyCodeChar, url);
+            window.open(url);
         });
     }
 }

@@ -25,12 +25,19 @@ function onMenuClickHandler(info, tab) {
 }
 
 function onMessageReceiver(message, sender, sendResponse) {
-    if (message == "key_code") {
+    //If message exist key 'request', represent message from content script.
+    if (message.request) {
         console.log("from content script");
-        storage.get(null, function(items) {
-            console.log(items);
-            keyBindingMaps = items;
-            sendResponse(keyBindingMaps);
+        var key = message.key;
+        storage.get(key, function(item) {
+            //item value would be {},if not exist the key.
+            //Besure to check item value is empty.
+            if (chrome.runtime.lastError || !Object.keys(item).length) {
+                console.log("Got a error...");
+            } else {
+                console.log(item);
+                sendResponse(item[key]);
+            }
         });
     } else {
         console.log("chrome.runtime.onMessage.", message);

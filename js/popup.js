@@ -28,10 +28,7 @@ function handleShortcutBinding() {
         renderStatus(url);
 
         var binding = {};
-        var value = {};
-        value.key = shortcutKeyCode;
-        value.url = url;
-        binding[shortcutKeyCode] = value;
+        binding[shortcutKeyInput.value.toUpperCase()] = url;
         chrome.runtime.sendMessage(binding, function(response) {
             if (chrome.runtime.lastError) {
                 alert("error");
