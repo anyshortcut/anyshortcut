@@ -6,14 +6,15 @@ function handleShortcutBinding() {
         renderStatus(url);
 
         var key = document.getElementById('shortcut_key').value.toUpperCase();
-        chrome.runtime.sendMessage({key:url}, function(response) {
+        var binding = {};
+        binding[key] = url;
+        chrome.runtime.sendMessage(binding, function(response) {
             if (chrome.runtime.lastError) {
                 alert("error");
             }
 
             console.log(response);
             renderStatus(response);
-
         });
 
     });

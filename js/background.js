@@ -1,5 +1,5 @@
 console.log("background javascript file");
-console.log("keycode",keycode_dictionary);
+
 var storage = chrome.storage.local;
 var keyBindingMaps;
 
@@ -25,12 +25,22 @@ function onMenuClickHandler(info, tab) {
 }
 
 function onMessageReceiver(message, sender, sendResponse) {
-    console.log("chrome.runtime.onMessage.", message);
-
-    storage.set(message, function() {
-        console.log("storage success");
-        sendResponse("message");
-    });
+    if (message == "key_code") {
+        console.log("from content script");
+        storage.get(null, function(items) {
+            console.log(items);
+            keyBindingMaps = items;
+            sendResponse(keyBindingMaps);
+        });
+    } else {
+        console.log("chrome.runtime.onMessage.", message);
+        storage.set(message, function() {
+            console.log("storage success");
+            sendResponse("message");
+        });
+    }
+    //Must return true otherwise sendResponse() not working.
+    //More detail see officail documentations [chrome.runtime.onMessage()].
     return true;
 }
 
