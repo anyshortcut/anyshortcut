@@ -1,10 +1,16 @@
+/**
+ * Current input shortcut key element.
+ */
 var shortcutKeyInput;
+/**
+ * Current input shortcut key code.
+ */
 var shortcutKeyCode;
 
 //Add click event handler for bind shortcut button after the window was loaded.
 window.addEventListener("load", function(initialized) {
     shortcutKeyInput = document.getElementById("shortcut_key");
-    shortcutKeyInput.addEventListener("keyup", onShortcutKeyUp, false);
+    shortcutKeyInput.addEventListener("input", onShortcutKeyInput, false);
 
     document.getElementById("bind_shortcut_button").addEventListener("click", handleShortcutBinding);
 });
@@ -21,10 +27,9 @@ function handleShortcutBinding() {
     getCurrentTabUrl(function(url) {
         renderStatus(url);
 
-        var key = shortcutKeyInput.value.toUpperCase();
         var binding = {};
         var value = {};
-        value.key = key;
+        value.key = shortcutKeyCode;
         value.url = url;
         binding[shortcutKeyCode] = value;
         chrome.runtime.sendMessage(binding, function(response) {
@@ -39,13 +44,20 @@ function handleShortcutBinding() {
     });
 }
 
-function onShortcutKeyUp(e) {
+function onShortcutKeyInput(e) {
     e = keyCodeHelper.ensureWindowEvent(e);
 
-    if (!shortcutKeyInput.value && keyCodeHelper.isValidKeyCode(e.keyCode)) {
-        //TODO if event key code in valid?
-        shortcutKeyCode = e.keyCode;
+    //Besure convert to uppercase,because oninput event occur before uppercase text-transform.
+    keyCodeChar = shortcutKeyInput.value.toUpperCase();
+    var keyCode = keyCodeChar.charCodeAt();
+    console.log("keyCode charCodeAt", shortcutKeyInput.value, keyCode);
+    if (keyCodeHelper.isValidKeyCode(keyCode)) {
+        renderStatus("");
+
+        shortcutKeyCode = keyCode;
         console.log("shortcutKeyCode:", shortcutKeyCode);
+    } else {
+        renderStatus("invalid shortcut key ", keyCodeChar, keyCode);
     }
 }
 
