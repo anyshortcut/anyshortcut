@@ -1,7 +1,7 @@
 function monitorKeyUp(e) {
-    e = ensureWindowEvent(e);
+    e = keyCodeHelper.ensureWindowEvent(e);
 
-    console.log("key:", keycode_dictionary[e.keyCode]);
+    console.log("key:", keyCodeHelper.dictionaries[e.keyCode]);
 
     if (isValidModifier(e)) {
         if (e.keyCode == 90) {
@@ -14,10 +14,6 @@ function monitorKeyUp(e) {
             console.log(keyCodes);
         });
     }
-}
-
-function ensureWindowEvent(e) {
-    return e ? e : window.event;
 }
 
 function isValidModifier(e) {

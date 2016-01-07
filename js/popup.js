@@ -1,13 +1,32 @@
+var shortcutKeyInput;
+var shortcutKeyCode;
+
+//Add click event handler for bind shortcut button after the window was loaded.
+window.addEventListener("load", function(initialized) {
+    shortcutKeyInput = document.getElementById("shortcut_key");
+    shortcutKeyInput.addEventListener("keyup", onShortcutKeyUp, false);
+
+    document.getElementById("bind_shortcut_button").addEventListener("click", handleShortcutBinding);
+});
+
 /**
  * Bind shortcut with current actived tab url.
  */
 function handleShortcutBinding() {
+    if (!shortcutKeyInput.value || shortcutKeyInput.value == "") {
+        renderStatus("Please specify a shortcut key!")
+        return;
+    }
+
     getCurrentTabUrl(function(url) {
         renderStatus(url);
 
-        var key = document.getElementById('shortcut_key').value.toUpperCase();
+        var key = shortcutKeyInput.value.toUpperCase();
         var binding = {};
-        binding[key] = url;
+        var value = {};
+        value.key = key;
+        value.url = url;
+        binding[shortcutKeyCode] = value;
         chrome.runtime.sendMessage(binding, function(response) {
             if (chrome.runtime.lastError) {
                 alert("error");
@@ -18,6 +37,16 @@ function handleShortcutBinding() {
         });
 
     });
+}
+
+function onShortcutKeyUp(e) {
+    e = keyCodeHelper.ensureWindowEvent(e);
+
+    if (!shortcutKeyInput.value && keyCodeHelper.isValidKeyCode(e.keyCode)) {
+        //TODO if event key code in valid?
+        shortcutKeyCode = e.keyCode;
+        console.log("shortcutKeyCode:", shortcutKeyCode);
+    }
 }
 
 /**
@@ -78,9 +107,4 @@ function getCurrentTabUrl(callback) {
 chrome.runtime.onMessage.addListener(function(message, sender, callback) {
     // document.write(response);
     console.log("chrome.runtime.onMessage.", message);
-});
-
-//Add click event handler for bind shortcut button after the window was loaded.
-window.addEventListener("load", function(initialized) {
-    document.getElementById("bind_shortcut_button").addEventListener("click", handleShortcutBinding);
 });
