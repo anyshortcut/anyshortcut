@@ -1,6 +1,5 @@
 var keyCodeHelper = {
     dictionaries: {
-        32: "space",
         48: "0",
         49: "1",
         50: "2",
