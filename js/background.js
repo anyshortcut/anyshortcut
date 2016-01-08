@@ -1,4 +1,3 @@
-console.log("background javascript file");
 
 var storage = chrome.storage.local;
 var keyBindingMaps;
@@ -9,20 +8,6 @@ function queryAllKeyBindingItems() {
         keyBindingMaps = items;
     });
 };
-
-function setupBindUrlShortcut() {
-    // alert("setup_bind_url_shortcut")
-    var url = "http://www.geowind.cn"
-    window.open(url, "_blank")
-}
-
-function onMenuClickHandler(info, tab) {
-    if (info.menuItemId == "menu") {
-        console.log("onMenuClickHandler");
-        setupBindUrlShortcut();
-        // alert(JSON.stringify(info));
-    }
-}
 
 function onMessageReceiver(message, sender, sendResponse) {
     //If message exist key 'request', represent message from content script.
@@ -51,18 +36,6 @@ function onMessageReceiver(message, sender, sendResponse) {
     return true;
 }
 
-chrome.contextMenus.create({
-    "title": "Set keyboard shortcut to launch this website quickly...",
-    "type": "normal",
-    "contexts": ["page"],
-    "id": "menu"
-}, function() {
-    if (chrome.extension.lastError) {
-        console.log("Got expected error: " + chrome.extension.lastError.message);
-    }
-});
-
-
 // // Called when the user clicks on the browser action.
 // chrome.browserAction.onClicked.addListener(function(tab) {
 //     // No tabs or host permissions needed!
@@ -72,6 +45,5 @@ chrome.contextMenus.create({
 //     //   code: 'document.body.style.backgroundColor="red"'
 //     // });
 // });
-chrome.contextMenus.onClicked.addListener(onMenuClickHandler);
 
 chrome.runtime.onMessage.addListener(onMessageReceiver);

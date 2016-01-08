@@ -23,7 +23,6 @@
 
     "permissions": [
         "activeTab",
-        "contextMenus",
         "storage"
     ],
     "homepage_url": "http://www.geowind.cn",
