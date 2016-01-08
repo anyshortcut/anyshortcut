@@ -33,6 +33,8 @@
     },
     "content_scripts": [{
         "matches": ["<all_urls>"],
-        "js": ["js/keycode.js", "js/keyeventmonitor.js"]
+        "match_about_blank":true,
+        "js": ["js/keycode.js", "js/keyeventmonitor.js"],
+        "run_at":"document_start"
     }]
 }
