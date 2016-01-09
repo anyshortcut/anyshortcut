@@ -19,6 +19,14 @@ function monitorKeyUp(e) {
         var a = document.createElement('a');
         a.href = location.href;
         window.location = a.origin;
+    } else if ([37,39].indexOf(e.keyCode) > -1){ // left key and right key is 37 and 39
+       var numberOfEntries = window.history.length - 1;
+       //Step value is -1 if the left key,otherwise +1 if right key.
+       var step = e.keyCode - 38;
+
+       for (var i = 0; i < numberOfEntries; i++) {
+          window.history.go(step);
+       }
     }
 }
 
