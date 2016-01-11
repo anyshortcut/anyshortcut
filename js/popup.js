@@ -1,3 +1,4 @@
+//TODO storage tab extras info,such as favicon url,page title.
 /**
  * Current input shortcut key element.
  */

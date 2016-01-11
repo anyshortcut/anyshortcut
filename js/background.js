@@ -1,13 +1,72 @@
+//TODO change browser action icon dynamically according to the url shortcut binged or not.
 
 var storage = chrome.storage.local;
 var keyBindingMaps;
 
 function queryAllKeyBindingItems() {
     storage.get(null, function(items) {
-        console.log(items);
         keyBindingMaps = items;
     });
 };
+
+/**
+ * Check current tab url whether bound or not.
+ *@param url current tab url
+ *@return true if the url was bound,false otherwise
+ */
+function checkUrlBound(url) {
+    //Get properties array of Object.
+    keys = Object.keys(keyBindingMaps);
+    for (var i = 0; i < keys.length; i++) {
+        var key = keys[i];
+        if (url == keyBindingMaps[key]) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * Set a different popup icon according to current tab url whether bound or not.
+ *@param bound whether the current tab url was bound with a shortcut
+ */
+function setPopupIcon(bound) {
+    var icon = bound ? {
+        path: {
+            '19': 'images/icon.png'
+        }
+    } : {
+        path: {
+            '38': 'images/icon16.png'
+        }
+    };
+    chrome.browserAction.setIcon(icon);
+}
+
+function handleOnTabInfoUpdate(url) {
+    setPopupIcon(checkUrlBound(url));
+}
+
+/**
+ * A callback function to detect tab activated change.
+ *@param activeInfo looks like this {integer:tabId,integer:windowId}
+ */
+function onTabActivated(activeInfo) {
+    //Get current actived tab
+    chrome.tabs.get(activeInfo.tabId, function(tab) {
+        console.log(tab);
+        handleOnTabInfoUpdate(tab.url);
+    });
+}
+
+/**
+ * A callback function to detect current activated tab updated.
+ *@param activeInfo looks like this {integer:tabId,integer:windowId}
+ */
+function onTabUpdated(tabId, changeInfo, tab) {
+    console.log("tab id:", tabId, " change info:", changeInfo);
+    handleOnTabInfoUpdate(tab.url);
+}
 
 function onMessageReceiver(message, sender, sendResponse) {
     //If message exist key 'request', represent message from content script.
@@ -32,7 +91,7 @@ function onMessageReceiver(message, sender, sendResponse) {
         });
     }
     //Must return true otherwise sendResponse() not working.
-    //More detail see officail documentations [chrome.runtime.onMessage()].
+    //More detail see official documentations [chrome.runtime.onMessage()].
     return true;
 }
 
@@ -46,4 +105,7 @@ function onMessageReceiver(message, sender, sendResponse) {
 //     // });
 // });
 
+queryAllKeyBindingItems();
+chrome.tabs.onActivated.addListener(onTabActivated);
+chrome.tabs.onUpdated.addListener(onTabUpdated);
 chrome.runtime.onMessage.addListener(onMessageReceiver);
