@@ -1,4 +1,3 @@
-
 var storage = chrome.storage.local;
 var keyBindingMaps;
 
@@ -68,7 +67,7 @@ function onTabUpdated(tabId, changeInfo, tab) {
 }
 
 function onMessageReceiver(message, sender, sendResponse) {
-    //If message exist key 'request', represent message from content script.
+    //If message exist key 'request', represent the message from content script.
     if (message.request) {
         console.log("from content script");
         var key = message.key;
@@ -81,6 +80,19 @@ function onMessageReceiver(message, sender, sendResponse) {
                 console.log(item);
                 sendResponse(item[key]);
             }
+        });
+    }
+    //if message exist key 'validate',represent the message from popup.js
+    //for validate the shortcut whether already bound a url.
+    else if (message.validate) {
+        storage.get(message.key, function(item) {
+            //item value would be {},if not exist the key.
+            //Besure to check item value is empty.
+            response = {};
+            //The key is valid if query result is empty.
+            response["valid"] = Object.keys(item).length == 0;
+            response["data"] = item;
+            sendResponse(response);
         });
     } else {
         console.log("chrome.runtime.onMessage.", message);

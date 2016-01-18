@@ -50,7 +50,17 @@ function onShortcutKeyInput(e) {
     var keyCode = keyCodeChar.charCodeAt();
     console.log("keyCode charCodeAt", shortcutKeyInput.value, keyCode);
     if (keyCodeHelper.isValidKeyCode(keyCode)) {
-        renderStatus("");
+        var key = String.fromCharCode(keyCode);
+        message = {};
+        message["key"] = key;
+        message["validate"] = true;
+        chrome.runtime.sendMessage(message, function(response) {
+            if (response.valid) {
+                renderStatus("");
+            } else {
+                renderStatus("invalid shortcut key " + keyCodeChar + keyCode + "\n and the url is " + response["data"][key]);
+            }
+        });
 
         shortcutKeyCode = keyCode;
         console.log("shortcutKeyCode:", shortcutKeyCode);
