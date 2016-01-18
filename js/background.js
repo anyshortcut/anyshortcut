@@ -1,4 +1,3 @@
-//TODO change browser action icon dynamically according to the url shortcut binged or not.
 
 var storage = chrome.storage.local;
 var keyBindingMaps;
@@ -37,7 +36,7 @@ function setPopupIcon(bound) {
         }
     } : {
         path: {
-            '38': 'images/icon16.png'
+            '19': 'images/icon16.png'
         }
     };
     chrome.browserAction.setIcon(icon);
@@ -87,7 +86,10 @@ function onMessageReceiver(message, sender, sendResponse) {
         console.log("chrome.runtime.onMessage.", message);
         storage.set(message, function() {
             console.log("storage success");
-            sendResponse("message");
+            sendResponse("Success");
+            setPopupIcon(true);
+            //Update keyBindingMaps if new shortcut bound.
+            queryAllKeyBindingItems();
         });
     }
     //Must return true otherwise sendResponse() not working.
