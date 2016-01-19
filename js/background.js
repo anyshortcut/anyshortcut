@@ -94,7 +94,13 @@ function onMessageReceiver(message, sender, sendResponse) {
             response["data"] = item;
             sendResponse(response);
         });
-    } else {
+    }
+    // Check url whether bound shortcut.
+    else if (message.check) {
+        sendResponse(checkUrlBound(message.url));
+    }
+    //Save shortcut item to storage. 
+    else {
         console.log("chrome.runtime.onMessage.", message);
         storage.set(message, function() {
             console.log("storage success");

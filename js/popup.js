@@ -14,7 +14,39 @@ window.addEventListener("load", function(initialized) {
     shortcutKeyInput.addEventListener("input", onShortcutKeyInput, false);
 
     document.getElementById("bind_shortcut_button").addEventListener("click", handleShortcutBinding);
+
+    requestCheckUrlBound(function(result) {
+        if (result) {
+            $("#bind_div").hide();
+            $("#unbind_div").show();
+
+            $("#unbind_guide").show();
+            $("#unbind_success").hide();
+
+        } else {
+            $("#bind_div").show();
+            $("#unbind_div").hide();
+
+            $("#bind_guide").show();
+            $("#bind_success").hide();
+        }
+    });
 });
+
+/**
+ * Request check current tab url was bound in background.js
+ *
+ * @param checkCallback(boolean result) the check callback function.
+ *        true if the url already bound,false otherwise
+ */
+function requestCheckUrlBound(checkCallback) {
+    getCurrentTabUrl(function(url) {
+        var message = {};
+        message["check"] = true;
+        message["url"] = url;
+        chrome.runtime.sendMessage(message, checkCallback);
+    });
+}
 
 /**
  * Bind shortcut with current actived tab url.
@@ -36,7 +68,9 @@ function handleShortcutBinding() {
             }
 
             console.log(response);
-            renderStatus(response);
+            // renderStatus(response);
+            $("#bind_guide").hide();
+            $("#bind_success").show();
         });
 
     });
