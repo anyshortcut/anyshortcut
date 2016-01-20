@@ -8,20 +8,29 @@ function queryAllKeyBindingItems() {
 };
 
 /**
- * Check current tab url whether bound or not.
- *@param url current tab url
- *@return true if the url was bound,false otherwise
+ * Query shortcut key accoring to the url.
+ *@param url the url to query shortcut
+ *@return the key if the url was bound,null otherwise
  */
-function checkUrlBound(url) {
+function queryShortcutKeyByUrl(url) {
     //Get properties array of Object.
     keys = Object.keys(keyBindingMaps);
     for (var i = 0; i < keys.length; i++) {
         var key = keys[i];
         if (url == keyBindingMaps[key]) {
-            return true;
+            return key;
         }
     }
-    return false;
+    return null;
+}
+
+/**
+ * Check current tab url whether bound or not.
+ *@param url current tab url
+ *@return true if the url was bound,false otherwise
+ */
+function checkUrlBound(url) {
+    return queryShortcutKeyByUrl(url) != null;
 }
 
 /**
@@ -99,7 +108,23 @@ function onMessageReceiver(message, sender, sendResponse) {
     else if (message.check) {
         sendResponse(checkUrlBound(message.url));
     }
-    //Save shortcut item to storage. 
+    // Delete the url shortcut.
+    else if (message.delete) {
+        var url = message.url;
+        var key = queryShortcutKeyByUrl(url);
+        if (key) {
+            storage.remove(key, function() {
+                sendResponse(true);
+                setPopupIcon(false);
+                //Update keyBindingMaps if old shortcut unbound.
+                queryAllKeyBindingItems();
+            });
+        } else {
+            //Failed
+            sendResponse(false);
+        }
+    }
+    //Save shortcut item to storage.
     else {
         console.log("chrome.runtime.onMessage.", message);
         storage.set(message, function() {

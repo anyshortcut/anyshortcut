@@ -1,4 +1,5 @@
 //TODO storage tab extras info,such as favicon url,page title.
+//TODO use command api to detect a gloab chrome shortcut then show a input to navigation url
 /**
  * Current input shortcut key element.
  */
@@ -13,7 +14,8 @@ window.addEventListener("load", function(initialized) {
     shortcutKeyInput = document.getElementById("shortcut_key");
     shortcutKeyInput.addEventListener("input", onShortcutKeyInput, false);
 
-    document.getElementById("bind_shortcut_button").addEventListener("click", handleShortcutBinding);
+    $("#bind_shortcut_button").on("click", handleShortcutBinding);
+    $("#unbind_shortcut_button").on("click", handleShortcutUnbinding);
 
     requestCheckUrlBound(function(result) {
         if (result) {
@@ -22,7 +24,6 @@ window.addEventListener("load", function(initialized) {
 
             $("#unbind_guide").show();
             $("#unbind_success").hide();
-
         } else {
             $("#bind_div").show();
             $("#unbind_div").hide();
@@ -73,6 +74,20 @@ function handleShortcutBinding() {
             $("#bind_success").show();
         });
 
+    });
+}
+
+function handleShortcutUnbinding() {
+    getCurrentTabUrl(function(url) {
+        var message = {};
+        message["delete"] = true;
+        message["url"] = url;
+        chrome.runtime.sendMessage(message, function(result) {
+            if (result) {
+                $("#unbind_guide").hide();
+                $("#unbind_success").show();
+            }
+        });
     });
 }
 
@@ -144,18 +159,4 @@ function getCurrentTabUrl(callback) {
 
         callback(url);
     });
-
-    // Most methods of the Chrome extension APIs are asynchronous. This means that
-    // you CANNOT do something like this:
-    //
-    // var url;
-    // chrome.tabs.query(queryInfo, function(tabs) {
-    //   url = tabs[0].url;
-    // });
-    // alert(url); // Shows "undefined", because chrome.tabs.query is async.
 }
-
-chrome.runtime.onMessage.addListener(function(message, sender, callback) {
-    // document.write(response);
-    console.log("chrome.runtime.onMessage.", message);
-});
