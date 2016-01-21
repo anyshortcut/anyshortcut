@@ -1,20 +1,21 @@
-
 <!doctype html>
 <html>
-  <head>
+
+<head>
     <title>Quickly launch website by keyboard shotcuts</title>
     <style>
-      body {
-        font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-        font-size: 100%;
-      }
-      #status {
-        /* avoid an excessively wide status text */
-        white-space: pre;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        max-width: 800px;
-      }
+        body {
+            font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+            font-size: 100%;
+        }
+
+        #status {
+            /* avoid an excessively wide status text */
+            white-space: pre;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            max-width: 800px;
+        }
     </style>
 
     <!--
@@ -23,9 +24,19 @@
       -
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
-    <script src="js/option.js"></script>
-  </head>
-  <body>
-      <h5>Options</h5>
-  </body>
+    <script src="js/jquery-2.1.4.js"></script>
+    <script src="js/options.js"></script>
+    <link rel="stylesheet" href="css/options.css">
+</head>
+
+<body>
+    <h5>Options</h5>
+    <div id="shortcut-list">
+        <p id="shortcuts">
+        </p>
+        <ol id="shortcut-ul">
+        </ol>
+    </div>
+</body>
+
 </html>

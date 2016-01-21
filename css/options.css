@@ -1,0 +1,15 @@
+body {
+    font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
+    font-size: 100%;
+}
+#shortcut-list ul li {
+    /*background-color:rgb(155, 158, 155);
+    color: white;*/
+    font-size: 18px;
+}
+
+#shortcut-key{
+    font-size: 30px;
+    color: #DD4814;
+    padding: 10px;
+}
