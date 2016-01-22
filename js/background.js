@@ -106,7 +106,11 @@ function onMessageReceiver(message, sender, sendResponse) {
     }
     // Check url whether bound shortcut.
     else if (message.check) {
-        sendResponse(checkUrlBound(message.url));
+        var response = {};
+        var shortcutKey = queryShortcutKeyByUrl(message.url);
+        response["result"] = (shortcutKey != null);
+        response["key"] = shortcutKey;
+        sendResponse(response);
     }
     // Delete the url shortcut.
     else if (message.delete) {

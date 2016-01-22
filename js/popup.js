@@ -17,13 +17,14 @@ $(function() {
     $("#bind_shortcut_button").click(handleShortcutBinding);
     $("#unbind_shortcut_button").click(handleShortcutUnbinding);
 
-    requestCheckUrlBound(function(result) {
-        if (result) {
+    requestCheckUrlBound(function(response) {
+        if (response.result) {
             $("#bind_div").hide();
             $("#unbind_div").show();
 
             $("#unbind_guide").show();
             $("#unbind_success").hide();
+            $("#bound_shortcut_key").text(response.key);
         } else {
             $("#bind_div").show();
             $("#unbind_div").hide();
@@ -37,8 +38,7 @@ $(function() {
 /**
  * Request check current tab url was bound in background.js
  *
- * @param checkCallback(boolean result) the check callback function.
- *        true if the url already bound,false otherwise
+ * @param checkCallback(response {result:boolean,key:string}) the check callback function.
  */
 function requestCheckUrlBound(checkCallback) {
     getCurrentTabUrl(function(url) {
