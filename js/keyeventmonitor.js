@@ -15,18 +15,28 @@ function monitorKeyUp(e) {
             window.open(url);
         });
     } else if (e.keyCode == 32) { //space key code is 32.
-        //TrickTips: Navigate to current tab href origin url.
+        //TrickTips: Navigate to current tab href origin url or domain url.
         var a = document.createElement('a');
         a.href = location.href;
-        window.location = a.origin;
-    } else if ([37,39].indexOf(e.keyCode) > -1){ // left key and right key is 37 and 39
-       var numberOfEntries = window.history.length - 1;
-       //Step value is -1 if the left key,otherwise +1 if right key.
-       var step = e.keyCode - 38;
+        if (a.pathname != "/") {
+            //Navigate to origin url
+            window.location = a.origin;
+        } else {
+            //Navigate to domain url
+            var parts = a.origin.split(".");
+            parts.shift();
+            var domian = a.protocol + "\/\/" + parts.join(".");
+            window.location = domian;
+        }
 
-       for (var i = 0; i < numberOfEntries; i++) {
-          window.history.go(step);
-       }
+    } else if ([37, 39].indexOf(e.keyCode) > -1) { // left key and right key is 37 and 39
+        var numberOfEntries = window.history.length - 1;
+        //Step value is -1 if the left key,otherwise +1 if right key.
+        var step = e.keyCode - 38;
+
+        for (var i = 0; i < numberOfEntries; i++) {
+            window.history.go(step);
+        }
     }
 }
 

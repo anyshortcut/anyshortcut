@@ -10,12 +10,12 @@ var shortcutKeyInput;
 var shortcutKeyCode;
 
 //Add click event handler for bind shortcut button after the window was loaded.
-window.addEventListener("load", function(initialized) {
-    shortcutKeyInput = document.getElementById("shortcut_key");
-    shortcutKeyInput.addEventListener("input", onShortcutKeyInput, false);
+$(function() {
+    shortcutKeyInput = $("#shortcut_key");
+    shortcutKeyInput.on("input", onShortcutKeyInput);
 
-    $("#bind_shortcut_button").on("click", handleShortcutBinding);
-    $("#unbind_shortcut_button").on("click", handleShortcutUnbinding);
+    $("#bind_shortcut_button").click(handleShortcutBinding);
+    $("#unbind_shortcut_button").click(handleShortcutUnbinding);
 
     requestCheckUrlBound(function(result) {
         if (result) {
@@ -53,7 +53,8 @@ function requestCheckUrlBound(checkCallback) {
  * Bind shortcut with current actived tab url.
  */
 function handleShortcutBinding() {
-    if (!shortcutKeyInput.value || shortcutKeyInput.value == "") {
+    var inputValue = shortcutKeyInput.val();
+    if (!inputValue|| inputValue == "") {
         renderStatus("Please specify a shortcut key!")
         return;
     }
@@ -62,7 +63,7 @@ function handleShortcutBinding() {
         renderStatus(url);
 
         var binding = {};
-        binding[shortcutKeyInput.value.toUpperCase()] = url;
+        binding[inputValue.toUpperCase()] = url;
         chrome.runtime.sendMessage(binding, function(response) {
             if (chrome.runtime.lastError) {
                 alert("error");
@@ -95,9 +96,8 @@ function onShortcutKeyInput(e) {
     e = keyCodeHelper.ensureWindowEvent(e);
 
     //Besure convert to uppercase,because oninput event occur before uppercase text-transform.
-    keyCodeChar = shortcutKeyInput.value.toUpperCase();
+    keyCodeChar = shortcutKeyInput.val().toUpperCase();
     var keyCode = keyCodeChar.charCodeAt();
-    console.log("keyCode charCodeAt", shortcutKeyInput.value, keyCode);
     if (keyCodeHelper.isValidKeyCode(keyCode)) {
         var key = String.fromCharCode(keyCode);
         message = {};
