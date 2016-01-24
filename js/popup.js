@@ -65,7 +65,11 @@ function handleShortcutBinding() {
         renderStatus(tab.url);
 
         const binding = {};
-        binding[inputValue.toUpperCase()] = tab.url;
+        const value = {};
+        value["url"] = tab.url;
+        value["title"] = tab.title;
+        value["favicon"] = tab.favIconUrl;
+        binding[inputValue.toUpperCase()] = value;
         chrome.runtime.sendMessage(binding, function (response) {
             if (chrome.runtime.lastError) {
                 alert("error");

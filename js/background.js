@@ -15,10 +15,10 @@ function queryAllKeyBindingItems() {
 function queryShortcutKeyByUrl(url) {
     //Get properties array of Object.
     const keys = Object.keys(keyBindingMaps);
-    var key;
     for (var i = 0; i < keys.length; i++) {
-        key = keys[i];
-        if (url == keyBindingMaps[key]) {
+        var key = keys[i];
+        var tab = keyBindingMaps[key];
+        if (url == tab.url) {
             return key;
         }
     }
@@ -80,14 +80,15 @@ function onMessageReceiver(message, sender, sendResponse) {
     //If message exist key 'request', represent the message from content script.
     if (message.request) {
         var key = message.key;
-        storage.get(key, function (item) {
+        storage.get(key, function (items) {
             //item value would be {},if not exist the key.
             //Besure to check item value is empty.
-            if (chrome.runtime.lastError || !Object.keys(item).length) {
+            if (chrome.runtime.lastError || !Object.keys(items).length) {
                 console.log("Got a error...");
             } else {
-                console.log(item);
-                sendResponse(item[key]);
+                console.log(items);
+                var tab = items[key];
+                sendResponse(tab.url);
             }
         });
     }
