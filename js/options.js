@@ -1,12 +1,15 @@
-var storage = chrome.storage.local;
+const storage = chrome.storage.local;
 
-$(function() {
-    storage.get(null, function(items) {
-        var ul = $("#shortcut-list>ol");
-        keys = Object.keys(items);
+$(function () {
+    storage.get(null, function (items) {
+        console.log('options:' + JSON.stringify(items));
+        const ul = $('#shortcut-list>ol');
+        const keys = Object.keys(items);
+        var key, url;
         for (var i = 0; i < keys.length; i++) {
-            var key = keys[i];
-            var url = items[key];
+            key = keys[i];
+            url = items[key];
+            console.log("key:" + key + " url:" + url);
             var $key = $("<span>" + key.toString() + "</span>").css("color", "#dd4814").css("font-size", "30px");
             var $url = $("<a href=\"" + url.toString() + "\">" + url.toString() + "</a>").css("color", "blue");
             var li = $("<li></li>").append($key).append("<span>  </span>").append($url);

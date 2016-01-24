@@ -3,21 +3,21 @@
 /**
  * Current input shortcut key element.
  */
-var shortcutKeyInput;
+var $shortcutKeyInput;
 /**
  * Current input shortcut key code.
  */
 var shortcutKeyCode;
 
 //Add click event handler for bind shortcut button after the window was loaded.
-$(function() {
-    shortcutKeyInput = $("#shortcut_key");
-    shortcutKeyInput.on("input", onShortcutKeyInput);
+$(function () {
+    $shortcutKeyInput = $("#shortcut_key");
+    $shortcutKeyInput.on("input", onShortcutKeyInput);
 
     $("#bind_shortcut_button").click(handleShortcutBinding);
     $("#unbind_shortcut_button").click(handleShortcutUnbinding);
 
-    requestCheckUrlBound(function(response) {
+    requestCheckUrlBound(function (response) {
         if (response.result) {
             $("#bind_div").hide();
             $("#unbind_div").show();
@@ -41,8 +41,8 @@ $(function() {
  * @param checkCallback(response {result:boolean,key:string}) the check callback function.
  */
 function requestCheckUrlBound(checkCallback) {
-    getCurrentTabUrl(function(url) {
-        var message = {};
+    getCurrentTabUrl(function (url) {
+        const message = {};
         message["check"] = true;
         message["url"] = url;
         chrome.runtime.sendMessage(message, checkCallback);
@@ -53,18 +53,18 @@ function requestCheckUrlBound(checkCallback) {
  * Bind shortcut with current actived tab url.
  */
 function handleShortcutBinding() {
-    var inputValue = shortcutKeyInput.val();
-    if (!inputValue|| inputValue == "") {
-        renderStatus("Please specify a shortcut key!")
+    const inputValue = $shortcutKeyInput.val();
+    if (!inputValue || inputValue == "") {
+        renderStatus("Please specify a shortcut key!");
         return;
     }
 
-    getCurrentTabUrl(function(url) {
+    getCurrentTabUrl(function (url) {
         renderStatus(url);
 
-        var binding = {};
+        const binding = {};
         binding[inputValue.toUpperCase()] = url;
-        chrome.runtime.sendMessage(binding, function(response) {
+        chrome.runtime.sendMessage(binding, function (response) {
             if (chrome.runtime.lastError) {
                 alert("error");
             }
@@ -79,11 +79,11 @@ function handleShortcutBinding() {
 }
 
 function handleShortcutUnbinding() {
-    getCurrentTabUrl(function(url) {
-        var message = {};
+    getCurrentTabUrl(function (url) {
+        const message = {};
         message["delete"] = true;
         message["url"] = url;
-        chrome.runtime.sendMessage(message, function(result) {
+        chrome.runtime.sendMessage(message, function (result) {
             if (result) {
                 $("#unbind_guide").hide();
                 $("#unbind_success").show();
@@ -93,17 +93,15 @@ function handleShortcutUnbinding() {
 }
 
 function onShortcutKeyInput(e) {
-    e = keyCodeHelper.ensureWindowEvent(e);
-
-    //Besure convert to uppercase,because oninput event occur before uppercase text-transform.
-    keyCodeChar = shortcutKeyInput.val().toUpperCase();
-    var keyCode = keyCodeChar.charCodeAt();
+    //Be sure convert to uppercase,because oninput event occur before uppercase text-transform.
+    const keyCodeChar = $shortcutKeyInput.val().toUpperCase();
+    const keyCode = keyCodeChar.charCodeAt();
     if (keyCodeHelper.isValidKeyCode(keyCode)) {
-        var key = String.fromCharCode(keyCode);
-        message = {};
+        const key = String.fromCharCode(keyCode);
+        const message = {};
         message["key"] = key;
         message["validate"] = true;
-        chrome.runtime.sendMessage(message, function(response) {
+        chrome.runtime.sendMessage(message, function (response) {
             if (response.valid) {
                 renderStatus("");
             } else {
@@ -134,22 +132,22 @@ function renderStatus(statusText) {
 function getCurrentTabUrl(callback) {
     // Query filter to be passed to chrome.tabs.query - see
     // https://developer.chrome.com/extensions/tabs#method-query
-    var queryInfo = {
+    const queryInfo = {
         active: true,
         currentWindow: true
     };
 
-    chrome.tabs.query(queryInfo, function(tabs) {
+    chrome.tabs.query(queryInfo, function (tabs) {
         // chrome.tabs.query invokes the callback with a list of tabs that match the
         // query. When the popup is opened, there is certainly a window and at least
         // one tab, so we can safely assume that |tabs| is a non-empty array.
         // A window can only have one active tab at a time, so the array consists of
         // exactly one tab.
-        var tab = tabs[0];
+        const tab = tabs[0];
 
         // A tab is a plain object that provides information about the tab.
         // See https://developer.chrome.com/extensions/tabs#type-Tab
-        var url = tab.url;
+        const url = tab.url;
 
         // tab.url is only available if the "activeTab" permission is declared.
         // If you want to see the URL of other tabs (e.g. after removing active:true

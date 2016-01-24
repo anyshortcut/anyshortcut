@@ -1,22 +1,23 @@
-var storage = chrome.storage.local;
+const storage = chrome.storage.local;
 var keyBindingMaps;
 
 function queryAllKeyBindingItems() {
-    storage.get(null, function(items) {
+    storage.get(null, function (items) {
         keyBindingMaps = items;
     });
-};
+}
 
 /**
- * Query shortcut key accoring to the url.
+ * Query shortcut key according to the url.
  *@param url the url to query shortcut
  *@return the key if the url was bound,null otherwise
  */
 function queryShortcutKeyByUrl(url) {
     //Get properties array of Object.
-    keys = Object.keys(keyBindingMaps);
+    const keys = Object.keys(keyBindingMaps);
+    var key;
     for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
+        key = keys[i];
         if (url == keyBindingMaps[key]) {
             return key;
         }
@@ -27,7 +28,7 @@ function queryShortcutKeyByUrl(url) {
 /**
  * Check current tab url whether bound or not.
  *@param url current tab url
- *@return true if the url was bound,false otherwise
+ *@return boolean true if the url was bound,false otherwise
  */
 function checkUrlBound(url) {
     return queryShortcutKeyByUrl(url) != null;
@@ -38,7 +39,7 @@ function checkUrlBound(url) {
  *@param bound whether the current tab url was bound with a shortcut
  */
 function setPopupIcon(bound) {
-    var icon = bound ? {
+    const icon = bound ? {
         path: {
             '19': 'images/icon.png'
         }
@@ -60,7 +61,7 @@ function handleOnTabInfoUpdate(url) {
  */
 function onTabActivated(activeInfo) {
     //Get current actived tab
-    chrome.tabs.get(activeInfo.tabId, function(tab) {
+    chrome.tabs.get(activeInfo.tabId, function (tab) {
         console.log(tab);
         handleOnTabInfoUpdate(tab.url);
     });
@@ -78,9 +79,8 @@ function onTabUpdated(tabId, changeInfo, tab) {
 function onMessageReceiver(message, sender, sendResponse) {
     //If message exist key 'request', represent the message from content script.
     if (message.request) {
-        console.log("from content script");
         var key = message.key;
-        storage.get(key, function(item) {
+        storage.get(key, function (item) {
             //item value would be {},if not exist the key.
             //Besure to check item value is empty.
             if (chrome.runtime.lastError || !Object.keys(item).length) {
@@ -94,10 +94,10 @@ function onMessageReceiver(message, sender, sendResponse) {
     //if message exist key 'validate',represent the message from popup.js
     //for validate the shortcut whether already bound a url.
     else if (message.validate) {
-        storage.get(message.key, function(item) {
+        storage.get(message.key, function (item) {
             //item value would be {},if not exist the key.
-            //Besure to check item value is empty.
-            response = {};
+            //Be sure to check item value is empty.
+            const response = {};
             //The key is valid if query result is empty.
             response["valid"] = Object.keys(item).length == 0;
             response["data"] = item;
@@ -106,18 +106,17 @@ function onMessageReceiver(message, sender, sendResponse) {
     }
     // Check url whether bound shortcut.
     else if (message.check) {
-        var response = {};
-        var shortcutKey = queryShortcutKeyByUrl(message.url);
+        const response = {};
+        const shortcutKey = queryShortcutKeyByUrl(message.url);
         response["result"] = (shortcutKey != null);
         response["key"] = shortcutKey;
         sendResponse(response);
     }
     // Delete the url shortcut.
     else if (message.delete) {
-        var url = message.url;
-        var key = queryShortcutKeyByUrl(url);
+        var key = queryShortcutKeyByUrl(message.url);
         if (key) {
-            storage.remove(key, function() {
+            storage.remove(key, function () {
                 sendResponse(true);
                 setPopupIcon(false);
                 //Update keyBindingMaps if old shortcut unbound.
@@ -131,7 +130,7 @@ function onMessageReceiver(message, sender, sendResponse) {
     //Save shortcut item to storage.
     else {
         console.log("chrome.runtime.onMessage.", message);
-        storage.set(message, function() {
+        storage.set(message, function () {
             console.log("storage success");
             sendResponse("Success");
             setPopupIcon(true);
