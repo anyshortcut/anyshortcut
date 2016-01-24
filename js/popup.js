@@ -1,5 +1,7 @@
 //TODO storage tab extras info,such as favicon url,page title.
-//TODO use command api to detect a gloab chrome shortcut then show a input to navigation url
+//TODO use command api to detect a global chrome shortcut then show a input to navigation url
+//TODO popup tips if the user pressed the unbound shortcut key
+//TODO ignore http/https distinguish of a bound url? maybe a preference setting?
 /**
  * Current input shortcut key element.
  */
@@ -41,10 +43,10 @@ $(function () {
  * @param checkCallback(response {result:boolean,key:string}) the check callback function.
  */
 function requestCheckUrlBound(checkCallback) {
-    getCurrentTabUrl(function (url) {
+    getCurrentTab(function (tab) {
         const message = {};
         message["check"] = true;
-        message["url"] = url;
+        message["url"] = tab.url;
         chrome.runtime.sendMessage(message, checkCallback);
     });
 }
@@ -59,11 +61,11 @@ function handleShortcutBinding() {
         return;
     }
 
-    getCurrentTabUrl(function (url) {
-        renderStatus(url);
+    getCurrentTab(function (tab) {
+        renderStatus(tab.url);
 
         const binding = {};
-        binding[inputValue.toUpperCase()] = url;
+        binding[inputValue.toUpperCase()] = tab.url;
         chrome.runtime.sendMessage(binding, function (response) {
             if (chrome.runtime.lastError) {
                 alert("error");
@@ -79,10 +81,10 @@ function handleShortcutBinding() {
 }
 
 function handleShortcutUnbinding() {
-    getCurrentTabUrl(function (url) {
+    getCurrentTab(function (tab) {
         const message = {};
         message["delete"] = true;
-        message["url"] = url;
+        message["url"] = tab.url;
         chrome.runtime.sendMessage(message, function (result) {
             if (result) {
                 $("#unbind_guide").hide();
@@ -124,12 +126,12 @@ function renderStatus(statusText) {
 }
 
 /**
- * Get the current URL.
+ * Get the current tab.
  *
- * @param {function(string)} callback - called when the URL of the current tab
+ * @param {function(tab)} callback - called when the URL of the current tab
  *   is found.
  */
-function getCurrentTabUrl(callback) {
+function getCurrentTab(callback) {
     // Query filter to be passed to chrome.tabs.query - see
     // https://developer.chrome.com/extensions/tabs#method-query
     const queryInfo = {
@@ -144,17 +146,6 @@ function getCurrentTabUrl(callback) {
         // A window can only have one active tab at a time, so the array consists of
         // exactly one tab.
         const tab = tabs[0];
-
-        // A tab is a plain object that provides information about the tab.
-        // See https://developer.chrome.com/extensions/tabs#type-Tab
-        const url = tab.url;
-
-        // tab.url is only available if the "activeTab" permission is declared.
-        // If you want to see the URL of other tabs (e.g. after removing active:true
-        // from |queryInfo|), then the "tabs" permission is required to see their
-        // "url" properties.
-        console.assert(typeof url == 'string', 'tab.url should be a string');
-
-        callback(url);
+        callback(tab);
     });
 }
