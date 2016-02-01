@@ -15,17 +15,19 @@ $(function () {
     $("#bind_shortcut_button").click(handleShortcutBinding);
     $("#unbind_shortcut_button").click(handleShortcutUnbinding);
 
-    requestCheckUrlBound(function (response) {
-        if (response.result) {
+    requestCheckUrlBound(function (bindInfo) {
+        //The bindInfo is {"key":key,"value":bindInfo}
+        if (bindInfo) {
             $("#bind_div").hide();
             $("#unbind_div").show();
 
             $("#unbind_guide").show();
             $("#unbind_success").hide();
-            $("#bound_shortcut_key").text(response.key);
+            $("#bound_shortcut_key").text(bindInfo.key);
             var $boundTime = $('#bound_time');
             $boundTime.show();
-            $boundTime.text(new Date().toLocaleDateString());
+            var info = bindInfo.value;
+            $boundTime.text(moment(info.time).fromNow());
         } else {
             $("#bind_div").show();
             $("#unbind_div").hide();

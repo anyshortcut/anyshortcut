@@ -118,10 +118,7 @@ function onMessageReceiver(message, sender, sendResponse) {
     }
     // Check url whether bound shortcut.
     else if (message.check) {
-        const response = {};
-        const shortcutKey = queryShortcutKeyByUrl(message.url);
-        response["result"] = (shortcutKey != null);
-        response["key"] = shortcutKey;
+        const response = queryBindInfoByUrl(message.url);
         sendResponse(response);
     }
     // Delete the url shortcut.
