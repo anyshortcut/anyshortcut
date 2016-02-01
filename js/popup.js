@@ -1,7 +1,3 @@
-//TODO storage tab extras info,such as favicon url,page title.
-//TODO use command api to detect a global chrome shortcut then show a input to navigation url
-//TODO popup tips if the user pressed the unbound shortcut key
-//TODO ignore http/https distinguish of a bound url? maybe a preference setting?
 /**
  * Current input shortcut key element.
  */
@@ -27,6 +23,9 @@ $(function () {
             $("#unbind_guide").show();
             $("#unbind_success").hide();
             $("#bound_shortcut_key").text(response.key);
+            var $boundTime = $('#bound_time');
+            $boundTime.show();
+            $boundTime.text(new Date().toLocaleDateString());
         } else {
             $("#bind_div").show();
             $("#unbind_div").hide();
@@ -69,6 +68,7 @@ function handleShortcutBinding() {
         value["url"] = tab.url;
         value["title"] = tab.title;
         value["favicon"] = tab.favIconUrl;
+        value["time"] = Date.now();
         binding[inputValue.toUpperCase()] = value;
         chrome.runtime.sendMessage(binding, function (response) {
             if (chrome.runtime.lastError) {
