@@ -13,16 +13,27 @@ function queryAllKeyBindingItems() {
  *@return the key if the url was bound,null otherwise
  */
 function queryShortcutKeyByUrl(url) {
-    //Get properties array of Object.
-    const keys = Object.keys(keyBindingMaps);
-    for (var i = 0; i < keys.length; i++) {
-        var key = keys[i];
-        var tab = keyBindingMaps[key];
-        if (url == tab.url) {
-            return key;
+    var result = queryBindInfoByUrl(url);
+    return result ? result.key : null;
+}
+
+/**Query the bind info key/value object by url.
+ *
+ * @param url
+ * @returns the bind info. {"key":key,"value":value}
+ */
+function queryBindInfoByUrl(url) {
+    var result = null;
+    for (var key in keyBindingMaps) {
+        var info = keyBindingMaps[key];
+        if (url == info.url) {
+            result = {};
+            result["key"] = key;
+            result["value"] = info;
+            return result;
         }
     }
-    return null;
+    return result;
 }
 
 /**
