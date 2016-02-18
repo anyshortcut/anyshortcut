@@ -2,33 +2,27 @@
 <html>
 
 <head>
-    <title>Quickly launch website by keyboard shotcuts</title>
-    <style>
-        body {
-            font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
-            font-size: 100%;
-        }
-    </style>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-     -->
+    <script src="js/vue.js"></script>
     <script src="js/jquery-2.1.4.js"></script>
     <script src="js/options.js"></script>
     <link rel="stylesheet" href="css/options.css">
+
 </head>
 
 <body>
     <h5>Options</h5>
-    <div id="shortcut-list">
-        <p id="shortcuts">
-        </p>
-        <ol id="shortcut-ul">
-        </ol>
+    <div id="app">
+        <ul>
+            <li v-for="value in items">
+                <img src="{{value.favicon}}" />
+                <p>
+                    {{$key}}
+                </p>
+                <a href="{{value.url}}">{{value.url}}</a>
+            </li>
+        </ul>
     </div>
+
 </body>
 
 </html>
