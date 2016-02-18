@@ -2,75 +2,61 @@
 <html>
 
 <head>
-    <title>Quickly launch website by keyboard shotcuts</title>
-
-    <!--
-      - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.
-      -
-      - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
-     -->
-    <script src="js/jquery-2.1.4.js"></script>
-    <script src="js/keycode.js"></script>
-    <script src="js/popup.js"></script>
     <script src="js/moment.min.js"></script>
+    <script src="js/keycode.js"></script>
+    <script type="text/javascript" src="js/vue.js"></script>
+    <script src="js/jquery-2.1.4.js"></script>
+    <script src="js/popup.js"></script>
     <link rel="stylesheet" href="css/popup.css">
 </head>
 
 <body>
-<h5>You can launch website quickly by keyboard shortcuts</h5>
+    <h5>You can launch website quickly by keyboard shortcuts</h5>
+    <pre>{{$data | json}}</pre>
 
-<div id="bind_div">
-    <div id="bind_guide">
-        <p>
-            Specify the shortcut:
-        </p>
+    <div id="bound_tips">{{boundTips}}</div>
+
+    <div id="bind_div" v-show="!bound">
+        <div id="bind_guide">
+            <p>
+                Specify the shortcut:
+            </p>
             <span>
                 <strong>ALT</strong>
             </span>
-        <span>+</span>
+            <span>+</span>
             <span>
                 <strong>SHIFT</strong>
             </span>
-        <span>+</span>
+            <span>+</span>
             <span>
-                <input id="shortcut_key" placeholder="key" maxlength="1" required/>
+                <input v-model="key" @input="onShortcutKeyInput" id="shortcut_key" placeholder="key" maxlength="1" required/>
             </span>
-        <br/>
-        <div id="status">
+            <br/>
+            <div id="status">
+                {{keyTips}}
+            </div>
+            <input @click="handleShortcutBinding" id="bind_shortcut_button" type="button" value="Save" />
         </div>
-        <input id="bind_shortcut_button" type="button" value="Save"/>
     </div>
-    <div id="bind_success">
-        <p>
-            Great job!you have bound a shortcut for this url!
-        </p>
-    </div>
-</div>
 
-<div id="unbind_div">
-    <div id="unbind_guide">
-        <h5>You already bound a shortcut for this url!</h5>
+    <div id="unbind_div" v-else>
+        <div id="unbind_guide">
             <span>
                 <strong>ALT</strong>
             </span>
-        <span>+</span>
+            <span>+</span>
             <span>
                 <strong>SHIFT</strong>
             </span>
-        <span>+</span>
+            <span>+</span>
             <span>
-                <strong id="bound_shortcut_key">A</strong>
+                <strong id="bound_shortcut_key">{{key}}</strong>
             </span>
-        <p id="bound_time"></p>
-        <button id="unbind_shortcut_button">Delete Shortcut</button>
+            <p id="bound_time">{{value.time | fromNow}}</p>
+            <button @click="handleShortcutUnbinding" id="unbind_shortcut_button">Delete Shortcut</button>
+        </div>
     </div>
-    <div id="unbind_success">
-        <p>
-            Delete Success!
-        </p>
-    </div>
-</div>
 
 </body>
 

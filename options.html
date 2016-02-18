@@ -15,9 +15,9 @@
         <ul>
             <li v-for="value in items">
                 <img src="{{value.favicon}}" />
-                <p>
+                <span id="shortcut-key">
                     {{$key}}
-                </p>
+                </span>
                 <a href="{{value.url}}">{{value.url}}</a>
             </li>
         </ul>

@@ -1,39 +1,101 @@
-/**
- * Current input shortcut key element.
- */
-var $shortcutKeyInput;
-/**
- * Current input shortcut key code.
- */
-var shortcutKeyCode;
+$(function() {
+    //Custom filter to use moment.js format time as fromNow type.
+    Vue.filter('fromNow', function(time) {
+        return moment(time).fromNow();
+    });
 
-//Add click event handler for bind shortcut button after the window was loaded.
-$(function () {
-    $shortcutKeyInput = $("#shortcut_key");
-    $shortcutKeyInput.on("input", onShortcutKeyInput);
+    var vm = new Vue({
+        el: 'body',
+        data: {
+            bound: false,
+            key: '',
+            value: {},
+            keyTips: '',
+            boundTips: ''
+        },
+        computed: {
+            keyIsValid: function() {
+                return keyCodeHelper.isValidKeyCode(this.key.charCodeAt());
+            },
+        },
+        watch: {
+            'key': function() {
+                this.key = this.key.toUpperCase();
+            }
+        },
+        methods: {
+            onShortcutKeyInput: function(event) {
+                var key = this.key;
+                if (this.keyIsValid) {
+                    var message = {};
+                    message["key"] = key;
+                    message["validate"] = true;
+                    chrome.runtime.sendMessage(message, function(response) {
+                        if (response.valid) {
+                            vm.keyTips = '';
+                        } else {
+                            vm.keyTips = "invalid shortcut key " + key +
+                                JSON.stringify(event) + "\n and the url is \n" +
+                                JSON.stringify(response["data"][key]["url"]);
+                        }
+                    });
+                } else {
+                    vm.keyTips = "invalid shortcut key " + key + event.keyCode;
+                }
+            },
+            handleShortcutBinding: function() {
+                var key = this.key;
+                if (!key || key == "") {
+                    vm.keyTips = "Please specify a shortcut key!";
+                    return;
+                }
+                // else if (!this.keyIsValid) {
+                //     vm.keyTips="shortcut key is invalid!";
+                //     return;
+                // }
 
-    $("#bind_shortcut_button").click(handleShortcutBinding);
-    $("#unbind_shortcut_button").click(handleShortcutUnbinding);
+                getCurrentTab(function(tab) {
+                    var binding = {};
+                    var value = {};
+                    value["url"] = tab.url;
+                    value["title"] = tab.title;
+                    value["favicon"] = tab.favIconUrl;
+                    value["time"] = Date.now();
+                    binding[key] = value;
+                    chrome.runtime.sendMessage(binding, function(response) {
+                        if (chrome.runtime.lastError) {
+                            console.log("error");
+                        }
+                        vm.bound = true;
+                        vm.boundTips = 'Great job!you have bound a shortcut for this url!';
+                    });
+                });
+            },
+            handleShortcutUnbinding: function() {
+                getCurrentTab(function(tab) {
+                    const message = {};
+                    message["delete"] = true;
+                    message["url"] = tab.url;
+                    chrome.runtime.sendMessage(message, function(result) {
+                        if (result) {
+                            vm.bound = false;
+                            vm.key = '';
+                            vm.value = {};
 
-    requestCheckUrlBound(function (bindInfo) {
-        //The bindInfo is {"key":key,"value":bindInfo}
-        if (bindInfo) {
-            $("#bind_div").hide();
-            $("#unbind_div").show();
-
-            $("#unbind_guide").show();
-            $("#unbind_success").hide();
-            $("#bound_shortcut_key").text(bindInfo.key);
-            var $boundTime = $('#bound_time');
-            $boundTime.show();
-            var info = bindInfo.value;
-            $boundTime.text(moment(info.time).fromNow());
-        } else {
-            $("#bind_div").show();
-            $("#unbind_div").hide();
-
-            $("#bind_guide").show();
-            $("#bind_success").hide();
+                            vm.boundTips = 'Delete Success!';
+                        }
+                    });
+                });
+            }
+        },
+        created: function() {
+            requestCheckUrlBound(function(bindInfo) {
+                vm.bound = bindInfo !== null;
+                if (vm.bound) {
+                    vm.key = bindInfo.key;
+                    vm.value = bindInfo.value;
+                }
+            });
         }
     });
 });
@@ -41,94 +103,15 @@ $(function () {
 /**
  * Request check current tab url was bound in background.js
  *
- * @param checkCallback(response {result:boolean,key:string}) the check callback function.
+ * @param response is the function which params is the bind info. {"key":key,"value":value}
  */
-function requestCheckUrlBound(checkCallback) {
-    getCurrentTab(function (tab) {
+function requestCheckUrlBound(response) {
+    getCurrentTab(function(tab) {
         const message = {};
         message["check"] = true;
         message["url"] = tab.url;
-        chrome.runtime.sendMessage(message, checkCallback);
+        chrome.runtime.sendMessage(message, response);
     });
-}
-
-/**
- * Bind shortcut with current actived tab url.
- */
-function handleShortcutBinding() {
-    const inputValue = $shortcutKeyInput.val();
-    if (!inputValue || inputValue == "") {
-        renderStatus("Please specify a shortcut key!");
-        return;
-    }
-
-    getCurrentTab(function (tab) {
-        renderStatus(tab.url);
-
-        const binding = {};
-        const value = {};
-        value["url"] = tab.url;
-        value["title"] = tab.title;
-        value["favicon"] = tab.favIconUrl;
-        value["time"] = Date.now();
-        binding[inputValue.toUpperCase()] = value;
-        chrome.runtime.sendMessage(binding, function (response) {
-            if (chrome.runtime.lastError) {
-                alert("error");
-            }
-
-            console.log(response);
-            // renderStatus(response);
-            $("#bind_guide").hide();
-            $("#bind_success").show();
-        });
-
-    });
-}
-
-function handleShortcutUnbinding() {
-    getCurrentTab(function (tab) {
-        const message = {};
-        message["delete"] = true;
-        message["url"] = tab.url;
-        chrome.runtime.sendMessage(message, function (result) {
-            if (result) {
-                $("#unbind_guide").hide();
-                $("#unbind_success").show();
-            }
-        });
-    });
-}
-
-function onShortcutKeyInput(e) {
-    //Be sure convert to uppercase,because oninput event occur before uppercase text-transform.
-    const keyCodeChar = $shortcutKeyInput.val().toUpperCase();
-    const keyCode = keyCodeChar.charCodeAt();
-    if (keyCodeHelper.isValidKeyCode(keyCode)) {
-        const key = String.fromCharCode(keyCode);
-        const message = {};
-        message["key"] = key;
-        message["validate"] = true;
-        chrome.runtime.sendMessage(message, function (response) {
-            if (response.valid) {
-                renderStatus("");
-            } else {
-                renderStatus("invalid shortcut key " + keyCodeChar + keyCode + "\n and the url is " + response["data"][key]);
-            }
-        });
-
-        shortcutKeyCode = keyCode;
-        console.log("shortcutKeyCode:", shortcutKeyCode);
-    } else {
-        renderStatus("invalid shortcut key ", keyCodeChar, keyCode);
-    }
-}
-
-/**
- * Render status div content text in popup.html.
- */
-function renderStatus(statusText) {
-    document.getElementById('status').textContent = statusText;
 }
 
 /**
@@ -145,7 +128,7 @@ function getCurrentTab(callback) {
         currentWindow: true
     };
 
-    chrome.tabs.query(queryInfo, function (tabs) {
+    chrome.tabs.query(queryInfo, function(tabs) {
         // chrome.tabs.query invokes the callback with a list of tabs that match the
         // query. When the popup is opened, there is certainly a window and at least
         // one tab, so we can safely assume that |tabs| is a non-empty array.
