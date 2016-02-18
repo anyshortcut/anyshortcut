@@ -12,7 +12,7 @@
 
 <body>
     <h5>You can launch website quickly by keyboard shortcuts</h5>
-    <pre>{{$data | json}}</pre>
+    <!-- <pre>{{$data | json}}</pre> -->
 
     <div id="bound_tips">{{boundTips}}</div>
 
@@ -30,7 +30,7 @@
             </span>
             <span>+</span>
             <span>
-                <input v-model="key" @input="onShortcutKeyInput" id="shortcut_key" placeholder="key" maxlength="1" required/>
+                <input v-model="key | uppercaseIt" @input="onShortcutKeyInput" id="shortcut_key" placeholder="key" maxlength="1" required/>
             </span>
             <br/>
             <div id="status">

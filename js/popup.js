@@ -3,6 +3,12 @@ $(function() {
     Vue.filter('fromNow', function(time) {
         return moment(time).fromNow();
     });
+    //Custom two-way filter to write uppercase value to model.(read way is ignore)
+    Vue.filter('uppercaseIt', {
+        write: function(value, oldValue) {
+            return value.toUpperCase();
+        }
+    });
 
     var vm = new Vue({
         el: 'body',
@@ -17,11 +23,6 @@ $(function() {
             keyIsValid: function() {
                 return keyCodeHelper.isValidKeyCode(this.key.charCodeAt());
             },
-        },
-        watch: {
-            'key': function() {
-                this.key = this.key.toUpperCase();
-            }
         },
         methods: {
             onShortcutKeyInput: function(event) {
