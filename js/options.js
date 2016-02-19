@@ -5,7 +5,7 @@ $(function() {
     var vm = new Vue({
         el: '#app',
         data: {
-            items: []
+            items: null
         },
         created: function() {
             this.queryItems();
@@ -17,6 +17,10 @@ $(function() {
                     this.items = items;
                     console.log('options:' + JSON.stringify(items));
                 });
+            },
+            clear: function() {
+                this.items = null;
+                console.log("Clear Success");
             }
         }
     });

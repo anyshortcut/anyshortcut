@@ -10,7 +10,7 @@ function monitorKeyUp(e) {
         message.request = true;
         const keyCodeChar = String.fromCharCode(e.keyCode);
         message.key = keyCodeChar;
-        chrome.runtime.sendMessage(message, function (url) {
+        chrome.runtime.sendMessage(message, url => {
             console.log(keyCodeChar, url);
             window.open(url);
         });
@@ -48,5 +48,3 @@ function isValidModifier(e) {
 }
 
 document.addEventListener('keyup', monitorKeyUp, false);
-// document.addEventListener('DOMContentLoaded', function() {
-// };

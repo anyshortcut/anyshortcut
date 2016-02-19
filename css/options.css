@@ -7,9 +7,18 @@ body {
     color: white;*/
     font-size: 18px;
 }
-
-#shortcut-key{
+#shortcut-key {
     font-size: 30px;
     color: #DD4814;
     padding: 10px;
+}
+#clear {
+    font-size: 16px;
+    color: white;
+    width: 80px;
+    background: rgb(254, 78, 32);
+    text-align: center;
+    padding: 8px;
+    border-radius: 5px;
+    position: static;
 }

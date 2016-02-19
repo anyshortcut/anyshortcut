@@ -12,6 +12,7 @@
 <body>
     <h5>Options</h5>
     <div id="app">
+        <button v-show="items" @click="clear" id="clear">Clear</button>
         <ul>
             <li v-for="value in items">
                 <img src="{{value.favicon}}" />
