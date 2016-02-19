@@ -19,8 +19,8 @@ $(function() {
                 });
             },
             clear: function() {
+                //Notify background.js to clear all data in storage.
                 this.items = null;
-                console.log("Clear Success");
             }
         }
     });

@@ -2,6 +2,14 @@ body {
     font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
     font-size: 100%;
 }
+div {
+    display: block;
+}
+ul {
+    display: grid;
+    column-count: 2;
+    column-width: auto;
+}
 #shortcut-list ul li {
     /*background-color:rgb(155, 158, 155);
     color: white;*/
@@ -20,5 +28,5 @@ body {
     text-align: center;
     padding: 8px;
     border-radius: 5px;
-    position: static;
+    float: right;
 }
