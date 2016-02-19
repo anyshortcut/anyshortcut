@@ -2,7 +2,7 @@ const storage = chrome.storage.local;
 var keyBindingMaps;
 
 function queryAllKeyBindingItems() {
-    storage.get(null, function (items) {
+    storage.get(null, items => {
         keyBindingMaps = items;
     });
 }
@@ -72,7 +72,7 @@ function handleOnTabInfoUpdate(url) {
  */
 function onTabActivated(activeInfo) {
     //Get current actived tab
-    chrome.tabs.get(activeInfo.tabId, function (tab) {
+    chrome.tabs.get(activeInfo.tabId, tab => {
         console.log(tab);
         handleOnTabInfoUpdate(tab.url);
     });
@@ -91,22 +91,26 @@ function onMessageReceiver(message, sender, sendResponse) {
     //If message exist key 'request', represent the message from content script.
     if (message.request) {
         var key = message.key;
-        storage.get(key, function (items) {
+        storage.get(key, items => {
+            if (chrome.runtime.lastError) {
+                console.log("Got a error...");
+                return;
+            }
             //item value would be {},if not exist the key.
             //Besure to check item value is empty.
-            if (chrome.runtime.lastError || !Object.keys(items).length) {
-                console.log("Got a error...");
-            } else {
+            if (Object.keys(items).length) {
                 console.log(items);
-                var tab = items[key];
-                sendResponse(tab.url);
+                var value = items[key];
+                sendResponse(value.url);
+            } else {
+                // The shortcut key not bound yet.
             }
         });
     }
     //if message exist key 'validate',represent the message from popup.js
     //for validate the shortcut whether already bound a url.
     else if (message.validate) {
-        storage.get(message.key, function (item) {
+        storage.get(message.key, item => {
             //item value would be {},if not exist the key.
             //Be sure to check item value is empty.
             const response = {};
@@ -125,7 +129,7 @@ function onMessageReceiver(message, sender, sendResponse) {
     else if (message.delete) {
         var key = queryShortcutKeyByUrl(message.url);
         if (key) {
-            storage.remove(key, function () {
+            storage.remove(key, () => {
                 sendResponse(true);
                 setPopupIcon(false);
                 //Update keyBindingMaps if old shortcut unbound.
@@ -139,7 +143,7 @@ function onMessageReceiver(message, sender, sendResponse) {
     //Save shortcut item to storage.
     else {
         console.log("chrome.runtime.onMessage.", message);
-        storage.set(message, function () {
+        storage.set(message, () => {
             console.log("storage success");
             sendResponse("Success");
             setPopupIcon(true);

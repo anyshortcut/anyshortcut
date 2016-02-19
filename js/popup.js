@@ -1,11 +1,11 @@
 $(function() {
     //Custom filter to use moment.js format time as fromNow type.
-    Vue.filter('fromNow', function(time) {
+    Vue.filter('fromNow', time => {
         return moment(time).fromNow();
     });
     //Custom two-way filter to write uppercase value to model.(read way is ignore)
     Vue.filter('uppercaseIt', {
-        write: function(value, oldValue) {
+        write: (value, oldValue) => {
             return value.toUpperCase();
         }
     });
@@ -31,7 +31,7 @@ $(function() {
                     var message = {};
                     message["key"] = key;
                     message["validate"] = true;
-                    chrome.runtime.sendMessage(message, function(response) {
+                    chrome.runtime.sendMessage(message, response => {
                         if (response.valid) {
                             vm.keyTips = '';
                         } else {
@@ -55,7 +55,7 @@ $(function() {
                 //     return;
                 // }
 
-                getCurrentTab(function(tab) {
+                getCurrentTab(tab => {
                     var binding = {};
                     var value = {};
                     value["url"] = tab.url;
@@ -63,7 +63,7 @@ $(function() {
                     value["favicon"] = tab.favIconUrl;
                     value["time"] = Date.now();
                     binding[key] = value;
-                    chrome.runtime.sendMessage(binding, function(response) {
+                    chrome.runtime.sendMessage(binding, response => {
                         if (chrome.runtime.lastError) {
                             console.log("error");
                         }
@@ -77,7 +77,7 @@ $(function() {
                     const message = {};
                     message["delete"] = true;
                     message["url"] = tab.url;
-                    chrome.runtime.sendMessage(message, function(result) {
+                    chrome.runtime.sendMessage(message, result => {
                         if (result) {
                             vm.bound = false;
                             vm.key = '';
@@ -90,7 +90,7 @@ $(function() {
             }
         },
         created: function() {
-            requestCheckUrlBound(function(bindInfo) {
+            requestCheckUrlBound(bindInfo => {
                 vm.bound = bindInfo !== null;
                 if (vm.bound) {
                     vm.key = bindInfo.key;
@@ -107,7 +107,7 @@ $(function() {
  * @param response is the function which params is the bind info. {"key":key,"value":value}
  */
 function requestCheckUrlBound(response) {
-    getCurrentTab(function(tab) {
+    getCurrentTab(tab => {
         const message = {};
         message["check"] = true;
         message["url"] = tab.url;
@@ -129,7 +129,7 @@ function getCurrentTab(callback) {
         currentWindow: true
     };
 
-    chrome.tabs.query(queryInfo, function(tabs) {
+    chrome.tabs.query(queryInfo, tabs => {
         // chrome.tabs.query invokes the callback with a list of tabs that match the
         // query. When the popup is opened, there is certainly a window and at least
         // one tab, so we can safely assume that |tabs| is a non-empty array.
