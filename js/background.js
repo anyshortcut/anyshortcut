@@ -203,7 +203,7 @@ function injectResources(files) {
                     resolve();
                 }
             });
-        })
+        });
     }));
 }
 
