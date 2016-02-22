@@ -17,7 +17,7 @@
     },
 
     "background": {
-        "scripts": ["js/keycode.js", "js/background.js","js/switch-recent-tabs.js"],
+        "scripts": ["js/keycode.js", "js/background.js","js/commands.js"],
         "persistent": true
     },
 
@@ -39,9 +39,27 @@
     "commands":{
         "toggle_recent_tab":{
             "suggested_key":{
-                "default":"Alt+Comma"
+                "default":"Alt+Tab"
             },
             "description":"Toggle Recent Tabs"
+        },
+        "back_to_oldest":{
+            "suggested_key":{
+                "default":"Alt+Shift+Left"
+            },
+            "description":"Go back to oldest history in current tab"
+        },
+        "forward_to_latest":{
+            "suggested_key":{
+                "default":"Alt+Shift+Right"
+            },
+            "description":"Go forward to latest history in current tab"
+        },
+        "jump_to_home":{
+            "suggested_key":{
+                "default":"Alt+Shift+Space"
+            },
+            "description":"Jump to home page of current url"
         }
     }
 }

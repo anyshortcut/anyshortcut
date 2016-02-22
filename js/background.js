@@ -1,5 +1,6 @@
 const storage = chrome.storage.local;
 var keyBindingMaps;
+var activeTab;
 
 function queryAllKeyBindingItems() {
     storage.get(null, items => {
@@ -75,16 +76,19 @@ function onTabActivated(activeInfo) {
     chrome.tabs.get(activeInfo.tabId, tab => {
         console.log(tab);
         handleOnTabInfoUpdate(tab.url);
+        activeTab = tab;
     });
 }
 
 /**
  * A callback function to detect current activated tab updated.
- *@param activeInfo looks like this {integer:tabId,integer:windowId}
+ *@param changeInfo looks like this {string:url,string:status...}
+ *@param tab Gives the state of the tab that was updated.
  */
 function onTabUpdated(tabId, changeInfo, tab) {
     console.log("tab id:", tabId, " change info:", changeInfo);
     handleOnTabInfoUpdate(tab.url);
+    activeTab = tab;
 }
 
 function onMessageReceiver(message, sender, sendResponse) {
@@ -205,6 +209,24 @@ function injectResources(files) {
             });
         });
     }));
+}
+
+function onCommandJumpToHome() {
+    //TrickTips: Navigate to current tab href origin url or domain url.
+    var a = document.createElement('a');
+    a.href = activeTab.url;
+    var properties = {};
+    if (a.pathname !== '/') {
+        //Navigate to origin url
+        properties["url"] = a.origin;
+    } else {
+        //Navigate to domain url
+        const parts = a.origin.split('.');
+        parts.shift();
+        const domain = a.protocol + '\/\/' + parts.join('.');
+        properties["url"] = domain;
+    }
+    chrome.tabs.update(activeTab.id, properties);
 }
 
 // // Called when the user clicks on the browser action.
