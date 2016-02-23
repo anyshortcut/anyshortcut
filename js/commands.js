@@ -19,10 +19,6 @@ chrome.tabs.onSelectionChanged.addListener(selectionChangedCallback);
 chrome.commands.onCommand.addListener(function(command) {
     if (command == "toggle_recent_tab") {
         switchToPreviousTabCallback();
-    } else if (command === "back_to_oldest") {
-
-    } else if (command === "forward_to_latest") {
-
     } else if (command === "jump_to_home") {
         onCommandJumpToHome();
     }
