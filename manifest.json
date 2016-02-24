@@ -17,7 +17,7 @@
     },
 
     "background": {
-        "scripts": ["js/keycode.js", "js/background.js"],
+        "scripts": ["js/keycode.js", "js/common.js", "js/background.js"],
         "persistent": true
     },
 
@@ -31,23 +31,23 @@
     "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
     "options_page": "options.html",
     "content_scripts": [{
-        "matches": ["<all_urls>","file:///*"],
-        "match_about_blank":true,
+        "matches": ["<all_urls>", "file:///*"],
+        "match_about_blank": true,
         "js": ["js/keycode.js", "js/keyeventmonitor.js"],
-        "run_at":"document_start"
+        "run_at": "document_start"
     }],
-    "commands":{
-        "toggle_recent_tab":{
-            "suggested_key":{
-                "default":"Alt+Tab"
+    "commands": {
+        "toggle_recent_tab": {
+            "suggested_key": {
+                "default": "Alt+Tab"
             },
-            "description":"Toggle Recent Tabs"
+            "description": "Toggle Recent Tabs"
         },
-        "jump_to_home":{
-            "suggested_key":{
-                "default":"Alt+Shift+Space"
+        "jump_to_home": {
+            "suggested_key": {
+                "default": "Alt+Shift+Space"
             },
-            "description":"Jump to home page of current url"
+            "description": "Jump to home page of current url"
         }
     }
 }
