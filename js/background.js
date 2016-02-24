@@ -114,7 +114,6 @@ function onTabActivated(activeInfo) {
 function onTabUpdated(tabId, changeInfo, tab) {
     console.log("tab id:", tabId, " change info:", changeInfo);
     handleOnTabInfoUpdate(tab.url);
-    activeTab = tab;
 }
 
 /**
