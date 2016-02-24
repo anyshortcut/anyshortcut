@@ -95,17 +95,12 @@ function onTabActivated(activeInfo) {
         activeTab = tab;
 
         getRecentTabs(recentTabIds => {
-            // Filter already contained tab id.
-            // recentTabIds = recentTabIds.filter(tabId => {
-            //     return tabId !== activeTab.id;
-            // });
-            // Remove from recent tab id array.
+            // Remove previous existed one from recent tab id array.
             var index = recentTabIds.indexOf(activeTab.id);
             if (index !== -1) {
                 recentTabIds.splice(index, 1);
             }
             recentTabIds.push(activeTab.id);
-            // windowRecentTabIds[chrome.windows.WINDOW_ID_CURRENT] = recentTabIds;
             console.log("recent tab ids:", recentTabIds);
         });
     });
@@ -145,18 +140,6 @@ function onWindowRemoved(windowId) {
     console.log("windowId:", windowId, "removed...");
     delete windowRecentTabIds[windowId];
 }
-
-/**
- * Fired when a window is created.
- * @param window Details of the window that was created.
- */
-// function onWindowCreated(window) {
-//     // Initialize window recent tabs empty array when window created.
-//     var key = window.id.toString();
-//     if (!windowRecentTabIds[key]) {
-//         windowRecentTabIds[key] = [];
-//     }
-// }
 
 function onMessageReceiver(message, sender, sendResponse) {
     //If message exist key 'request', represent the message from content script.
@@ -278,42 +261,27 @@ function injectResources(files) {
     }));
 }
 
-/**
- * An on command method which jump to current active tab url home page.
- */
-function onCommandJumpToHome() {
-    //TrickTips: Navigate to current tab href origin url or domain url.
-    var a = document.createElement('a');
-    a.href = activeTab.url;
-    var properties = {};
-    if (a.pathname !== '/') {
-        //Navigate to origin url
-        properties["url"] = a.origin;
-    } else {
-        //Navigate to domain url
-        const parts = a.origin.split('.');
-        parts.shift();
-        const domain = a.protocol + '\/\/' + parts.join('.');
-        properties["url"] = domain;
-    }
-    chrome.tabs.update(activeTab.id, properties);
-}
-
-/**
- * An on command method which toggle recent tabs.
- */
-function onCommandToggleRecentTabs() {
-    getRecentTabs(recentTabIds => {
-        // console.log("recent tabs:", JSON.stringify(recentTabIds));
-        switchToRecentTab(recentTabIds);
-    });
-}
-
 function onCommandFired(command) {
     if (command == "toggle_recent_tab") {
-        onCommandToggleRecentTabs();
+        getRecentTabs(recentTabIds => {
+            toggleToRecentTab(recentTabIds);
+        });
     } else if (command === "jump_to_home") {
-        onCommandJumpToHome();
+        //TrickTips: Navigate to current tab href origin url or domain url.
+        var a = document.createElement('a');
+        a.href = activeTab.url;
+        var properties = {};
+        if (a.pathname !== '/') {
+            //Navigate to origin url
+            properties["url"] = a.origin;
+        } else {
+            //Navigate to domain url
+            var parts = a.origin.split('.');
+            parts.shift();
+            var domain = a.protocol + '\/\/' + parts.join('.');
+            properties["url"] = domain;
+        }
+        chrome.tabs.update(activeTab.id, properties);
     }
 }
 
@@ -353,11 +321,20 @@ function getRecentTabs(callback) {
     });
 }
 
-function switchToRecentTab(recentTabIds) {
+/**
+ * Toggle recent two tabs.
+ * @param recentTabIds  recent tab id array.
+ */
+function toggleToRecentTab(recentTabIds) {
     var nextTabId;
-    while (recentTabIds.length) {
-        nextTabId = recentTabIds.pop();
-        if (nextTabId != activeTab.id) {
+    var lastIndex = recentTabIds.length - 1;
+    for (var i = lastIndex; i >= 0; i--) {
+        nextTabId = recentTabIds[i];
+        if (nextTabId !== activeTab.id) {
+            // Swap last two elements position.
+            var lastTabId = recentTabIds[lastIndex];
+            recentTabIds[lastIndex] = recentTabIds[lastIndex - 1];
+            recentTabIds[lastIndex - 1] = lastTabId;
             break;
         }
     }
@@ -367,20 +344,17 @@ function switchToRecentTab(recentTabIds) {
     }, () => {
         // Invalid tab, try next one
         if (chrome.runtime.lastError && recentTabIds.length) {
-            switchToRecentTab(recentTabIds);
+            console.warn(chrome.runtime.lastError);
+            toggleToRecentTab(recentTabIds);
         }
     });
 }
 
 queryAllKeyBindingItems();
-// chrome.management.onEnabled.addListener(onExtensionEnable);
 // chrome.tabs.onHighlighted.addListener(onTabHighlighted);
 chrome.tabs.onActivated.addListener(onTabActivated);
 chrome.tabs.onUpdated.addListener(onTabUpdated);
 chrome.tabs.onRemoved.addListener(onTabRemoved);
-
-// chrome.windows.onCreated.addListener(onWindowCreated);
 chrome.windows.onRemoved.addListener(onWindowRemoved);
 chrome.runtime.onMessage.addListener(onMessageReceiver);
-
 chrome.commands.onCommand.addListener(onCommandFired);
