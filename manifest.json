@@ -17,7 +17,7 @@
     },
 
     "background": {
-        "scripts": ["js/keycode.js", "js/background.js","js/commands.js"],
+        "scripts": ["js/keycode.js", "js/background.js"],
         "persistent": true
     },
 

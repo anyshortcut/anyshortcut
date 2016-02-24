@@ -1,6 +1,13 @@
 const storage = chrome.storage.local;
 var keyBindingMaps;
+/**
+ * Current active tab in current window.
+ */
 var activeTab;
+/**
+ * A object contain recent tab ids in each window.
+ */
+var windowRecentTabIds = {};
 
 function queryAllKeyBindingItems() {
     storage.get(null, items => {
@@ -64,8 +71,17 @@ function setPopupIcon(bound) {
 }
 
 function handleOnTabInfoUpdate(url) {
-    setPopupIcon(checkUrlBound(url));
+    setPopupIcon(url ? checkUrlBound(url) : false);
 }
+
+/**
+ *@Deprecated
+ *
+ * Fired when an app or extension has been enabled.
+ * @param callback The callback parameter should be a function that looks like this:
+ *                  function( ExtensionInfo info) {...};
+ */
+function onExtensionEnable(callback) {}
 
 /**
  * A callback function to detect tab activated change.
@@ -77,6 +93,21 @@ function onTabActivated(activeInfo) {
         console.log(tab);
         handleOnTabInfoUpdate(tab.url);
         activeTab = tab;
+
+        getRecentTabs(recentTabIds => {
+            // Filter already contained tab id.
+            // recentTabIds = recentTabIds.filter(tabId => {
+            //     return tabId !== activeTab.id;
+            // });
+            // Remove from recent tab id array.
+            var index = recentTabIds.indexOf(activeTab.id);
+            if (index !== -1) {
+                recentTabIds.splice(index, 1);
+            }
+            recentTabIds.push(activeTab.id);
+            // windowRecentTabIds[chrome.windows.WINDOW_ID_CURRENT] = recentTabIds;
+            console.log("recent tab ids:", recentTabIds);
+        });
     });
 }
 
@@ -90,6 +121,42 @@ function onTabUpdated(tabId, changeInfo, tab) {
     handleOnTabInfoUpdate(tab.url);
     activeTab = tab;
 }
+
+/**
+ * A callback function to detect current tab been removed or closed.
+ *@param removeInfo looks like this {integer:windowId,boolean:isWindowClosing}
+ */
+function onTabRemoved(tabId, removeInfo) {
+    console.log("tab id:", tabId, "removed...");
+    getRecentTabs(recentTabIds => {
+        // Remove from recent tab id array.
+        var index = recentTabIds.indexOf(tabId);
+        if (index !== -1) {
+            recentTabIds.splice(index, 1);
+        }
+    });
+}
+
+/**
+ * A callback function to detect current window been removed or closed.
+ *@param windowId ID of the removed window.
+ */
+function onWindowRemoved(windowId) {
+    console.log("windowId:", windowId, "removed...");
+    delete windowRecentTabIds[windowId];
+}
+
+/**
+ * Fired when a window is created.
+ * @param window Details of the window that was created.
+ */
+// function onWindowCreated(window) {
+//     // Initialize window recent tabs empty array when window created.
+//     var key = window.id.toString();
+//     if (!windowRecentTabIds[key]) {
+//         windowRecentTabIds[key] = [];
+//     }
+// }
 
 function onMessageReceiver(message, sender, sendResponse) {
     //If message exist key 'request', represent the message from content script.
@@ -211,6 +278,9 @@ function injectResources(files) {
     }));
 }
 
+/**
+ * An on command method which jump to current active tab url home page.
+ */
 function onCommandJumpToHome() {
     //TrickTips: Navigate to current tab href origin url or domain url.
     var a = document.createElement('a');
@@ -229,17 +299,88 @@ function onCommandJumpToHome() {
     chrome.tabs.update(activeTab.id, properties);
 }
 
-// // Called when the user clicks on the browser action.
-// chrome.browserAction.onClicked.addListener(function(tab) {
-//     // No tabs or host permissions needed!
-//     console.log('Turning ' + tab.url + ' red!');
-//
-//     // chrome.tabs.executeScript({
-//     //   code: 'document.body.style.backgroundColor="red"'
-//     // });
-// });
+/**
+ * An on command method which toggle recent tabs.
+ */
+function onCommandToggleRecentTabs() {
+    getRecentTabs(recentTabIds => {
+        // console.log("recent tabs:", JSON.stringify(recentTabIds));
+        switchToRecentTab(recentTabIds);
+    });
+}
+
+function onCommandFired(command) {
+    if (command == "toggle_recent_tab") {
+        onCommandToggleRecentTabs();
+    } else if (command === "jump_to_home") {
+        onCommandJumpToHome();
+    }
+}
+
+function initializeWindowRecentTabs(windowId, callback) {
+    // Initialize empty recent tab array for new window.
+    var tabIds = [];
+    windowRecentTabIds[windowId] = tabIds;
+    callback && callback(tabIds)
+}
+
+/**
+ * Get current window
+ * @param callback  function looks like this: function(window){}
+ */
+function getCurrentWindow(callback) {
+    chrome.windows.getCurrent(window => {
+        console.log("current window id is:", window.id);
+        callback(window);
+    });
+}
+
+/**
+ * Get recent tabs of current window.
+ * @param callback  function looks like this: function(recentTabIds){},
+ *                  Note:recentTabIds would be empty array.
+ */
+function getRecentTabs(callback) {
+    getCurrentWindow(window => {
+        var key = window.id.toString();
+        var recentTabIds = windowRecentTabIds[key];
+        if (recentTabIds) {
+            callback && callback(recentTabIds);
+        } else {
+            //Not exist,initialize the new window recent tabs data then make callback.
+            initializeWindowRecentTabs(key, callback);
+        }
+    });
+}
+
+function switchToRecentTab(recentTabIds) {
+    var nextTabId;
+    while (recentTabIds.length) {
+        nextTabId = recentTabIds.pop();
+        if (nextTabId != activeTab.id) {
+            break;
+        }
+    }
+
+    chrome.tabs.update(nextTabId, {
+        active: true
+    }, () => {
+        // Invalid tab, try next one
+        if (chrome.runtime.lastError && recentTabIds.length) {
+            switchToRecentTab(recentTabIds);
+        }
+    });
+}
 
 queryAllKeyBindingItems();
+// chrome.management.onEnabled.addListener(onExtensionEnable);
+// chrome.tabs.onHighlighted.addListener(onTabHighlighted);
 chrome.tabs.onActivated.addListener(onTabActivated);
 chrome.tabs.onUpdated.addListener(onTabUpdated);
+chrome.tabs.onRemoved.addListener(onTabRemoved);
+
+// chrome.windows.onCreated.addListener(onWindowCreated);
+chrome.windows.onRemoved.addListener(onWindowRemoved);
 chrome.runtime.onMessage.addListener(onMessageReceiver);
+
+chrome.commands.onCommand.addListener(onCommandFired);
