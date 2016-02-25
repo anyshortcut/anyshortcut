@@ -117,6 +117,19 @@ function onTabUpdated(tabId, changeInfo, tab) {
 }
 
 /**
+ * Fired when a tab is detached from a window,
+ * for example because it was moved between windows.
+ *@param tabId
+ *@param detachInfo looks like this {integer:oldWindowId,integer:oldPosition}
+ */
+function onTabDetached(tabId, detachInfo) {
+    var tabIds = windowRecentTabIds[detachInfo.oldWindowId];
+    var index = tabIds.indexOf(tabId);
+    if (index !== -1) {
+        tabIds.splice(index, 1);
+    }
+}
+/**
  * A callback function to detect current tab been removed or closed.
  *@param removeInfo looks like this {integer:windowId,boolean:isWindowClosing}
  */
@@ -138,7 +151,7 @@ function onTabRemoved(tabId, removeInfo) {
  */
 function onWindowFocusChanged(windowId) {
     console.log("windowId:", windowId, "focuse changed...");
-    if (WINDOW_ID_NONE === windowId) {
+    if (chrome.windows.WINDOW_ID_NONE === windowId) {
         return;
     }
 
@@ -384,6 +397,7 @@ queryAllKeyBindingItems();
 // chrome.tabs.onHighlighted.addListener(onTabHighlighted);
 chrome.tabs.onActivated.addListener(onTabActivated);
 chrome.tabs.onUpdated.addListener(onTabUpdated);
+chrome.tabs.onDetached.addListener(onTabDetached);
 chrome.tabs.onRemoved.addListener(onTabRemoved);
 chrome.windows.onFocusChanged.addListener(onWindowFocusChanged);
 chrome.windows.onRemoved.addListener(onWindowRemoved);
