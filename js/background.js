@@ -268,20 +268,26 @@ function onCommandFired(command) {
     } else if (command === "jump_to_home") {
         //TrickTips: Navigate to current tab href origin url or domain url.
         getCurrentTab(tab => {
-            var a = document.createElement('a');
-            a.href = tab.url;
-            var properties = {};
-            if (a.pathname !== '/') {
-                //Navigate to origin url
-                properties["url"] = a.origin;
-            } else {
-                //Navigate to domain url
-                var parts = a.origin.split('.');
-                parts.shift();
-                var domain = a.protocol + '\/\/' + parts.join('.');
-                properties["url"] = domain;
+            if (tab.url) {
+                var a = document.createElement('a');
+                a.href = tab.url;
+                if (['https:', "https:"].indexOf(a.protocol) === -1) {
+                    return;
+                }
+                
+                var properties = {};
+                if (a.pathname !== '/') {
+                    //Navigate to origin url
+                    properties["url"] = a.origin;
+                } else {
+                    //Navigate to domain url
+                    var parts = a.origin.split('.');
+                    parts.shift();
+                    var domain = a.protocol + '\/\/' + parts.join('.');
+                    properties["url"] = domain;
+                }
+                chrome.tabs.update(tab.id, properties);
             }
-            chrome.tabs.update(tab.id, properties);
         });
     }
 }
