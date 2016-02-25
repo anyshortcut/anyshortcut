@@ -132,6 +132,18 @@ function onTabRemoved(tabId, removeInfo) {
 }
 
 /**
+ * Fired when the currently focused window changes.
+ * Will be chrome.windows.WINDOW_ID_NONE if all chrome windows have lost focus.
+ *@param windowId  ID of the newly focused window.
+ */
+function onWindowFocusChanged(windowId) {
+    console.log("windowId:", windowId, "focuse changed...");
+    //Get new active tab when window focuse changed.
+    getCurrentTab(tab => {
+        activeTab = tab;
+    });
+}
+/**
  * A callback function to detect current window been removed or closed.
  *@param windowId ID of the removed window.
  */
@@ -368,6 +380,7 @@ queryAllKeyBindingItems();
 chrome.tabs.onActivated.addListener(onTabActivated);
 chrome.tabs.onUpdated.addListener(onTabUpdated);
 chrome.tabs.onRemoved.addListener(onTabRemoved);
+chrome.windows.onFocusChanged.addListener(onWindowFocusChanged);
 chrome.windows.onRemoved.addListener(onWindowRemoved);
 chrome.runtime.onMessage.addListener(onMessageReceiver);
 chrome.commands.onCommand.addListener(onCommandFired);
