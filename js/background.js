@@ -138,11 +138,16 @@ function onTabRemoved(tabId, removeInfo) {
  */
 function onWindowFocusChanged(windowId) {
     console.log("windowId:", windowId, "focuse changed...");
+    if (WINDOW_ID_NONE === windowId) {
+        return;
+    }
+
     //Get new active tab when window focuse changed.
     getCurrentTab(tab => {
         activeTab = tab;
     });
 }
+
 /**
  * A callback function to detect current window been removed or closed.
  *@param windowId ID of the removed window.
