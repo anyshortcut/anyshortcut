@@ -271,21 +271,27 @@ function onCommandFired(command) {
             if (tab.url) {
                 var a = document.createElement('a');
                 a.href = tab.url;
-                if (['https:', "https:"].indexOf(a.protocol) === -1) {
+                if (['http:', "https:"].indexOf(a.protocol) === -1) {
                     return;
                 }
-                
+
                 var properties = {};
-                if (a.pathname !== '/') {
+                //Pathname default is '/',search default is ''
+                if (a.pathname !== '/' || a.search !== '') {
                     //Navigate to origin url
                     properties["url"] = a.origin;
                 } else {
                     //Navigate to domain url
-                    var parts = a.origin.split('.');
-                    parts.shift();
+                    var parts = a.hostname.split('.');
+                    if (parts.length >= 3) {
+                        parts.splice(0, parts.length - 2, 'www');
+                    }
+                    console.log("hostname split parts:", parts);
                     var domain = a.protocol + '\/\/' + parts.join('.');
                     properties["url"] = domain;
                 }
+                //Cleanup for garbage collection
+                a = null;
                 chrome.tabs.update(tab.id, properties);
             }
         });
