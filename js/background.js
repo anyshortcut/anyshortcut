@@ -310,7 +310,9 @@ function onCommandFired(command) {
 
                 var properties = {};
                 //Pathname default is '/',search default is ''
-                if (a.pathname !== '/' || a.search !== '') {
+                if (a.search !== '' || a.hash !== '') {
+                    properties['url'] = a.origin + a.pathname;
+                } else if (a.pathname !== '/') {
                     //Navigate to origin url
                     properties["url"] = a.origin;
                 } else {
