@@ -9,6 +9,18 @@ var activeTab;
  */
 var windowRecentTabIds = {};
 
+// chrome.tabs.onHighlighted.addListener(onTabHighlighted);
+chrome.tabs.onActivated.addListener(onTabActivated);
+chrome.tabs.onUpdated.addListener(onTabUpdated);
+chrome.tabs.onDetached.addListener(onTabDetached);
+chrome.tabs.onRemoved.addListener(onTabRemoved);
+chrome.windows.onFocusChanged.addListener(onWindowFocusChanged);
+chrome.windows.onRemoved.addListener(onWindowRemoved);
+chrome.runtime.onMessage.addListener(onMessageReceiver);
+chrome.commands.onCommand.addListener(onCommandFired);
+
+queryAllKeyBindingItems();
+
 function queryAllKeyBindingItems() {
     storage.get(null, items => {
         keyBindingMaps = items;
@@ -73,15 +85,6 @@ function setPopupIcon(bound) {
 function handleOnTabInfoUpdate(url) {
     setPopupIcon(url ? checkUrlBound(url) : false);
 }
-
-/**
- *@Deprecated
- *
- * Fired when an app or extension has been enabled.
- * @param callback The callback parameter should be a function that looks like this:
- *                  function( ExtensionInfo info) {...};
- */
-function onExtensionEnable(callback) {}
 
 /**
  * A callback function to detect tab activated change.
@@ -392,14 +395,3 @@ function toggleToRecentTab(recentTabIds) {
         }
     });
 }
-
-queryAllKeyBindingItems();
-// chrome.tabs.onHighlighted.addListener(onTabHighlighted);
-chrome.tabs.onActivated.addListener(onTabActivated);
-chrome.tabs.onUpdated.addListener(onTabUpdated);
-chrome.tabs.onDetached.addListener(onTabDetached);
-chrome.tabs.onRemoved.addListener(onTabRemoved);
-chrome.windows.onFocusChanged.addListener(onWindowFocusChanged);
-chrome.windows.onRemoved.addListener(onWindowRemoved);
-chrome.runtime.onMessage.addListener(onMessageReceiver);
-chrome.commands.onCommand.addListener(onCommandFired);
