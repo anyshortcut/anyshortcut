@@ -20,6 +20,7 @@ var buttonStyle = `
 var div = document.getElementById('inject-tips');
 if (div) {
     div.style.display = 'block';
+    hideElementDelay(div);
 } else {
     div = document.createElement('div');
     div.id = 'inject-tips';
@@ -33,4 +34,13 @@ if (div) {
     };
     div.appendChild(button);
     document.body.insertAdjacentElement('beforeEnd', div);
+    hideElementDelay(div);
+}
+
+function hideElementDelay(element, delay) {
+    var timeoutId = window.setTimeout(() => {
+        element.style.display = 'none';
+        window.clearTimeout(timeoutId);
+        timeoutId = undefined;
+    }, delay || 3000);
 }
