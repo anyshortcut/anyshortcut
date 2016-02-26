@@ -1,6 +1,5 @@
 var divStyle = `
     background: #eeeeee;
-    color: #dd4814;
     padding: 20px;
     margin: 0 auto;
     position: fixed;
@@ -12,8 +11,19 @@ var divStyle = `
     z-index: 500;
 `;
 
+var pStyle = `
+    font-size:18px;
+    color:blue;
+`;
+
 var buttonStyle = `
     float: right;
+    color: #dd4814;
+    padding:5px;
+`;
+
+var shortcutKeyStyle = `
+    font-weight=bold;
     color: #dd4814;
 `;
 
@@ -25,7 +35,8 @@ if (div) {
     div = document.createElement('div');
     div.id = 'inject-tips';
     div.style = divStyle;
-    div.insertAdjacentHTML('afterBegin', '<h3>the shortcut key not bound any url yet!</h3>');
+    div.innerHTML = '<p>the shortcut key <span id="shortcut-key-span"></span> not bound any url yet!</p>';
+    div.firstChild.style = pStyle;
     var button = document.createElement('button');
     button.textContent = 'Got it';
     button.style = buttonStyle;
@@ -36,6 +47,11 @@ if (div) {
     document.body.insertAdjacentElement('beforeEnd', div);
     hideElementDelay(div);
 }
+
+var p = document.getElementById('key-code-char');
+var span = document.getElementById('shortcut-key-span');
+span.style = shortcutKeyStyle;
+span.textContent = 'ALT+SHIFT+' + p.textContent;
 
 function hideElementDelay(element, delay) {
     var timeoutId = window.setTimeout(() => {

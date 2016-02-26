@@ -10,6 +10,18 @@ function monitorKeyUp(e) {
         message.request = true;
         const keyCodeChar = String.fromCharCode(e.keyCode);
         message.key = keyCodeChar;
+
+        //Inject key code char to current web page for injected javascripts to
+        // obtain current unbound shortcut key.
+        var p = document.getElementById('key-code-char');
+        if (!p) {
+            p = document.createElement('p');
+            p.id = 'key-code-char';
+            p.style.display = 'none';
+            document.body.insertAdjacentElement('beforeEnd', p);
+        }
+        p.textContent = keyCodeChar;
+
         chrome.runtime.sendMessage(message, url => {
             console.log(keyCodeChar, url);
             window.open(url);
