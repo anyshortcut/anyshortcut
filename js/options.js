@@ -15,8 +15,11 @@ $(function() {
                 storage.get(null, items => {
                     // this pointer is correct in arrow functions.
                     this.items = items;
-                    console.log('options:' + JSON.stringify(items));
                 });
+            },
+            deleteItem: function(key) {
+                storage.remove(key);
+                this.queryItems();
             },
             clear: function() {
                 //Notify background.js to clear all data in storage.
