@@ -18,12 +18,16 @@ $(function() {
                 });
             },
             deleteItem: function(key) {
-                storage.remove(key);
-                this.queryItems();
+                if (confirm('Are you sure to delete this one?')) {
+                    storage.remove(key);
+                    this.queryItems();
+                }
             },
             clear: function() {
-                //Notify background.js to clear all data in storage.
-                this.items = null;
+                if (confirm('Are you sure to cear all data?')) {
+                    //Notify background.js to clear all data in storage.
+                    this.items = null;
+                }
             }
         }
     });
