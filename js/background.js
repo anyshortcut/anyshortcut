@@ -247,7 +247,7 @@ function onMessageReceiver(message, sender, sendResponse) {
  * Inject unbound tips javascript and css resources.
  */
 function injectUnboundTipsResources() {
-    injectResources(['css/inject-tips.css', 'js/inject-unbound-tips.js'])
+    injectResources(['js/inject-unbound-tips.js'])
         .then(() => {
             console.log('inject success!');
         }).catch(error => {
