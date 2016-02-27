@@ -27,10 +27,10 @@ $(function() {
                     this.items = array;
                 });
             },
-            deleteItem: function(key) {
+            deleteItem: function(item) {
                 if (confirm('Are you sure to delete this one?')) {
-                    storage.remove(key);
-                    this.queryItems();
+                    this.items.$remove(item);
+                    storage.remove(item.key);
                 }
             },
             clear: function() {
