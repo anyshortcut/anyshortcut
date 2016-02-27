@@ -190,6 +190,7 @@ function onMessageReceiver(message, sender, sendResponse) {
                 sendResponse(value.url);
             } else {
                 // The shortcut key not bound yet.
+                sendResponse(null);
                 injectUnboundTipsResources();
             }
         });
