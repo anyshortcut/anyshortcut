@@ -45,5 +45,11 @@ var keyCodeHelper = {
      */
     isValidKeyCode: function(keyCode) {
         return this.dictionaries[keyCode];
+    },
+    /**
+     * Check the key whether is valid.
+     */
+    isValidKey: function(key) {
+        return key.length === 1 && this.isValidKeyCode(key.charCodeAt());
     }
 };

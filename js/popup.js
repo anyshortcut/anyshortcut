@@ -21,8 +21,8 @@ $(function() {
         },
         computed: {
             keyIsValid: function() {
-                return keyCodeHelper.isValidKeyCode(this.key.charCodeAt());
-            },
+                return keyCodeHelper.isValidKey(this.key);
+            }
         },
         methods: {
             onShortcutKeyInput: function(event) {

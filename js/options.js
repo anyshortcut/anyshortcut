@@ -3,7 +3,7 @@ const storage = chrome.storage.local;
 $(function() {
     Vue.config.debug = true;
     var vm = new Vue({
-        el: '#app',
+        el: 'body',
         data: {
             items: null
         },
@@ -13,8 +13,18 @@ $(function() {
         methods: {
             queryItems: function() {
                 storage.get(null, items => {
-                    // this pointer is correct in arrow functions.
-                    this.items = items;
+                    var array = [];
+                    Object.keys(items).map(key => {
+                        // Check the key whether is valid.
+                        if (keyCodeHelper.isValidKey(key)) {
+                            var item = {};
+                            item['key'] = key;
+                            item['value'] = items[key];
+                            array.push(item);
+                        }
+                    });
+                    // This pointer is correct in arrow functions.
+                    this.items = array;
                 });
             },
             deleteItem: function(key) {
