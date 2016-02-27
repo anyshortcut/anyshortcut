@@ -15,7 +15,7 @@ $(function() {
                 storage.get(null, items => {
                     var array = [];
                     Object.keys(items).map(key => {
-                        // Check the key whether is valid.
+                        // Check the key whether is valid, filter other non-key info.
                         if (keyCodeHelper.isValidKey(key)) {
                             var item = {};
                             item['key'] = key;

@@ -174,70 +174,78 @@ function onWindowRemoved(windowId) {
 }
 
 function onMessageReceiver(message, sender, sendResponse) {
-    //If message exist key 'request', represent the message from content script.
-    if (message.request) {
-        var key = message.key;
-        storage.get(key, items => {
-            if (chrome.runtime.lastError) {
-                console.log("Got a error...");
-                return;
-            }
-            //item value would be {},if not exist the key.
-            //Besure to check item value is empty.
-            if (Object.keys(items).length) {
-                console.log(items);
-                var value = items[key];
-                sendResponse(value.url);
-            } else {
-                // The shortcut key not bound yet.
-                sendResponse(null);
-                injectUnboundTipsResources();
-            }
-        });
-    }
-    //if message exist key 'validate',represent the message from popup.js
-    //for validate the shortcut whether already bound a url.
-    else if (message.validate) {
-        storage.get(message.key, item => {
-            //item value would be {},if not exist the key.
-            //Be sure to check item value is empty.
-            const response = {};
-            //The key is valid if query result is empty.
-            response["valid"] = Object.keys(item).length == 0;
-            response["data"] = item;
+    switch (true) {
+        case message.request:
+            //If message exist key 'request', represent the message from content script.
+            var key = message.key;
+            storage.get(key, items => {
+                if (chrome.runtime.lastError) {
+                    console.log("Got a error...");
+                    return;
+                }
+                //item value would be {},if not exist the key.
+                //Besure to check item value is empty.
+                if (Object.keys(items).length) {
+                    console.log(items);
+                    var value = items[key];
+                    sendResponse(value.url);
+                } else {
+                    // The shortcut key not bound yet.
+                    sendResponse(null);
+                    injectUnboundTipsResources();
+                }
+            });
+            break;
+
+        case message.option:
+        // Access options shortcut key for correct domain.
+            console.log(message.location);
+            break;
+
+        case message.validate:
+            //if message exist key 'validate',represent the message from popup.js
+            //for validate the shortcut whether already bound a url.
+            storage.get(message.key, item => {
+                //item value would be {},if not exist the key.
+                //Be sure to check item value is empty.
+                var response = {};
+                //The key is valid if query result is empty.
+                response["valid"] = Object.keys(item).length == 0;
+                response["data"] = item;
+                sendResponse(response);
+            });
+            break;
+        case message.check:
+            // Check url whether bound shortcut.
+            var response = queryBindInfoByUrl(message.url);
             sendResponse(response);
-        });
-    }
-    // Check url whether bound shortcut.
-    else if (message.check) {
-        const response = queryBindInfoByUrl(message.url);
-        sendResponse(response);
-    }
-    // Delete the url shortcut.
-    else if (message.delete) {
-        var key = queryShortcutKeyByUrl(message.url);
-        if (key) {
-            storage.remove(key, () => {
-                sendResponse(true);
-                setPopupIcon(false);
-                //Update keyBindingMaps if old shortcut unbound.
+            break;
+
+        case message.delete:
+            // Delete the url shortcut.
+            var key = queryShortcutKeyByUrl(message.url);
+            if (key) {
+                storage.remove(key, () => {
+                    sendResponse(true);
+                    setPopupIcon(false);
+                    //Update keyBindingMaps if old shortcut unbound.
+                    queryAllKeyBindingItems();
+                });
+            } else {
+                //Failed
+                sendResponse(false);
+            }
+
+            //Save shortcut item to storage.
+        default:
+            storage.set(message, () => {
+                console.log("storage success");
+                sendResponse("Success");
+                setPopupIcon(true);
+                //Update keyBindingMaps if new shortcut bound.
                 queryAllKeyBindingItems();
             });
-        } else {
-            //Failed
-            sendResponse(false);
-        }
-    }
-    //Save shortcut item to storage.
-    else {
-        console.log("chrome.runtime.onMessage.", message);
-        storage.set(message, () => {
-            console.log("storage success");
-            sendResponse("Success");
-            setPopupIcon(true);
-            //Update keyBindingMaps if new shortcut bound.
-            queryAllKeyBindingItems();
-        });
+            break;
     }
     //Must return true otherwise sendResponse() not working.
     //More detail see official documentations [chrome.runtime.onMessage()].
