@@ -8,7 +8,6 @@ var activeTab;
  * A object contain recent tab ids in each window.
  */
 var windowRecentTabIds = {};
-
 // chrome.tabs.onHighlighted.addListener(onTabHighlighted);
 chrome.tabs.onActivated.addListener(onTabActivated);
 chrome.tabs.onUpdated.addListener(onTabUpdated);
@@ -43,10 +42,11 @@ function queryShortcutKeyByUrl(url) {
  * @returns the bind info. {"key":key,"value":value}
  */
 function queryBindInfoByUrl(url) {
+    url = trimTrailSlash(url);
     var result = null;
     for (var key in keyBindingMaps) {
         var info = keyBindingMaps[key];
-        if (url == info.url) {
+        if (url === info.url) {
             result = {};
             result["key"] = key;
             result["value"] = info;
@@ -62,7 +62,7 @@ function queryBindInfoByUrl(url) {
  *@return boolean true if the url was bound,false otherwise
  */
 function checkUrlBound(url) {
-    return queryShortcutKeyByUrl(url) != null;
+    return queryShortcutKeyByUrl(url) !== null;
 }
 
 /**
@@ -175,12 +175,6 @@ function onWindowRemoved(windowId) {
 
 function onMessageReceiver(message, sender, sendResponse) {
     switch (true) {
-        case message.check:
-            // Check url whether bound shortcut.
-            var response = queryBindInfoByUrl(message.url);
-            sendResponse(response);
-            break;
-
         case message.request:
             //If message exist key 'request', represent the message from content script.
             var key = message.key;
@@ -203,28 +197,6 @@ function onMessageReceiver(message, sender, sendResponse) {
             });
             break;
 
-        case message.optionRequest:
-            // Access options shortcut key for correct domain.
-            var domain = extractDomainName(message.location.hostname);
-            console.log('domain name is:', domain);
-            if (!domain) {
-                return;
-            }
-
-            storage.get(domain, result => {
-                if (Object.keys(result).length) {
-                    var url = result[message.key];
-                    if (url) {
-                        response(url);
-                    } else {
-                        //Not exist the key
-                    }
-                } else {
-                    // Not bound any key for this domain name yet.
-                }
-            });
-            break;
-
         case message.validate:
             //if message exist key 'validate',represent the message from popup.js
             //for validate the shortcut whether already bound a url.
@@ -237,6 +209,13 @@ function onMessageReceiver(message, sender, sendResponse) {
                 response["data"] = item;
                 sendResponse(response);
             });
+            break;
+
+        case message.check:
+            // Check url whether bound shortcut.
+            // see popup.js requestCheckUrlBound() method.
+            var response = queryBindInfoByUrl(message.url);
+            sendResponse(response);
             break;
 
         case message.delete:
@@ -264,6 +243,29 @@ function onMessageReceiver(message, sender, sendResponse) {
                 queryAllKeyBindingItems();
             });
             break;
+
+        case message.optionRequest:
+            // Access options shortcut key for correct domain.
+            var domain = extractDomainName(message.location.hostname);
+            console.log('domain name is:', domain);
+            if (!domain) {
+                return;
+            }
+
+            storage.get(domain, result => {
+                if (Object.keys(result).length) {
+                    var url = result[message.key];
+                    if (url) {
+                        response(url);
+                    } else {
+                        //Not exist the key
+                    }
+                } else {
+                    // Not bound any key for this domain name yet.
+                }
+            });
+            break;
+
         case message.optionSave:
             break;
 
@@ -329,7 +331,7 @@ function injectResources(files) {
 }
 
 function onCommandFired(command) {
-    if (command == "toggle_recent_tab") {
+    if (command === "toggle_recent_tab") {
         getRecentTabs(recentTabIds => {
             toggleToRecentTab(recentTabIds);
         });

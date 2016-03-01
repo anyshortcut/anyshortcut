@@ -44,3 +44,10 @@ function extractDomainName(hostname) {
     parts.splice(0, parts.length - 2);
     return parts.join('.');
 }
+
+/**
+ * Remove trail slash.
+ */
+function trimTrailSlash(str) {
+    return str.replace(/\/$/, '');
+}

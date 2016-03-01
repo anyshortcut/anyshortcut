@@ -58,7 +58,7 @@ $(function() {
                 getCurrentTab(tab => {
                     var binding = {};
                     var value = {};
-                    value["url"] = tab.url;
+                    value["url"] = trimTrailSlash(tab.url);
                     value["title"] = tab.title;
                     value["favicon"] = tab.favIconUrl;
                     value["time"] = Date.now();
