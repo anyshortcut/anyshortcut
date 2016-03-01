@@ -22,3 +22,25 @@ function getCurrentTab(callback) {
         callback(tab);
     });
 }
+
+var tlds = ['com', 'org', 'net', 'edu', 'gov'];
+/**
+ * Extract the domain name from the hostname.
+ * Only support five original top-level domains (.com,.org,.net,.edu.gov)
+ * @param hostname
+ * @return the domain name,otherwise null if the tld not including in tlds arrays.
+ */
+function extractDomainName(hostname) {
+    var parts = hostname.split('.');
+    if (parts.length < 2) {
+        return null;
+    }
+
+    var tld = parts[parts.length - 1];
+    if (tlds.indexOf(tld) === -1) {
+        return null;
+    }
+
+    parts.splice(0, parts.length - 2);
+    return parts.join('.');
+}

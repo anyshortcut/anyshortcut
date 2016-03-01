@@ -175,6 +175,12 @@ function onWindowRemoved(windowId) {
 
 function onMessageReceiver(message, sender, sendResponse) {
     switch (true) {
+        case message.check:
+            // Check url whether bound shortcut.
+            var response = queryBindInfoByUrl(message.url);
+            sendResponse(response);
+            break;
+
         case message.request:
             //If message exist key 'request', represent the message from content script.
             var key = message.key;
@@ -197,9 +203,26 @@ function onMessageReceiver(message, sender, sendResponse) {
             });
             break;
 
-        case message.option:
-        // Access options shortcut key for correct domain.
-            console.log(message.location);
+        case message.optionRequest:
+            // Access options shortcut key for correct domain.
+            var domain = extractDomainName(message.location.hostname);
+            console.log('domain name is:', domain);
+            if (!domain) {
+                return;
+            }
+
+            storage.get(domain, result => {
+                if (Object.keys(result).length) {
+                    var url = result[message.key];
+                    if (url) {
+                        response(url);
+                    } else {
+                        //Not exist the key
+                    }
+                } else {
+                    // Not bound any key for this domain name yet.
+                }
+            });
             break;
 
         case message.validate:
@@ -214,11 +237,6 @@ function onMessageReceiver(message, sender, sendResponse) {
                 response["data"] = item;
                 sendResponse(response);
             });
-            break;
-        case message.check:
-            // Check url whether bound shortcut.
-            var response = queryBindInfoByUrl(message.url);
-            sendResponse(response);
             break;
 
         case message.delete:
@@ -236,8 +254,8 @@ function onMessageReceiver(message, sender, sendResponse) {
                 sendResponse(false);
             }
 
+        case message.save:
             //Save shortcut item to storage.
-        default:
             storage.set(message, () => {
                 console.log("storage success");
                 sendResponse("Success");
@@ -245,6 +263,14 @@ function onMessageReceiver(message, sender, sendResponse) {
                 //Update keyBindingMaps if new shortcut bound.
                 queryAllKeyBindingItems();
             });
+            break;
+        case message.optionSave:
+            break;
+
+        case message.optionDelete:
+            break;
+
+        default:
             break;
     }
     //Must return true otherwise sendResponse() not working.

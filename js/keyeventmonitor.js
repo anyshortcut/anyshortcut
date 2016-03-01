@@ -36,8 +36,9 @@ function monitorKeyUp(e) {
         }
     } else if (isValidOptionModifier(e)) {
         var message = {};
-        message.option = true;
+        message.optionRequest = true;
         message.location = location;
+        message.key = String.fromCharCode(e.keyCode);
         chrome.runtime.sendMessage(message, url => {
             if (url) {
                 window.open(url);
