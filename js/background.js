@@ -235,13 +235,19 @@ function onMessageReceiver(message, sender, sendResponse) {
 
         case message.save:
             //Save shortcut item to storage.
-            storage.set(message, () => {
+            storage.set(message.data, () => {
                 console.log("storage success");
                 sendResponse("Success");
                 setPopupIcon(true);
                 //Update keyBindingMaps if new shortcut bound.
                 queryAllKeyBindingItems();
             });
+            break;
+
+        case message.optionCheck:
+            // Check whether the domain is valid,can option access.
+            var domain = message.domain;
+            sendResponse(keyBindingMaps[domain]);
             break;
 
         case message.optionRequest:

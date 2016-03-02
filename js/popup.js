@@ -17,7 +17,12 @@ $(function() {
             key: '',
             value: {},
             keyTips: '',
-            boundTips: ''
+            boundTips: '',
+            option: { // A option access object.
+                domain: '', // Current active tab url domain name.
+                support: false, // Current active tab url whether support.
+                items: null // The all bound shortcut of the domain name.
+            }
         },
         computed: {
             keyIsValid: function() {
@@ -63,7 +68,11 @@ $(function() {
                     value["favicon"] = tab.favIconUrl;
                     value["time"] = Date.now();
                     binding[key] = value;
-                    chrome.runtime.sendMessage(binding, response => {
+
+                    var message = {};
+                    message['save'] = true;
+                    message['data'] = binding;
+                    chrome.runtime.sendMessage(message, response => {
                         if (chrome.runtime.lastError) {
                             console.log("error");
                         }
@@ -90,27 +99,35 @@ $(function() {
             }
         },
         created: function() {
-            requestCheckUrlBound(bindInfo => {
-                vm.bound = bindInfo !== null;
-                if (vm.bound) {
-                    vm.key = bindInfo.key;
-                    vm.value = bindInfo.value;
+            getCurrentTab(tab => {
+                var message = {};
+                message["check"] = true;
+                message["url"] = tab.url;
+                // Request check current tab url was bound in background.js
+                chrome.runtime.sendMessage(message, bindInfo => {
+                    // bind info. {"key":key,"value":value}
+                    vm.bound = bindInfo !== null;
+                    if (vm.bound) {
+                        vm.key = bindInfo.key;
+                        vm.value = bindInfo.value;
+                    }
+                });
+
+                // Check current domain name whether can option access.
+                var a = document.createElement('a');
+                a.href = tab.url;
+                var domainName = extractDomainName(a.hostname);
+                vm.option.support = (domainName !== null);
+                vm.option.domain = domainName || a.hostname;
+                if (vm.option.support) {
+                    var msg = {};
+                    msg.domain = domainName;
+                    chrome.runtime.sendMessage(msg, optionData => {
+                        vm.option.items = optionData;
+                    });
                 }
+
             });
         }
     });
 });
-
-/**
- * Request check current tab url was bound in background.js
- *
- * @param response is the function which params is the bind info. {"key":key,"value":value}
- */
-function requestCheckUrlBound(response) {
-    getCurrentTab(tab => {
-        var message = {};
-        message["check"] = true;
-        message["url"] = tab.url;
-        chrome.runtime.sendMessage(message, response);
-    });
-}
