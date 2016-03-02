@@ -1,3 +1,8 @@
+/**
+ * Current active tab.
+ */
+var activeTab;
+
 $(function() {
     //Custom filter to use moment.js format time as fromNow type.
     Vue.filter('fromNow', time => {
@@ -21,7 +26,11 @@ $(function() {
             option: { // A option access object.
                 domain: '', // Current active tab url domain name.
                 support: false, // Current active tab url whether support.
-                items: null // The all bound shortcut of the domain name.
+                /**
+                 * The all bound shortcut of the domain name.
+                 * each item looks like this: {key :{url:string,title:string,time:long}}
+                 */
+                items: null
             }
         },
         computed: {
@@ -60,49 +69,50 @@ $(function() {
                 //     return;
                 // }
 
-                getCurrentTab(tab => {
-                    var binding = {};
-                    var value = {};
-                    value["url"] = trimTrailSlash(tab.url);
-                    value["title"] = tab.title;
-                    value["favicon"] = tab.favIconUrl;
-                    value["time"] = Date.now();
-                    binding[key] = value;
+                var binding = {};
+                var value = {};
+                value["url"] = trimTrailSlash(activeTab.url);
+                value["title"] = activeTab.title;
+                value["favicon"] = activeTab.favIconUrl;
+                value["time"] = Date.now();
+                binding[key] = value;
 
-                    var message = {};
-                    message['save'] = true;
-                    message['data'] = binding;
-                    chrome.runtime.sendMessage(message, response => {
-                        if (chrome.runtime.lastError) {
-                            console.log("error");
-                        }
-                        vm.bound = true;
-                        vm.boundTips = 'Great job!you have bound a shortcut for this url!';
-                    });
+                var message = {};
+                message['save'] = true;
+                message['data'] = binding;
+                chrome.runtime.sendMessage(message, response => {
+                    if (chrome.runtime.lastError) {
+                        console.log("error");
+                    }
+                    vm.bound = true;
+                    vm.boundTips = 'Great job!you have bound a shortcut for this url!';
                 });
             },
             handleShortcutUnbinding: function() {
-                getCurrentTab(function(tab) {
-                    const message = {};
-                    message["delete"] = true;
-                    message["url"] = tab.url;
-                    chrome.runtime.sendMessage(message, result => {
-                        if (result) {
-                            vm.bound = false;
-                            vm.key = '';
-                            vm.value = {};
+                var message = {};
+                message["delete"] = true;
+                message["url"] = activeTab.url;
+                chrome.runtime.sendMessage(message, result => {
+                    if (result) {
+                        vm.bound = false;
+                        vm.key = '';
+                        vm.value = {};
 
-                            vm.boundTips = 'Delete Success!';
-                        }
-                    });
+                        vm.boundTips = 'Delete Success!';
+                    }
                 });
+            },
+            handleOptionShortcutBinding: function() {
+
             }
         },
         created: function() {
             getCurrentTab(tab => {
+                activeTab = tab;
+
                 var message = {};
                 message["check"] = true;
-                message["url"] = tab.url;
+                message["url"] = activeTab.url;
                 // Request check current tab url was bound in background.js
                 chrome.runtime.sendMessage(message, bindInfo => {
                     // bind info. {"key":key,"value":value}
@@ -115,7 +125,7 @@ $(function() {
 
                 // Check current domain name whether can option access.
                 var a = document.createElement('a');
-                a.href = tab.url;
+                a.href = activeTab.url;
                 var domainName = extractDomainName(a.hostname);
                 vm.option.support = (domainName !== null);
                 vm.option.domain = domainName || a.hostname;

@@ -232,6 +232,7 @@ function onMessageReceiver(message, sender, sendResponse) {
                 //Failed
                 sendResponse(false);
             }
+            break;
 
         case message.save:
             //Save shortcut item to storage.
