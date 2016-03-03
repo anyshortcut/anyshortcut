@@ -42,7 +42,8 @@ function monitorKeyUp(e) {
         message.key = String.fromCharCode(e.keyCode).toUpperCase();
         chrome.runtime.sendMessage(message, url => {
             if (url) {
-                window.open(url);
+                //window.open(url);
+                location.href = url;
             }
         });
     }

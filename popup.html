@@ -22,18 +22,20 @@
                 </span>
         <input type="checkbox" v-model="option.items"/>
     </p>
-    <div v-show="option.bound">
-        <p>The domain <b>{{option.domain}}</b> already bound with <b>ALT+{{key}}</b></p>
+    <div v-show="!bound">
+        <div v-show="option.bound">
+            <p>The domain <b>{{option.domain}}</b> already bound with <b>ALT+{{key}}</b></p>
+        </div>
+        <div v-else>
+            <input v-model="key | uppercaseIt" id="option-shortcut-key" placeholder="key" maxlength="1" required/>
+            <button @click="handleOptionShortcutBinding">Bound</button>
+        </div>
     </div>
-    <div v-else>
-        <input v-model="key | uppercaseIt" id="option-shortcut-key" placeholder="key" maxlength="1" required/>
-        <button @click="handleOptionShortcutBinding">Bound</button>
-    </div>
-    <p>Here is option access bound list for this domain:</p>
-    <ul>
+    <ul v-show="option.items">
+        <p>Here is option access bound list for this domain:</p>
         <li v-for="item in option.items">
-            <span>key:{{$key}}</span>
-            <span>Url:{{item.url}}</span>
+            <span><b>{{$key}}</b></span>
+            <span>    <a href="{{item.url}}">{{item.url}}</a></span>
         </li>
     </ul>
 </div>
@@ -42,48 +44,49 @@
         <b>{{option.domain}}</b>
         not support option access.:(</p>
 </div>
+<div v-show="!option.bound">
+    <div id="bound_tips">{{boundTips}}</div>
 
-<div id="bound_tips">{{boundTips}}</div>
-
-<div id="unbind_div" v-show="bound">
-    <div id="unbind_guide">
+    <div id="unbind_div" v-show="bound">
+        <div id="unbind_guide">
                 <span>
                     <strong>ALT</strong>
                 </span>
-        <span>+</span>
+            <span>+</span>
                 <span>
                     <strong>SHIFT</strong>
                 </span>
-        <span>+</span>
+            <span>+</span>
                 <span>
                     <strong id="bound_shortcut_key">{{key}}</strong>
                 </span>
-        <p id="bound_time">{{value.time | fromNow}}</p>
-        <button @click="handleShortcutUnbinding" id="unbind_shortcut_button">Delete Shortcut</button>
+            <p id="bound_time">{{value.time | fromNow}}</p>
+            <button @click="handleShortcutUnbinding" id="unbind_shortcut_button">Delete Shortcut</button>
+        </div>
     </div>
-</div>
-<div id="bind_div" v-else>
-    <div id="bind_guide">
-        <p>
-            Specify the shortcut:
-        </p>
+    <div id="bind_div" v-else>
+        <div id="bind_guide">
+            <p>
+                Specify the shortcut:
+            </p>
                 <span>
                     <strong>ALT</strong>
                 </span>
-        <span>+</span>
+            <span>+</span>
                 <span>
                     <strong>SHIFT</strong>
                 </span>
-        <span>+</span>
+            <span>+</span>
                 <span>
                     <input v-model="key | uppercaseIt" @input="onShortcutKeyInput" id="shortcut_key" placeholder="key"
                            maxlength="1" required/>
                 </span>
-        <br/>
-        <div id="status">
-            {{keyTips}}
+            <br/>
+            <div id="status">
+                {{keyTips}}
+            </div>
+            <input @click="handleShortcutBinding" id="bind_shortcut_button" type="button" value="Save"/>
         </div>
-        <input @click="handleShortcutBinding" id="bind_shortcut_button" type="button" value="Save"/>
     </div>
 </div>
 
