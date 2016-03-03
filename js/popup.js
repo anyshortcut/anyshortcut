@@ -61,7 +61,7 @@ $(function() {
             },
             handleShortcutBinding: function() {
                 var key = this.key;
-                if (!key || key == "") {
+                if (!key || key === "") {
                     vm.keyTips = "Please specify a shortcut key!";
                     return;
                 }
@@ -104,6 +104,11 @@ $(function() {
                 });
             },
             handleOptionShortcutBinding: function() {
+                if (!vm.key || vm.key === '') {
+                    vm.keyTips = "Please specify a shortcut key!";
+                    return;
+                }
+
                 var message = {};
                 var value = {};
 
@@ -127,10 +132,11 @@ $(function() {
         created: function() {
             getCurrentTab(tab => {
                 activeTab = tab;
+                var url = trimTrailSlash(activeTab.url);
 
                 var message = {};
                 message["check"] = true;
-                message["url"] = activeTab.url;
+                message["url"] = url;
                 // Request check current tab url was bound in background.js
                 chrome.runtime.sendMessage(message, bindInfo => {
                     // bind info. {"key":key,"value":value}
@@ -143,13 +149,14 @@ $(function() {
 
                 // Check current domain name whether can option access.
                 var a = document.createElement('a');
-                a.href = activeTab.url;
+                a.href = url;
                 var domainName = extractDomainName(a.hostname);
                 vm.option.support = (domainName !== null);
                 vm.option.domain = domainName || a.hostname;
                 if (vm.option.support) {
                     var msg = {};
                     msg.domain = domainName;
+                    msg.optionCheck = true;
                     chrome.runtime.sendMessage(msg, items => {
                         vm.option.items = items;
                         for (var key in items) {
@@ -157,8 +164,8 @@ $(function() {
                             // and not one inherited from the base class.
                             if (items.hasOwnProperty(key)) {
                                 var item = items[key];
-                                console.log('option item ${item}');
-                                if (item.url === activeTab.url) {
+                                if (item.url === url) {
+                                    vm.key = key;
                                     vm.option.bound = true;
                                     break;
                                 }

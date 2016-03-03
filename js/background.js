@@ -286,6 +286,8 @@ function onMessageReceiver(message, sender, sendResponse) {
 
                 storage.set(result, () => {
                     sendResponse(true);
+                    //Update keyBindingMaps if new option access shortcut bound.
+                    queryAllKeyBindingItems();
                 });
             });
             break;
