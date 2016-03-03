@@ -261,9 +261,10 @@ function onMessageReceiver(message, sender, sendResponse) {
 
             storage.get(domain, result => {
                 if (Object.keys(result).length) {
-                    var url = result[message.key];
+                    var items = result[domain];
+                    var url = items[message.key].url;
                     if (url) {
-                        response(url);
+                        sendResponse(url);
                     } else {
                         //Not exist the key
                     }
@@ -274,6 +275,19 @@ function onMessageReceiver(message, sender, sendResponse) {
             break;
 
         case message.optionSave:
+            // Save option access bound item data.
+            var key = message.domain;
+            storage.get(key, result => {
+                if (!Object.keys(result).length) {
+                    result[key] = {};
+                }
+                var item = result[key];
+                item[message.key] = message.value;
+
+                storage.set(result, () => {
+                    sendResponse(true);
+                });
+            });
             break;
 
         case message.optionDelete:
@@ -295,8 +309,8 @@ function injectUnboundTipsResources() {
         .then(() => {
             console.log('inject success!');
         }).catch(error => {
-            console.log('Eroor occur {$error}');
-        });
+        console.log('Eroor occur ${error}');
+    });
 }
 
 /**

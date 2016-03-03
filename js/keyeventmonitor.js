@@ -38,7 +38,8 @@ function monitorKeyUp(e) {
         var message = {};
         message.optionRequest = true;
         message.location = location;
-        message.key = String.fromCharCode(e.keyCode);
+        // Convert the key to uppercase.
+        message.key = String.fromCharCode(e.keyCode).toUpperCase();
         chrome.runtime.sendMessage(message, url => {
             if (url) {
                 window.open(url);
@@ -55,7 +56,7 @@ function isValidFullModifier(e) {
 }
 
 function isValidOptionModifier(e) {
-    return e && e.altKey;
+    return e && e.altKey && !e.shiftKey;
 }
 
 document.addEventListener('keyup', monitorKeyUp, false);

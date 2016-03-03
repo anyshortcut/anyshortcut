@@ -24,6 +24,7 @@ $(function() {
             keyTips: '',
             boundTips: '',
             option: { // A option access object.
+                bound: false,
                 domain: '', // Current active tab url domain name.
                 support: false, // Current active tab url whether support.
                 /**
@@ -103,7 +104,24 @@ $(function() {
                 });
             },
             handleOptionShortcutBinding: function() {
+                var message = {};
+                var value = {};
 
+                var a = document.createElement('a');
+                a.href = activeTab.url;
+                message['domain'] = extractDomainName(a.hostname);
+                value['url'] = trimTrailSlash(activeTab.url);
+                value['title'] = activeTab.title;
+                value['time'] = Date.now();
+                message['key'] = vm.key;
+                message['value'] = value;
+                message['optionSave'] = true;
+
+                chrome.runtime.sendMessage(message, result => {
+                    if (result) {
+                        vm.option.bound = true;
+                    }
+                });
             }
         },
         created: function() {
@@ -132,8 +150,20 @@ $(function() {
                 if (vm.option.support) {
                     var msg = {};
                     msg.domain = domainName;
-                    chrome.runtime.sendMessage(msg, optionData => {
-                        vm.option.items = optionData;
+                    chrome.runtime.sendMessage(msg, items => {
+                        vm.option.items = items;
+                        for (var key in items) {
+                            // Simply checks to see if this is a property specific to this class,
+                            // and not one inherited from the base class.
+                            if (items.hasOwnProperty(key)) {
+                                var item = items[key];
+                                console.log('option item ${item}');
+                                if (item.url === activeTab.url) {
+                                    vm.option.bound = true;
+                                    break;
+                                }
+                            }
+                        }
                     });
                 }
 
