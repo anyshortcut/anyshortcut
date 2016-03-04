@@ -28,6 +28,8 @@
         </div>
         <div v-else>
             <input v-model="key | uppercaseIt" id="option-shortcut-key" placeholder="key" maxlength="1" required/>
+            <input v-model="option.comment" placeholder="Comment for this url" required/>
+
             <button @click="handleOptionShortcutBinding">Bound</button>
         </div>
     </div>
@@ -35,7 +37,7 @@
         <p>Here is option access bound list for this domain:</p>
         <li v-for="item in option.items">
             <span><b>{{$key}}</b></span>
-            <span>    <a href="{{item.url}}">{{item.url}}</a></span>
+            <span>    <a href="{{item.url}}" target="_blank">{{item.comment || item.title}}</a></span>
         </li>
     </ul>
 </div>

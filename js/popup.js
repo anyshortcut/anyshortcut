@@ -2,6 +2,10 @@
  * Current active tab.
  */
 var activeTab;
+/**
+ * Vue Object instance.
+ */
+var vm;
 
 $(function() {
     //Custom filter to use moment.js format time as fromNow type.
@@ -15,17 +19,18 @@ $(function() {
         }
     });
 
-    var vm = new Vue({
+    vm = new Vue({
         el: 'body',
         data: {
-            bound: false,
-            key: '',
-            value: {},
+            bound: false, // A flag indicate origin bound.
+            key: '', // Shortcut key for origin bound and option bound.
+            value: {}, // Origin bound value.
             keyTips: '',
-            boundTips: '',
+            boundTips: '',// Origin bound tips.
             option: { // A option access object.
                 bound: false,
                 domain: '', // Current active tab url domain name.
+                comment: '', // Option item comment.
                 support: false, // Current active tab url whether support.
                 /**
                  * The all bound shortcut of the domain name.
@@ -114,9 +119,11 @@ $(function() {
 
                 var a = document.createElement('a');
                 a.href = activeTab.url;
-                message['domain'] = extractDomainName(a.hostname);
+                var domainName = extractDomainName(a.hostname);
+                message['domain'] = domainName;
                 value['url'] = trimTrailSlash(activeTab.url);
                 value['title'] = activeTab.title;
+                value['comment'] = vm.option.comment;
                 value['time'] = Date.now();
                 message['key'] = vm.key;
                 message['value'] = value;
@@ -124,7 +131,8 @@ $(function() {
 
                 chrome.runtime.sendMessage(message, result => {
                     if (result) {
-                        vm.option.bound = true;
+                        //vm.option.bound = true;
+                        queryOptionItems(domainName)
                     }
                 });
             }
@@ -154,27 +162,35 @@ $(function() {
                 vm.option.support = (domainName !== null);
                 vm.option.domain = domainName || a.hostname;
                 if (vm.option.support) {
-                    var msg = {};
-                    msg.domain = domainName;
-                    msg.optionCheck = true;
-                    chrome.runtime.sendMessage(msg, items => {
-                        vm.option.items = items;
-                        for (var key in items) {
-                            // Simply checks to see if this is a property specific to this class,
-                            // and not one inherited from the base class.
-                            if (items.hasOwnProperty(key)) {
-                                var item = items[key];
-                                if (item.url === url) {
-                                    vm.key = key;
-                                    vm.option.bound = true;
-                                    break;
-                                }
-                            }
-                        }
-                    });
+                    queryOptionItems(domainName);
                 }
-
             });
         }
     });
 });
+
+/**
+ *Query option access item data by domain name.
+ * @param domainName
+ */
+function queryOptionItems(domainName) {
+    var message = {};
+    message.domain = domainName;
+    message.optionCheck = true;
+    chrome.runtime.sendMessage(message, items => {
+        vm.option.items = items;
+        var url = trimTrailSlash(activeTab.url);
+        for (var key in items) {
+            // Simply checks to see if this is a property specific to this class,
+            // and not one inherited from the base class.
+            if (items.hasOwnProperty(key)) {
+                var item = items[key];
+                if (item.url === url) {
+                    vm.key = key;
+                    vm.option.bound = true;
+                    break;
+                }
+            }
+        }
+    });
+}

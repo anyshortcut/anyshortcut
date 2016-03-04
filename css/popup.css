@@ -6,6 +6,10 @@ body {
     text-align: center;
 }
 
+a:visited, a:active {
+    color: #0094E0;
+}
+
 #status {
     /* avoid an excessively wide status text */
     white-space: pre;
