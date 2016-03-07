@@ -34,7 +34,7 @@ $(function() {
                 }
             },
             clear: function() {
-                if (confirm('Are you sure to cear all data?')) {
+                if (confirm('Are you sure to clear all data?')) {
                     //Notify background.js to clear all data in storage.
                     this.items = null;
                 }

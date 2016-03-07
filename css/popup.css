@@ -10,6 +10,15 @@ a:visited, a:active {
     color: #0094E0;
 }
 
+ul {
+    list-style: none outside;
+}
+
+li {
+    text-align: left;
+    margin: 2px;
+}
+
 #status {
     /* avoid an excessively wide status text */
     white-space: pre;

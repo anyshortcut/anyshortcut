@@ -1,5 +1,5 @@
 var divStyle = `
-    background: #eeeeee;
+    background: #ffffff;
     padding: 20px;
     margin: 0 auto;
     position: fixed;
@@ -7,6 +7,7 @@ var divStyle = `
     top:10px;
     left: 0;
     right:0;
+    border:2px solid #dd4814;
     width: fit-content;
     z-index: 500;
 `;
