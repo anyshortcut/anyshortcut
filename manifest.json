@@ -1,55 +1,63 @@
 {
-    "manifest_version": 2,
-
-    "name": "__MSG_extension_name__",
-    "description": "__MSG_extension_description__",
-    "version": "1.0",
-    "default_locale": "en",
-
-    "browser_action": {
-        "default_icon": "images/icon.png",
-        "default_popup": "popup.html",
-        "default_title": "__MSG_popup_default_title__"
-    },
-
-    "icons": {
-        "16": "images/icon16.png"
-    },
-
-    "background": {
-        "scripts": ["js/keycode.js", "js/common.js", "js/background.js"],
-        "persistent": true
-    },
-
-    "permissions": [
-        "tabs",
-        "activeTab",
-        "storage",
+  "manifest_version": 2,
+  "name": "__MSG_extension_name__",
+  "description": "__MSG_extension_description__",
+  "version": "1.0",
+  "default_locale": "en",
+  "browser_action": {
+    "default_icon": "images/icon.png",
+    "default_popup": "popup.html",
+    "default_title": "__MSG_popup_default_title__"
+  },
+  "icons": {
+    "16": "images/icon16.png"
+  },
+  "background": {
+    "scripts": [
+      "js/keycode.js",
+      "js/common.js",
+      "js/background.js"
+    ],
+    "persistent": true
+  },
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage",
+    "<all_urls>",
+    "file://*/*",
+    "ftp://*/*"
+  ],
+  "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
+  "options_page": "index.html",
+  "content_scripts": [
+    {
+      "matches": [
         "<all_urls>",
         "file://*/*",
         "ftp://*/*"
-    ],
-    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
-    "options_page": "options.html",
-    "content_scripts": [{
-        "matches": ["<all_urls>", "file://*/*", "ftp://*/*"],
-        "match_about_blank": true,
-        "js": ["js/keycode.js", "js/keyeventmonitor.js"],
-        "all_frames": true,
-        "run_at": "document_start"
-    }],
-    "commands": {
-        "toggle_recent_tab": {
-            "suggested_key": {
-                "default": "Alt+Tab"
-            },
-            "description": "Toggle Recent Tabs"
-        },
-        "jump_to_home": {
-            "suggested_key": {
-                "default": "Alt+Shift+Space"
-            },
-            "description": "Jump to home page of current url"
-        }
+      ],
+      "match_about_blank": true,
+      "js": [
+        "js/keycode.js",
+        "js/keyeventmonitor.js"
+      ],
+      "all_frames": true,
+      "run_at": "document_start"
     }
+  ],
+  "commands": {
+    "toggle_recent_tab": {
+      "suggested_key": {
+        "default": "Alt+Tab"
+      },
+      "description": "Toggle Recent Tabs"
+    },
+    "jump_to_home": {
+      "suggested_key": {
+        "default": "Alt+Shift+Space"
+      },
+      "description": "Jump to home page of current url"
+    }
+  }
 }

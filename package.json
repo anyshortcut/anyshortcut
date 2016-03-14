@@ -35,8 +35,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack-dev-server --inline --hot",
-    "build": "webpack -p"
+    "dev": "webpack-dev-server --inline --hot --no-info",
+    "build": "webpack --progress --hide-modules"
   }
 }
