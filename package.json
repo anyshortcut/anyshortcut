@@ -1,0 +1,42 @@
+{
+  "name": "Shurl",
+  "version": "1.0.0",
+  "description": "A chrome extesion which help you bind a shortcut for any url!",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/Folyd/Spruce.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://gitlab.com/Folyd/Spruce/issues"
+  },
+  "homepage": "https://gitlab.com/Folyd/Spruce#README",
+  "dependencies": {
+    "jquery": "^2.2.1",
+    "material-design-lite": "^1.1.2",
+    "vue": "^1.0.17",
+    "vue-router": "^0.7.11"
+  },
+  "devDependencies": {
+    "babel-core": "^6.7.2",
+    "babel-loader": "^6.2.4",
+    "babel-plugin-transform-runtime": "^6.6.0",
+    "babel-preset-es2015": "^6.6.0",
+    "babel-runtime": "^5.8.35",
+    "css-loader": "^0.23.1",
+    "vue-hot-reload-api": "^1.3.2",
+    "vue-html-loader": "^1.2.0",
+    "vue-loader": "^8.2.0",
+    "vue-style-loader": "^1.0.0",
+    "webpack": "^1.12.14",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --inline --hot",
+    "build": "webpack -p"
+  }
+}
