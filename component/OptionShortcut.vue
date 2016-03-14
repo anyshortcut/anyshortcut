@@ -1,9 +1,7 @@
 <template>
+    Here is Options Shortcuts!    Here is Options Shortcuts!     Here is Options Shortcuts!    Here is Options Shortcuts!
 </template>
 <style>
-    body {
-        background-color: #ff0000;
-    }
 </style>
 <script>
     export default{}
