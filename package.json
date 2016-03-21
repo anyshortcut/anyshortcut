@@ -35,7 +35,7 @@
     "webpack-dev-server": "^1.14.1"
   },
   "scripts": {
-    "dev": "webpack-dev-server --inline --hot --no-info",
+    "dev": "webpack-dev-server --inline --hot --no-info --port 9099",
     "build": "webpack --progress --hide-modules"
   }
 }
