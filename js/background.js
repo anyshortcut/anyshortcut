@@ -1,3 +1,5 @@
+import common from './common.js';
+
 const storage = chrome.storage.local;
 var keyBindingMaps;
 /**
@@ -42,7 +44,7 @@ function queryShortcutKeyByUrl(url) {
  * @returns the bind info. {"key":key,"value":value}
  */
 function queryBindInfoByUrl(url) {
-    url = trimTrailSlash(url);
+    url = common.trimTrailSlash(url);
     var result = null;
     for (var key in keyBindingMaps) {
         var info = keyBindingMaps[key];
@@ -159,7 +161,7 @@ function onWindowFocusChanged(windowId) {
     }
 
     //Get new active tab when window focuse changed.
-    getCurrentTab(tab => {
+    common.getCurrentTab(tab => {
         activeTab = tab;
     });
 }
@@ -253,7 +255,7 @@ function onMessageReceiver(message, sender, sendResponse) {
 
         case message.optionRequest:
             // Access options shortcut key for correct domain.
-            var domain = extractDomainName(message.location.hostname);
+            var domain = common.extractDomainName(message.location.hostname);
             console.log('domain name is:', domain);
             if (!domain) {
                 return;
@@ -360,7 +362,7 @@ function onCommandFired(command) {
         });
     } else if (command === "jump_to_home") {
         //TrickTips: Navigate to current tab href origin url or domain url.
-        getCurrentTab(tab => {
+        common.getCurrentTab(tab => {
             if (tab.url) {
                 var a = document.createElement('a');
                 a.href = tab.url;

@@ -14,9 +14,7 @@
   },
   "background": {
     "scripts": [
-      "js/keycode.js",
-      "js/common.js",
-      "js/background.js"
+      "build/background.js"
     ],
     "persistent": true
   },
@@ -39,8 +37,7 @@
       ],
       "match_about_blank": true,
       "js": [
-        "js/keycode.js",
-        "js/keyeventmonitor.js"
+        "build/contentScript.js"
       ],
       "all_frames": true,
       "run_at": "document_start"

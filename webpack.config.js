@@ -1,8 +1,13 @@
 module.exports = {
-    entry: "./main.js",
+    entry: {
+        options: './main.js',
+        contentScript: './js/keyeventmonitor.js',
+        background: './js/background.js',
+        popup: './js/popup.js'
+    },
     output: {
-        path: '.',
-        filename: 'build.js'
+        path: 'build',
+        filename: '[name].js'
     },
     module: {
         loaders: [

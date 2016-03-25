@@ -53,3 +53,4 @@ var keyCodeHelper = {
         return key.length === 1 && this.isValidKeyCode(key.charCodeAt());
     }
 };
+export default keyCodeHelper;

@@ -1,13 +1,14 @@
+import common from './common.js';
+import keyCodeHelper from './keycode.js';
+import Vue from 'vue';
+import moment from 'moment';
+
 /**
  * Current active tab.
  */
 var activeTab;
-/**
- * Vue Object instance.
- */
-var vm;
 
-$(function() {
+window.onload = function() {
     //Custom filter to use moment.js format time as fromNow type.
     Vue.filter('fromNow', time => {
         return moment(time).fromNow();
@@ -18,8 +19,10 @@ $(function() {
             return value.toUpperCase();
         }
     });
-
-    vm = new Vue({
+    /**
+     * Initialize Vue Object instance.
+     */
+    var vm = new Vue({
         el: 'body',
         data: {
             bound: false, // A flag indicate origin bound.
@@ -77,7 +80,7 @@ $(function() {
 
                 var binding = {};
                 var value = {};
-                value["url"] = trimTrailSlash(activeTab.url);
+                value["url"] = common.trimTrailSlash(activeTab.url);
                 value["title"] = activeTab.title;
                 value["favicon"] = activeTab.favIconUrl;
                 value["time"] = Date.now();
@@ -119,9 +122,9 @@ $(function() {
 
                 var a = document.createElement('a');
                 a.href = activeTab.url;
-                var domainName = extractDomainName(a.hostname);
+                var domainName = common.extractDomainName(a.hostname);
                 message['domain'] = domainName;
-                value['url'] = trimTrailSlash(activeTab.url);
+                value['url'] = common.trimTrailSlash(activeTab.url);
                 value['title'] = activeTab.title;
                 value['comment'] = vm.option.comment;
                 value['time'] = Date.now();
@@ -138,9 +141,9 @@ $(function() {
             }
         },
         created: function() {
-            getCurrentTab(tab => {
+            common.getCurrentTab(tab => {
                 activeTab = tab;
-                var url = trimTrailSlash(activeTab.url);
+                var url = common.trimTrailSlash(activeTab.url);
 
                 var message = {};
                 message["check"] = true;
@@ -158,7 +161,7 @@ $(function() {
                 // Check current domain name whether can option access.
                 var a = document.createElement('a');
                 a.href = url;
-                var domainName = extractDomainName(a.hostname);
+                var domainName = common.extractDomainName(a.hostname);
                 vm.option.support = (domainName !== null);
                 vm.option.domain = domainName || a.hostname;
                 if (vm.option.support) {
@@ -167,30 +170,33 @@ $(function() {
             });
         }
     });
-});
 
-/**
- *Query option access item data by domain name.
- * @param domainName
- */
-function queryOptionItems(domainName) {
-    var message = {};
-    message.domain = domainName;
-    message.optionCheck = true;
-    chrome.runtime.sendMessage(message, items => {
-        vm.option.items = items;
-        var url = trimTrailSlash(activeTab.url);
-        for (var key in items) {
-            // Simply checks to see if this is a property specific to this class,
-            // and not one inherited from the base class.
-            if (items.hasOwnProperty(key)) {
-                var item = items[key];
-                if (item.url === url) {
-                    vm.key = key;
-                    vm.option.bound = true;
-                    break;
+    /**
+     *Query option access item data by domain name.
+     * @param domainName
+     */
+    function queryOptionItems(domainName) {
+        var message = {};
+        message.domain = domainName;
+        message.optionCheck = true;
+        chrome.runtime.sendMessage(message, items => {
+            vm.option.items = items;
+            var url = common.trimTrailSlash(activeTab.url);
+            for (var key in items) {
+                // Simply checks to see if this is a property specific to this class,
+                // and not one inherited from the base class.
+                if (items.hasOwnProperty(key)) {
+                    var item = items[key];
+                    if (item.url === url) {
+                        vm.key = key;
+                        vm.option.bound = true;
+                        break;
+                    }
                 }
             }
-        }
-    });
-}
+        });
+    }
+};
+
+//document.addEventListener('load', monitorKeyUp, false);
+

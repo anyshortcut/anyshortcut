@@ -1,3 +1,5 @@
+import keyCodeHelper from './keycode.js';
+
 function monitorKeyUp(e) {
     e = keyCodeHelper.ensureWindowEvent(e);
     if (isValidFullModifier(e)) {
