@@ -34,7 +34,7 @@ function queryAllKeyBindingItems() {
  *@return the key if the url was bound,null otherwise
  */
 function queryShortcutKeyByUrl(url) {
-    var result = queryBindInfoByUrl(url);
+    let result = queryBindInfoByUrl(url);
     return result ? result.key : null;
 }
 
@@ -44,15 +44,17 @@ function queryShortcutKeyByUrl(url) {
  * @returns the bind info. {"key":key,"value":value}
  */
 function queryBindInfoByUrl(url) {
-    url = common.trimTrailSlash(url);
-    var result = null;
-    for (var key in keyBindingMaps) {
-        var info = keyBindingMaps[key];
-        if (url === info.url) {
-            result = {};
-            result["key"] = key;
-            result["value"] = info;
-            return result;
+    let result = null;
+    for (let key in keyBindingMaps) {
+        if (keyBindingMaps.hasOwnProperty(key)) {
+            let info = keyBindingMaps[key];
+            //if (url === info.url) {
+            if (common.isUrlEquivalent(url, info.url)) {
+                result = {};
+                result["key"] = key;
+                result["value"] = info;
+                return result;
+            }
         }
     }
     return result;
@@ -101,7 +103,7 @@ function onTabActivated(activeInfo) {
 
         getRecentTabs(recentTabIds => {
             // Remove previous existed one from recent tab id array.
-            var index = recentTabIds.indexOf(activeTab.id);
+            let index = recentTabIds.indexOf(activeTab.id);
             if (index !== -1) {
                 recentTabIds.splice(index, 1);
             }
@@ -128,8 +130,8 @@ function onTabUpdated(tabId, changeInfo, tab) {
  *@param detachInfo looks like this {integer:oldWindowId,integer:oldPosition}
  */
 function onTabDetached(tabId, detachInfo) {
-    var tabIds = windowRecentTabIds[detachInfo.oldWindowId];
-    var index = tabIds.indexOf(tabId);
+    let tabIds = windowRecentTabIds[detachInfo.oldWindowId];
+    let index = tabIds.indexOf(tabId);
     if (index !== -1) {
         tabIds.splice(index, 1);
     }
@@ -142,7 +144,7 @@ function onTabRemoved(tabId, removeInfo) {
     console.log("tab id:", tabId, "removed...");
     getRecentTabs(recentTabIds => {
         // Remove from recent tab id array.
-        var index = recentTabIds.indexOf(tabId);
+        let index = recentTabIds.indexOf(tabId);
         if (index !== -1) {
             recentTabIds.splice(index, 1);
         }
@@ -178,8 +180,9 @@ function onWindowRemoved(windowId) {
 function onMessageReceiver(message, sender, sendResponse) {
     switch (true) {
         case message.request:
+        {
             //If message exist key 'request', represent the message from content script.
-            var key = message.key;
+            let key = message.key;
             storage.get(key, items => {
                 if (chrome.runtime.lastError) {
                     console.log("Got a error...");
@@ -189,7 +192,7 @@ function onMessageReceiver(message, sender, sendResponse) {
                 //Besure to check item value is empty.
                 if (Object.keys(items).length) {
                     console.log(items);
-                    var value = items[key];
+                    let value = items[key];
                     sendResponse(value.url);
                 } else {
                     // The shortcut key not bound yet.
@@ -198,31 +201,34 @@ function onMessageReceiver(message, sender, sendResponse) {
                 }
             });
             break;
-
+        }
         case message.validate:
+        {
             //if message exist key 'validate',represent the message from popup.js
             //for validate the shortcut whether already bound a url.
             storage.get(message.key, item => {
                 //item value would be {},if not exist the key.
                 //Be sure to check item value is empty.
-                var response = {};
+                let response = {};
                 //The key is valid if query result is empty.
                 response["valid"] = Object.keys(item).length == 0;
                 response["data"] = item;
                 sendResponse(response);
             });
             break;
-
+        }
         case message.check:
+        {
             // Check url whether bound shortcut.
             // see popup.js requestCheckUrlBound() method.
-            var response = queryBindInfoByUrl(message.url);
+            let response = queryBindInfoByUrl(message.url);
             sendResponse(response);
             break;
-
+        }
         case message.delete:
+        {
             // Delete the url shortcut.
-            var key = queryShortcutKeyByUrl(message.url);
+            let key = queryShortcutKeyByUrl(message.url);
             if (key) {
                 storage.remove(key, () => {
                     sendResponse(true);
@@ -235,8 +241,9 @@ function onMessageReceiver(message, sender, sendResponse) {
                 sendResponse(false);
             }
             break;
-
+        }
         case message.save:
+        {
             //Save shortcut item to storage.
             storage.set(message.data, () => {
                 console.log("storage success");
@@ -246,15 +253,20 @@ function onMessageReceiver(message, sender, sendResponse) {
                 queryAllKeyBindingItems();
             });
             break;
-
+        }
         case message.optionCheck:
+        {
             // Check whether the domain is valid,can option access.
-            var domain = message.domain;
-            sendResponse(keyBindingMaps[domain]);
+            //let domain = message.domain;
+            sendResponse(keyBindingMaps[message.domain]);
             break;
-
+        }
         case message.optionRequest:
+        {
             // Access options shortcut key for correct domain.
+            //FIXME:Module build failed: TypeError: background.js: Property body of LabeledStatement expected node
+            // to be of a type ["Statement"] but instead got null
+            //let domain = common.extractDomainName(message.location.hostname);
             var domain = common.extractDomainName(message.location.hostname);
             console.log('domain name is:', domain);
             if (!domain) {
@@ -263,8 +275,8 @@ function onMessageReceiver(message, sender, sendResponse) {
 
             storage.get(domain, result => {
                 if (Object.keys(result).length) {
-                    var items = result[domain];
-                    var url = items[message.key].url;
+                    let items = result[domain];
+                    let url = items[message.key].url;
                     if (url) {
                         sendResponse(url);
                     } else {
@@ -275,15 +287,16 @@ function onMessageReceiver(message, sender, sendResponse) {
                 }
             });
             break;
-
+        }
         case message.optionSave:
+        {
             // Save option access bound item data.
-            var key = message.domain;
+            let key = message.domain;
             storage.get(key, result => {
                 if (!Object.keys(result).length) {
                     result[key] = {};
                 }
-                var item = result[key];
+                let item = result[key];
                 item[message.key] = message.value;
 
                 storage.set(result, () => {
@@ -293,12 +306,15 @@ function onMessageReceiver(message, sender, sendResponse) {
                 });
             });
             break;
-
+        }
         case message.optionDelete:
+        {
             break;
-
+        }
         default:
+        {
             break;
+        }
     }
     //Must return true otherwise sendResponse() not working.
     //More detail see official documentations [chrome.runtime.onMessage()].
@@ -323,10 +339,10 @@ function injectUnboundTipsResources() {
  * @returns {Promise}
  */
 function injectResources(files) {
-    var getFileExtension = /(?:\.([^.]+))?$/;
+    let getFileExtension = /(?:\.([^.]+))?$/;
 
     //helper function that returns appropriate chrome.tabs function to load resource
-    var loadFunctionForExtension = (ext) => {
+    let loadFunctionForExtension = (ext) => {
         switch (ext) {
             case 'js':
                 return chrome.tabs.executeScript;
@@ -339,8 +355,8 @@ function injectResources(files) {
 
     return Promise.all(files.map(resource => {
         new Promise((resolve, reject) => {
-            var ext = getFileExtension.exec(resource)[1];
-            var injectFunction = loadFunctionForExtension(ext);
+            let ext = getFileExtension.exec(resource)[1];
+            let injectFunction = loadFunctionForExtension(ext);
 
             injectFunction(null, {
                 file: resource
@@ -364,13 +380,13 @@ function onCommandFired(command) {
         //TrickTips: Navigate to current tab href origin url or domain url.
         common.getCurrentTab(tab => {
             if (tab.url) {
-                var a = document.createElement('a');
+                let a = document.createElement('a');
                 a.href = tab.url;
                 if (['http:', "https:"].indexOf(a.protocol) === -1) {
                     return;
                 }
 
-                var properties = {};
+                let properties = {};
                 //Pathname default is '/',search default is ''
                 if (a.search !== '' || a.hash !== '') {
                     properties['url'] = a.origin + a.pathname;
@@ -379,12 +395,12 @@ function onCommandFired(command) {
                     properties["url"] = a.origin;
                 } else {
                     //Navigate to domain url
-                    var parts = a.hostname.split('.');
+                    let parts = a.hostname.split('.');
                     if (parts.length >= 3) {
                         parts.splice(0, parts.length - 2, 'www');
                     }
                     console.log("hostname split parts:", parts);
-                    var domain = a.protocol + '\/\/' + parts.join('.');
+                    let domain = a.protocol + '\/\/' + parts.join('.');
                     properties["url"] = domain;
                 }
                 //Cleanup for garbage collection
@@ -397,7 +413,7 @@ function onCommandFired(command) {
 
 function initializeWindowRecentTabs(windowId, callback) {
     // Initialize empty recent tab array for new window.
-    var tabIds = [];
+    let tabIds = [];
     windowRecentTabIds[windowId] = tabIds;
     callback && callback(tabIds)
 }
@@ -420,8 +436,8 @@ function getCurrentWindow(callback) {
  */
 function getRecentTabs(callback) {
     getCurrentWindow(window => {
-        var key = window.id.toString();
-        var recentTabIds = windowRecentTabIds[key];
+        let key = window.id.toString();
+        let recentTabIds = windowRecentTabIds[key];
         if (recentTabIds) {
             callback && callback(recentTabIds);
         } else {
@@ -436,13 +452,13 @@ function getRecentTabs(callback) {
  * @param recentTabIds  recent tab id array.
  */
 function toggleToRecentTab(recentTabIds) {
-    var nextTabId;
-    var lastIndex = recentTabIds.length - 1;
-    for (var i = lastIndex; i >= 0; i--) {
+    let nextTabId;
+    let lastIndex = recentTabIds.length - 1;
+    for (let i = lastIndex; i >= 0; i--) {
         nextTabId = recentTabIds[i];
         if (nextTabId !== activeTab.id) {
             // Swap last two elements position.
-            var lastTabId = recentTabIds[lastIndex];
+            let lastTabId = recentTabIds[lastIndex];
             recentTabIds[lastIndex] = recentTabIds[lastIndex - 1];
             recentTabIds[lastIndex - 1] = lastTabId;
             break;

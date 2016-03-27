@@ -9,6 +9,7 @@ import AboutView from './component/About.vue';
 import OriginalShortcutView from './component/OriginShortcut.vue';
 import OptionShortcutView from './component/OptionShortcut.vue';
 
+//import ContentScript from './js/keyeventmonitor.js';
 
 Vue.use(Router);
 
