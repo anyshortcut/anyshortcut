@@ -46,7 +46,7 @@ function queryShortcutKeyByUrl(url) {
 function queryBindInfoByUrl(url) {
     let result = null;
     for (let key in keyBindingMaps) {
-        if (keyBindingMaps.hasOwnProperty(key)) {
+        if (key.length === 1 && keyBindingMaps.hasOwnProperty(key)) {
             let info = keyBindingMaps[key];
             //if (url === info.url) {
             if (common.isUrlEquivalent(url, info.url)) {

@@ -80,7 +80,7 @@ window.onload = function() {
 
                 var binding = {};
                 var value = {};
-                value["url"] = common.trimTrailSlash(activeTab.url);
+                value["url"] = activeTab.url;
                 value["title"] = activeTab.title;
                 value["favicon"] = activeTab.favIconUrl;
                 value["time"] = Date.now();
@@ -124,7 +124,7 @@ window.onload = function() {
                 a.href = activeTab.url;
                 var domainName = common.extractDomainName(a.hostname);
                 message['domain'] = domainName;
-                value['url'] = common.trimTrailSlash(activeTab.url);
+                value['url'] = activeTab.url;
                 value['title'] = activeTab.title;
                 value['comment'] = vm.option.comment;
                 value['time'] = Date.now();
@@ -143,7 +143,7 @@ window.onload = function() {
         created: function() {
             common.getCurrentTab(tab => {
                 activeTab = tab;
-                var url = common.trimTrailSlash(activeTab.url);
+                var url = activeTab.url;
 
                 var message = {};
                 message["check"] = true;
@@ -151,8 +151,9 @@ window.onload = function() {
                 // Request check current tab url was bound in background.js
                 chrome.runtime.sendMessage(message, bindInfo => {
                     // bind info. {"key":key,"value":value}
-                    vm.bound = bindInfo !== null;
-                    if (vm.bound) {
+                    //TODO How to check javascript object null or undefined properly?
+                    if (bindInfo) {
+                        vm.bound = true;
                         vm.key = bindInfo.key;
                         vm.value = bindInfo.value;
                     }
@@ -181,13 +182,13 @@ window.onload = function() {
         message.optionCheck = true;
         chrome.runtime.sendMessage(message, items => {
             vm.option.items = items;
-            var url = common.trimTrailSlash(activeTab.url);
+            var url = activeTab.url;
             for (var key in items) {
                 // Simply checks to see if this is a property specific to this class,
                 // and not one inherited from the base class.
                 if (items.hasOwnProperty(key)) {
                     var item = items[key];
-                    if (item.url === url) {
+                    if (common.isUrlEquivalent(item.url, url)) {
                         vm.key = key;
                         vm.option.bound = true;
                         break;
