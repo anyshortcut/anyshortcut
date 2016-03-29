@@ -32,7 +32,6 @@ window.onload = function() {
             bound: false, // A flag indicate origin bound.
             key: '', // Shortcut key for origin bound and option bound.
             value: {}, // Origin bound value.
-            keyTips: '',
             boundTips: '',// Origin bound tips.
             boundKeys: [],// All bound keys, for keyboard component usage.
             showKeyboard: false,
@@ -57,60 +56,22 @@ window.onload = function() {
             }
         },
         methods: {
-            onShortcutKeyInput: function(event) {
-                var key = this.key;
-                if (this.keyIsValid) {
-                    var message = {};
-                    message["key"] = key;
-                    message["validate"] = true;
-                    chrome.runtime.sendMessage(message, response => {
-                        if (response.valid) {
-                            vm.keyTips = '';
-                        } else {
-                            vm.keyTips = "invalid shortcut key " + key +
-                                JSON.stringify(event) + "\n and the url is \n" +
-                                JSON.stringify(response["data"][key]["url"]);
-                        }
-                    });
-                } else {
-                    vm.keyTips = "invalid shortcut key " + key + event.keyCode;
-                }
-            },
             handleShortcutBinding: function() {
-                var key = this.key;
-                if (!key || key === "") {
-                    vm.keyTips = "Please specify a shortcut key!";
-                    return;
-                }
-                // else if (!this.keyIsValid) {
-                //     vm.keyTips="shortcut key is invalid!";
-                //     return;
-                // }
+                let binding = {};
+                binding[this.key] = {
+                    url: activeTab.url,
+                    title: activeTab.title,
+                    favicon: activeTab.favIconUrl,
+                    time: Date.now()
+                };
 
-                var binding = {};
-                var value = {};
-                value["url"] = activeTab.url;
-                value["title"] = activeTab.title;
-                value["favicon"] = activeTab.favIconUrl;
-                value["time"] = Date.now();
-                binding[key] = value;
-
-                var message = {};
-                message['save'] = true;
-                message['data'] = binding;
-                chrome.runtime.sendMessage(message, response => {
-                    if (chrome.runtime.lastError) {
-                        console.log("error");
-                    }
+                chrome.runtime.sendMessage({save: true, data: binding}, response => {
                     vm.bound = true;
                     vm.boundTips = 'Great job!you have bound a shortcut for this url!';
                 });
             },
             handleShortcutUnbinding: function() {
-                var message = {};
-                message["delete"] = true;
-                message["url"] = activeTab.url;
-                chrome.runtime.sendMessage(message, result => {
+                chrome.runtime.sendMessage({delete: true, url: activeTab.url}, result => {
                     if (result) {
                         vm.bound = false;
                         vm.key = '';
@@ -121,27 +82,22 @@ window.onload = function() {
                 });
             },
             handleOptionShortcutBinding: function() {
-                if (!vm.key || vm.key === '') {
-                    vm.keyTips = "Please specify a shortcut key!";
-                    return;
-                }
-
-                var message = {};
-                var value = {};
-
-                var a = document.createElement('a');
+                let a = document.createElement('a');
                 a.href = activeTab.url;
-                var domainName = common.extractDomainName(a.hostname);
-                message['domain'] = domainName;
-                value['url'] = activeTab.url;
-                value['title'] = activeTab.title;
-                value['comment'] = vm.option.comment;
-                value['time'] = Date.now();
-                message['key'] = vm.key;
-                message['value'] = value;
-                message['optionSave'] = true;
+                let domainName = common.extractDomainName(a.hostname);
 
-                chrome.runtime.sendMessage(message, result => {
+                let value = {
+                    url: activeTab.url,
+                    title: activeTab.title,
+                    comment: vm.option.comment,
+                    time: Date.now()
+                };
+                chrome.runtime.sendMessage({
+                    optionSave: true,
+                    domain: domainName,
+                    key: vm.key,
+                    value: value
+                }, result => {
                     if (result) {
                         //vm.option.bound = true;
                         queryOptionItems(domainName)
@@ -153,12 +109,8 @@ window.onload = function() {
             common.getCurrentTab(tab => {
                 activeTab = tab;
                 let url = activeTab.url;
-
-                let message = {};
-                message["check"] = true;
-                message["url"] = url;
                 // Request check current tab url was bound in background.js
-                chrome.runtime.sendMessage(message, bindInfo => {
+                chrome.runtime.sendMessage({check: true, url: url}, bindInfo => {
                     // bind info. {"key":key,"value":value}
                     //TODO How to check javascript object null or undefined properly?
                     if (bindInfo) {
@@ -190,17 +142,14 @@ window.onload = function() {
      * @param domainName
      */
     function queryOptionItems(domainName) {
-        var message = {};
-        message.domain = domainName;
-        message.optionCheck = true;
-        chrome.runtime.sendMessage(message, items => {
+        chrome.runtime.sendMessage({optionCheck: true, domain: domainName}, items => {
             vm.option.items = items;
-            var url = activeTab.url;
-            for (var key in items) {
+            let url = activeTab.url;
+            for (let key in items) {
                 // Simply checks to see if this is a property specific to this class,
                 // and not one inherited from the base class.
                 if (items.hasOwnProperty(key)) {
-                    var item = items[key];
+                    let item = items[key];
                     if (common.isUrlEquivalent(item.url, url)) {
                         vm.key = key;
                         vm.option.bound = true;

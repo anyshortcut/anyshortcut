@@ -211,21 +211,6 @@ function onMessageReceiver(message, sender, sendResponse) {
             sendResponse(keys);
             break;
         }
-        case message.validate:
-        {
-            //if message exist key 'validate',represent the message from popup.js
-            //for validate the shortcut whether already bound a url.
-            storage.get(message.key, item => {
-                //item value would be {},if not exist the key.
-                //Be sure to check item value is empty.
-                let response = {};
-                //The key is valid if query result is empty.
-                response["valid"] = Object.keys(item).length == 0;
-                response["data"] = item;
-                sendResponse(response);
-            });
-            break;
-        }
         case message.check:
         {
             // Check url whether bound shortcut.
