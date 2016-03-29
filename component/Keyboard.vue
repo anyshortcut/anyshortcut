@@ -16,11 +16,6 @@
         padding: 0;
     }
 
-    body {
-        font: 71%/1.5 Verdana, Sans-Serif;
-        background: #eee;
-    }
-
     #container {
         margin: 100px auto;
         width: auto;
@@ -37,7 +32,7 @@
     }
 
     #keyboard .number {
-        width: 42px;
+        width: 32px;
     }
 
     #keyboard .letter_q {
@@ -58,9 +53,9 @@
     }
 
     #keyboard button {
-        width: 40px;
-        height: 40px;
-        line-height: 40px;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
         text-align: center;
         background: #fff;
         border: 1px solid #f9f9f9;
@@ -89,13 +84,18 @@
                     'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
                     'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
                     'Z', 'X', 'C', 'V', 'B', 'N', 'M'],
-                boundKeys: ['2', 'A', 'F', 'B'],
                 obj: ''
             }
         },
         props: {
-            keys: {
-                type: Array
+            key: {
+                type: String
+            },
+            boundKeys: {
+                type: Array,
+                default: function() {
+                    return ['2', 'A', 'F', 'B'];
+                }
             }
         },
         directives: {
@@ -111,7 +111,7 @@
                 // refer to http://jsfiddle.net/misteroneill/kmn4A/3/
                 this.obj = event.target.innerText;
             },
-            // li element class
+            //Return a li element class literal object.
             liClass: function(key) {
                 let liClass = {};
                 liClass.clear_left = ['Q', 'A', 'Z'].indexOf(key) !== -1;

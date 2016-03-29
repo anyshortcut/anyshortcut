@@ -1,4 +1,5 @@
 import common from './common.js';
+import keyCodeHelper from './keycode.js';
 
 const storage = chrome.storage.local;
 var keyBindingMaps;
@@ -200,6 +201,14 @@ function onMessageReceiver(message, sender, sendResponse) {
                     injectUnboundTipsResources();
                 }
             });
+            break;
+        }
+        case message.keys:
+        {
+            let keys = Object.keys(keyBindingMaps).filter(key => {
+                return keyCodeHelper.isValidKey(key);
+            });
+            sendResponse(keys);
             break;
         }
         case message.validate:

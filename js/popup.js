@@ -3,10 +3,14 @@ import keyCodeHelper from './keycode.js';
 import Vue from 'vue';
 import moment from 'moment';
 
+import Keyboard from '../component/Keyboard.vue';
+
 /**
  * Current active tab.
  */
 var activeTab;
+
+Vue.config.debug = true;
 
 window.onload = function() {
     //Custom filter to use moment.js format time as fromNow type.
@@ -30,6 +34,7 @@ window.onload = function() {
             value: {}, // Origin bound value.
             keyTips: '',
             boundTips: '',// Origin bound tips.
+            boundKeys: [],// All bound keys, for keyboard component usage.
             option: { // A option access object.
                 bound: false,
                 domain: '', // Current active tab url domain name.
@@ -41,6 +46,9 @@ window.onload = function() {
                  */
                 items: null
             }
+        },
+        components: {
+            Keyboard
         },
         computed: {
             keyIsValid: function() {
@@ -143,9 +151,9 @@ window.onload = function() {
         created: function() {
             common.getCurrentTab(tab => {
                 activeTab = tab;
-                var url = activeTab.url;
+                let url = activeTab.url;
 
-                var message = {};
+                let message = {};
                 message["check"] = true;
                 message["url"] = url;
                 // Request check current tab url was bound in background.js
@@ -160,14 +168,18 @@ window.onload = function() {
                 });
 
                 // Check current domain name whether can option access.
-                var a = document.createElement('a');
+                let a = document.createElement('a');
                 a.href = url;
-                var domainName = common.extractDomainName(a.hostname);
+                let domainName = common.extractDomainName(a.hostname);
                 vm.option.support = (domainName !== null);
                 vm.option.domain = domainName || a.hostname;
                 if (vm.option.support) {
                     queryOptionItems(domainName);
                 }
+            });
+
+            chrome.runtime.sendMessage({keys: true}, keys => {
+                this.boundKeys = keys;
             });
         }
     });
