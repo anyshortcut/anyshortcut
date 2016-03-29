@@ -49,12 +49,8 @@ function queryBindInfoByUrl(url) {
     for (let key in keyBindingMaps) {
         if (key.length === 1 && keyBindingMaps.hasOwnProperty(key)) {
             let info = keyBindingMaps[key];
-            //if (url === info.url) {
             if (common.isUrlEquivalent(url, info.url)) {
-                result = {};
-                result["key"] = key;
-                result["value"] = info;
-                return result;
+                return {key: key, value: info};
             }
         }
     }
@@ -109,7 +105,6 @@ function onTabActivated(activeInfo) {
                 recentTabIds.splice(index, 1);
             }
             recentTabIds.push(activeTab.id);
-            console.log("recent tab ids:", recentTabIds);
         });
     });
 }
@@ -120,7 +115,6 @@ function onTabActivated(activeInfo) {
  *@param tab Gives the state of the tab that was updated.
  */
 function onTabUpdated(tabId, changeInfo, tab) {
-    console.log("tab id:", tabId, " change info:", changeInfo);
     handleOnTabInfoUpdate(tab.url);
 }
 
@@ -142,7 +136,6 @@ function onTabDetached(tabId, detachInfo) {
  *@param removeInfo looks like this {integer:windowId,boolean:isWindowClosing}
  */
 function onTabRemoved(tabId, removeInfo) {
-    console.log("tab id:", tabId, "removed...");
     getRecentTabs(recentTabIds => {
         // Remove from recent tab id array.
         let index = recentTabIds.indexOf(tabId);
@@ -158,7 +151,6 @@ function onTabRemoved(tabId, removeInfo) {
  *@param windowId  ID of the newly focused window.
  */
 function onWindowFocusChanged(windowId) {
-    console.log("windowId:", windowId, "focuse changed...");
     if (chrome.windows.WINDOW_ID_NONE === windowId) {
         return;
     }
@@ -174,7 +166,6 @@ function onWindowFocusChanged(windowId) {
  *@param windowId ID of the removed window.
  */
 function onWindowRemoved(windowId) {
-    console.log("windowId:", windowId, "removed...");
     delete windowRecentTabIds[windowId];
 }
 
@@ -185,10 +176,6 @@ function onMessageReceiver(message, sender, sendResponse) {
             //If message exist key 'request', represent the message from content script.
             let key = message.key;
             storage.get(key, items => {
-                if (chrome.runtime.lastError) {
-                    console.log("Got a error...");
-                    return;
-                }
                 //item value would be {},if not exist the key.
                 //Besure to check item value is empty.
                 if (Object.keys(items).length) {
@@ -240,7 +227,6 @@ function onMessageReceiver(message, sender, sendResponse) {
         {
             //Save shortcut item to storage.
             storage.set(message.data, () => {
-                console.log("storage success");
                 sendResponse("Success");
                 setPopupIcon(true);
                 //Update keyBindingMaps if new shortcut bound.
@@ -262,7 +248,6 @@ function onMessageReceiver(message, sender, sendResponse) {
             // to be of a type ["Statement"] but instead got null
             //let domain = common.extractDomainName(message.location.hostname);
             var domain = common.extractDomainName(message.location.hostname);
-            console.log('domain name is:', domain);
             if (!domain) {
                 return;
             }
@@ -393,7 +378,6 @@ function onCommandFired(command) {
                     if (parts.length >= 3) {
                         parts.splice(0, parts.length - 2, 'www');
                     }
-                    console.log("hostname split parts:", parts);
                     let domain = a.protocol + '\/\/' + parts.join('.');
                     properties["url"] = domain;
                 }
@@ -418,7 +402,6 @@ function initializeWindowRecentTabs(windowId, callback) {
  */
 function getCurrentWindow(callback) {
     chrome.windows.getCurrent(window => {
-        console.log("current window id is:", window.id);
         callback(window);
     });
 }

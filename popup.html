@@ -22,7 +22,8 @@
             <p>The domain <b>{{option.domain}}</b> already bound with <b>ALT+{{key}}</b></p>
         </div>
         <div v-else>
-            <input v-model="key | uppercaseIt" id="option-shortcut-key" placeholder="key" maxlength="1" required/>
+            <input v-model="key" @focus="showKeyboard = true" id="option-shortcut-key" placeholder="key" maxlength="1"
+                   required/>
             <input v-model="option.comment" placeholder="Comment for this url" required/>
 
             <button @click="handleOptionShortcutBinding">Bound</button>

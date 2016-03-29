@@ -17,12 +17,6 @@ window.onload = function() {
     Vue.filter('fromNow', time => {
         return moment(time).fromNow();
     });
-    //Custom two-way filter to write uppercase value to model.(read way is ignore)
-    Vue.filter('uppercaseIt', {
-        write: (value, oldValue) => {
-            return value.toUpperCase();
-        }
-    });
     /**
      * Initialize Vue Object instance.
      */
