@@ -2,7 +2,11 @@
     <div id="container">
         <pre>{{obj}}</pre>
         <ul id="keyboard">
-            <li v-for="key in keys" @click="onKeyClick($event)" :class="liClass(key)">{{key}}</li>
+            <li v-for="key in keys" :class="liClass(key)">
+                <button @click="onKeyClick($event)" v-disabled="checkDisable(key)" class="button">
+                    {{key}}
+                </button>
+            </li>
         </ul>
     </div>
 </template>
@@ -51,6 +55,9 @@
     #keyboard li {
         float: left;
         margin: 0 5px 5px 0;
+    }
+
+    #keyboard button {
         width: 40px;
         height: 40px;
         line-height: 40px;
@@ -68,6 +75,10 @@
         border-color: #e5e5e5;
         cursor: pointer;
     }
+
+    #keyboard button:disabled {
+        background: #cccccc;
+    }
 </style>
 <script>
     export default{
@@ -78,12 +89,20 @@
                     'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
                     'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
                     'Z', 'X', 'C', 'V', 'B', 'N', 'M'],
+                boundKeys: ['2', 'A', 'F', 'B'],
                 obj: ''
             }
         },
         props: {
             keys: {
                 type: Array
+            }
+        },
+        directives: {
+            //A custom nested directive that can check the target element disabled property according to
+            // already bound key array.
+            disabled: function(value) {
+                this.el.disabled = value;
             }
         },
         methods: {
@@ -93,19 +112,22 @@
                 this.obj = event.target.innerText;
             },
             // li element class
-            liClass: function(letter) {
+            liClass: function(key) {
                 let liClass = {};
-                liClass.clear_left = ['Q', 'A', 'Z'].indexOf(letter) !== -1;
-                liClass.letter_q = letter === 'Q';
-                liClass.letter_a = letter === 'A';
-                liClass.letter_z = letter === 'Z';
+                liClass.clear_left = ['Q', 'A', 'Z'].indexOf(key) !== -1;
+                liClass.letter_q = key === 'Q';
+                liClass.letter_a = key === 'A';
+                liClass.letter_z = key === 'Z';
 
-                if (letter in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']) {
+                if (key in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']) {
                     liClass.number = true;
                 } else {
                     liClass.letter = true;
                 }
                 return liClass;
+            },
+            checkDisable: function(key) {
+                return this.boundKeys.indexOf(key) !== -1;
             }
         }
     }
