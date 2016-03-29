@@ -35,6 +35,7 @@ window.onload = function() {
             keyTips: '',
             boundTips: '',// Origin bound tips.
             boundKeys: [],// All bound keys, for keyboard component usage.
+            showKeyboard: false,
             option: { // A option access object.
                 bound: false,
                 domain: '', // Current active tab url domain name.

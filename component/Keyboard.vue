@@ -1,6 +1,5 @@
 <template>
-    <div id="container">
-        <pre>{{obj}}</pre>
+    <div id="container" v-show="show" @click="show=false">
         <ul id="keyboard">
             <li v-for="key in keys" :class="liClass(key)">
                 <button @click="onKeyClick($event)" v-disabled="checkDisable(key)" class="button">
@@ -16,15 +15,20 @@
         padding: 0;
     }
 
-    #container {
-        margin: 100px auto;
-        width: auto;
-    }
+    /*#container {*/
+    /*position: absolute;*/
+    /*z-index: 1000;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*width: 100%;*/
+    /*height: 100%;*/
+    /*}*/
 
     #keyboard {
         margin: 0;
-        padding: 0;
+        /*padding: 180px 0 0;*/
         list-style: none;
+        background-color: #ffffff;
     }
 
     .clear_left {
@@ -83,18 +87,26 @@
                 keys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
                     'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
                     'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
-                    'Z', 'X', 'C', 'V', 'B', 'N', 'M'],
-                obj: ''
+                    'Z', 'X', 'C', 'V', 'B', 'N', 'M']
             }
         },
         props: {
+            show: {
+                type: Boolean,
+                required: true,
+                twoWay: true,
+                default: function() {
+                    return true;
+                }
+            },
             key: {
-                type: String
+                type: String,
+                twoWay: true
             },
             boundKeys: {
                 type: Array,
                 default: function() {
-                    return ['2', 'A', 'F', 'B'];
+                    return [];
                 }
             }
         },
@@ -109,7 +121,7 @@
             onKeyClick: function(event) {
                 //What difference between e.currentTarget and e.target,
                 // refer to http://jsfiddle.net/misteroneill/kmn4A/3/
-                this.obj = event.target.innerText;
+                this.key = event.target.innerText;
             },
             //Return a li element class literal object.
             liClass: function(key) {

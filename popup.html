@@ -75,19 +75,16 @@
                 </span>
             <span>+</span>
                 <span>
-                    <input v-model="key | uppercaseIt" @input="onShortcutKeyInput" id="shortcut_key" placeholder="key"
-                           maxlength="1" required/>
+                    <input v-model="key" @focus="showKeyboard = true"
+                           id="shortcut_key" placeholder="key" maxlength="1" required/>
                 </span>
             <br/>
-            <div id="status">
-                {{keyTips}}
-            </div>
             <input @click="handleShortcutBinding" id="bind_shortcut_button" type="button" value="Save"/>
         </div>
     </div>
 </div>
 
-<keyboard :bound-keys="boundKeys"></keyboard>
+<keyboard :bound-keys="boundKeys" :key.sync="key" :show.sync="showKeyboard"></keyboard>
 <footer>
     <a href="index.html" target="_blank">Options</a>
 </footer>
