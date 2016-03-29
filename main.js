@@ -10,7 +10,7 @@ import OriginalShortcutView from './component/OriginShortcut.vue';
 import OptionShortcutView from './component/OptionShortcut.vue';
 
 //import ContentScript from './js/keyeventmonitor.js';
-
+Vue.config.debug = true;
 Vue.use(Router);
 
 var router = new Router();

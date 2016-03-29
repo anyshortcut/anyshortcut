@@ -1,42 +1,8 @@
 <template>
     <div id="container">
+        <pre>{{obj}}</pre>
         <ul id="keyboard">
-            <li class="symbol">1</li>
-            <li class="symbol">2</li>
-            <li class="symbol">3</li>
-            <li class="symbol">4</li>
-            <li class="symbol">5</li>
-            <li class="symbol">6</li>
-            <li class="symbol">7</li>
-            <li class="symbol">8</li>
-            <li class="symbol">9</li>
-            <li class="symbol">0</li>
-            <li class="letter clear-left" id="q">Q</li>
-            <li class="letter">W</li>
-            <li class="letter">E</li>
-            <li class="letter">R</li>
-            <li class="letter">T</li>
-            <li class="letter">Y</li>
-            <li class="letter">U</li>
-            <li class="letter">I</li>
-            <li class="letter">O</li>
-            <li class="letter">P</li>
-            <li class="letter clear-left" id="a">A</li>
-            <li class="letter">S</li>
-            <li class="letter">D</li>
-            <li class="letter">F</li>
-            <li class="letter">G</li>
-            <li class="letter">H</li>
-            <li class="letter">J</li>
-            <li class="letter">K</li>
-            <li class="letter">L</li>
-            <li class="letter clear-left" id="z">Z</li>
-            <li class="letter">X</li>
-            <li class="letter">C</li>
-            <li class="letter">V</li>
-            <li class="letter">B</li>
-            <li class="letter">N</li>
-            <li class="letter">M</li>
+            <li v-for="key in keys" @click="onKeyClick($event)" :class="liClass(key)">{{key}}</li>
         </ul>
     </div>
 </template>
@@ -62,19 +28,23 @@
         list-style: none;
     }
 
-    .clear-left {
+    .clear_left {
         clear: left;
     }
 
-    #keyboard #q {
-        margin-left: 5px;
+    #keyboard .number {
+        width: 42px;
     }
 
-    #keyboard #a {
+    #keyboard .letter_q {
+        margin-left: 10px;
+    }
+
+    #keyboard .letter_a {
         margin-left: 35px;
     }
 
-    #keyboard #z {
+    #keyboard .letter_z {
         margin-left: 70px;
     }
 
@@ -104,7 +74,38 @@
         name: 'Keyboard',
         data(){
             return {
-                msg: 'hello vue'
+                keys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+                    'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
+                    'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
+                    'Z', 'X', 'C', 'V', 'B', 'N', 'M'],
+                obj: ''
+            }
+        },
+        props: {
+            keys: {
+                type: Array
+            }
+        },
+        methods: {
+            onKeyClick: function(event) {
+                //What difference between e.currentTarget and e.target,
+                // refer to http://jsfiddle.net/misteroneill/kmn4A/3/
+                this.obj = event.target.innerText;
+            },
+            // li element class
+            liClass: function(letter) {
+                let liClass = {};
+                liClass.clear_left = ['Q', 'A', 'Z'].indexOf(letter) !== -1;
+                liClass.letter_q = letter === 'Q';
+                liClass.letter_a = letter === 'A';
+                liClass.letter_z = letter === 'Z';
+
+                if (letter in ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']) {
+                    liClass.number = true;
+                } else {
+                    liClass.letter = true;
+                }
+                return liClass;
             }
         }
     }
