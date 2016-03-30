@@ -47,10 +47,7 @@
                     Object.keys(items).map(key => {
                         // Check the key whether is valid, filter other non-key info.
                         if (keyCodeHelper.isValidKey(key)) {
-                            var item = {};
-                            item['key'] = key;
-                            item['value'] = items[key];
-                            array.push(item);
+                            array.push({key: key, value: items[key]});
                         }
                     });
                     // This pointer is correct in arrow functions.

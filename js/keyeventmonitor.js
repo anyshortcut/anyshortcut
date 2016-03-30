@@ -4,15 +4,9 @@ function monitorKeyUp(e) {
     e = keyCodeHelper.ensureWindowEvent(e);
     if (isValidFullModifier(e)) {
         if (keyCodeHelper.isValidKeyCode(e.keyCode)) {
-            let message = {};
-            //A flag to tell background.js the message is from Content Script.
-            message.request = true;
             let keyCodeChar = String.fromCharCode(e.keyCode);
-            message.key = keyCodeChar;
-
-            chrome.runtime.sendMessage(message, url => {
+            chrome.runtime.sendMessage({request: true, key: keyCodeChar}, url => {
                 if (url) {
-                    console.log(keyCodeChar, url);
                     window.open(url);
                 } else {
                     //Inject key code char to current web page for injected javascripts to
@@ -37,12 +31,11 @@ function monitorKeyUp(e) {
             }
         }
     } else if (isValidOptionModifier(e)) {
-        let message = {};
-        message.optionRequest = true;
-        message.location = location;
-        // Convert the key to uppercase.
-        message.key = String.fromCharCode(e.keyCode).toUpperCase();
-        chrome.runtime.sendMessage(message, url => {
+        chrome.runtime.sendMessage({
+            optionRequest: true,
+            location: location,
+            key: String.fromCharCode(e.keyCode).toUpperCase()// Convert the key to uppercase.
+        }, url => {
             if (url) {
                 //window.open(url);
                 location.href = url;
