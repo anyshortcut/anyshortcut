@@ -33,8 +33,7 @@ export default {
      * @return string the domain name
      * @return null  if the tld not including in tlds arrays
      */
-    extractDomainName(hostname)
-    {
+    extractDomainName(hostname){
         let parts = hostname.split('.');
         if (parts.length < 2) {
             return null;

@@ -45,7 +45,6 @@ function queryShortcutKeyByUrl(url) {
  * @returns the bind info. {"key":key,"value":value}
  */
 function queryBindInfoByUrl(url) {
-    let result = null;
     for (let key in keyBindingMaps) {
         if (key.length === 1 && keyBindingMaps.hasOwnProperty(key)) {
             let info = keyBindingMaps[key];
@@ -54,7 +53,7 @@ function queryBindInfoByUrl(url) {
             }
         }
     }
-    return result;
+    return null;
 }
 
 /**

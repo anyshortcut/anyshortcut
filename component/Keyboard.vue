@@ -107,6 +107,10 @@
                 type: Array,
                 default: function() {
                     return [];
+                },
+                coerce: function(value) {
+                    //Coerce the value is empty array instead null of undefined.
+                    return value ? value : [];
                 }
             }
         },
