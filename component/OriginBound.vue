@@ -33,7 +33,7 @@
                 </span>
                 <span>+</span>
                 <span>
-                    <input v-model="key" @click="showKeyboard = true"
+                    <input v-model="key" @mouseover="showKeyboard = true"
                            id="shortcut_key" placeholder="key" maxlength="1" required/>
                 </span>
                 <br/>

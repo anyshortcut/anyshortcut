@@ -37,6 +37,6 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --inline --hot --no-info --port 9099",
-    "build": "webpack --progress --hide-modules"
+    "build": "webpack --progress --hide-modules --colors --profile"
   }
 }

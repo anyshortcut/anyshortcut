@@ -12,7 +12,7 @@
                     <p>The domain <b>{{domain}}</b> already bound with <b>ALT+{{key}}</b></p>
                 </div>
                 <div v-else>
-                    <input v-model="key" @focus="showKeyboard = true" id="option-shortcut-key" placeholder="key"
+                    <input v-model="key" @mouseover="showKeyboard = true" id="option-shortcut-key" placeholder="key"
                            maxlength="1"
                            required/>
                     <input v-model="comment" placeholder="Comment for this url" required/>
