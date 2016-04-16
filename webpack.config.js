@@ -3,7 +3,8 @@ module.exports = {
         options: './main.js',
         contentScript: './js/keyeventmonitor.js',
         background: './js/background.js',
-        popup: './js/popup.js'
+        popup: './js/popup.js',
+        user: './js/user.js'
     },
     output: {
         path: 'build',

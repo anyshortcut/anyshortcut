@@ -15,6 +15,7 @@
   },
   "homepage": "https://gitlab.com/Folyd/Spruce#README",
   "dependencies": {
+    "firebase": "^2.4.2",
     "jquery": "^2.2.1",
     "material-design-lite": "^1.1.2",
     "moment": "^2.12.0",
