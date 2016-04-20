@@ -1,16 +1,28 @@
 import common from './common.js';
 import keyCodeHelper from './keycode.js';
+import Firebase from 'firebase';
 
 const storage = chrome.storage.local;
-var keyBindingMaps;
+let firebase = new Firebase('https://shurl.firebaseio.com');
+/**
+ * Firebase Authentication
+ */
+let auth;
+/**
+ * Firebase user child reference
+ */
+let userRef;
+
+let keyBindingMaps;
 /**
  * Current active tab in current window.
  */
-var activeTab;
+let activeTab;
 /**
  * A object contain recent tab ids in each window.
  */
-var windowRecentTabIds = {};
+let windowRecentTabIds = {};
+
 // chrome.tabs.onHighlighted.addListener(onTabHighlighted);
 chrome.tabs.onActivated.addListener(onTabActivated);
 chrome.tabs.onUpdated.addListener(onTabUpdated);
@@ -21,12 +33,37 @@ chrome.windows.onRemoved.addListener(onWindowRemoved);
 chrome.runtime.onMessage.addListener(onMessageReceiver);
 chrome.commands.onCommand.addListener(onCommandFired);
 
+firebase.onAuth(authData => {
+    auth = authData;
+
+    if (authData) {
+        //TODO Sync previous data to server
+        userRef = firebase.child('user/' + authData.uid);
+        userRef.orderByKey().on("value", snapshot => {
+            keyBindingMaps = snapshot.val();
+            console.log('onAuth snapshot : ', keyBindingMaps);
+        });
+    } else {
+    }
+});
+
 queryAllKeyBindingItems();
 
+/**
+ * Query all key binding items from chrome storage for unauthentic user.
+ */
 function queryAllKeyBindingItems() {
-    storage.get(null, items => {
-        keyBindingMaps = items;
-    });
+    //TODO add auth listener for user login or logout
+    if (auth) {
+        //    userRef.child(auth.uid).orderByKey().once("value", snapshot => {
+        //        keyBindingMaps = snapshot.val();
+        //        console.log('query snapshot : ', keyBindingMaps);
+        //    });
+    } else {
+        storage.get(null, items => {
+            keyBindingMaps = items;
+        });
+    }
 }
 
 /**
@@ -93,7 +130,6 @@ function handleOnTabInfoUpdate(url) {
 function onTabActivated(activeInfo) {
     //Get current actived tab
     chrome.tabs.get(activeInfo.tabId, tab => {
-        console.log(tab);
         handleOnTabInfoUpdate(tab.url);
         activeTab = tab;
 
@@ -172,21 +208,38 @@ function onMessageReceiver(message, sender, sendResponse) {
     switch (true) {
         case message.request:
         {
+            //storage.get(key, items => {
+            //    //item value would be {},if not exist the key.
+            //    //Besure to check item value is empty.
+            //    if (Object.keys(items).length) {
+            //        console.log(items);
+            //        let value = items[key];
+            //        sendResponse(value.url);
+            //    } else {
+            //        // The shortcut key not bound yet.
+            //        sendResponse(null);
+            //        injectUnboundTipsResources();
+            //    }
+            //});
+
             //If message exist key 'request', represent the message from content script.
             let key = message.key;
-            storage.get(key, items => {
-                //item value would be {},if not exist the key.
-                //Besure to check item value is empty.
-                if (Object.keys(items).length) {
-                    console.log(items);
-                    let value = items[key];
-                    sendResponse(value.url);
-                } else {
-                    // The shortcut key not bound yet.
-                    sendResponse(null);
-                    injectUnboundTipsResources();
+            if (keyBindingMaps.hasOwnProperty(key)) {
+                let value = keyBindingMaps[key];
+                console.log('request key value:', value);
+                sendResponse(value.url);
+
+                // Increase the shortcut open times.
+                if (auth) {
+                    userRef.child(key + '/times').transaction(times => {
+                        return times + 1;
+                    });
                 }
-            });
+            } else {
+                // The shortcut key not bound yet.
+                sendResponse(null);
+                injectUnboundTipsResources();
+            }
             break;
         }
         case message.keys:
@@ -208,29 +261,56 @@ function onMessageReceiver(message, sender, sendResponse) {
         case message.delete:
         {
             // Delete the url shortcut.
-            let key = queryShortcutKeyByUrl(message.url);
-            if (key) {
-                storage.remove(key, () => {
-                    sendResponse(true);
-                    setPopupIcon(false);
-                    //Update keyBindingMaps if old shortcut unbound.
-                    queryAllKeyBindingItems();
+            if (auth) {
+                userRef.child(message.key).remove(error => {
+                    if (error) {
+                        //Failed
+                        sendResponse(false);
+                    } else {
+                        sendResponse(true);
+                        setPopupIcon(false);
+
+                    }
                 });
             } else {
-                //Failed
-                sendResponse(false);
+                let key = queryShortcutKeyByUrl(message.url);
+                if (key) {
+                    storage.remove(key, () => {
+                        sendResponse(true);
+                        setPopupIcon(false);
+                        //Update keyBindingMaps if old shortcut unbound.
+                        queryAllKeyBindingItems();
+                    });
+                } else {
+                    //Failed
+                    sendResponse(false);
+                }
             }
             break;
         }
         case message.save:
         {
             //Save shortcut item to storage.
-            storage.set(message.data, () => {
-                sendResponse("Success");
-                setPopupIcon(true);
-                //Update keyBindingMaps if new shortcut bound.
-                queryAllKeyBindingItems();
-            });
+            //  */user/user_id/A/[url,title,favicon,times]
+            //  */user/user_id/github.com/A/[[url,title,favicon,times]]
+            if (auth) {
+                userRef.child(message.key).set(message.data, error => {
+                    if (error) {
+                        console.log('Synchronization failed');
+                    } else {
+                        sendResponse("Success");
+                        setPopupIcon(true);
+                        console.log('Synchronization succeeded');
+                    }
+                });
+            } else {
+                storage.set(message.data, () => {
+                    sendResponse("Success");
+                    setPopupIcon(true);
+                    //Update keyBindingMaps if new shortcut bound.
+                    queryAllKeyBindingItems();
+                });
+            }
             break;
         }
         case message.optionCheck:

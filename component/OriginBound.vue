@@ -15,7 +15,7 @@
                 <span>
                     <strong id="bound_shortcut_key">{{key}}</strong>
                 </span>
-                <p id="bound_time">{{value.time | fromNow}}</p>
+                <p id="bound_time">{{value.timestamp | fromNow}}</p>
                 <button @click="handleShortcutUnbinding" id="unbind_shortcut_button">Delete Shortcut</button>
             </div>
         </div>
@@ -96,21 +96,21 @@
         },
         methods: {
             handleShortcutBinding: function() {
-                let binding = {};
-                binding[this.key] = {
+                let data = {
                     url: this.tab.url,
                     title: this.tab.title,
                     favicon: this.tab.favIconUrl,
-                    time: Date.now()
+                    timestamp: Date.now(),
+                    times: 0
                 };
 
-                chrome.runtime.sendMessage({save: true, data: binding}, response => {
+                chrome.runtime.sendMessage({save: true, key: this.key, data: data}, response => {
                     this.bound = true;
                     this.boundTips = 'Great job!you have bound a shortcut for this url!';
                 });
             },
             handleShortcutUnbinding: function() {
-                chrome.runtime.sendMessage({delete: true, url: this.tab.url}, result => {
+                chrome.runtime.sendMessage({delete: true, key: this.key, url: this.tab.url}, result => {
                     if (result) {
                         this.bound = false;
                         this.key = '';
