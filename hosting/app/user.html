@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <script src="build/user.js"></script>
+</head>
+
+<body>
+<input type="email" id="username" v-model="username">
+<input type="password" id="password" v-model="password">
+<div v-show="registered">
+    <button id="sing_in" @click="signIn">Sign in</button>
+    <!--<button @click="switchToForgotPassword">Forgot password?</button>-->
+    <button @click="switchToSingUpState">To Sign Up</button>
+</div>
+<div v-else>
+    <button id="sign_up" @click="signUp">Register</button>
+</div>
+</body>
+</html>

@@ -5,5 +5,7 @@
     "firebase.json",
     "**/.*",
     "**/node_modules/**"
-  ]
+  ],
+  "cleanUrl": true,
+  "trailingSlash": false
 }
