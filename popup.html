@@ -10,10 +10,13 @@
     <origin-bound :tab="tab"></origin-bound>
     <option-bound :tab="tab"></option-bound>
 
-    <div id="login">
+    <div v-show="authenticated">
+        {{authId}}
+    </div>
+    <div v-else>
         Sign up an account to sync all your data!
 
-        <button><a href="user.html" target="_blank">Sign up</a></button>
+        <a href="https://shurl.firebaseapp.com/" target="_blank">Sign up</a>
     </div>
 </div>
 <footer>
