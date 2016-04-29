@@ -41,6 +41,22 @@
       ],
       "all_frames": true,
       "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "*://shurl.firebaseapp.com/extension_login_success"
+      ],
+      "js": [
+        "js/login-injection.js"
+      ]
+    },
+    {
+      "matches": [
+        "*://shurl.firebaseapp.com/login"
+      ],
+      "js": [
+        "js/logout-injection.js"
+      ]
     }
   ],
   "commands": {

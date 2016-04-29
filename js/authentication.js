@@ -1,8 +1,8 @@
 import FireBase from 'firebase';
 
-var firebase = new FireBase('https://shurl.firebaseio.com');
+let firebase = new FireBase('https://shurl.firebaseio.com');
 
-export default{
+let auth = {
     signOut(){
         firebase.unauth();
     },
@@ -17,5 +17,20 @@ export default{
                 }
             });
     }
-}
+};
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    switch (true) {
+        case message.loginSuccessful:
+            auth.signIn(message.data);
+            break;
+        case message.logout:
+            auth.signOut();
+            break;
+        default:
+            break;
+    }
+});
+
+export default auth;
 
