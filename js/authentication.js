@@ -1,21 +1,8 @@
-import FireBase from 'firebase';
-
-let firebase = new FireBase('https://shurl.firebaseio.com');
-
 let auth = {
     signOut(){
-        firebase.unauth();
     },
 
     signIn(authData){
-        firebase.authWithPassword(authData,
-            (error, authData) => {
-                if (error) {
-                    console.log("Login Failed!", error);
-                } else {
-                    console.log("Authenticated successfully with payload:", authData);
-                }
-            });
     }
 };
 

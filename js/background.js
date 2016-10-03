@@ -1,17 +1,7 @@
 import common from './common.js';
 import keyCodeHelper from './keycode.js';
-import Firebase from 'firebase';
 
 const storage = chrome.storage.local;
-let firebase = new Firebase('https://shurl.firebaseio.com');
-/**
- * Firebase Authentication
- */
-let auth;
-/**
- * Firebase user child reference
- */
-let userRef;
 
 let keyBindingMaps;
 /**
@@ -33,20 +23,6 @@ chrome.windows.onRemoved.addListener(onWindowRemoved);
 chrome.runtime.onMessage.addListener(onMessageReceiver);
 chrome.commands.onCommand.addListener(onCommandFired);
 
-firebase.onAuth(authData => {
-    auth = authData;
-
-    if (authData) {
-        //TODO Sync previous data to server
-        userRef = firebase.child('user/' + authData.uid);
-        userRef.orderByKey().on("value", snapshot => {
-            keyBindingMaps = snapshot.val();
-            console.log('onAuth snapshot : ', keyBindingMaps);
-        });
-    } else {
-    }
-});
-
 queryAllKeyBindingItems();
 
 /**
@@ -54,16 +30,9 @@ queryAllKeyBindingItems();
  */
 function queryAllKeyBindingItems() {
     //TODO add auth listener for user login or logout
-    if (auth) {
-        //    userRef.child(auth.uid).orderByKey().once("value", snapshot => {
-        //        keyBindingMaps = snapshot.val();
-        //        console.log('query snapshot : ', keyBindingMaps);
-        //    });
-    } else {
-        storage.get(null, items => {
-            keyBindingMaps = items;
-        });
-    }
+    storage.get(null, items => {
+        keyBindingMaps = items;
+    });
 }
 
 /**
@@ -206,22 +175,7 @@ function onWindowRemoved(windowId) {
 
 function onMessageReceiver(message, sender, sendResponse) {
     switch (true) {
-        case message.request:
-        {
-            //storage.get(key, items => {
-            //    //item value would be {},if not exist the key.
-            //    //Besure to check item value is empty.
-            //    if (Object.keys(items).length) {
-            //        console.log(items);
-            //        let value = items[key];
-            //        sendResponse(value.url);
-            //    } else {
-            //        // The shortcut key not bound yet.
-            //        sendResponse(null);
-            //        injectUnboundTipsResources();
-            //    }
-            //});
-
+        case message.request: {
             //If message exist key 'request', represent the message from content script.
             let key = message.key;
             if (keyBindingMaps.hasOwnProperty(key)) {
@@ -229,12 +183,7 @@ function onMessageReceiver(message, sender, sendResponse) {
                 console.log('request key value:', value);
                 sendResponse(value.url);
 
-                // Increase the shortcut open times.
-                if (auth) {
-                    userRef.child(key + '/times').transaction(times => {
-                        return times + 1;
-                    });
-                }
+                //TODO Increase the shortcut open times.
             } else {
                 // The shortcut key not bound yet.
                 sendResponse(null);
@@ -242,86 +191,53 @@ function onMessageReceiver(message, sender, sendResponse) {
             }
             break;
         }
-        case message.keys:
-        {
+        case message.keys: {
             let keys = Object.keys(keyBindingMaps).filter(key => {
                 return keyCodeHelper.isValidKey(key);
             });
             sendResponse(keys);
             break;
         }
-        case message.check:
-        {
+        case message.check: {
             // Check url whether bound shortcut.
             // see popup.js requestCheckUrlBound() method.
             let response = queryBindInfoByUrl(message.url);
             sendResponse(response);
             break;
         }
-        case message.delete:
-        {
+        case message.delete: {
             // Delete the url shortcut.
-            if (auth) {
-                userRef.child(message.key).remove(error => {
-                    if (error) {
-                        //Failed
-                        sendResponse(false);
-                    } else {
-                        sendResponse(true);
-                        setPopupIcon(false);
-
-                    }
-                });
-            } else {
-                let key = queryShortcutKeyByUrl(message.url);
-                if (key) {
-                    storage.remove(key, () => {
-                        sendResponse(true);
-                        setPopupIcon(false);
-                        //Update keyBindingMaps if old shortcut unbound.
-                        queryAllKeyBindingItems();
-                    });
-                } else {
-                    //Failed
-                    sendResponse(false);
-                }
-            }
-            break;
-        }
-        case message.save:
-        {
-            //Save shortcut item to storage.
-            //  */user/user_id/A/[url,title,favicon,times]
-            //  */user/user_id/github.com/A/[[url,title,favicon,times]]
-            if (auth) {
-                userRef.child(message.key).set(message.data, error => {
-                    if (error) {
-                        console.log('Synchronization failed');
-                    } else {
-                        sendResponse("Success");
-                        setPopupIcon(true);
-                        console.log('Synchronization succeeded');
-                    }
-                });
-            } else {
-                storage.set(message.data, () => {
-                    sendResponse("Success");
-                    setPopupIcon(true);
-                    //Update keyBindingMaps if new shortcut bound.
+            let key = queryShortcutKeyByUrl(message.url);
+            if (key) {
+                storage.remove(key, () => {
+                    sendResponse(true);
+                    setPopupIcon(false);
+                    //Update keyBindingMaps if old shortcut unbound.
                     queryAllKeyBindingItems();
                 });
+            } else {
+                //Failed
+                sendResponse(false);
             }
             break;
         }
-        case message.optionCheck:
-        {
+        case message.save: {
+            //Save shortcut item to storage.
+            storage.set(message.data, () => {
+                sendResponse("Success");
+                setPopupIcon(true);
+                //Update keyBindingMaps if new shortcut bound.
+                queryAllKeyBindingItems();
+            });
+            break;
+        }
+        case message.optionCheck: {
             // Check whether the domain is valid,can option access.
             //let domain = message.domain;
             sendResponse(keyBindingMaps[message.domain]);
             break;
         }
-        case message.optionRequest:
-        {
+        case message.optionRequest: {
             // Access options shortcut key for correct domain.
             //FIXME:Module build failed: TypeError: background.js: Property body of LabeledStatement expected node
             // to be of a type ["Statement"] but instead got null
@@ -346,8 +262,7 @@ function onMessageReceiver(message, sender, sendResponse) {
             });
             break;
         }
-        case message.optionSave:
-        {
+        case message.optionSave: {
             // Save option access bound item data.
             let key = message.domain;
             storage.get(key, result => {
@@ -365,12 +280,10 @@ function onMessageReceiver(message, sender, sendResponse) {
             });
             break;
         }
-        case message.optionDelete:
-        {
+        case message.optionDelete: {
             break;
         }
-        default:
-        {
+        default: {
             break;
         }
     }

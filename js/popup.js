@@ -1,11 +1,7 @@
-import Vue from 'vue';
-import OriginBound from '../component/OriginBound.vue'
-import OptionBound from '../component/OptionBound.vue'
-
-import common from './common.js';
-import Firebase from  'firebase';
-
-let firebase = new Firebase('https://shurl.firebaseio.com');
+import Vue from "vue";
+import OriginBound from "../component/OriginBound.vue";
+import OptionBound from "../component/OptionBound.vue";
+import common from "./common.js";
 
 window.onload = function() {
     Vue.config.debug = true;
@@ -14,14 +10,6 @@ window.onload = function() {
         el: 'body',
         data: {
             tab: {}
-        },
-        computed: {
-            authenticated: function() {
-                return !!firebase.getAuth();
-            },
-            authId: function() {
-                return firebase.getAuth.uid;
-            }
         },
         components: {
             OriginBound,
