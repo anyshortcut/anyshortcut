@@ -205,7 +205,7 @@ function onMessageReceiver(message, sender, sendResponse) {
             sendResponse(response);
             break;
         }
-        case message.delete: {
+        case message.remove: {
             // Delete the url shortcut.
             let key = queryShortcutKeyByUrl(message.url);
             if (key) {
@@ -223,7 +223,9 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
         case message.save: {
             //Save shortcut item to storage.
-            storage.set(message.data, () => {
+            let shortcut = {};
+            shortcut[message.key] = message.data;
+            storage.set(shortcut, () => {
                 sendResponse("Success");
                 setPopupIcon(true);
                 //Update keyBindingMaps if new shortcut bound.
