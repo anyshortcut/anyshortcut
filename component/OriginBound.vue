@@ -81,9 +81,8 @@
         watch: {
             //Watch the tab value async update,then to check the url whether bound.
             'tab': function() {
-                let url = this.tab.url;
                 // Request check current tab url was bound in background.js
-                chrome.runtime.sendMessage({check: true, url: url}, bindInfo => {
+                chrome.runtime.sendMessage({check: true}, bindInfo => {
                     // bind info. {"key":key,"value":value}
                     //TODO How to check javascript object null or undefined properly?
                     if (bindInfo) {
@@ -96,21 +95,13 @@
         },
         methods: {
             handleShortcutBinding: function() {
-                let data = {
-                    url: this.tab.url,
-                    title: this.tab.title,
-                    favicon: this.tab.favIconUrl,
-                    createdTime: Date.now(),
-                    openTimes: 0
-                };
-
-                chrome.runtime.sendMessage({save: true, key: this.key, data: data}, response => {
+                chrome.runtime.sendMessage({save: true, key: this.key}, response => {
                     this.bound = true;
                     this.boundTips = 'Great job!you have bound a shortcut for this url!';
                 });
             },
             handleShortcutUnbinding: function() {
-                chrome.runtime.sendMessage({remove: true, key: this.key, url: this.tab.url}, result => {
+                chrome.runtime.sendMessage({remove: true}, result => {
                     if (result) {
                         this.bound = false;
                         this.key = '';

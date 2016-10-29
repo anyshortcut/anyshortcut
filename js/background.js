@@ -201,36 +201,48 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
         case message.check: {
             // Check url whether bound shortcut.
-            // see popup.js requestCheckUrlBound() method.
-            let response = queryBindInfoByUrl(message.url);
-            sendResponse(response);
+            common.getCurrentTab(tab => {
+                let response = queryBindInfoByUrl(tab.url);
+                sendResponse(response);
+            });
             break;
         }
         case message.remove: {
             // Delete the url shortcut.
-            let key = queryShortcutKeyByUrl(message.url);
-            if (key) {
-                storage.remove(key, () => {
-                    sendResponse(true);
-                    setPopupIcon(false);
-                    //Update keyBindingMaps if old shortcut unbound.
-                    queryAllKeyBindingItems();
-                });
-            } else {
-                //Failed
-                sendResponse(false);
-            }
+            common.getCurrentTab(tab => {
+                let key = queryShortcutKeyByUrl(tab.url);
+                if (key) {
+                    storage.remove(key, () => {
+                        sendResponse(true);
+                        setPopupIcon(false);
+                        //Update keyBindingMaps if old shortcut unbound.
+                        queryAllKeyBindingItems();
+                    });
+                } else {
+                    //Failed
+                    sendResponse(false);
+                }
+            });
             break;
         }
         case message.save: {
             //Save shortcut item to storage.
-            let shortcut = {};
-            shortcut[message.key] = message.data;
-            storage.set(shortcut, () => {
-                sendResponse("Success");
-                setPopupIcon(true);
-                //Update keyBindingMaps if new shortcut bound.
-                queryAllKeyBindingItems();
+            common.getCurrentTab(tab => {
+                let shortcut = {};
+                shortcut[message.key] = {
+                    url: tab.url,
+                    title: tab.title,
+                    favicon: tab.favIconUrl,
+                    createdTime: Date.now(),
+                    openTimes: 0
+                };
+
+                storage.set(shortcut, () => {
+                    sendResponse("Success");
+                    setPopupIcon(true);
+                    //Update keyBindingMaps if new shortcut bound.
+                    queryAllKeyBindingItems();
+                });
             });
             break;
         }
@@ -242,8 +254,6 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
         case message.optionRequest: {
             // Access options shortcut key for correct domain.
-            //FIXME:Module build failed: TypeError: background.js: Property body of LabeledStatement expected node
-            // to be of a type ["Statement"] but instead got null
             //let domain = common.extractDomainName(message.location.hostname);
             var domain = common.extractDomainName(message.location.hostname);
             if (!domain) {
