@@ -28,31 +28,51 @@ var shortcutKeyStyle = `
     color: #dd4814;
 `;
 
+var p = document.getElementById('key-code-char');
+var pressed_key = p.textContent;
+
 var div = document.getElementById('inject-tips');
 if (div) {
     div.style.display = 'block';
-    hideElementDelay(div);
 } else {
     div = document.createElement('div');
     div.id = 'inject-tips';
     div.style = divStyle;
-    div.innerHTML = '<p>the shortcut key <span id="shortcut-key-span"></span> not bound any url yet!</p>';
+    div.innerHTML = '<p>the shortcut key <span id="shortcut-key-span"></span> not bound any url yet!</p>' +
+        '<p>Would you like to bound this key with the url?</p>';
     div.firstChild.style = pStyle;
-    var button = document.createElement('button');
-    button.textContent = 'Got it';
-    button.style = buttonStyle;
-    button.onclick = () => {
+
+    var positive_button = document.createElement('button');
+    positive_button.textContent = 'Yes';
+    positive_button.style = buttonStyle;
+    positive_button.onclick = () => {
+        div.style.display = 'none';
+
+        // TODO check current page url whether bound?
+        chrome.runtime.sendMessage({save: true, key: pressed_key}, response => {
+            var div_tips = document.createElement('div');
+            div_tips.style = divStyle;
+            div_tips.innerHTML = 'Great! you bound the url with this key!';
+            document.body.insertAdjacentElement('beforeEnd', div_tips);
+
+            hideElementDelay(div_tips)
+        });
+    };
+    div.appendChild(positive_button);
+
+    var negative_button = document.createElement('button');
+    negative_button.textContent = 'No';
+    negative_button.style = buttonStyle;
+    negative_button.onclick = () => {
         div.style.display = 'none';
     };
-    div.appendChild(button);
+    div.appendChild(negative_button);
     document.body.insertAdjacentElement('beforeEnd', div);
-    hideElementDelay(div);
 }
 
-var p = document.getElementById('key-code-char');
 var span = document.getElementById('shortcut-key-span');
 span.style = shortcutKeyStyle;
-span.textContent = 'ALT+SHIFT+' + p.textContent;
+span.textContent = 'ALT+SHIFT+' + pressed_key;
 
 function hideElementDelay(element, delay) {
     var timeoutId = window.setTimeout(() => {
