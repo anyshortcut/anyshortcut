@@ -137,6 +137,7 @@ function onTabDetached(tabId, detachInfo) {
 }
 /**
  * A callback function to detect current tab been removed or closed.
+ *@param tabId
  *@param removeInfo looks like this {integer:windowId,boolean:isWindowClosing}
  */
 function onTabRemoved(tabId, removeInfo) {

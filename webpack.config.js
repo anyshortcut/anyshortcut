@@ -1,6 +1,5 @@
 module.exports = {
     entry: {
-        //options: './main.js',
         contentScript: './js/keyeventmonitor.js',
         background: './js/background.js',
         popup: './js/popup.js',

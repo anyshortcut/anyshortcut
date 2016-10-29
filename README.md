@@ -1,3 +1,3 @@
 #Spruce
 
-A chrome extesion which help you bind a shortcut for any url!
+A chrome extension which help you bind a shortcut for any url!
