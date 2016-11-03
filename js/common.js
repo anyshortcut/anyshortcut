@@ -48,14 +48,17 @@ export default {
         return parts.join('.');
     },
     isUrlEquivalent(url1, url2){
-        //TODO check http/https protocol equality
-        //Check slash ignore equality
-        return trimTrailSlash(url1) === trimTrailSlash(url2);
+        //Check slash ignore equality, ignore url schema equality.
+        return trimTrailSlash(stripUrlSchema(url1)) === trimTrailSlash(stripUrlSchema(url2));
     }
 }
 /**
  * Remove trail slash.
  */
-function trimTrailSlash(str) {
-    return str.replace(/\/$/, '');
+function trimTrailSlash(url) {
+    return url.replace(/\/$/, '');
+}
+
+function stripUrlSchema(url) {
+    return url.split('://')[1]
 }
