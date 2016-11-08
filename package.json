@@ -16,10 +16,8 @@
   "homepage": "https://gitlab.com/Folyd/Spruce#README",
   "dependencies": {
     "jquery": "^2.2.1",
-    "material-design-lite": "^1.1.2",
     "moment": "^2.12.0",
-    "vue": "^1.0.17",
-    "vue-router": "^0.7.11"
+    "vue": "^1.0.17"
   },
   "devDependencies": {
     "babel-core": "^6.7.4",

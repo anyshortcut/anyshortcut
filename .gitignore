@@ -2,3 +2,6 @@
 node_modules
 build.js
 build
+target
+*.crx
+*.pem
