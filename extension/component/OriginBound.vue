@@ -81,7 +81,7 @@
         watch: {
             //Watch the tab value async update,then to check the url whether bound.
             'tab': function() {
-                // Request check current tab url was bound in background.js
+                // Request check current tab url was bound in message-handler.js
                 chrome.runtime.sendMessage({check: true}, bindInfo => {
                     // bind info. {"key":key,"value":value}
                     //TODO How to check javascript object null or undefined properly?
