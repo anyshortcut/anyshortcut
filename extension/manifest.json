@@ -37,7 +37,7 @@
       ],
       "match_about_blank": true,
       "js": [
-        "build/contentScript.js"
+        "build/content_script.js"
       ],
       "all_frames": true,
       "run_at": "document_start"
@@ -47,7 +47,7 @@
         "*://shurl.firebaseapp.com/extension_login_success"
       ],
       "js": [
-        "js/login-injection.js"
+        "js/script/login-injection.js"
       ]
     },
     {
@@ -55,7 +55,7 @@
         "*://shurl.firebaseapp.com/login"
       ],
       "js": [
-        "js/logout-injection.js"
+        "js/script/logout-injection.js"
       ]
     }
   ],

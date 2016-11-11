@@ -1,4 +1,4 @@
-import keyCodeHelper from './keycode.js';
+import keyCodeHelper from '../keycode.js';
 
 function monitorKeyUp(e) {
     e = keyCodeHelper.ensureWindowEvent(e);

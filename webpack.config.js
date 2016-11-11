@@ -1,10 +1,10 @@
 module.exports = {
     entry: {
-        contentScript: './extension/js/keyeventmonitor.js',
+        content_script: './extension/js/script/key-event-monitor.js',
         background: ['./extension/js/background/message-handler.js',
             './extension/js/background/commands.js'],
-        popup: './extension/js/popup.js',
-        authentication: './extension/js/authentication.js'
+        popup: './extension/js/popup/popup.js',
+        authentication: './extension/js/auth/authentication.js'
     },
     output: {
         path: 'extension/build',
