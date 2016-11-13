@@ -1,9 +1,10 @@
 let auth = {
+    authenticated: true,
     signOut(){
     },
 
     signIn(authData){
-    }
+    },
 };
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {

@@ -14,7 +14,7 @@ queryAllKeyBindingItems();
  * Query all key binding items from chrome storage for unauthentic user.
  */
 function queryAllKeyBindingItems() {
-    //TODO add auth listener for user login or logout
+    //TODO add api listener for user login or logout
     storage.get(null, items => {
         keyBindingMaps = items;
     });
@@ -79,15 +79,7 @@ function handleOnTabInfoUpdate(url) {
 
 function onMessageReceiver(message, sender, sendResponse) {
     switch (true) {
-        case message.tabUpdated: {
-            //Handle on tab info updated
-            let url = message.url;
-            console.log('tab updated:', url);
-            setPopupIcon(url ? checkUrlBound(url) : false);
-            break;
-        }
         case message.request: {
-            //If message exist key 'request', represent the message from content script.
             let key = message.key;
             if (keyBindingMaps.hasOwnProperty(key)) {
                 let value = keyBindingMaps[key];
