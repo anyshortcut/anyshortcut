@@ -1,5 +1,6 @@
-import common from '../common.js';
-import keyCodeHelper from '../keycode.js';
+import common from "../common.js";
+import keyCodeHelper from "../keycode.js";
+import {origin} from "../api/client.js";
 
 const storage = chrome.storage.local;
 
@@ -130,20 +131,22 @@ function onMessageReceiver(message, sender, sendResponse) {
         case message.save: {
             //Save shortcut item to storage.
             common.getCurrentTab(tab => {
-                let shortcut = {};
-                shortcut[message.key] = {
+                origin.bindShortcut(message.key, {
                     url: tab.url,
                     title: tab.title,
                     favicon: tab.favIconUrl,
-                    createdTime: Date.now(),
-                    openTimes: 0
-                };
-
-                storage.set(shortcut, () => {
-                    sendResponse("Success");
-                    setPopupIcon(true);
-                    //Update keyBindingMaps if new shortcut bound.
-                    queryAllKeyBindingItems();
+                }).then(response => {
+                    let shortcut = response.shortcut;
+                    let bind = {};
+                    bind[shortcut.key] = shortcut;
+                    storage.set(bind, () => {
+                        sendResponse("Success");
+                        setPopupIcon(true);
+                        //Update keyBindingMaps if new shortcut bound.
+                        queryAllKeyBindingItems();
+                    });
+                }).catch(error => {
+                    console.log(error);
                 });
             });
             break;

@@ -1,7 +1,7 @@
 import {origin, option} from '../api/client.js';
 import auth from '../api/auth.js';
 
-chrome.storage.onChanged.addListener((changes, areaName)=> {
+function onStorageChanged(changes, areaName) {
     // sync data if the user authenticated.
     if (!auth.authenticated) {
         return;
@@ -16,7 +16,7 @@ chrome.storage.onChanged.addListener((changes, areaName)=> {
                 // Origin shortcut
                 if (change.newValue && !change.oldValue) {
                     // a new value added
-                    origin.bindShortcut(null);
+                    origin.bindShortcut(key, change.newValue);
                 } else if (!change.newValue && change.oldValue) {
                     //  a old value removed
                 } else if (change.newValue && change.oldValue) {
@@ -35,4 +35,21 @@ chrome.storage.onChanged.addListener((changes, areaName)=> {
             }
         }
     }
-});
+}
+
+let store = {
+    enableOnStorageListener(){
+        chrome.storage.onChanged.addListener(onStorageChanged);
+    },
+    /**
+     * Disable the listener when on batch data syncing.
+     */
+    disableOnStorageListener(){
+        chrome.storage.onChanged.addListener(null);
+    }
+};
+// store.enableOnStorageListener();
+
+export default store;
+
+
