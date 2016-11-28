@@ -1,3 +1,4 @@
+import injector from './injector.js';
 import common from "../common.js";
 import keyCodeHelper from "../keycode.js";
 import {origin} from "../api/client.js";
@@ -91,7 +92,7 @@ function onMessageReceiver(message, sender, sendResponse) {
             } else {
                 // The shortcut key not bound yet.
                 sendResponse(null);
-                injectUnboundTipsResources();
+                injector.injectUnboundTipsResources();
             }
             break;
         }
@@ -207,56 +208,6 @@ function onMessageReceiver(message, sender, sendResponse) {
     //Must return true otherwise sendResponse() not working.
     //More detail see official documentations [chrome.runtime.onMessage()].
     return true;
-}
-
-/**
- * Inject unbound tips javascript and css resources.
- */
-function injectUnboundTipsResources() {
-    injectResources(['js/script/inject-unbound-tips.js'])
-        .then(() => {
-            console.log('inject success!');
-        }).catch(error => {
-        console.log('Eroor occur ${error}');
-    });
-}
-
-/**
- * Injects resources provided as paths into active tab in chrome
- * @param files {string[]}
- * @returns {Promise}
- */
-function injectResources(files) {
-    let getFileExtension = /(?:\.([^.]+))?$/;
-
-    //helper function that returns appropriate chrome.tabs function to load resource
-    let loadFunctionForExtension = (ext) => {
-        switch (ext) {
-            case 'js':
-                return chrome.tabs.executeScript;
-            case 'css':
-                return chrome.tabs.insertCSS;
-            default:
-                throw new Error('Unsupported resource type')
-        }
-    };
-
-    return Promise.all(files.map(resource => {
-        new Promise((resolve, reject) => {
-            let ext = getFileExtension.exec(resource)[1];
-            let injectFunction = loadFunctionForExtension(ext);
-
-            injectFunction(null, {
-                file: resource
-            }, () => {
-                if (chrome.runtime.lastError) {
-                    reject(chrome.runtime.lastError);
-                } else {
-                    resolve();
-                }
-            });
-        });
-    }));
 }
 
 /**
