@@ -101,7 +101,7 @@
                 });
             },
             handleShortcutUnbinding: function() {
-                chrome.runtime.sendMessage({remove: true}, result => {
+                chrome.runtime.sendMessage({remove: true, key: this.key}, result => {
                     if (result) {
                         this.bound = false;
                         this.key = '';

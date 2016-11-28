@@ -1,13 +1,22 @@
 import axios from 'axios';
+import auth from '../api/auth.js';
 
 let request = axios.create({
     baseURL: 'https://shurlly.herokuapp.com/',
-    headers: {
-        'Authorization': 'eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0NzcyNDA5OTYsImlkIjoxfQ.VakwR7efpnjI35hjOMg-efDn-QiYNFeI1VNTzo4BELc'
-    },
     contentType: "application/json; charset=utf-8",
 });
 
+// Add custom axios interceptor for custom request authenticated check.
+request.interceptors.request.use(config => {
+    console.log(config);
+    if (auth.token) {
+        config.headers.common['Authorization'] = auth.token;
+    }
+    // return Promise.resolve(config.data);
+    return config;
+}, error => {
+    return Promise.reject(error);
+});
 // Add custom axios interceptor for custom error handle.
 request.interceptors.response.use(response => {
     if (response.data.code !== 200) {
@@ -20,10 +29,10 @@ request.interceptors.response.use(response => {
 
 let origin = {
     bindShortcut(key, shortcut){
-        return request.post('shortcut/' + key, shortcut);
+        return request.post(`shortcut/${key}`, shortcut);
     },
     unbindShortcut(id){
-        return request.delete('shortcut/' + id);
+        return request.put(`shortcut/${id}/unbind`);
     },
     increaseShortcutOpenTimes(id){
 

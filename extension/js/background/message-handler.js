@@ -112,19 +112,18 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
         case message.remove: {
             // Delete the url shortcut.
-            common.getCurrentTab(tab => {
-                let key = queryShortcutKeyByUrl(tab.url);
-                if (key) {
-                    storage.remove(key, () => {
-                        sendResponse(true);
-                        setPopupIcon(false);
+            let shortcut = keyBindingMaps[message.key];
+            origin.unbindShortcut(shortcut.id)
+                .then(response => {
+                    storage.remove(message.key, () => {
                         //Update keyBindingMaps if old shortcut unbound.
                         queryAllKeyBindingItems();
+                        sendResponse(true);
+                        setPopupIcon(false);
                     });
-                } else {
-                    //Failed
-                    sendResponse(false);
-                }
+                }).catch(error=> {
+                console.log(error);
+                sendResponse(false);
             });
             break;
         }

@@ -1,5 +1,6 @@
 let auth = {
     authenticated: true,
+    token: 'eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE0NzcyNDA5OTYsImlkIjoxfQ.VakwR7efpnjI35hjOMg-efDn-QiYNFeI1VNTzo4BELc',
     signOut(){
     },
 
