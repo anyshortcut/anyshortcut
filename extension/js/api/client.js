@@ -12,7 +12,6 @@ request.interceptors.request.use(config => {
     if (auth.token) {
         config.headers.common['Authorization'] = auth.token;
     }
-    // return Promise.resolve(config.data);
     return config;
 }, error => {
     return Promise.reject(error);
@@ -29,12 +28,13 @@ request.interceptors.response.use(response => {
 
 let origin = {
     bindShortcut(key, shortcut){
-        return request.post(`shortcut/${key}`, shortcut);
+        return request.post(`shortcut/key/${key}`, shortcut);
     },
     unbindShortcut(id){
         return request.put(`shortcut/${id}/unbind`);
     },
     increaseShortcutOpenTimes(id){
+        return request.put(`shortcut/${id}/times`);
 
     },
     /**

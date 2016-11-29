@@ -88,7 +88,18 @@ function onMessageReceiver(message, sender, sendResponse) {
                 console.log('request key value:', value);
                 sendResponse(value.url);
 
-                //TODO Increase the shortcut open times.
+                origin.increaseShortcutOpenTimes(value.id)
+                    .then(response => {
+                        let shortcut = response.shortcut;
+                        let bind = {};
+                        bind[shortcut.key] = shortcut;
+                        storage.set(bind, () => {
+                            //Update keyBindingMaps.
+                            queryAllKeyBindingItems();
+                        });
+                    }).catch(error => {
+                    console.log(error);
+                });
             } else {
                 // The shortcut key not bound yet.
                 sendResponse(null);
