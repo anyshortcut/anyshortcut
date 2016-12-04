@@ -14,10 +14,11 @@ function loadFunctionForExtension(ext) {
 
 /**
  * Injects resources provided as paths into active tab in chrome
+ * @param tabId   defaults to the active tab of the current window
  * @param files {string[]}
  * @returns {Promise}
  */
-function injectResources(files) {
+function injectResources(tabId, files) {
     let getFileExtension = /(?:\.([^.]+))?$/;
 
     return Promise.all(files.map(resource => {
@@ -25,7 +26,7 @@ function injectResources(files) {
             let ext = getFileExtension.exec(resource)[1];
             let injectFunction = loadFunctionForExtension(ext);
 
-            injectFunction(null, {
+            injectFunction(tabId, {
                 file: resource
             }, () => {
                 if (chrome.runtime.lastError) {
@@ -39,15 +40,23 @@ function injectResources(files) {
 }
 
 export default {
+    injectTabContentScriptManually(tabId){
+        injectResources(tabId, ['build/content_script.js'])
+            .then(()=> {
+                console.log('inject success!');
+            }).catch(error=> {
+            console.log(`Error occur ${error}`);
+        });
+    },
     /**
      * Inject unbound tips javascript and css resources.
      */
     injectUnboundTipsResources() {
-        injectResources(['js/script/inject-unbound-tips.js'])
+        injectResources(null, ['js/script/inject-unbound-tips.js'])
             .then(() => {
                 console.log('inject success!');
             }).catch(error => {
-            console.log('Eroor occur ${error}');
+            console.log(`Error occur ${error}`);
         });
     }
 }

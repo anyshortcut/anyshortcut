@@ -4,7 +4,8 @@ module.exports = {
         background: [
             './extension/js/background/message-handler.js',
             './extension/js/background/commands.js',
-            './extension/js/background/store.js',
+            './extension/js/background/injector.js',
+            './extension/js/background/app.js',
         ],
         popup: './extension/js/popup/popup.js',
         api: [
