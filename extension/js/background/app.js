@@ -1,13 +1,15 @@
 import injector from './injector.js';
 
-chrome.runtime.onInstalled.addListener((installReason, previousVersion)=> {
+chrome.runtime.onInstalled.addListener((installReason, previousVersion) => {
     console.log('extension onInstall listener,!', installReason.reason);
 
     if (installReason.reason === 'install') {
-        console.log('extension installed!');
-        chrome.windows.getAll({populate: true, windowTypes: ['normal']}, windows=> {
+        chrome.windows.getAll({populate: true, windowTypes: ['normal']}, windows => {
             windows.forEach(window => {
-                window.tabs.forEach(tab => {
+                window.tabs.filter(tab => {
+                    return !tab.url.startsWith('https://chrome.google.com');
+                }).forEach(tab => {
+                    console.log('tab:', tab);
                     injector.injectTabContentScriptManually(tab.id);
                 });
             });
