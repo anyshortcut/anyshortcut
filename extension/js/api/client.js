@@ -1,8 +1,9 @@
 import axios from 'axios';
-import auth from '../api/auth.js';
+import auth from './auth.js';
+import config from '../config.js';
 
 let request = axios.create({
-    baseURL: 'https://shurlly.herokuapp.com/',
+    baseURL: config.baseURL,
     contentType: "application/json; charset=utf-8",
 });
 
@@ -41,14 +42,8 @@ let origin = {
      * Get all shortcut data from server
      */
     getAll(){
-
+        return request.get('shortcuts');
     },
-    /**
-     * Sync all shortcut data to server
-     */
-    syncAll(){
-
-    }
 };
 
 let option = {

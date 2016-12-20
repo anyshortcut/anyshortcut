@@ -1,3 +1,5 @@
+var webpack = require('webpack');
+
 module.exports = {
     entry: {
         content_script: './extension/js/script/key-event-monitor.js',
@@ -38,5 +40,12 @@ module.exports = {
     babel: {
         presets: ['es2015'],
         plugins: ['transform-runtime']
-    }
+    },
+    plugins: [
+        new webpack.DefinePlugin({
+            'BUILD_ENV': JSON.stringify(process.env.BUILD_ENV)
+        })
+    ]
+
+
 };
