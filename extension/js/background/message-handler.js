@@ -64,14 +64,14 @@ function checkUrlBound(url) {
  */
 function setPopupIcon(bound) {
     const icon = bound ? {
-        path: {
-            '19': 'images/icon.png'
-        }
-    } : {
-        path: {
-            '19': 'images/icon16.png'
-        }
-    };
+            path: {
+                '19': 'images/icon.png'
+            }
+        } : {
+            path: {
+                '19': 'images/icon16.png'
+            }
+        };
     chrome.browserAction.setIcon(icon);
 }
 
@@ -133,7 +133,7 @@ function onMessageReceiver(message, sender, sendResponse) {
                         sendResponse(true);
                         setPopupIcon(false);
                     });
-                }).catch(error=> {
+                }).catch(error => {
                 console.log(error);
                 sendResponse(false);
             });
@@ -210,6 +210,10 @@ function onMessageReceiver(message, sender, sendResponse) {
             break;
         }
         case message.optionDelete: {
+            break;
+        }
+        case message.refresh: {
+            queryAllKeyBindingItems();
             break;
         }
         default: {

@@ -42,9 +42,17 @@ function injectResources(tabId, files) {
 export default {
     injectTabContentScriptManually(tabId){
         injectResources(tabId, ['build/content_script.js'])
-            .then(()=> {
+            .then(() => {
                 console.log('inject success!');
-            }).catch(error=> {
+            }).catch(error => {
+            console.log(`Error occur ${error}`);
+        });
+    },
+    injectAuthPopupWindowScript(tabId){
+        injectResources(tabId, ['js/script/auth-popup-injection.js'])
+            .then(() => {
+                console.log('inject success!');
+            }).catch(error => {
             console.log(`Error occur ${error}`);
         });
     },
