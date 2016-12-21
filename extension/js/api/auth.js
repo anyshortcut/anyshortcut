@@ -4,7 +4,6 @@ import injector from '../background/injector.js';
 let storage = chrome.storage.local;
 
 let auth = {
-    authenticated: false,
     openAuthPopupWindow(){
         let url = config.baseURL + 'oauth/google';
         chrome.windows.create({
@@ -21,11 +20,11 @@ let auth = {
             }
         });
     },
-    signOut(){
-        this.authenticated = false;
+    logout(){
+        localStorage.setItem('authenticated', false);
     },
-    signIn(){
-        this.authenticated = true;
+    signin(){
+        localStorage.setItem('authenticated', true);
         origin.getAll().then(response => {
             let shortcuts = response.shortcuts || [];
             shortcuts.forEach(item => {
@@ -43,11 +42,11 @@ let auth = {
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     switch (true) {
         case message.loginSuccessful:
-            auth.signIn();
+            auth.signin();
             console.log('login success');
             break;
         case message.logout:
-            auth.signOut();
+            auth.logout();
             break;
         default:
             break;

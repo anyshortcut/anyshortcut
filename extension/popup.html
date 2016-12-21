@@ -6,12 +6,15 @@
     <link rel="stylesheet" href="css/popup.css">
 </head>
 <body>
-<div>
+<div v-if="authenticated">
     <origin-bound :tab="tab"></origin-bound>
     <option-bound :tab="tab"></option-bound>
 </div>
+<div v-else>
+    <button @click="loginWithGoogle">Login with Google</button>
+</div>
 <footer>
-    <button id="options" @click="handleOptionClick">Options</button>
+    <button id="options">Options</button>
 </footer>
 </body>
 </html>

@@ -7,19 +7,13 @@ let request = axios.create({
     contentType: "application/json; charset=utf-8",
 });
 
-// Add custom axios interceptor for custom request authenticated check.
-request.interceptors.request.use(config => {
-    console.log(config);
-    if (auth.token) {
-        config.headers.common['Authorization'] = auth.token;
-    }
-    return config;
-}, error => {
-    return Promise.reject(error);
-});
 // Add custom axios interceptor for custom error handle.
 request.interceptors.response.use(response => {
-    if (response.data.code !== 200) {
+    let code = response.data.code;
+    if (code === 1000 || code === 1001) {
+        // Miss token or invalid token
+        auth.logout();
+    } else if (code !== 200) {
         return Promise.reject(response.data);
     }
     return response.data.data;

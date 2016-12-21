@@ -12,13 +12,17 @@ window.onload = function() {
         data: {
             tab: {}
         },
+        computed: {
+            authenticated: function() {
+                return !!localStorage.getItem('authenticated');
+            }
+        },
         components: {
             OriginBound,
             OptionBound
         },
         methods: {
-            handleOptionClick: function() {
-                console.log('options click');
+            loginWithGoogle: function() {
                 auth.openAuthPopupWindow();
             }
         },
