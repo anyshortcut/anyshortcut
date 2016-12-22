@@ -24,20 +24,19 @@ request.interceptors.response.use(response => {
 
 let origin = {
     bindShortcut(key, shortcut){
-        return request.post(`shortcut/key/${key}`, shortcut);
+        return request.post(`/shortcut/key/${key}`, shortcut);
     },
     unbindShortcut(id){
-        return request.put(`shortcut/${id}/unbind`);
+        return request.put(`/shortcut/${id}/unbind`);
     },
     increaseShortcutOpenTimes(id){
-        return request.put(`shortcut/${id}/times`);
-
+        return request.put(`/shortcut/${id}/times`);
     },
     /**
      * Get all shortcut data from server
      */
     getAll(){
-        return request.get('shortcuts');
+        return request.get('/shortcuts');
     },
 };
 

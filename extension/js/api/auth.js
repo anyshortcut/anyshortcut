@@ -5,7 +5,7 @@ let storage = chrome.storage.local;
 
 let auth = {
     openAuthPopupWindow(){
-        let url = config.baseURL + 'oauth/google';
+        let url = config.baseURL + '/oauth/google';
         chrome.windows.create({
             'url': url,
             'type': 'popup',

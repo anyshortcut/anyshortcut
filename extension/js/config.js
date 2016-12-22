@@ -1,9 +1,9 @@
 let dev = {
-    baseURL: 'http://localhost:5000/',
+    baseURL: 'http://localhost:5000',
 };
 
 let staging = {
-    baseURL: 'https://shurlly.herokuapp.com/'
+    baseURL: 'https://shurlly.herokuapp.com'
 };
 
 let config;
