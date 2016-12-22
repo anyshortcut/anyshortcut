@@ -16,7 +16,6 @@ queryAllKeyBindingItems();
  * Query all key binding items from chrome storage for unauthentic user.
  */
 function queryAllKeyBindingItems() {
-    //TODO add api listener for user login or logout
     storage.get(null, items => {
         keyBindingMaps = items;
     });
