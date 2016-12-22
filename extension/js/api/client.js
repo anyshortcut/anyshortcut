@@ -10,10 +10,11 @@ let request = axios.create({
 // Add custom axios interceptor for custom error handle.
 request.interceptors.response.use(response => {
     let code = response.data.code;
-    if (code === 1000 || code === 1001) {
-        // Miss token or invalid token
-        auth.logout();
-    } else if (code !== 200) {
+    if (code !== 200) {
+        if (code === 1000 || code === 1001) {
+            // Miss token or invalid token
+            auth.logout();
+        }
         return Promise.reject(response.data);
     }
     return response.data.data;

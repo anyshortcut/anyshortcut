@@ -21,7 +21,9 @@ let auth = {
         });
     },
     logout(){
-        localStorage.setItem('authenticated', false);
+        storage.clear(() => {
+            localStorage.setItem('authenticated', false);
+        });
     },
     signin(){
         localStorage.setItem('authenticated', true);

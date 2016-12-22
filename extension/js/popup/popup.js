@@ -14,7 +14,7 @@ window.onload = function() {
         },
         computed: {
             authenticated: function() {
-                return !!localStorage.getItem('authenticated');
+                return localStorage.getItem('authenticated') === 'true';
             }
         },
         components: {
