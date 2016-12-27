@@ -1,6 +1,6 @@
-import {origin} from './client.js';
-import config from '../config.js';
-import injector from '../background/injector.js';
+import client from "./client.js";
+import config from "../config.js";
+import injector from "../background/injector.js";
 let storage = chrome.storage.local;
 
 let auth = {
@@ -20,6 +20,9 @@ let auth = {
             }
         });
     },
+    isAuthenticated(){
+        return localStorage.getItem('authenticated') === 'true';
+    },
     logout(){
         storage.clear(() => {
             localStorage.setItem('authenticated', false);
@@ -27,7 +30,7 @@ let auth = {
     },
     signin(){
         localStorage.setItem('authenticated', true);
-        origin.getAll().then(response => {
+        client.getPrimaryShortcuts().then(response => {
             let shortcuts = response.shortcuts || [];
             shortcuts.forEach(item => {
                 let bind = {};

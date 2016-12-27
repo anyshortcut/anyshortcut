@@ -1,12 +1,6 @@
 <template>
     <div>
         <div v-if="support">
-            <p>Enable option access on this domain:
-                <span>
-                    <b>{{domain}}</b>
-                </span>
-                <input type="checkbox" v-model="items"/>
-            </p>
             <div v-show="!bound">
                 <div v-show="bound">
                     <p>The domain <b>{{domain}}</b> already bound with <b>ALT+{{key}}</b></p>
@@ -99,7 +93,7 @@
                     url: this.tab.url,
                     title: this.tab.title,
                     comment: this.comment,
-                    time: Date.now()
+                    primary: false
                 };
                 chrome.runtime.sendMessage({
                     optionSave: true,

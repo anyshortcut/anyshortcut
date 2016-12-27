@@ -1,6 +1,6 @@
-import axios from 'axios';
-import auth from './auth.js';
-import config from '../config.js';
+import axios from "axios";
+import auth from "./auth.js";
+import config from "../config.js";
 
 let request = axios.create({
     baseURL: config.baseURL,
@@ -22,7 +22,7 @@ request.interceptors.response.use(response => {
     return Promise.reject(error)
 });
 
-let origin = {
+export default {
     bindShortcut(key, shortcut){
         return request.post(`/shortcut/key/${key}`, shortcut);
     },
@@ -35,15 +35,10 @@ let origin = {
     /**
      * Get all shortcut data from server
      */
-    getAll(){
-        return request.get('/shortcuts');
+    getPrimaryShortcuts(){
+        return request.get('/shortcuts?type=primary');
     },
+    getSecondaryShortcuts(){
+        return request.get('/shortcuts?type=secondary');
+    }
 };
-
-let option = {
-    bindShortcut(shortcut){
-
-    },
-};
-
-export {origin, option};

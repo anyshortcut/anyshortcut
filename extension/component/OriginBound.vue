@@ -15,7 +15,7 @@
                 <span>
                     <strong id="bound_shortcut_key">{{key}}</strong>
                 </span>
-                <p id="bound_time">{{value.createdTime | fromNow}}</p>
+                <p id="bound_time">{{value.created_time | fromNow}}</p>
                 <button @click="handleShortcutUnbinding" id="unbind_shortcut_button">Delete Shortcut</button>
             </div>
         </div>

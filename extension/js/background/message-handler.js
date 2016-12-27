@@ -1,7 +1,7 @@
-import injector from './injector.js';
+import injector from "./injector.js";
 import common from "../common.js";
 import keyCodeHelper from "../keycode.js";
-import {origin} from "../api/client.js";
+import client from "../api/client.js";
 
 const storage = chrome.storage.local;
 
@@ -87,7 +87,7 @@ function onMessageReceiver(message, sender, sendResponse) {
                 console.log('request key value:', value);
                 sendResponse(value.url);
 
-                origin.increaseShortcutOpenTimes(value.id)
+                client.increaseShortcutOpenTimes(value.id)
                     .then(response => {
                         let shortcut = response.shortcut;
                         let bind = {};
@@ -124,7 +124,7 @@ function onMessageReceiver(message, sender, sendResponse) {
         case message.remove: {
             // Delete the url shortcut.
             let shortcut = keyBindingMaps[message.key];
-            origin.unbindShortcut(shortcut.id)
+            client.unbindShortcut(shortcut.id)
                 .then(response => {
                     storage.remove(message.key, () => {
                         //Update keyBindingMaps if old shortcut unbound.
@@ -141,10 +141,11 @@ function onMessageReceiver(message, sender, sendResponse) {
         case message.save: {
             //Save shortcut item to storage.
             common.getCurrentTab(tab => {
-                origin.bindShortcut(message.key, {
+                client.bindShortcut(message.key, {
                     url: tab.url,
                     title: tab.title,
                     favicon: tab.favIconUrl,
+                    primary: true,
                 }).then(response => {
                     let shortcut = response.shortcut;
                     let bind = {};
@@ -192,19 +193,25 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
         case message.optionSave: {
             // Save option access bound item data.
-            let key = message.domain;
-            storage.get(key, result => {
-                if (!Object.keys(result).length) {
-                    result[key] = {};
-                }
-                let item = result[key];
-                item[message.key] = message.value;
+            client.bindShortcut(message.key, message.value)
+                .then(response => {
+                    let shortcut = response.shortcut;
+                    let key = shortcut.domain;
+                    storage.get(key, result => {
+                        if (!Object.keys(result).length) {
+                            result[key] = {};
+                        }
+                        let item = result[key];
+                        item[message.key] = message.value;
 
-                storage.set(result, () => {
-                    sendResponse(true);
-                    //Update keyBindingMaps if new option access shortcut bound.
-                    queryAllKeyBindingItems();
-                });
+                        storage.set(result, () => {
+                            sendResponse(true);
+                            //Update keyBindingMaps if new option access shortcut bound.
+                            queryAllKeyBindingItems();
+                        });
+                    });
+                }).catch(error => {
+                console.log(error);
             });
             break;
         }
