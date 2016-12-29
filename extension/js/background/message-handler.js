@@ -2,22 +2,43 @@ import injector from "./injector.js";
 import common from "../common.js";
 import keyCodeHelper from "../keycode.js";
 import client from "../api/client.js";
+import auth from "../api/auth.js";
 
-const storage = chrome.storage.local;
+let primaryShortcuts = {};
+let secondaryShortcuts = {};
 
-let keyBindingMaps;
 chrome.tabs.onActivated.addListener(onTabActivated);
 chrome.tabs.onUpdated.addListener(onTabUpdated);
 chrome.runtime.onMessage.addListener(onMessageReceiver);
 
-queryAllKeyBindingItems();
+if (auth.isAuthenticated()) {
+    getAllShortcuts();
+}
 
 /**
- * Query all key binding items from chrome storage for unauthentic user.
+ * Get all shortcuts from server.
  */
-function queryAllKeyBindingItems() {
-    storage.get(null, items => {
-        keyBindingMaps = items;
+function getAllShortcuts() {
+    client.getPrimaryShortcuts().then(response => {
+        let shortcuts = response.shortcuts || [];
+        shortcuts.forEach(item => {
+            primaryShortcuts[item.key] = item;
+        });
+        console.log('primary:', primaryShortcuts);
+    }).catch(error => {
+        console.log(error);
+    });
+
+    client.getSecondaryShortcuts().then(response => {
+        let shortcuts = response.shortcuts || [];
+        Object.keys(shortcuts).forEach(key => {
+            if (shortcuts.hasOwnProperty(key)) {
+                secondaryShortcuts[key] = shortcuts[key]
+            }
+        });
+        console.log('secondary:', secondaryShortcuts);
+    }).catch(error => {
+        console.log(error);
     });
 }
 
@@ -37,9 +58,9 @@ function queryShortcutKeyByUrl(url) {
  * @returns the bind info. {"key":key,"value":value}
  */
 function queryBindInfoByUrl(url) {
-    for (let key in keyBindingMaps) {
-        if (key.length === 1 && keyBindingMaps.hasOwnProperty(key)) {
-            let info = keyBindingMaps[key];
+    for (let key in primaryShortcuts) {
+        if (primaryShortcuts.hasOwnProperty(key)) {
+            let info = primaryShortcuts[key];
             if (common.isUrlEquivalent(url, info.url)) {
                 return {key: key, value: info};
             }
@@ -82,20 +103,15 @@ function onMessageReceiver(message, sender, sendResponse) {
     switch (true) {
         case message.request: {
             let key = message.key;
-            if (keyBindingMaps.hasOwnProperty(key)) {
-                let value = keyBindingMaps[key];
+            if (primaryShortcuts.hasOwnProperty(key)) {
+                let value = primaryShortcuts[key];
                 console.log('request key value:', value);
                 sendResponse(value.url);
 
                 client.increaseShortcutOpenTimes(value.id)
                     .then(response => {
                         let shortcut = response.shortcut;
-                        let bind = {};
-                        bind[shortcut.key] = shortcut;
-                        storage.set(bind, () => {
-                            //Update keyBindingMaps.
-                            queryAllKeyBindingItems();
-                        });
+                        primaryShortcuts[shortcut.key] = shortcut;
                     }).catch(error => {
                     console.log(error);
                 });
@@ -107,7 +123,7 @@ function onMessageReceiver(message, sender, sendResponse) {
             break;
         }
         case message.keys: {
-            let keys = Object.keys(keyBindingMaps).filter(key => {
+            let keys = Object.keys(primaryShortcuts).filter(key => {
                 return keyCodeHelper.isValidKey(key);
             });
             sendResponse(keys);
@@ -123,15 +139,12 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
         case message.remove: {
             // Delete the url shortcut.
-            let shortcut = keyBindingMaps[message.key];
+            let shortcut = primaryShortcuts[message.key];
             client.unbindShortcut(shortcut.id)
                 .then(response => {
-                    storage.remove(message.key, () => {
-                        //Update keyBindingMaps if old shortcut unbound.
-                        queryAllKeyBindingItems();
-                        sendResponse(true);
-                        setPopupIcon(false);
-                    });
+                    delete primaryShortcuts[message.key];
+                    sendResponse(true);
+                    setPopupIcon(false);
                 }).catch(error => {
                 console.log(error);
                 sendResponse(false);
@@ -139,7 +152,6 @@ function onMessageReceiver(message, sender, sendResponse) {
             break;
         }
         case message.save: {
-            //Save shortcut item to storage.
             common.getCurrentTab(tab => {
                 client.bindShortcut(message.key, {
                     url: tab.url,
@@ -148,14 +160,9 @@ function onMessageReceiver(message, sender, sendResponse) {
                     primary: true,
                 }).then(response => {
                     let shortcut = response.shortcut;
-                    let bind = {};
-                    bind[shortcut.key] = shortcut;
-                    storage.set(bind, () => {
-                        sendResponse("Success");
-                        setPopupIcon(true);
-                        //Update keyBindingMaps if new shortcut bound.
-                        queryAllKeyBindingItems();
-                    });
+                    primaryShortcuts[shortcut.key] = shortcut;
+                    sendResponse("Success");
+                    setPopupIcon(true);
                 }).catch(error => {
                     console.log(error);
                 });
@@ -164,8 +171,7 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
         case message.optionCheck: {
             // Check whether the domain is valid,can option access.
-            //let domain = message.domain;
-            sendResponse(keyBindingMaps[message.domain]);
+            sendResponse(secondaryShortcuts[message.domain]);
             break;
         }
         case message.optionRequest: {
@@ -176,19 +182,17 @@ function onMessageReceiver(message, sender, sendResponse) {
                 return;
             }
 
-            storage.get(domain, result => {
-                if (Object.keys(result).length) {
-                    let items = result[domain];
-                    let url = items[message.key].url;
-                    if (url) {
-                        sendResponse(url);
-                    } else {
-                        //Not exist the key
-                    }
+            if (Object.keys(secondaryShortcuts).length) {
+                let items = secondaryShortcuts[domain];
+                let url = items[message.key].url;
+                if (url) {
+                    sendResponse(url);
                 } else {
-                    // Not bound any key for this domain name yet.
+                    //Not exist the key
                 }
-            });
+            } else {
+                // Not bound any key for this domain name yet.
+            }
             break;
         }
         case message.optionSave: {
@@ -196,20 +200,13 @@ function onMessageReceiver(message, sender, sendResponse) {
             client.bindShortcut(message.key, message.value)
                 .then(response => {
                     let shortcut = response.shortcut;
-                    let key = shortcut.domain;
-                    storage.get(key, result => {
-                        if (!Object.keys(result).length) {
-                            result[key] = {};
-                        }
-                        let item = result[key];
-                        item[message.key] = message.value;
+                    let domain = shortcut.domain;
+                    if (!secondaryShortcuts.hasOwnProperty(domain)) {
+                        secondaryShortcuts[domain] = {}
+                    }
+                    secondaryShortcuts[domain][message.key] = shortcut;
 
-                        storage.set(result, () => {
-                            sendResponse(true);
-                            //Update keyBindingMaps if new option access shortcut bound.
-                            queryAllKeyBindingItems();
-                        });
-                    });
+                    sendResponse(true);
                 }).catch(error => {
                 console.log(error);
             });
@@ -218,8 +215,15 @@ function onMessageReceiver(message, sender, sendResponse) {
         case message.optionDelete: {
             break;
         }
-        case message.refresh: {
-            queryAllKeyBindingItems();
+        case message.loginSuccessful: {
+            auth.signin();
+            console.log('login success');
+            getAllShortcuts();
+            break;
+        }
+        case message.logoutSuccessful: {
+            auth.logout();
+            primaryShortcuts = secondaryShortcuts = {};
             break;
         }
         default: {
