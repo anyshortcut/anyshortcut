@@ -1,8 +1,8 @@
 import injector from "./injector.js";
 import common from "../common.js";
 import keyCodeHelper from "../keycode.js";
-import client from "../api/client.js";
-import auth from "../api/auth.js";
+import client from "./client.js";
+import auth from "./auth.js";
 
 let primaryShortcuts = {};
 let secondaryShortcuts = {};
@@ -184,9 +184,17 @@ function onMessageReceiver(message, sender, sendResponse) {
 
             if (Object.keys(secondaryShortcuts).length) {
                 let items = secondaryShortcuts[domain];
-                let url = items[message.key].url;
+                let shortcut = items[message.key]
+                let url = shortcut.url;
                 if (url) {
                     sendResponse(url);
+                    client.increaseShortcutOpenTimes(shortcut.id)
+                        .then(response => {
+                            shortcut = response.shortcut;
+                            primaryShortcuts[shortcut.key] = shortcut;
+                        }).catch(error => {
+                        console.log(error);
+                    });
                 } else {
                     //Not exist the key
                 }
@@ -230,6 +238,8 @@ function onMessageReceiver(message, sender, sendResponse) {
             break;
         }
     }
+    console.log('primary:', primaryShortcuts);
+    console.log('secondary:', secondaryShortcuts);
     //Must return true otherwise sendResponse() not working.
     //More detail see official documentations [chrome.runtime.onMessage()].
     return true;
