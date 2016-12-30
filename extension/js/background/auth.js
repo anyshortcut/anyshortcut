@@ -1,5 +1,5 @@
 import config from "../config.js";
-import injector from "../background/injector.js";
+import injector from "./injector.js";
 
 let auth = {
     openAuthPopupWindow(){

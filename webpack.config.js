@@ -10,10 +10,6 @@ module.exports = {
             './extension/js/background/app.js',
         ],
         popup: './extension/js/popup/popup.js',
-        api: [
-            './extension/js/api/auth.js',
-            './extension/js/api/client.js',
-        ],
     },
     output: {
         path: 'extension/build',
