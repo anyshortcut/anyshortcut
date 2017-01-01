@@ -90,6 +90,20 @@ function setPopupIcon(bound) {
     chrome.browserAction.setIcon(icon);
 }
 
+/**
+ * Get bound domain from Secondary shortcuts by hostname.
+ * @param hostname
+ * @returns {*}
+ */
+function getBoundDomainByHostname(hostname) {
+    for (let domain of Object.keys(secondaryShortcuts)) {
+        if (secondaryShortcuts.hasOwnProperty(domain) && hostname.endsWith(domain)) {
+            return domain;
+        }
+    }
+    return null;
+}
+
 function handleOnTabInfoUpdate(url) {
     setPopupIcon(url ? checkUrlBound(url) : false);
 }
@@ -168,19 +182,15 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
         case message.optionRequest: {
             // Access options shortcut key for correct domain.
-            var domain = common.extractDomainName(message.location.hostname);
-            if (!domain) {
-                break;
-            }
-
-            if (secondaryShortcuts.hasOwnProperty(domain)) {
-                let item = secondaryShortcuts[domain];
-                if (item.hasOwnProperty(message.key)) {
-                    let shortcut = item[message.key];
+            let domain = getBoundDomainByHostname(message.location.hostname);
+            if (domain) {
+                let shortcuts = secondaryShortcuts[domain];
+                if (shortcuts.hasOwnProperty(message.key)) {
+                    let shortcut = shortcuts[message.key];
                     sendResponse(shortcut.url);
                     client.increaseShortcutOpenTimes(shortcut.id)
                         .then(response => {
-                            Object.assign(item, response);
+                            Object.assign(shortcuts, response);
                         }).catch(error => {
                         console.log(error);
                     });
