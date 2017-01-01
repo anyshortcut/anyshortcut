@@ -175,12 +175,16 @@ function onMessageReceiver(message, sender, sendResponse) {
             });
             break;
         }
-        case message.optionCheck: {
+        case message.secondaryCheck: {
             // Check whether the domain is valid,can option access.
-            sendResponse(secondaryShortcuts[message.domain]);
+            common.getCurrentTab(tab => {
+                let hostname = common.getHostnameFromUrl(tab.url);
+                let domain = getBoundDomainByHostname(hostname);
+                sendResponse(domain ? secondaryShortcuts[domain] : null);
+            });
             break;
         }
-        case message.optionRequest: {
+        case message.secondaryRequest: {
             // Access options shortcut key for correct domain.
             let domain = getBoundDomainByHostname(message.location.hostname);
             if (domain) {
@@ -202,7 +206,7 @@ function onMessageReceiver(message, sender, sendResponse) {
             }
             break;
         }
-        case message.optionSave: {
+        case message.secondarySave: {
             // Save option access bound item data.
             client.bindShortcut(message.key, message.value)
                 .then(response => {
@@ -218,7 +222,7 @@ function onMessageReceiver(message, sender, sendResponse) {
             });
             break;
         }
-        case message.optionDelete: {
+        case message.secondaryDelete: {
             break;
         }
         case message.loginSuccessful: {

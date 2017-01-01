@@ -32,7 +32,7 @@ function monitorKeyUp(e) {
         }
     } else if (isValidOptionModifier(e)) {
         chrome.runtime.sendMessage({
-            optionRequest: true,
+            secondaryRequest: true,
             location: location,
             key: String.fromCharCode(e.keyCode).toUpperCase()// Convert the key to uppercase.
         }, url => {

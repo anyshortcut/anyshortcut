@@ -51,7 +51,12 @@ export default {
     isUrlEquivalent(url1, url2){
         //Check slash ignore equality, ignore url schema equality.
         return trimTrailSlash(stripUrlSchema(url1)) === trimTrailSlash(stripUrlSchema(url2));
-    }
+    },
+    getHostnameFromUrl(url){
+        let a = document.createElement('a');
+        a.href = url;
+        return a.hostname;
+    },
 }
 /**
  * Remove trail slash.

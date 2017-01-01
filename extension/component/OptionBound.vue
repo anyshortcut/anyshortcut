@@ -1,32 +1,25 @@
 <template>
     <div>
-        <div v-if="support">
-            <div v-show="!bound">
-                <div v-show="bound">
-                    <p>The domain <b>{{domain}}</b> already bound with <b>ALT+{{key}}</b></p>
-                </div>
-                <div v-else>
-                    <input v-model="key" @mouseover="showKeyboard = true" id="option-shortcut-key" placeholder="key"
-                           maxlength="1"
-                           required/>
-                    <input v-model="comment" placeholder="Comment for this url" required/>
-
-                    <button @click="handleOptionShortcutBinding">Bound</button>
-                </div>
+        <div v-show="!bound">
+            <div v-show="bound">
+                <p>The domain <b>{{domain}}</b> already bound with <b>ALT+{{key}}</b></p>
             </div>
-            <ul v-show="items">
-                <p>Here is option access bound list for this domain:</p>
-                <li v-for="item in items">
-                    <span><b>{{$key}}</b></span>
-                    <span>    <a href="{{item.url}}" target="_blank">{{item.comment || item.title}}</a></span>
-                </li>
-            </ul>
+            <div v-else>
+                <input v-model="key" @mouseover="showKeyboard = true" id="option-shortcut-key" placeholder="key"
+                       maxlength="1"
+                       required/>
+                <input v-model="comment" placeholder="Comment for this url" required/>
+
+                <button @click="handleOptionShortcutBinding">Bound</button>
+            </div>
         </div>
-        <div v-else>
-            <p>This domain
-                <b>{{domain}}</b>
-                not support option access.:(</p>
-        </div>
+        <ul v-show="items">
+            <p>Here is option access bound list for this domain:</p>
+            <li v-for="item in items">
+                <span><b>{{$key}}</b></span>
+                <span>    <a href="{{item.url}}" target="_blank">{{item.comment || item.title}}</a></span>
+            </li>
+        </ul>
         <keyboard :bound-keys="boundKeys" :key.sync="key" :show.sync="showKeyboard"></keyboard>
     </div>
 </template>
@@ -44,7 +37,6 @@
                 domain: '', // Current active tab url domain name.
                 key: '',// Shortcut key for option bound
                 comment: '', // Option item comment.
-                support: false, // Current active tab url whether support.
                 /**
                  * The all bound shortcut of the domain name.
                  * each item looks like this: {key :{url:string,title:string,time:long}}
@@ -76,19 +68,12 @@
                 let a = document.createElement('a');
                 a.href = this.tab.url;
                 let domainName = common.extractDomainName(a.hostname);
-                this.support = (domainName !== null);
                 this.domain = domainName || a.hostname;
-                if (this.support) {
-                    this.queryOptionItems(domainName);
-                }
+                this.queryOptionItems();
             }
         },
         methods: {
             handleOptionShortcutBinding: function() {
-                let a = document.createElement('a');
-                a.href = this.tab.url;
-                let domainName = common.extractDomainName(a.hostname);
-
                 let value = {
                     url: this.tab.url,
                     title: this.tab.title,
@@ -96,18 +81,17 @@
                     primary: false
                 };
                 chrome.runtime.sendMessage({
-                    optionSave: true,
-                    domain: domainName,
+                    secondarySave: true,
                     key: this.key,
                     value: value
                 }, result => {
                     if (result) {
-                        this.queryOptionItems(domainName)
+                        this.queryOptionItems();
                     }
                 });
             },
-            queryOptionItems(domainName) {
-                chrome.runtime.sendMessage({optionCheck: true, domain: domainName}, items => {
+            queryOptionItems() {
+                chrome.runtime.sendMessage({secondaryCheck: true}, items => {
                     this.items = items;
                     this.boundKeys = items ? Object.keys(items) : null;
 
