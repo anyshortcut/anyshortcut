@@ -19,23 +19,18 @@ if (auth.isAuthenticated()) {
  * Get all shortcuts from server.
  */
 function getAllShortcuts() {
-    client.getPrimaryShortcuts().then(response => {
-        let shortcuts = response.shortcuts || [];
+    client.getPrimaryShortcuts().then(shortcuts => {
+        shortcuts = shortcuts || [];
         shortcuts.forEach(item => {
-            primaryShortcuts[item.key] = item;
+            Object.assign(primaryShortcuts, item)
         });
         console.log('primary:', primaryShortcuts);
     }).catch(error => {
         console.log(error);
     });
 
-    client.getSecondaryShortcuts().then(response => {
-        let shortcuts = response.shortcuts || [];
-        Object.keys(shortcuts).forEach(key => {
-            if (shortcuts.hasOwnProperty(key)) {
-                secondaryShortcuts[key] = shortcuts[key]
-            }
-        });
+    client.getSecondaryShortcuts().then(shortcuts => {
+        secondaryShortcuts = shortcuts || {};
         console.log('secondary:', secondaryShortcuts);
     }).catch(error => {
         console.log(error);
@@ -105,13 +100,11 @@ function onMessageReceiver(message, sender, sendResponse) {
             let key = message.key;
             if (primaryShortcuts.hasOwnProperty(key)) {
                 let value = primaryShortcuts[key];
-                console.log('request key value:', value);
                 sendResponse(value.url);
 
                 client.increaseShortcutOpenTimes(value.id)
                     .then(response => {
-                        let shortcut = response.shortcut;
-                        primaryShortcuts[shortcut.key] = shortcut;
+                        Object.assign(primaryShortcuts, response);
                     }).catch(error => {
                     console.log(error);
                 });
@@ -159,8 +152,7 @@ function onMessageReceiver(message, sender, sendResponse) {
                     favicon: tab.favIconUrl,
                     primary: true,
                 }).then(response => {
-                    let shortcut = response.shortcut;
-                    primaryShortcuts[shortcut.key] = shortcut;
+                    Object.assign(primaryShortcuts, response);
                     sendResponse("Success");
                     setPopupIcon(true);
                 }).catch(error => {
@@ -176,22 +168,19 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
         case message.optionRequest: {
             // Access options shortcut key for correct domain.
-            //let domain = common.extractDomainName(message.location.hostname);
             var domain = common.extractDomainName(message.location.hostname);
             if (!domain) {
-                return;
+                break;
             }
 
-            if (Object.keys(secondaryShortcuts).length) {
-                let items = secondaryShortcuts[domain];
-                let shortcut = items[message.key]
-                let url = shortcut.url;
-                if (url) {
-                    sendResponse(url);
+            if (secondaryShortcuts.hasOwnProperty(domain)) {
+                let item = secondaryShortcuts[domain];
+                if (item.hasOwnProperty(message.key)) {
+                    let shortcut = item[message.key];
+                    sendResponse(shortcut.url);
                     client.increaseShortcutOpenTimes(shortcut.id)
                         .then(response => {
-                            shortcut = response.shortcut;
-                            primaryShortcuts[shortcut.key] = shortcut;
+                            Object.assign(item, response);
                         }).catch(error => {
                         console.log(error);
                     });
@@ -207,12 +196,11 @@ function onMessageReceiver(message, sender, sendResponse) {
             // Save option access bound item data.
             client.bindShortcut(message.key, message.value)
                 .then(response => {
-                    let shortcut = response.shortcut;
-                    let domain = shortcut.domain;
+                    let domain = response[message.key]['domain'];
                     if (!secondaryShortcuts.hasOwnProperty(domain)) {
                         secondaryShortcuts[domain] = {}
                     }
-                    secondaryShortcuts[domain][message.key] = shortcut;
+                    Object.assign(secondaryShortcuts[domain], response);
 
                     sendResponse(true);
                 }).catch(error => {
