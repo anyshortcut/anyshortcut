@@ -21,7 +21,6 @@
   "permissions": [
     "tabs",
     "activeTab",
-    "storage",
     "<all_urls>",
     "file://*/*",
     "ftp://*/*"

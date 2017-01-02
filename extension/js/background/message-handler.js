@@ -3,6 +3,7 @@ import common from "../common.js";
 import keyCodeHelper from "../keycode.js";
 import client from "./client.js";
 import auth from "./auth.js";
+import pref from "../prefs.js";
 
 let primaryShortcuts = {};
 let secondaryShortcuts = {};
@@ -114,7 +115,10 @@ function onMessageReceiver(message, sender, sendResponse) {
             let key = message.key;
             if (primaryShortcuts.hasOwnProperty(key)) {
                 let value = primaryShortcuts[key];
-                sendResponse(value.url);
+                sendResponse({
+                    url: value.url,
+                    byBlank: pref.isOpenPrimaryShortcutByBlank()
+                });
 
                 client.increaseShortcutOpenTimes(value.id)
                     .then(response => {
@@ -176,7 +180,6 @@ function onMessageReceiver(message, sender, sendResponse) {
             break;
         }
         case message.secondaryCheck: {
-            // Check whether the domain is valid,can option access.
             common.getCurrentTab(tab => {
                 let hostname = common.getHostnameFromUrl(tab.url);
                 let domain = getBoundDomainByHostname(hostname);
@@ -191,7 +194,10 @@ function onMessageReceiver(message, sender, sendResponse) {
                 let shortcuts = secondaryShortcuts[domain];
                 if (shortcuts.hasOwnProperty(message.key)) {
                     let shortcut = shortcuts[message.key];
-                    sendResponse(shortcut.url);
+                    sendResponse({
+                        url: shortcut.url,
+                        byBlank: pref.isOpenSecondaryShortcutByBlank()
+                    });
                     client.increaseShortcutOpenTimes(shortcut.id)
                         .then(response => {
                             Object.assign(shortcuts, response);
@@ -223,11 +229,17 @@ function onMessageReceiver(message, sender, sendResponse) {
             break;
         }
         case message.secondaryDelete: {
+            common.getCurrentTab(tab => {
+                let hostname = common.getHostnameFromUrl(tab.url);
+                let domain = getBoundDomainByHostname(hostname);
+                let shortcuts = secondaryShortcuts[domain];
+                delete shortcuts[message.key];
+                sendResponse(true);
+            });
             break;
         }
         case message.loginSuccessful: {
             auth.signin();
-            console.log('login success');
             getAllShortcuts();
             break;
         }

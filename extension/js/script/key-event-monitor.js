@@ -5,9 +5,14 @@ function monitorKeyUp(e) {
     if (isValidFullModifier(e)) {
         if (keyCodeHelper.isValidKeyCode(e.keyCode)) {
             let keyCodeChar = String.fromCharCode(e.keyCode);
-            chrome.runtime.sendMessage({request: true, key: keyCodeChar}, url => {
-                if (url) {
-                    window.open(url);
+            chrome.runtime.sendMessage({request: true, key: keyCodeChar}, response => {
+                if (response) {
+                    let url = response.url;
+                    if (response.byBlank) {
+                        window.open(url);
+                    } else {
+                        location.href = url;
+                    }
                 } else {
                     //Inject key code char to current web page for injected javascripts to
                     // obtain current unbound shortcut key.
@@ -35,10 +40,14 @@ function monitorKeyUp(e) {
             secondaryRequest: true,
             location: location,
             key: String.fromCharCode(e.keyCode).toUpperCase()// Convert the key to uppercase.
-        }, url => {
-            if (url) {
-                //window.open(url);
-                location.href = url;
+        }, response => {
+            if (response) {
+                let url = response.url;
+                if (response.byBlank) {
+                    window.open(url);
+                } else {
+                    location.href = url;
+                }
             }
         });
     }
