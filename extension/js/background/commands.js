@@ -117,8 +117,7 @@ function onCommandFired(command) {
                     if (parts.length >= 3) {
                         parts.splice(0, parts.length - 2, 'www');
                     }
-                    let domain = a.protocol + '\/\/' + parts.join('.');
-                    properties["url"] = domain;
+                    properties["url"] = a.protocol + '\/\/' + parts.join('.');
                 }
                 //Cleanup for garbage collection
                 a = null;
