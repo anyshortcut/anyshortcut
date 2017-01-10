@@ -74,16 +74,10 @@
         },
         methods: {
             handleOptionShortcutBinding: function() {
-                let value = {
-                    url: this.tab.url,
-                    title: this.tab.title,
-                    comment: this.comment,
-                    primary: false
-                };
                 chrome.runtime.sendMessage({
                     secondarySave: true,
                     key: this.key,
-                    value: value
+                    comment: this.comment
                 }, result => {
                     if (result) {
                         this.queryOptionItems();

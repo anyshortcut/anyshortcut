@@ -168,6 +168,7 @@ function onMessageReceiver(message, sender, sendResponse) {
                     url: tab.url,
                     title: tab.title,
                     favicon: tab.favIconUrl,
+                    comment: message.comment || tab.title,
                     primary: true,
                 }).then(response => {
                     Object.assign(primaryShortcuts, response);
@@ -214,8 +215,14 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
         case message.secondarySave: {
             // Save option access bound item data.
-            client.bindShortcut(message.key, message.value)
-                .then(response => {
+            common.getCurrentTab(tab => {
+                client.bindShortcut(message.key, {
+                    url: tab.url,
+                    title: tab.title,
+                    favicon: tab.favIconUrl,
+                    comment: message.comment || tab.title,
+                    primary: false,
+                }).then(response => {
                     let domain = response[message.key]['domain'];
                     if (!secondaryShortcuts.hasOwnProperty(domain)) {
                         secondaryShortcuts[domain] = {}
@@ -224,7 +231,8 @@ function onMessageReceiver(message, sender, sendResponse) {
 
                     sendResponse(true);
                 }).catch(error => {
-                console.log(error);
+                    console.log(error);
+                });
             });
             break;
         }

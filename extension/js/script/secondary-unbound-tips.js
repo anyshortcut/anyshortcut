@@ -52,7 +52,7 @@ if (div) {
             {
                 secondarySave: true,
                 key: pressed_key,
-                value: {}
+                comment: null,
             }, response => {
                 var div_tips = document.createElement('div');
                 div_tips.style = divStyle;
