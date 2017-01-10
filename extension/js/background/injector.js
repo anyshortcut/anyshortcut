@@ -66,5 +66,13 @@ export default {
             }).catch(error => {
             console.log(`Error occur ${error}`);
         });
+    },
+    injectSecondaryUnboundTipsResources() {
+        injectResources(null, ['js/script/secondary-unbound-tips.js'])
+            .then(() => {
+                console.log('inject success!');
+            }).catch(error => {
+            console.log(`Error occur ${error}`);
+        });
     }
 }

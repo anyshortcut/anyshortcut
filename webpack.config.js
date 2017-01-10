@@ -9,7 +9,7 @@ module.exports = {
             './extension/js/background/injector.js',
             './extension/js/background/app.js',
         ],
-        popup: './extension/js/popup/popup.js',
+        popup: './extension/js/popup.js',
         index: './extension/js/index.js',
     },
     output: {

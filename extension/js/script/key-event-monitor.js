@@ -35,7 +35,7 @@ function monitorKeyUp(e) {
                 window.history.go(step);
             }
         }
-    } else if (isValidOptionModifier(e)) {
+    } else if (isValidOptionModifier(e) && keyCodeHelper.isValidKeyCode(e.keyCode)) {
         chrome.runtime.sendMessage({
             secondaryRequest: true,
             location: location,
@@ -48,6 +48,17 @@ function monitorKeyUp(e) {
                 } else {
                     location.href = url;
                 }
+            } else {
+                //Inject key code char to current web page for injected javascripts to
+                // obtain current unbound shortcut key.
+                let p = document.getElementById('key-code-char');
+                if (!p) {
+                    p = document.createElement('p');
+                    p.id = 'key-code-char';
+                    p.style.display = 'none';
+                    document.body.insertAdjacentElement('beforeEnd', p);
+                }
+                p.textContent = String.fromCharCode(e.keyCode);
             }
         });
     }
@@ -57,11 +68,11 @@ function monitorKeyUp(e) {
  * Check the event key modifier is full valid or not.
  */
 function isValidFullModifier(e) {
-    return e && e.shiftKey && e.altKey;
+    return e && e.shiftKey && e.altKey && !e.ctrlKey && !e.metaKey;
 }
 
 function isValidOptionModifier(e) {
-    return e && e.altKey && !e.shiftKey;
+    return e && e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey;
 }
 
 document.addEventListener('keyup', monitorKeyUp, false);

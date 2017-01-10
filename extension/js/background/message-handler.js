@@ -204,12 +204,12 @@ function onMessageReceiver(message, sender, sendResponse) {
                         }).catch(error => {
                         console.log(error);
                     });
-                } else {
-                    //Not exist the key
+                    break;
                 }
-            } else {
-                // Not bound any key for this domain name yet.
             }
+            // Not bound any key for this domain name yet or not exist the key
+            sendResponse(null);
+            injector.injectSecondaryUnboundTipsResources();
             break;
         }
         case message.secondarySave: {
