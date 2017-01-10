@@ -38,8 +38,8 @@ if (div) {
     div = document.createElement('div');
     div.id = 'inject-tips';
     div.style = divStyle;
-    div.innerHTML = '<p>the shortcut key <span id="shortcut-key-span"></span> not bound any url yet!</p>' +
-        '<p>Would you like to bound this key with the url?</p>';
+    div.innerHTML = '<p>the secondary shortcut key <span id="shortcut-key-span"></span> not bound for this domain yet!</p>' +
+        '<p>Would you like to bound this secondary key with the domain?</p>';
     div.firstChild.style = pStyle;
 
     var positive_button = document.createElement('button');
@@ -48,7 +48,6 @@ if (div) {
     positive_button.onclick = () => {
         div.style.display = 'none';
 
-        // TODO check current page url whether bound?
         chrome.runtime.sendMessage(
             {
                 secondarySave: true,
@@ -77,7 +76,7 @@ if (div) {
 
 var span = document.getElementById('shortcut-key-span');
 span.style = shortcutKeyStyle;
-span.textContent = 'ALT+SHIFT+' + pressed_key;
+span.textContent = 'ALT+' + pressed_key;
 
 function hideElementDelay(element, delay) {
     var timeoutId = window.setTimeout(() => {
