@@ -11,7 +11,7 @@ export default {
         // https://developer.chrome.com/extensions/tabs#method-query
         let queryInfo = {
             active: true,
-            // currentWindow: true,
+            currentWindow: true,
             windowType: 'normal'
         };
 

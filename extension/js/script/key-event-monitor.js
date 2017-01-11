@@ -14,16 +14,7 @@ function monitorKeyUp(e) {
                         location.href = url;
                     }
                 } else {
-                    //Inject key code char to current web page for injected javascripts to
-                    // obtain current unbound shortcut key.
-                    let p = document.getElementById('key-code-char');
-                    if (!p) {
-                        p = document.createElement('p');
-                        p.id = 'key-code-char';
-                        p.style.display = 'none';
-                        document.body.insertAdjacentElement('beforeEnd', p);
-                    }
-                    p.textContent = keyCodeChar;
+                    injectKeyCodeChar(keyCodeChar)
                 }
             });
         } else if ([37, 39].indexOf(e.keyCode) > -1) { // left key and right key is 37 and 39
@@ -49,19 +40,23 @@ function monitorKeyUp(e) {
                     location.href = url;
                 }
             } else {
-                //Inject key code char to current web page for injected javascripts to
-                // obtain current unbound shortcut key.
-                let p = document.getElementById('key-code-char');
-                if (!p) {
-                    p = document.createElement('p');
-                    p.id = 'key-code-char';
-                    p.style.display = 'none';
-                    document.body.insertAdjacentElement('beforeEnd', p);
-                }
-                p.textContent = String.fromCharCode(e.keyCode);
+                injectKeyCodeChar(String.fromCharCode(e.keyCode));
             }
         });
     }
+}
+
+function injectKeyCodeChar(keyCode) {
+    //Inject key code char to current web page for injected JavaScript to
+    // obtain current unbound shortcut key.
+    let p = document.getElementById('key-code-char');
+    if (!p) {
+        p = document.createElement('p');
+        p.id = 'key-code-char';
+        p.style.display = 'none';
+        document.body.insertAdjacentElement('beforeEnd', p);
+    }
+    p.textContent = keyCode;
 }
 
 /*
