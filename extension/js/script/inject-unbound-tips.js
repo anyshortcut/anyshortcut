@@ -1,56 +1,27 @@
-var divStyle = `
-    background: #ffffff;
-    padding: 20px;
-    margin: 0 auto;
-    position: fixed;
-    text-align: center;
-    top:10px;
-    left: 0;
-    right:0;
-    border:2px solid #dd4814;
-    width: fit-content;
-    z-index: 99999;
-`;
-
-var pStyle = `
-    font-size:18px;
-    color:blue;
-`;
-
-var buttonStyle = `
-    float: right;
-    color: #dd4814;
-    padding:5px;
-`;
-
-var shortcutKeyStyle = `
-    font-weight=bold;
-    color: #dd4814;
-`;
-
 var p = document.getElementById('key-code-char');
 var pressedKey = p.textContent;
 
-var div = document.getElementById('inject-tips');
+var elementId = 'inject-tips';
+var div = document.getElementById(elementId);
 if (div) {
     div.style.display = 'block';
 } else {
     div = document.createElement('div');
-    div.id = 'inject-tips';
-    div.style = divStyle;
-    div.innerHTML = '<p>the shortcut key <span id="shortcut-key-span"></span> not bound any url yet!</p>' +
-        '<p>Would you like to bound this key with the url?</p>';
-    div.firstChild.style = pStyle;
+    div.id = elementId;
+    div.className = 'as-injection-div';
+    div.innerHTML = '<p>the shortcut key <span id="shortcut-key-span"></span> not bound for this domain yet!</p>' +
+        '<p>Would you like to bound this secondary key with the url?</p>';
+    div.firstChild.className = 'as-injection-p';
 
     var positiveButton = document.createElement('button');
     positiveButton.textContent = 'Yes';
-    positiveButton.style = buttonStyle;
+    positiveButton.className = 'as-injection-button';
     positiveButton.onclick = () => {
         div.style.display = 'none';
 
         chrome.runtime.sendMessage({save: true, key: pressedKey}, response => {
             var divTips = document.createElement('div');
-            divTips.style = divStyle;
+            divTips.className = 'as-injection-div';
             divTips.innerHTML = 'Great! you bound the url with this key!';
             document.body.insertAdjacentElement('beforeEnd', divTips);
 
@@ -61,7 +32,7 @@ if (div) {
 
     var negativeButton = document.createElement('button');
     negativeButton.textContent = 'No';
-    negativeButton.style = buttonStyle;
+    negativeButton.className = 'as-injection-button';
     negativeButton.onclick = () => {
         div.style.display = 'none';
     };
@@ -70,7 +41,7 @@ if (div) {
 }
 
 var span = document.getElementById('shortcut-key-span');
-span.style = shortcutKeyStyle;
+span.className = 'as-injection-shortcut';
 span.textContent = 'ALT+SHIFT+' + pressedKey;
 
 function hideElementDelay(element, delay) {

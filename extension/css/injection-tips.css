@@ -1,0 +1,29 @@
+.as-injection-div {
+    background: #ffffff;
+    padding: 20px;
+    margin: 0 auto;
+    position: fixed;
+    text-align: center;
+    top: 10px;
+    left: 0;
+    right: 0;
+    border: 2px solid #dd4814;
+    width: fit-content;
+    z-index: 99999;
+}
+
+.as-injection-p {
+    font-size: 18px;
+    color: blue;
+}
+
+.as-injection-button {
+    float: right;
+    color: #dd4814;
+    padding: 5px;
+}
+
+.as-injection-shortcut {
+    font-weight: bold;
+    color: #dd4814;
+}
