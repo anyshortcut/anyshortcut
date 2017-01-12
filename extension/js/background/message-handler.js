@@ -98,7 +98,8 @@ function setPopupIcon(bound) {
  */
 function getBoundDomainByHostname(hostname) {
     for (let domain of Object.keys(secondaryShortcuts)) {
-        if (secondaryShortcuts.hasOwnProperty(domain) && hostname.endsWith(domain)) {
+        if (secondaryShortcuts.hasOwnProperty(domain)
+            && common.isHostnameEndsWithDomain(hostname, domain)) {
             return domain;
         }
     }
@@ -168,8 +169,9 @@ function onMessageReceiver(message, sender, sendResponse) {
                     url: tab.url,
                     title: tab.title,
                     favicon: tab.favIconUrl,
-                    comment: message.comment || tab.title,
+                    comment: message.comment,
                     primary: true,
+                    force: message.force || false,
                 }).then(response => {
                     Object.assign(primaryShortcuts, response);
                     sendResponse("Success");
@@ -220,8 +222,9 @@ function onMessageReceiver(message, sender, sendResponse) {
                     url: tab.url,
                     title: tab.title,
                     favicon: tab.favIconUrl,
-                    comment: message.comment || tab.title,
+                    comment: message.comment,
                     primary: false,
+                    force: message.force || false,
                 }).then(response => {
                     let domain = response[message.key]['domain'];
                     if (!secondaryShortcuts.hasOwnProperty(domain)) {

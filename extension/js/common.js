@@ -57,6 +57,9 @@ export default {
         a.href = url;
         return a.hostname;
     },
+    isHostnameEndsWithDomain(hostname, domain){
+        return hostname.endsWith(`.${domain}`) || hostname === domain;
+    },
 }
 /**
  * Remove trail slash.
