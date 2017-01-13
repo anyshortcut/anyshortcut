@@ -35,7 +35,7 @@
   },
   "scripts": {
     "dev": "webpack-dev-server --inline --hot --no-info --port 9099",
-    "build_dev": "webpack --progress --hide-modules --colors --profile",
-    "build_staging": "BUILD_ENV=staging webpack --progress --hide-modules --colors --profile"
+    "build_dev": "BUILD_DEBUG=true BUILD_BASE_URL=http://localhost:5000 webpack --progress --hide-modules --colors --profile",
+    "build_staging": "BUILD_DEBUG=true BUILD_BASE_URL=https://shurlly.herokuapp.com webpack --progress --hide-modules --colors --profile"
   }
 }

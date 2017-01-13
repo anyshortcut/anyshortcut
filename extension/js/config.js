@@ -1,17 +1,4 @@
-let dev = {
-    baseURL: 'http://localhost:5000',
+export default {
+    baseURL: BUILD_BASE_URL,
+    debug: BUILD_DEBUG,
 };
-
-let staging = {
-    baseURL: 'https://shurlly.herokuapp.com'
-};
-
-let config;
-
-if (BUILD_ENV === 'staging') {
-    config = staging;
-} else {
-    config = dev;
-}
-
-export default config;

@@ -40,7 +40,8 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
-            'BUILD_ENV': JSON.stringify(process.env.BUILD_ENV)
+            'BUILD_DEBUG': JSON.stringify(process.env.BUILD_DEBUG),
+            'BUILD_BASE_URL': JSON.stringify(process.env.BUILD_BASE_URL),
         })
     ]
 
