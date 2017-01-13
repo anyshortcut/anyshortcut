@@ -2,7 +2,7 @@
     <div>
         <div v-show="!bound">
             <div v-show="bound">
-                <p>The domain <b>{{domain}}</b> already bound with <b>ALT+{{key}}</b></p>
+                <p>The url already bound with <b>ALT+{{key}}</b></p>
             </div>
             <div v-else>
                 <input v-model="key" @mouseover="showKeyboard = true" id="option-shortcut-key" placeholder="key"
@@ -34,13 +34,8 @@
         data(){
             return {
                 bound: false,
-                domain: '', // Current active tab url domain name.
                 key: '',// Shortcut key for option bound
                 comment: '', // Option item comment.
-                /**
-                 * The all bound shortcut of the domain name.
-                 * each item looks like this: {key :{url:string,title:string,time:long}}
-                 */
                 items: null,
                 boundKeys: null,
                 showKeyboard: false
@@ -64,11 +59,6 @@
         },
         watch: {
             'tab': function() {
-                // Check current domain name whether can option access.
-                let a = document.createElement('a');
-                a.href = this.tab.url;
-                let domainName = common.extractDomainName(a.hostname);
-                this.domain = domainName || a.hostname;
                 this.queryOptionItems();
             }
         },

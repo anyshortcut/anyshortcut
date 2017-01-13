@@ -25,29 +25,6 @@ export default {
             callback(tab);
         });
     },
-
-    tlds: ['com', 'org', 'net', 'edu', 'gov'],
-    /**
-     * Extract the domain name from the hostname.
-     * Only support five original top-level domains (.com,.org,.net,.edu.gov)
-     * @param hostname
-     * @return string the domain name
-     * @return null  if the tld not including in tlds arrays
-     */
-    extractDomainName(hostname){
-        let parts = hostname.split('.');
-        if (parts.length < 2) {
-            return null;
-        }
-
-        let tld = parts[parts.length - 1];
-        if (this.tlds.indexOf(tld) === -1) {
-            return null;
-        }
-
-        parts.splice(0, parts.length - 2);
-        return parts.join('.');
-    },
     isUrlEquivalent(url1, url2){
         //Check slash ignore equality, ignore url schema equality.
         return trimTrailSlash(stripUrlSchema(url1)) === trimTrailSlash(stripUrlSchema(url2));
