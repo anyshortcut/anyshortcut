@@ -20,27 +20,17 @@
             </div>
         </div>
         <div id="bind_div" v-else>
-            <div id="bind_guide">
-                <p>
-                    Specify the shortcut:
-                </p>
-                <span>
-                    <strong>ALT</strong>
-                </span>
-                <span>+</span>
-                <span>
-                    <strong>SHIFT</strong>
-                </span>
-                <span>+</span>
-                <span>
-                    <input v-model="key" @mouseover="showKeyboard = true"
-                           id="shortcut_key" placeholder="key" maxlength="1" required/>
-                </span>
-                <br/>
-                <input @click="handleShortcutBinding" id="bind_shortcut_button" type="button" value="Save"/>
-            </div>
+            <p>
+                Specify the shortcut:
+            </p>
+            <br>
+            <br>
+            <keyboard :bound-keys="boundKeys" :key.sync="key"></keyboard>
+            <br>
+            <input v-model="comment" placeholder="Comment for this url" required/>
+            <br>
+            <input @click="handleShortcutBinding" id="bind_shortcut_button" type="button" value="Save"/>
         </div>
-        <keyboard :bound-keys="boundKeys" :key.sync="key" :show.sync="showKeyboard"></keyboard>
     </div>
 
 </template>
@@ -59,7 +49,7 @@
                 value: {}, // Origin bound value.
                 boundTips: '',// Origin bound tips.
                 boundKeys: null,// All bound keys, for keyboard component usage.
-                showKeyboard: false
+                comment: null,
             }
         },
         props: {
@@ -95,7 +85,7 @@
         },
         methods: {
             handleShortcutBinding: function() {
-                chrome.runtime.sendMessage({save: true, key: this.key}, response => {
+                chrome.runtime.sendMessage({save: true, key: this.key, comment: this.comment}, response => {
                     this.bound = true;
                     this.boundTips = 'Great job!you have bound a shortcut for this url!';
                 });

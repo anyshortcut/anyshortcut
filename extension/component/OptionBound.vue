@@ -5,9 +5,7 @@
                 <p>The url already bound with <b>ALT+{{key}}</b></p>
             </div>
             <div v-else>
-                <input v-model="key" @mouseover="showKeyboard = true" id="option-shortcut-key" placeholder="key"
-                       maxlength="1"
-                       required/>
+                <keyboard :bound-keys="boundKeys" :key.sync="key"></keyboard>
                 <input v-model="comment" placeholder="Comment for this url" required/>
 
                 <button @click="handleOptionShortcutBinding">Bound</button>
@@ -20,7 +18,6 @@
                 <span>    <a href="{{item.url}}" target="_blank">{{item.comment || item.title}}</a></span>
             </li>
         </ul>
-        <keyboard :bound-keys="boundKeys" :key.sync="key" :show.sync="showKeyboard"></keyboard>
     </div>
 </template>
 <style>
@@ -38,7 +35,6 @@
                 comment: '', // Option item comment.
                 items: null,
                 boundKeys: null,
-                showKeyboard: false
             }
         },
         props: {

@@ -1,5 +1,5 @@
 <template>
-    <div id="container" v-show="show" @click="show=false">
+    <div id="container">
         <ul id="keyboard">
             <li v-for="key in keys" :class="liClass(key)">
                 <button @click="onKeyClick($event)" v-disabled="checkDisable(key)" class="button">
@@ -91,14 +91,6 @@
             }
         },
         props: {
-            show: {
-                type: Boolean,
-                required: true,
-                twoWay: true,
-                default: function() {
-                    return true;
-                }
-            },
             key: {
                 type: String,
                 twoWay: true
