@@ -134,19 +134,8 @@ function onMessageReceiver(message, sender, sendResponse) {
             }
             break;
         }
-        case message.keys: {
-            let keys = Object.keys(primaryShortcuts).filter(key => {
-                return keyCodeHelper.isValidKey(key);
-            });
-            sendResponse(keys);
-            break;
-        }
-        case message.check: {
-            // Check url whether bound shortcut.
-            common.getCurrentTab(tab => {
-                let response = queryBindInfoByUrl(tab.url);
-                sendResponse(response);
-            });
+        case message.primary: {
+            sendResponse(primaryShortcuts);
             break;
         }
         case message.remove: {
@@ -182,12 +171,10 @@ function onMessageReceiver(message, sender, sendResponse) {
             });
             break;
         }
-        case message.secondaryCheck: {
-            common.getCurrentTab(tab => {
-                let hostname = common.getHostnameFromUrl(tab.url);
-                let domain = getBoundDomainByHostname(hostname);
-                sendResponse(domain ? secondaryShortcuts[domain] : null);
-            });
+        case message.secondary: {
+            let hostname = common.getHostnameFromUrl(message.url);
+            let domain = getBoundDomainByHostname(hostname);
+            sendResponse(domain ? secondaryShortcuts[domain] : null);
             break;
         }
         case message.secondaryRequest: {

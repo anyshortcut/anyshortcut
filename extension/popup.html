@@ -21,8 +21,8 @@
             <span>
                     <strong id="bound_shortcut_key">{{key}}</strong>
                 </span>
-            <p id="bound_time">{{value.created_time | fromNow}}</p>
-            <button @click="handleShortcutUnbinding" id="unbind_shortcut_button">Delete Shortcut</button>
+            <p id="bound_time">{{shortcut.created_time | fromNow}}</p>
+            <button @click="unbindPrimaryShortcut" id="unbind_shortcut_button">Delete Shortcut</button>
         </div>
     </div>
     <div id="bind_div" v-else>
@@ -35,8 +35,16 @@
         <br>
         <input v-model="comment" placeholder="Comment for this url" required/>
         <br>
-        <input @click="handleShortcutBinding" id="bind_shortcut_button" type="button" value="Save"/>
+        <input @click="bindPrimaryShortcut" id="bind_shortcut_button" type="button" value="Save"/>
     </div>
+
+    <ul v-show="secondaryShortcuts">
+        <p>Here is secondary shortcut list for this domain:</p>
+        <li v-for="shortcut in secondaryShortcuts">
+            <span><b>{{$key}}</b></span>
+            <span>    <a href="{{shortcut.url}}" target="_blank">{{shortcut.comment || shortcut.title}}</a></span>
+        </li>
+    </ul>
 </div>
 <div v-else>
     <button @click="loginWithGoogle">Login with Google</button>

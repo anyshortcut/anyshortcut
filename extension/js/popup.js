@@ -1,6 +1,6 @@
 import Vue from "vue";
-import moment from 'moment';
-import Keyboard from '../component/Keyboard.vue';
+import moment from "moment";
+import Keyboard from "../component/Keyboard.vue";
 import common from "./common.js";
 import auth from "./background/auth.js";
 
@@ -11,13 +11,15 @@ window.onload = function() {
         el: 'body',
         data: {
             tab: {},
-            bound: false, // A flag indicate origin bound.
-            key: '', // Shortcut key for origin bound.
-            value: {}, // Origin bound value.
-            boundTips: '',// Origin bound tips.
+            bound: false,
+            key: '',
+            shortcut: {},
+            boundTips: '',
             boundKeys: null,// All bound keys, for keyboard component usage.
             comment: null,
-            primary: true,
+            primary: null,
+            primaryShortcuts: null,
+            secondaryShortcuts: null,
         },
         computed: {
             authenticated: function() {
@@ -33,45 +35,97 @@ window.onload = function() {
                 return moment(time).fromNow();
             }
         },
+        watch: {
+            'primary': function() {
+                if (this.primary) {
+                    this.boundKeys = Object.keys(this.primaryShortcuts || []);
+                } else {
+                    this.boundKeys = Object.keys(this.secondaryShortcuts || []);
+                }
+            }
+        },
         methods: {
             loginWithGoogle: function() {
                 auth.openAuthPopupWindow();
             },
             handleShortcutBinding: function() {
-                chrome.runtime.sendMessage({save: true, key: this.key, comment: this.comment}, response => {
-                    this.bound = true;
-                    this.boundTips = 'Great job!you have bound a shortcut for this url!';
-                });
+                if (this.primary) {
+                    this.bindPrimaryShortcut();
+                } else {
+                    this.bindSecondaryShortcut();
+                }
             },
-            handleShortcutUnbinding: function() {
-                chrome.runtime.sendMessage({remove: true, key: this.key}, result => {
+            bindPrimaryShortcut: function() {
+                chrome.runtime.sendMessage({save: true, key: this.key, comment: this.comment}, result => {
                     if (result) {
-                        this.bound = false;
-                        this.key = '';
-                        this.value = {};
-
-                        this.boundTips = 'Delete Success!';
+                        this.boundTips = 'Great job!you have bound a shortcut for this url!';
+                        this.queryPrimaryShortcuts();
+                    }
+                    else {
+                        this.boundTips = 'Ooops!';
                     }
                 });
+            },
+            unbindPrimaryShortcut: function() {
+                chrome.runtime.sendMessage({remove: true, key: this.key}, result => {
+                    if (result) {
+                        this.key = '';
+                        this.shortcut = {};
+                        this.boundTips = 'Delete Success!';
+                        this.queryDomainSecondaryShortcuts();
+                    } else {
+                        this.boundTips = 'Ooops!';
+                    }
+                });
+            },
+            bindSecondaryShortcut: function() {
+                chrome.runtime.sendMessage({
+                    secondarySave: true,
+                    key: this.key,
+                    comment: this.comment
+                }, result => {
+                    if (result) {
+                        this.queryDomainSecondaryShortcuts();
+                    } else {
+                        this.boundTips = 'Ooops!';
+                    }
+                });
+            },
+            queryPrimaryShortcuts(){
+                // Request check current tab url was bound in message-handler.js
+                chrome.runtime.sendMessage({primary: true}, shortcuts => {
+                    this.primaryShortcuts = shortcuts;
+                    this.checkShortcutBound(shortcuts);
+                    this.primary = true;
+                });
+            },
+            queryDomainSecondaryShortcuts() {
+                chrome.runtime.sendMessage({secondary: true, url: this.tab.url}, shortcuts => {
+                    this.secondaryShortcuts = shortcuts;
+                    this.checkShortcutBound(shortcuts);
+                });
+            },
+            checkShortcutBound(shortcuts){
+                for (let key in shortcuts) {
+                    // Simply checks to see if this is a property specific to this class,
+                    // and not one inherited from the base class.
+                    if (shortcuts.hasOwnProperty(key)) {
+                        let shortcut = shortcuts[key];
+                        if (common.isUrlEquivalent(shortcut.url, this.tab.url)) {
+                            this.key = key;
+                            this.bound = true;
+                            this.shortcut = shortcut;
+                            break;
+                        }
+                    }
+                }
             }
         },
         created: function() {
             common.getCurrentTab(tab => {
                 this.tab = tab;
-                // Request check current tab url was bound in message-handler.js
-                chrome.runtime.sendMessage({check: true}, bindInfo => {
-                    // bind info. {"key":key,"value":value}
-                    //TODO How to check javascript object null or undefined properly?
-                    if (bindInfo) {
-                        this.bound = true;
-                        this.key = bindInfo.key;
-                        this.value = bindInfo.value;
-                    }
-                });
-            });
-
-            chrome.runtime.sendMessage({keys: true}, keys => {
-                this.boundKeys = keys ? keys : null;
+                this.queryPrimaryShortcuts();
+                this.queryDomainSecondaryShortcuts();
             });
         }
     });
