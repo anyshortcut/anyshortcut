@@ -9,7 +9,7 @@
         </ul>
     </div>
 </template>
-<style>
+<style lang="css">
     * {
         margin: 0;
         padding: 0;
@@ -79,7 +79,7 @@
         background: #cccccc;
     }
 </style>
-<script>
+<script type="es6">
     export default{
         name: 'Keyboard',
         data(){
@@ -91,33 +91,28 @@
             }
         },
         props: {
-            key: {
-                type: String,
-                twoWay: true
-            },
             boundKeys: {
                 type: Array,
                 default: function() {
                     return [];
-                },
-                coerce: function(value) {
-                    //Coerce the value is empty array instead null of undefined.
-                    return value ? value : [];
                 }
             }
         },
         directives: {
             //A custom nested directive that can check the target element disabled property according to
             // already bound key array.
-            disabled: function(value) {
-                this.el.disabled = value;
+            disabled: {
+                update: function(el, binding) {
+                    el.disabled = binding.value;
+                }
             }
         },
         methods: {
             onKeyClick: function(event) {
                 //What difference between e.currentTarget and e.target,
                 // refer to http://jsfiddle.net/misteroneill/kmn4A/3/
-                this.key = event.target.innerText;
+                let key = event.target.innerText;
+                this.$emit('key-click', key);
             },
             //Return a li element class literal object.
             liClass: function(key) {
@@ -135,7 +130,7 @@
                 return liClass;
             },
             checkDisable: function(key) {
-                return this.boundKeys.indexOf(key) !== -1;
+                return this.boundKeys && this.boundKeys.indexOf(key) !== -1;
             }
         }
     }

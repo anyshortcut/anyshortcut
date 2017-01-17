@@ -5,10 +5,8 @@ import common from "./common.js";
 import auth from "./background/auth.js";
 
 window.onload = function() {
-    Vue.config.debug = true;
-
     let vm = new Vue({
-        el: 'body',
+        el: '#vue',
         data: {
             tab: {},
             bound: false,
@@ -47,6 +45,9 @@ window.onload = function() {
         methods: {
             loginWithGoogle: function() {
                 auth.openAuthPopupWindow();
+            },
+            onKeySelected: function(key) {
+                this.key = key;
             },
             handleShortcutBinding: function() {
                 if (this.primary) {

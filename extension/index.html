@@ -7,24 +7,28 @@
     <script src="./build/content_script.js"></script>
 </head>
 <body>
-<div>A chrome extension which help you bind a shortcut for any url!</div>
-How to open primary shortcut:
-<form>
-    <input type="radio" id="p_blank" v-model='primaryByBlank' value="true"><label for="p_blank">Open in new
-    tab</label>
-    <br>
-    <input type="radio" id="p_self" v-model="primaryByBlank" value="false"><label for="p_self">Open in same tab</label>
-</form>
-<br>
+<div id="vue">
 
-How to open secondary shortcut:
-<form>
-    <input type="radio" id="s_blank" v-model="secondaryByBlank" value="true"><label for="s_blank">Open in new
-    tab</label>
+    <div>A chrome extension which help you bind a shortcut for any url!</div>
+    How to open primary shortcut:
+    <form>
+        <input type="radio" id="p_blank" v-model='primaryByBlank' value="true"><label for="p_blank">Open in new
+        tab</label>
+        <br>
+        <input type="radio" id="p_self" v-model="primaryByBlank" value="false"><label for="p_self">Open in same
+        tab</label>
+    </form>
     <br>
-    <input type="radio" id="s_self" v-model="secondaryByBlank" value="false"><label for="s_self">Open in same
-    tab</label>
-</form>
+
+    How to open secondary shortcut:
+    <form>
+        <input type="radio" id="s_blank" v-model="secondaryByBlank" value="true"><label for="s_blank">Open in new
+        tab</label>
+        <br>
+        <input type="radio" id="s_self" v-model="secondaryByBlank" value="false"><label for="s_self">Open in same
+        tab</label>
+    </form>
+</div>
 <br>
 
 </body>

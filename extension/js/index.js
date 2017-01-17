@@ -2,7 +2,7 @@ import Vue from "vue";
 
 window.onload = function() {
     let vm = new Vue({
-        el: 'body',
+        el: '#vue',
         data: {
             primaryByBlank: null,
             secondaryByBlank: null,
