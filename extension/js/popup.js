@@ -97,7 +97,6 @@ window.onload = function() {
                 chrome.runtime.sendMessage({primary: true}, shortcuts => {
                     this.primaryShortcuts = shortcuts;
                     this.checkShortcutBound(shortcuts);
-                    this.primary = true;
                 });
             },
             queryDomainSecondaryShortcuts() {
@@ -115,10 +114,17 @@ window.onload = function() {
                         if (common.isUrlEquivalent(shortcut.url, this.tab.url)) {
                             this.key = key;
                             this.bound = true;
+                            this.primary = shortcut.primary;
                             this.shortcut = shortcut;
                             break;
                         }
                     }
+                }
+
+                if (this.primary == null) {
+                    // If didn't bound any primary and secondary shortcut for the url then ensure 'primary' value
+                    // initial with true to trigger 'primary' value change.
+                    this.primary = true;
                 }
             }
         },

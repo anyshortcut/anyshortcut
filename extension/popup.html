@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <script src="../build/popup.js"></script>
+    <script src="./build/popup.js"></script>
     <link rel="stylesheet" href="css/popup.css">
 </head>
 <body>
@@ -40,7 +40,7 @@
             <br>
             <input v-model="comment" placeholder="Comment for this url" required/>
             <br>
-            <input @click="bindPrimaryShortcut" id="bind_shortcut_button" type="button" value="Save"/>
+            <input @click="handleShortcutBinding" id="bind_shortcut_button" type="button" value="Save"/>
         </div>
 
         <ul v-show="secondaryShortcuts">
