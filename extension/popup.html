@@ -35,6 +35,14 @@
                 Specify the shortcut:
             </p>
             <br>
+            <form>
+                <input type="radio" id="primary-shortcut" v-model='primary' :value="true">
+                <label for="primary-shortcut">Primary</label>
+
+                <input type="radio" id="secondary-shortcut" v-model="primary" :value="false">
+                <label for="secondary-shortcut">Secondary</label>
+
+            </form>
             <br>
             <keyboard :bound-keys="boundKeys" @key-click="onKeySelected"></keyboard>
             <br>

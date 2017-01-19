@@ -15,7 +15,7 @@ window.onload = function() {
             boundTips: '',
             boundKeys: null,// All bound keys, for keyboard component usage.
             comment: null,
-            primary: null,
+            primary: true,
             primaryShortcuts: null,
             secondaryShortcuts: null,
         },
@@ -34,7 +34,7 @@ window.onload = function() {
             }
         },
         watch: {
-            'primary': function() {
+            primary: function() {
                 if (this.primary) {
                     this.boundKeys = Object.keys(this.primaryShortcuts || []);
                 } else {
@@ -97,6 +97,7 @@ window.onload = function() {
                 chrome.runtime.sendMessage({primary: true}, shortcuts => {
                     this.primaryShortcuts = shortcuts;
                     this.checkShortcutBound(shortcuts);
+                    this.boundKeys = Object.keys(this.primaryShortcuts || []);
                 });
             },
             queryDomainSecondaryShortcuts() {
@@ -119,12 +120,6 @@ window.onload = function() {
                             break;
                         }
                     }
-                }
-
-                if (this.primary == null) {
-                    // If didn't bound any primary and secondary shortcut for the url then ensure 'primary' value
-                    // initial with true to trigger 'primary' value change.
-                    this.primary = true;
                 }
             }
         },
