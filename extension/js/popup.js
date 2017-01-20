@@ -10,7 +10,7 @@ window.onload = function() {
         data: {
             tab: {},
             bound: false,
-            key: '',
+            key: null,// Selected key
             shortcut: {},
             boundTips: '',
             boundKeys: null,// All bound keys, for keyboard component usage.
@@ -34,8 +34,8 @@ window.onload = function() {
             }
         },
         watch: {
-            primary: function() {
-                if (this.primary) {
+            primary: function(newValue) {
+                if (newValue) {
                     this.boundKeys = Object.keys(this.primaryShortcuts || []);
                 } else {
                     this.boundKeys = Object.keys(this.secondaryShortcuts || []);
@@ -46,10 +46,15 @@ window.onload = function() {
             loginWithGoogle: function() {
                 auth.openAuthPopupWindow();
             },
-            onKeySelected: function(key) {
+            onKeyChanged: function(key) {
                 this.key = key;
             },
             handleShortcutBinding: function() {
+                if (!this.key) {
+                    this.boundTips = 'Must select a key';
+                    return;
+                }
+
                 if (this.primary) {
                     this.bindPrimaryShortcut();
                 } else {
@@ -68,9 +73,8 @@ window.onload = function() {
                 });
             },
             unbindPrimaryShortcut: function() {
-                chrome.runtime.sendMessage({remove: true, key: this.key}, result => {
+                chrome.runtime.sendMessage({remove: true, key: this.shortcut.key}, result => {
                     if (result) {
-                        this.key = '';
                         this.shortcut = {};
                         this.boundTips = 'Delete Success!';
                         this.queryDomainSecondaryShortcuts();
@@ -113,7 +117,6 @@ window.onload = function() {
                     if (shortcuts.hasOwnProperty(key)) {
                         let shortcut = shortcuts[key];
                         if (common.isUrlEquivalent(shortcut.url, this.tab.url)) {
-                            this.key = key;
                             this.bound = true;
                             this.primary = shortcut.primary;
                             this.shortcut = shortcut;

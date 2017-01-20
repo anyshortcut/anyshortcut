@@ -67,6 +67,10 @@
         -webkit-border-radius: 5px;
     }
 
+    #keyboard .select {
+        border: 1px solid #dd4814;
+    }
+
     #keyboard li:hover {
         position: relative;
         top: 1px;
@@ -84,6 +88,7 @@
         name: 'Keyboard',
         data(){
             return {
+                selectedKey: null,
                 keys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
                     'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
                     'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
@@ -96,6 +101,14 @@
                 default: function() {
                     return [];
                 }
+            }
+        },
+        watch: {
+            boundKeys: function() {
+                // Restore selectedKey to null where boundKeys changed.
+                this.selectedKey = null;
+                // Emit a key-click event to notify that the selectedKey changed.
+                this.$emit('key-changed', this.selectedKey);
             }
         },
         directives: {
@@ -111,8 +124,8 @@
             onKeyClick: function(event) {
                 //What difference between e.currentTarget and e.target,
                 // refer to http://jsfiddle.net/misteroneill/kmn4A/3/
-                let key = event.target.innerText;
-                this.$emit('key-click', key);
+                this.selectedKey = event.target.innerText;
+                this.$emit('key-changed', this.selectedKey);
             },
             //Return a li element class literal object.
             liClass: function(key) {
@@ -127,6 +140,8 @@
                 } else {
                     liClass.letter = true;
                 }
+
+                liClass.select = key === this.selectedKey;
                 return liClass;
             },
             checkDisable: function(key) {
