@@ -10,8 +10,8 @@
 
     <div v-if="authenticated">
         <div id="bound_tips">{{boundTips}}</div>
-        <div id="unbind_div" v-if="primary && bound">
-            <div id="unbind_guide">
+        <div id="unbind_div" v-if="shortcut">
+            <div id="unbind_guide" v-if="primary">
                 <span>
                     <strong>ALT</strong>
                 </span>
@@ -23,12 +23,12 @@
                 <span>
                     <strong id="bound_shortcut_key">{{shortcut.key}}</strong>
                 </span>
-                <p id="bound_time">{{shortcut.created_time | fromNow}}</p>
-                <button @click="unbindPrimaryShortcut" id="unbind_shortcut_button">Delete Shortcut</button>
             </div>
-        </div>
-        <div v-else-if="!primary && bound">
-            <p>The url already bound with <b>ALT+{{shortcut.key}}</b></p>
+            <div v-else>
+                <p>The url already bound with <b>ALT+{{shortcut.key}}</b></p>
+            </div>
+            <p id="bound_time">{{shortcut.created_time | fromNow}}</p>
+            <button @click="handleShortcutUnbinding" id="unbind_shortcut_button">Delete Shortcut</button>
         </div>
         <div id="bind_div" v-else>
             <p>

@@ -226,14 +226,18 @@ function onMessageReceiver(message, sender, sendResponse) {
             });
             break;
         }
-        case message.secondaryDelete: {
-            common.getCurrentTab(tab => {
-                let hostname = common.getHostnameFromUrl(tab.url);
-                let domain = getBoundDomainByHostname(hostname);
-                let shortcuts = secondaryShortcuts[domain];
-                delete shortcuts[message.key];
-                sendResponse(true);
-            });
+        case message.secondaryRemove: {
+            client.unbindShortcut(message.id)
+                .then(response => {
+                    sendResponse(true);
+                    let hostname = common.getHostnameFromUrl(message.url);
+                    let domain = getBoundDomainByHostname(hostname);
+                    let shortcuts = secondaryShortcuts[domain];
+                    delete shortcuts[message.key];
+                })
+                .catch(error => {
+                    sendResponse(false);
+                });
             break;
         }
         case message.loginSuccessful: {

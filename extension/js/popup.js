@@ -8,10 +8,9 @@ window.onload = function() {
     let vm = new Vue({
         el: '#vue',
         data: {
-            tab: {},
-            bound: false,
+            tab: null,
             key: null,// Selected key
-            shortcut: {},
+            shortcut: null,
             boundTips: '',
             boundKeys: null,// All bound keys, for keyboard component usage.
             comment: null,
@@ -72,17 +71,6 @@ window.onload = function() {
                     }
                 });
             },
-            unbindPrimaryShortcut: function() {
-                chrome.runtime.sendMessage({remove: true, key: this.shortcut.key}, result => {
-                    if (result) {
-                        this.shortcut = {};
-                        this.boundTips = 'Delete Success!';
-                        this.queryDomainSecondaryShortcuts();
-                    } else {
-                        this.boundTips = 'Ooops!';
-                    }
-                });
-            },
             bindSecondaryShortcut: function() {
                 chrome.runtime.sendMessage({
                     secondarySave: true,
@@ -90,6 +78,42 @@ window.onload = function() {
                     comment: this.comment
                 }, result => {
                     if (result) {
+                        this.queryDomainSecondaryShortcuts();
+                    } else {
+                        this.boundTips = 'Ooops!';
+                    }
+                });
+            },
+            handleShortcutUnbinding: function() {
+                if (this.shortcut) {
+                    if (this.primary) {
+                        this.unbindPrimaryShortcut();
+                    } else {
+                        this.unbindSecondaryShortcut();
+                    }
+                }
+            },
+            unbindPrimaryShortcut: function() {
+                chrome.runtime.sendMessage({remove: true, key: this.shortcut.key}, result => {
+                    if (result) {
+                        this.shortcut = null;
+                        this.boundTips = 'Delete Success!';
+                        this.queryDomainSecondaryShortcuts();
+                    } else {
+                        this.boundTips = 'Ooops!';
+                    }
+                });
+            },
+            unbindSecondaryShortcut: function() {
+                chrome.runtime.sendMessage({
+                    secondaryRemove: true,
+                    id: this.shortcut.id,
+                    key: this.shortcut.key,
+                    url: this.tab.url,
+                }, result => {
+                    if (result) {
+                        this.shortcut = null;
+                        this.boundTips = 'Delete Success!';
                         this.queryDomainSecondaryShortcuts();
                     } else {
                         this.boundTips = 'Ooops!';
@@ -117,7 +141,6 @@ window.onload = function() {
                     if (shortcuts.hasOwnProperty(key)) {
                         let shortcut = shortcuts[key];
                         if (common.isUrlEquivalent(shortcut.url, this.tab.url)) {
-                            this.bound = true;
                             this.primary = shortcut.primary;
                             this.shortcut = shortcut;
                             break;
