@@ -1,5 +1,6 @@
 import Vue from "vue";
 import moment from "moment";
+import Popper from "popper.js";
 import Keyboard from "../component/Keyboard.vue";
 import common from "./common.js";
 import auth from "./background/auth.js";
@@ -9,7 +10,7 @@ window.onload = function() {
         el: '#vue',
         data: {
             tab: null,
-            key: null,// Selected key
+            key: null,// Selected and hovered key
             shortcut: null,
             boundTips: '',
             boundKeys: null,// All bound keys, for keyboard component usage.
@@ -17,10 +18,22 @@ window.onload = function() {
             primary: true,
             primaryShortcuts: null,
             secondaryShortcuts: null,
+            showPopper: false,
         },
         computed: {
             authenticated: function() {
                 return auth.isAuthenticated();
+            },
+            hoveredShortcut: function() {
+                if (this.boundKeys && this.boundKeys.indexOf(this.key) !== -1) {
+                    if (this.primary) {
+                        return this.primaryShortcuts[this.key];
+                    } else {
+                        return this.secondaryShortcuts[this.key];
+                    }
+                } else {
+                    return null;
+                }
             }
         },
         components: {
@@ -45,8 +58,22 @@ window.onload = function() {
             loginWithGoogle: function() {
                 auth.openAuthPopupWindow();
             },
-            onKeyChanged: function(key) {
-                this.key = key;
+            onKeyHoverOver: function(target) {
+                this.onHoverOver();
+                this.key = target.innerText;
+                new Popper(target, document.querySelector("#popover"), {
+                    placement: "top"
+                });
+            },
+            onHoverLeave: function() {
+                this._timeoutId = setTimeout(() => {
+                    this.key = null;
+                    this.showPopper = false;
+                }, 200);
+            },
+            onHoverOver: function() {
+                this.showPopper = true;
+                clearTimeout(this._timeoutId);
             },
             handleShortcutBinding: function() {
                 if (!this.key) {

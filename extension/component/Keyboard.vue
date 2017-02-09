@@ -2,9 +2,12 @@
     <div id="container">
         <ul id="keyboard">
             <li v-for="key in keys" :class="liClass(key)">
-                <button @click="onKeyClick($event)" v-disabled="checkDisable(key)" class="button">
+                <div @mouseover="onKeyHoverChanged($event,true)"
+                     @mouseleave="onKeyHoverChanged($event,false)"
+                     class="button"
+                     :class="buttonClass(key)">
                     {{key}}
-                </button>
+                </div>
             </li>
         </ul>
     </div>
@@ -56,11 +59,12 @@
         margin: 0 5px 5px 0;
     }
 
-    #keyboard button {
+    #keyboard .button {
         width: 30px;
         height: 30px;
         line-height: 30px;
         text-align: center;
+        font-size: 15px;
         background: #fff;
         border: 1px solid #f9f9f9;
         -moz-border-radius: 5px;
@@ -79,8 +83,9 @@
         cursor: pointer;
     }
 
-    #keyboard button:disabled {
+    #keyboard .disabled {
         background: #cccccc;
+        cursor: text;
     }
 </style>
 <script type="es6">
@@ -107,7 +112,7 @@
             boundKeys: function() {
                 // Restore selectedKey to null where boundKeys changed.
                 this.selectedKey = null;
-                // Emit a key-click event to notify that the selectedKey changed.
+                // Emit a key-changed event to notify that the selectedKey changed.
                 this.$emit('key-changed', this.selectedKey);
             }
         },
@@ -127,6 +132,13 @@
                 this.selectedKey = event.target.innerText;
                 this.$emit('key-changed', this.selectedKey);
             },
+            onKeyHoverChanged: function(event, flag) {
+                if (flag) {
+                    this.$emit('key-hover-over', event.target);
+                } else {
+                    this.$emit('key-hover-leave', event.target);
+                }
+            },
             //Return a li element class literal object.
             liClass: function(key) {
                 let liClass = {};
@@ -143,6 +155,11 @@
 
                 liClass.select = key === this.selectedKey;
                 return liClass;
+            },
+            buttonClass: function(key) {
+                return {
+                    disabled: this.checkDisable(key)
+                }
             },
             checkDisable: function(key) {
                 return this.boundKeys && this.boundKeys.indexOf(key) !== -1;

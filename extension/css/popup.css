@@ -59,3 +59,8 @@ li {
     margin: 20px;
     width: 80%;
 }
+
+#popover {
+    border: 2px #dd4814;
+    background-color: #ffffff;
+}
