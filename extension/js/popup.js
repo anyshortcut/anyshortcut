@@ -16,6 +16,7 @@ window.onload = function() {
             boundKeys: null,// All bound keys, for keyboard component usage.
             comment: null,
             primary: true,
+            forceBinding: false, // Bind shortcut by force or not
             primaryShortcuts: null,
             secondaryShortcuts: null,
             showPopper: false,
@@ -64,6 +65,7 @@ window.onload = function() {
                 new Popper(target, document.querySelector("#popover"), {
                     placement: "top"
                 });
+                this.forceBinding = false;
             },
             onHoverLeave: function() {
                 this._timeoutId = setTimeout(() => {
@@ -88,7 +90,12 @@ window.onload = function() {
                 }
             },
             bindPrimaryShortcut: function() {
-                chrome.runtime.sendMessage({save: true, key: this.key, comment: this.comment}, result => {
+                chrome.runtime.sendMessage({
+                    save: true,
+                    key: this.key,
+                    comment: this.comment,
+                    force: this.forceBinding,
+                }, result => {
                     if (result) {
                         this.boundTips = 'Great job!you have bound a shortcut for this url!';
                         this.queryPrimaryShortcuts();
@@ -102,7 +109,8 @@ window.onload = function() {
                 chrome.runtime.sendMessage({
                     secondarySave: true,
                     key: this.key,
-                    comment: this.comment
+                    comment: this.comment,
+                    force: this.forceBinding,
                 }, result => {
                     if (result) {
                         this.queryDomainSecondaryShortcuts();

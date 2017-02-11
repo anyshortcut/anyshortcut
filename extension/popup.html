@@ -52,9 +52,10 @@
                  v-show="showPopper"
                  @mouseover="onHoverOver"
                  @mouseleave="onHoverLeave">
-                <div v-if="hoveredShortcut">
+                <div v-if="hoveredShortcut && !forceBinding">
                     <p>{{key}}</p>
                     <p>{{hoveredShortcut.comment || hoveredShortcut.title}}</p>
+                    <button @click="forceBinding = true">Still bind the shortcut?</button>
                 </div>
                 <div v-else>
                     Bind shortcut key!
