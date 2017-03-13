@@ -177,6 +177,38 @@ function onMessageReceiver(message, sender, sendResponse) {
             sendResponse(domain ? secondaryShortcuts[domain] : null);
             break;
         }
+        case message.quickSecondaryRequest: {
+            let primaryKey = message.primaryKey;
+            let secondaryKey = message.secondaryKey;
+            if (primaryShortcuts.hasOwnProperty(primaryKey)) {
+                let value = primaryShortcuts[primaryKey];
+                let domain = value.domain;
+
+                let shortcuts = secondaryShortcuts[domain];
+                if (shortcuts.hasOwnProperty(secondaryKey)) {
+                    let shortcut = shortcuts[secondaryKey];
+                    sendResponse({
+                        url: shortcut.url,
+                        byBlank: pref.isOpenSecondaryShortcutByBlank()
+                    });
+                    client.increaseShortcutOpenTimes(shortcut.id)
+                        .then(response => {
+                            Object.assign(shortcuts, response);
+                        }).catch(error => {
+                        console.log(error);
+                    });
+                } else {
+                    // Not bound any key for this domain name yet or not exist the key
+                    sendResponse(null);
+                    injector.injectSecondaryUnboundTipsResources();
+                }
+            } else {
+                // The shortcut key not bound yet.
+                sendResponse(null);
+                injector.injectUnboundTipsResources();
+            }
+            break;
+        }
         case message.secondaryRequest: {
             // Access options shortcut key for correct domain.
             let domain = getBoundDomainByHostname(message.location.hostname);
