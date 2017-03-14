@@ -185,7 +185,7 @@ function onMessageReceiver(message, sender, sendResponse) {
                 let domain = value.domain;
 
                 let shortcuts = secondaryShortcuts[domain];
-                if (shortcuts.hasOwnProperty(secondaryKey)) {
+                if (shortcuts && shortcuts.hasOwnProperty(secondaryKey)) {
                     let shortcut = shortcuts[secondaryKey];
                     sendResponse({
                         url: shortcut.url,
@@ -200,12 +200,12 @@ function onMessageReceiver(message, sender, sendResponse) {
                 } else {
                     // Not bound any key for this domain name yet or not exist the key
                     sendResponse(null);
-                    injector.injectSecondaryUnboundTipsResources();
+                    injector.injectQuickSecondaryShortcutFailedTips();
                 }
             } else {
                 // The shortcut key not bound yet.
                 sendResponse(null);
-                injector.injectUnboundTipsResources();
+                injector.injectQuickSecondaryShortcutFailedTips();
             }
             break;
         }

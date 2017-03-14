@@ -78,5 +78,15 @@ export default {
         }).catch(error => {
             console.log(`Error occur ${error}`);
         });
+    },
+    injectQuickSecondaryShortcutFailedTips(){
+        injectResources(null, [
+            'css/injection-tips.css',
+            'js/script/quick-secondary-shortcut-tips.js'
+        ]).then(() => {
+            console.log('inject success!');
+        }).catch(error => {
+            console.log(`Error occur ${error}`);
+        });
     }
 }

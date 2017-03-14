@@ -68,7 +68,8 @@ function triggerQuickSecondaryShortcut(primaryKeyCode, secondaryKeyCode) {
                 location.href = url;
             }
         } else {
-            injectKeyCodeChar(String.fromCharCode(keyCode));
+            injectKeyCodeChar(String.fromCharCode(primaryKeyCode)
+                +'→'+ String.fromCharCode(secondaryKeyCode));
         }
     });
     cleanUp();
