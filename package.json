@@ -1,5 +1,5 @@
 {
-  "name": "Shurl",
+  "name": "Spruce",
   "version": "1.0.0",
   "description": "A chrome extesion which help you bind a shortcut for any url!",
   "main": "index.js",
@@ -37,6 +37,7 @@
   "scripts": {
     "dev": "BUILD_DEBUG=true BUILD_BASE_URL=http://localhost:5000 webpack-dev-server --inline --hot --no-info --port 9099",
     "build_dev": "BUILD_DEBUG=true BUILD_BASE_URL=http://localhost:5000 webpack --progress --hide-modules --colors --profile",
-    "build_staging": "BUILD_DEBUG=true BUILD_BASE_URL=https://shurlly.herokuapp.com webpack --progress --hide-modules --colors --profile"
+    "build_staging": "BUILD_DEBUG=true BUILD_BASE_URL=https://shurlly.herokuapp.com webpack --progress --hide-modules --colors --profile",
+    "build_production": "BUILD_DEBUG=false BUILD_BASE_URL=https://api.anyshortcut.com webpack --progress --hide-modules --colors --profile"
   }
 }
