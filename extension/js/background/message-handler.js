@@ -189,7 +189,7 @@ function onMessageReceiver(message, sender, sendResponse) {
                     let shortcut = shortcuts[secondaryKey];
                     sendResponse({
                         url: shortcut.url,
-                        byBlank: pref.isOpenSecondaryShortcutByBlank()
+                        byBlank: pref.isQuickOpenSecondaryShortcutByBlank()
                     });
                     client.increaseShortcutOpenTimes(shortcut.id)
                         .then(response => {

@@ -10,5 +10,8 @@ export default {
     },
     isOpenSecondaryShortcutByBlank(){
         return localStorage.getItem('secondaryByBlank') === 'true';
+    },
+    isQuickOpenSecondaryShortcutByBlank(){
+        return localStorage.getItem('quickSecondaryByBlank') === 'true';
     }
 }

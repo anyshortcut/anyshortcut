@@ -6,6 +6,7 @@ window.onload = function() {
         data: {
             primaryByBlank: null,
             secondaryByBlank: null,
+            quickSecondaryByBlank: null,
         },
         watch: {
             'primaryByBlank': function() {
@@ -13,11 +14,15 @@ window.onload = function() {
             },
             'secondaryByBlank': function() {
                 localStorage.setItem('secondaryByBlank', this.secondaryByBlank);
+            },
+            'quickSecondaryByBlank': function() {
+                localStorage.setItem('quickSecondaryByBlank', this.quickSecondaryByBlank);
             }
         },
         created: function() {
             this.primaryByBlank = localStorage.getItem('primaryByBlank');
             this.secondaryByBlank = localStorage.getItem('secondaryByBlank');
+            this.quickSecondaryByBlank = localStorage.getItem('quickSecondaryByBlank');
         }
     });
 };
