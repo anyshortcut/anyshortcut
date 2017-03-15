@@ -23,16 +23,16 @@ chrome.commands.onCommand.addListener(onCommandFired);
 function onTabActivated(activeInfo) {
     //Get current activated tab
     chrome.tabs.get(activeInfo.tabId, tab => {
-        activeTab = tab;
-
         getRecentTabs(recentTabIds => {
             // Remove previous existed one from recent tab id array.
-            let index = recentTabIds.indexOf(activeTab.id);
+            let index = recentTabIds.indexOf(tab.id);
             if (index !== -1) {
                 recentTabIds.splice(index, 1);
             }
-            recentTabIds.push(activeTab.id);
+            recentTabIds.push(tab.id);
         });
+
+        activeTab = tab;
     });
 }
 
