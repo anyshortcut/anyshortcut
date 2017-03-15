@@ -27,7 +27,8 @@ function injectResources(tabId, files) {
             let injectFunction = loadFunctionForExtension(ext);
 
             injectFunction(tabId, {
-                file: resource
+                file: resource,
+                runAt: 'document_start',
             }, () => {
                 if (chrome.runtime.lastError) {
                     reject(chrome.runtime.lastError);
