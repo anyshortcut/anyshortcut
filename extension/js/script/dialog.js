@@ -1,6 +1,6 @@
-function hideElementDelay(element, delay) {
+function removeElementDelay(element, delay) {
     let timeoutId = window.setTimeout(() => {
-        element.style.display = 'none';
+        document.body.removeChild(element);
         window.clearTimeout(timeoutId);
         timeoutId = undefined;
     }, delay || 3000);
@@ -10,7 +10,7 @@ function hideElementDelay(element, delay) {
  *
  * @param message the message to show in dialog, text or html
  * @param positiveCallback
- * @param negativeButton whether to show the negative button.
+ * @param showNegativeButton whether to show the negative button.
  */
 function showTipDialog(message, positiveCallback = null, showNegativeButton = true) {
     let div = document.createElement('div');
@@ -22,8 +22,7 @@ function showTipDialog(message, positiveCallback = null, showNegativeButton = tr
     positiveButton.textContent = 'Yes';
     positiveButton.className = 'as-injection-button';
     positiveButton.onclick = () => {
-        div.style.display = 'none';
-
+        removeElementDelay(div, 80);
         if (positiveCallback) {
             positiveCallback();
         }
@@ -35,14 +34,14 @@ function showTipDialog(message, positiveCallback = null, showNegativeButton = tr
         negativeButton.textContent = 'No';
         negativeButton.className = 'as-injection-button';
         negativeButton.onclick = () => {
-            div.style.display = 'none';
+            removeElementDelay(div, 80);
         };
         div.appendChild(negativeButton);
     }
 
     document.body.insertAdjacentElement('beforeEnd', div);
 
-    hideElementDelay(div);
+    removeElementDelay(div);
 }
 
 function showBoundSuccessTipDialog() {
@@ -51,7 +50,7 @@ function showBoundSuccessTipDialog() {
     divTips.innerHTML = 'Great! you bound the url with this key!';
     document.body.insertAdjacentElement('beforeEnd', divTips);
 
-    hideElementDelay(divTips)
+    removeElementDelay(divTips)
 }
 
 export default {
