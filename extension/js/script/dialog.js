@@ -6,124 +6,82 @@ function hideElementDelay(element, delay) {
     }, delay || 3000);
 }
 
+/**
+ *
+ * @param message the message to show in dialog, text or html
+ * @param positiveCallback
+ * @param negativeButton whether to show the negative button.
+ */
+function showTipDialog(message, positiveCallback = null, showNegativeButton = true) {
+    let div = document.createElement('div');
+    div.className = 'as-injection-div';
+    div.innerHTML = message;
+    div.firstChild.className = 'as-injection-p';
+
+    let positiveButton = document.createElement('button');
+    positiveButton.textContent = 'Yes';
+    positiveButton.className = 'as-injection-button';
+    positiveButton.onclick = () => {
+        div.style.display = 'none';
+
+        if (positiveCallback) {
+            positiveCallback();
+        }
+    };
+    div.appendChild(positiveButton);
+
+    if (showNegativeButton) {
+        let negativeButton = document.createElement('button');
+        negativeButton.textContent = 'No';
+        negativeButton.className = 'as-injection-button';
+        negativeButton.onclick = () => {
+            div.style.display = 'none';
+        };
+        div.appendChild(negativeButton);
+    }
+
+    document.body.insertAdjacentElement('beforeEnd', div);
+
+    hideElementDelay(div);
+}
+
+function showBoundSuccessTipDialog() {
+    let divTips = document.createElement('div');
+    divTips.className = 'as-injection-div';
+    divTips.innerHTML = 'Great! you bound the url with this key!';
+    document.body.insertAdjacentElement('beforeEnd', divTips);
+
+    hideElementDelay(divTips)
+}
+
 export default {
     showPrimaryShortcutUnbound(pressedKey){
-        var elementId = 'inject-tips';
-        var div = document.getElementById(elementId);
-        if (div) {
-            div.style.display = 'block';
-        } else {
-            div = document.createElement('div');
-            div.id = elementId;
-            div.className = 'as-injection-div';
-            div.innerHTML = '<p>the shortcut key <span id="shortcut-key-span"></span> not bound for this domain yet!</p>' +
-                '<p>Would you like to bound this secondary key with the url?</p>';
-            div.firstChild.className = 'as-injection-p';
-
-            var positiveButton = document.createElement('button');
-            positiveButton.textContent = 'Yes';
-            positiveButton.className = 'as-injection-button';
-            positiveButton.onclick = () => {
-                div.style.display = 'none';
-
-                chrome.runtime.sendMessage({save: true, key: pressedKey}, response => {
-                    var divTips = document.createElement('div');
-                    divTips.className = 'as-injection-div';
-                    divTips.innerHTML = 'Great! you bound the url with this key!';
-                    document.body.insertAdjacentElement('beforeEnd', divTips);
-
-                    hideElementDelay(divTips)
-                });
-            };
-            div.appendChild(positiveButton);
-
-            var negativeButton = document.createElement('button');
-            negativeButton.textContent = 'No';
-            negativeButton.className = 'as-injection-button';
-            negativeButton.onclick = () => {
-                div.style.display = 'none';
-            };
-            div.appendChild(negativeButton);
-            document.body.insertAdjacentElement('beforeEnd', div);
-        }
-
-        var span = document.getElementById('shortcut-key-span');
-        span.className = 'as-injection-shortcut';
-        span.textContent = 'ALT+SHIFT+' + pressedKey;
-
-        hideElementDelay(div);
+        let innerHtml = `<p>the shortcut key <span id="as-injection-shortcut">ALT+SHIFT+${pressedKey}</span> 
+            not bound for this domain yet!</p>
+            <p>Would you like to bound this secondary key with the url?</p>`;
+        showTipDialog(innerHtml, function() {
+            chrome.runtime.sendMessage({save: true, key: pressedKey}, response => {
+                showBoundSuccessTipDialog();
+            });
+        });
     },
     showSecondaryShortcutUnbound(pressedKey){
-        var elementId = 'secondary-inject-tips';
-        var div = document.getElementById(elementId);
-        if (div) {
-            div.style.display = 'block';
-        } else {
-            div = document.createElement('div');
-            div.id = elementId;
-            div.className = 'as-injection-div';
-            div.innerHTML = '<p>the secondary shortcut key <span id="secondary-shortcut-key-span"></span> not bound for this domain yet!</p>' +
-                '<p>Would you like to bound this secondary key with the domain?</p>';
-            div.firstChild.className = 'as-injection-p';
-
-            var positiveButton = document.createElement('button');
-            positiveButton.textContent = 'Yes';
-            positiveButton.className = 'as-injection-button';
-            positiveButton.onclick = () => {
-                div.style.display = 'none';
-
-                chrome.runtime.sendMessage(
-                    {
-                        secondarySave: true,
-                        key: pressedKey,
-                        comment: null,
-                    }, response => {
-                        var divTips = document.createElement('div');
-                        divTips.className = 'as-injection-div';
-                        divTips.innerHTML = 'Great! you bound the url with this key!';
-                        document.body.insertAdjacentElement('beforeEnd', divTips);
-
-                        hideElementDelay(divTips)
-                    });
-            };
-            div.appendChild(positiveButton);
-
-            var negativeButton = document.createElement('button');
-            negativeButton.textContent = 'No';
-            negativeButton.className = 'as-injection-button';
-            negativeButton.onclick = () => {
-                div.style.display = 'none';
-            };
-            div.appendChild(negativeButton);
-            document.body.insertAdjacentElement('beforeEnd', div);
-        }
-
-        var span = document.getElementById('secondary-shortcut-key-span');
-        span.className = 'as-injection-shortcut';
-        span.textContent = 'ALT+' + pressedKey;
-
-        hideElementDelay(div);
+        let innerHtml = `<p>the secondary shortcut key <span id="as-injection-shortcut">ALT+${pressedKey}</span> 
+                        not bound for this domain yet!</p><p>Would you like to bound this secondary key with the domain?</p>`;
+        showTipDialog(innerHtml, function() {
+            chrome.runtime.sendMessage({
+                secondarySave: true,
+                key: pressedKey,
+                comment: null,
+            }, response => {
+                showBoundSuccessTipDialog();
+            });
+        });
     },
     showQuickSecondaryShortcutFailed(primaryPressedKey, secondaryPressedKey){
-        var elementId = 'quick-secondary-inject-tips';
-        var div = document.getElementById(elementId);
-        if (div) {
-            div.style.display = 'block';
-        } else {
-            div = document.createElement('div');
-            div.id = elementId;
-            div.className = 'as-injection-div';
-            div.innerHTML = '<p>the quick secondary shortcut key ' +
-                '<span id="quick-secondary-shortcut-key-span"></span> not bound yet!</p>';
-            div.firstChild.className = 'as-injection-p';
-
-            document.body.insertAdjacentElement('beforeEnd', div);
-        }
-
-        var span = document.getElementById('quick-secondary-shortcut-key-span');
-        span.className = 'as-injection-shortcut';
-        span.textContent = 'SHIFT+ALT+' + primaryPressedKey + '→' + secondaryPressedKey;
-
-        hideElementDelay(div, 2000);
+        let innerHtml = `<p>the quick secondary shortcut key 
+                        <span id="as-injection-shortcut">SHIFT+ALT+${primaryPressedKey}➯${secondaryPressedKey}</span> 
+                        not bound yet!</p>`;
+        showTipDialog(innerHtml, null, false);
     }
 }

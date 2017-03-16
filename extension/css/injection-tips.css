@@ -7,23 +7,23 @@
     top: 10px;
     left: 0;
     right: 0;
-    border: 2px solid #dd4814;
+    border: 3px solid #4F6EC8;
     width: fit-content;
     z-index: 99999;
 }
 
 .as-injection-p {
     font-size: 18px;
-    color: blue;
+    color: #168D4D;
 }
 
 .as-injection-button {
     float: right;
-    color: #dd4814;
+    color: #4F6EC8;
     padding: 5px;
 }
 
-.as-injection-shortcut {
+#as-injection-shortcut {
     font-weight: bold;
-    color: #dd4814;
+    color: #4F6EC8;
 }
