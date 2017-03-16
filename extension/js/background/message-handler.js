@@ -1,6 +1,4 @@
-import injector from "./injector.js";
 import common from "../common.js";
-import keyCodeHelper from "../keycode.js";
 import client from "./client.js";
 import auth from "./auth.js";
 import pref from "../prefs.js";
@@ -130,7 +128,6 @@ function onMessageReceiver(message, sender, sendResponse) {
             } else {
                 // The shortcut key not bound yet.
                 sendResponse(null);
-                injector.injectUnboundTipsResources();
             }
             break;
         }
@@ -200,12 +197,10 @@ function onMessageReceiver(message, sender, sendResponse) {
                 } else {
                     // Not bound any key for this domain name yet or not exist the key
                     sendResponse(null);
-                    injector.injectQuickSecondaryShortcutFailedTips();
                 }
             } else {
                 // The shortcut key not bound yet.
                 sendResponse(null);
-                injector.injectQuickSecondaryShortcutFailedTips();
             }
             break;
         }
@@ -231,7 +226,6 @@ function onMessageReceiver(message, sender, sendResponse) {
             }
             // Not bound any key for this domain name yet or not exist the key
             sendResponse(null);
-            injector.injectSecondaryUnboundTipsResources();
             break;
         }
         case message.secondarySave: {

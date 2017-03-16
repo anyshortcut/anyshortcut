@@ -1,4 +1,5 @@
 import keyCodeHelper from '../keycode.js';
+import dialog from './dialog.js';
 
 const EMPTY_KEY = {
     keyCode: 0,
@@ -26,7 +27,7 @@ function triggerPrimaryShortcut(keyCode) {
                 location.href = url;
             }
         } else {
-            injectKeyCodeChar(keyCodeChar)
+            dialog.showPrimaryShortcutUnbound(keyCodeChar);
         }
     });
     cleanUp();
@@ -47,7 +48,7 @@ function triggerSecondaryShortcut(keyCode) {
                 location.href = url;
             }
         } else {
-            injectKeyCodeChar(String.fromCharCode(keyCode));
+            dialog.showSecondaryShortcutUnbound(String.fromCharCode(keyCode))
         }
     });
     cleanUp();
@@ -68,8 +69,8 @@ function triggerQuickSecondaryShortcut(primaryKeyCode, secondaryKeyCode) {
                 location.href = url;
             }
         } else {
-            injectKeyCodeChar(String.fromCharCode(primaryKeyCode)
-                +'→'+ String.fromCharCode(secondaryKeyCode));
+            dialog.showQuickSecondaryShortcutFailed(String.fromCharCode(primaryKeyCode),
+                String.fromCharCode(secondaryKeyCode))
         }
     });
     cleanUp();
@@ -174,20 +175,6 @@ function cleanUp() {
     releasedKeyNumber = 0;
     firstKey = EMPTY_KEY;
     secondKey = EMPTY_KEY;
-}
-
-
-function injectKeyCodeChar(keyCode) {
-    //Inject key code char to current web page for injected JavaScript to
-    // obtain current unbound shortcut key.
-    let p = document.getElementById('key-code-char');
-    if (!p) {
-        p = document.createElement('p');
-        p.id = 'key-code-char';
-        p.style.display = 'none';
-        document.body.insertAdjacentElement('beforeEnd', p);
-    }
-    p.textContent = keyCode;
 }
 
 /*

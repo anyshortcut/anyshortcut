@@ -56,38 +56,5 @@ export default {
             }).catch(error => {
             console.log(`Error occur ${error}`);
         });
-    },
-    /**
-     * Inject unbound tips javascript and css resources.
-     */
-    injectUnboundTipsResources() {
-        injectResources(null, [
-            'css/injection-tips.css',
-            'js/script/inject-unbound-tips.js'
-        ]).then(() => {
-            console.log('inject success!');
-        }).catch(error => {
-            console.log(`Error occur ${error}`);
-        });
-    },
-    injectSecondaryUnboundTipsResources() {
-        injectResources(null, [
-            'css/injection-tips.css',
-            'js/script/secondary-unbound-tips.js'
-        ]).then(() => {
-            console.log('inject success!');
-        }).catch(error => {
-            console.log(`Error occur ${error}`);
-        });
-    },
-    injectQuickSecondaryShortcutFailedTips(){
-        injectResources(null, [
-            'css/injection-tips.css',
-            'js/script/quick-secondary-shortcut-tips.js'
-        ]).then(() => {
-            console.log('inject success!');
-        }).catch(error => {
-            console.log(`Error occur ${error}`);
-        });
     }
 }
