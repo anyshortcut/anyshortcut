@@ -131,10 +131,6 @@ function onMessageReceiver(message, sender, sendResponse) {
             }
             break;
         }
-        case message.primary: {
-            sendResponse(primaryShortcuts);
-            break;
-        }
         case message.remove: {
             // Delete the url shortcut.
             let shortcut = primaryShortcuts[message.key];
@@ -166,12 +162,6 @@ function onMessageReceiver(message, sender, sendResponse) {
                     console.log(error);
                 });
             });
-            break;
-        }
-        case message.secondary: {
-            let hostname = common.getHostnameFromUrl(message.url);
-            let domain = getBoundDomainByHostname(hostname);
-            sendResponse(domain ? secondaryShortcuts[domain] : null);
             break;
         }
         case message.quickSecondaryRequest: {
@@ -264,6 +254,22 @@ function onMessageReceiver(message, sender, sendResponse) {
                 .catch(error => {
                     sendResponse(false);
                 });
+            break;
+        }
+        case message.all: {
+            // Return all shortcuts.
+            let response = {};
+            if (message.url) {
+                // Only return the domain specific secondary shortcuts when the message.url was represent.
+                let hostname = common.getHostnameFromUrl(message.url);
+                let domain = getBoundDomainByHostname(hostname);
+                response['secondaryShortcuts'] = domain ? secondaryShortcuts[domain] : {};
+            } else {
+                // Else return all secondary shortcuts.
+                response['secondaryShortcuts'] = secondaryShortcuts;
+            }
+            response['primaryShortcuts'] = primaryShortcuts;
+            sendResponse(response);
             break;
         }
         case message.loginSuccessful: {

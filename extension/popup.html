@@ -29,7 +29,7 @@
     <div v-if="authenticated">
         <div id="bound_tips">{{boundTips}}</div>
         <div id="unbind_div" v-if="shortcut">
-            <div id="unbind_guide" v-if="primary">
+            <div id="unbind_guide" v-if="shortcut.primary">
                 <span>
                     <strong>ALT</strong>
                 </span>
@@ -49,18 +49,14 @@
             <button @click="handleShortcutUnbinding" id="unbind_shortcut_button">Delete Shortcut</button>
         </div>
         <div id="bind_div" v-else>
-            <p>
+
+            <p v-if="primary">
                 Specify the shortcut:
             </p>
+            <p v-else="">
+                Specify the secondary shortcut for this domain:
+            </p>
             <br>
-            <form>
-                <input type="radio" id="primary-shortcut" v-model='primary' :value="true">
-                <label for="primary-shortcut">Primary</label>
-
-                <input type="radio" id="secondary-shortcut" v-model="primary" :value="false">
-                <label for="secondary-shortcut">Secondary</label>
-
-            </form>
             <br>
             <keyboard :bound-keys="boundKeys"
                       @key-hover-over="onKeyHoverOver"
@@ -86,9 +82,9 @@
         </div>
         <br>
 
-        <ul v-show="secondaryShortcuts">
+        <ul v-show="shortcuts && !primary">
             <p>Here is secondary shortcut list for this domain:</p>
-            <li v-for="(shortcut,key) in secondaryShortcuts">
+            <li v-for="(shortcut,key) in shortcuts">
                 <span><b>{{key}}</b></span>
                 <span>    <a :href="shortcut.url" target="_blank">{{shortcut.comment || shortcut.title}}</a></span>
             </li>

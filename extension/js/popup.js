@@ -17,8 +17,7 @@ window.onload = function() {
             comment: null,
             primary: true,
             forceBinding: false, // Bind shortcut by force or not
-            primaryShortcuts: null,
-            secondaryShortcuts: null,
+            shortcuts: null,
             showPopper: false,
         },
         computed: {
@@ -27,11 +26,7 @@ window.onload = function() {
             },
             hoveredShortcut: function() {
                 if (this.boundKeys && this.boundKeys.indexOf(this.key) !== -1) {
-                    if (this.primary) {
-                        return this.primaryShortcuts[this.key];
-                    } else {
-                        return this.secondaryShortcuts[this.key];
-                    }
+                    return this.shortcuts[this.key];
                 } else {
                     return null;
                 }
@@ -44,15 +39,6 @@ window.onload = function() {
             //Custom filter to use moment.js format time as fromNow type.
             fromNow: function(time) {
                 return moment(time).fromNow();
-            }
-        },
-        watch: {
-            primary: function(newValue) {
-                if (newValue) {
-                    this.boundKeys = Object.keys(this.primaryShortcuts || []);
-                } else {
-                    this.boundKeys = Object.keys(this.secondaryShortcuts || []);
-                }
             }
         },
         methods: {
@@ -98,7 +84,7 @@ window.onload = function() {
                 }, result => {
                     if (result) {
                         this.boundTips = 'Great job!you have bound a shortcut for this url!';
-                        this.queryPrimaryShortcuts();
+                        this.queryShortcuts();
                     }
                     else {
                         this.boundTips = 'Ooops!';
@@ -113,7 +99,7 @@ window.onload = function() {
                     force: this.forceBinding,
                 }, result => {
                     if (result) {
-                        this.queryDomainSecondaryShortcuts();
+                        this.queryShortcuts();
                     } else {
                         this.boundTips = 'Ooops!';
                     }
@@ -121,7 +107,7 @@ window.onload = function() {
             },
             handleShortcutUnbinding: function() {
                 if (this.shortcut) {
-                    if (this.primary) {
+                    if (this.shortcut.primary) {
                         this.unbindPrimaryShortcut();
                     } else {
                         this.unbindSecondaryShortcut();
@@ -133,7 +119,7 @@ window.onload = function() {
                     if (result) {
                         this.shortcut = null;
                         this.boundTips = 'Delete Success!';
-                        this.queryDomainSecondaryShortcuts();
+                        this.queryShortcuts();
                     } else {
                         this.boundTips = 'Ooops!';
                     }
@@ -149,24 +135,33 @@ window.onload = function() {
                     if (result) {
                         this.shortcut = null;
                         this.boundTips = 'Delete Success!';
-                        this.queryDomainSecondaryShortcuts();
+                        this.queryShortcuts();
                     } else {
                         this.boundTips = 'Ooops!';
                     }
                 });
             },
-            queryPrimaryShortcuts(){
-                // Request check current tab url was bound in message-handler.js
-                chrome.runtime.sendMessage({primary: true}, shortcuts => {
-                    this.primaryShortcuts = shortcuts;
-                    this.checkShortcutBound(shortcuts);
-                    this.boundKeys = Object.keys(this.primaryShortcuts || []);
-                });
-            },
-            queryDomainSecondaryShortcuts() {
-                chrome.runtime.sendMessage({secondary: true, url: this.tab.url}, shortcuts => {
-                    this.secondaryShortcuts = shortcuts;
-                    this.checkShortcutBound(shortcuts);
+            queryShortcuts(){
+                chrome.runtime.sendMessage({all: true, url: this.tab.url}, response => {
+                    if (!common.isObjectEmpty(response.secondaryShortcuts)) {
+                        this.shortcuts = response.secondaryShortcuts;
+                        this.primary = false;
+                    } else if (!common.isObjectEmpty(response.primaryShortcuts)) {
+                        this.shortcuts = response.primaryShortcuts;
+                        this.primary = true;
+                    }
+
+                    if (this.shortcuts) {
+                        this.boundKeys = Object.keys(this.shortcuts);
+                    }
+
+                    // Iterate both primary shortcuts and secondary shortcuts
+                    // to ensure don't miss the bound shortcut.
+                    for (let key in response) {
+                        if (response.hasOwnProperty(key)) {
+                            this.checkShortcutBound(response[key]);
+                        }
+                    }
                 });
             },
             checkShortcutBound(shortcuts){
@@ -176,7 +171,6 @@ window.onload = function() {
                     if (shortcuts.hasOwnProperty(key)) {
                         let shortcut = shortcuts[key];
                         if (common.isUrlEquivalent(shortcut.url, this.tab.url)) {
-                            this.primary = shortcut.primary;
                             this.shortcut = shortcut;
                             break;
                         }
@@ -187,8 +181,7 @@ window.onload = function() {
         created: function() {
             common.getCurrentTab(tab => {
                 this.tab = tab;
-                this.queryPrimaryShortcuts();
-                this.queryDomainSecondaryShortcuts();
+                this.queryShortcuts();
             });
         }
     });
