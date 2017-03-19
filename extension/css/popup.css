@@ -7,13 +7,13 @@
 body {
     font-family: "Segoe UI", "Lucida Grande", Tahoma, sans-serif;
     font-size: 100%;
-    width: 400px;
-    height: 400px;
+    width: 600px;
+    height: 420px;
     text-align: center;
 }
 
 a:visited, a:active {
-    color: #0094E0;
+    color: #4F6EC8;
 }
 
 ul {
@@ -23,6 +23,23 @@ ul {
 li {
     text-align: left;
     margin: 2px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.is-center {
+    text-align: center;
+}
+
+header {
+    padding: 5px;
+    border-bottom: #eeeeee solid 2px;
+}
+
+header img, i {
+    vertical-align: middle;
 }
 
 #status {

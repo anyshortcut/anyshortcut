@@ -3,10 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <script src="./build/popup.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css"
+          integrity="sha384-UQiGfs9ICog+LwheBSRCt1o5cbyKIHbwjWscjemyBMT9YCUMZffs6UqUTd0hObXD" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+
     <link rel="stylesheet" href="css/popup.css">
 </head>
 <body>
 <div id="vue">
+
+    <header>
+        <div class="pure-g">
+            <div class="pure-u-1-3">
+                <a href="https://anyshortcut.com" target="_blank"><img src="images/icon.png" alt="">
+                    <span style="font-weight: bold">anyshortcut</span></a>
+            </div>
+            <div class="pure-u-1-3">
+            </div>
+            <div class="pure-u-1-3">
+                <a href="index.html" target="_blank"><i class="fa fa-cog"></i> settings</a>
+            </div>
+        </div>
+    </header>
 
     <div v-if="authenticated">
         <div id="bound_tips">{{boundTips}}</div>
@@ -76,14 +94,9 @@
             </li>
         </ul>
     </div>
-    <div v-else>
-        <button @click="loginWithGoogle">Login with Google</button>
+    <div v-else class="is-center">
+        <img src="images/btn_google_signin.png" alt="Google Sign In" @click="loginWithGoogle">
     </div>
 </div>
-<br>
-<br>
-<footer>
-    <a href="index.html" target="_blank">Options</a>
-</footer>
 </body>
 </html>
