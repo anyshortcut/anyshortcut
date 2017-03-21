@@ -42,14 +42,6 @@ header img, i {
     vertical-align: middle;
 }
 
-#status {
-    /* avoid an excessively wide status text */
-    white-space: pre;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    max-width: 800px;
-}
-
 #shortcut_key, #option-shortcut-key {
     border-color: rgb(61, 149, 92);
     width: 35px;

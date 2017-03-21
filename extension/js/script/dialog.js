@@ -4,6 +4,7 @@ function removeElementDelay(element, delay) {
         window.clearTimeout(timeoutId);
         timeoutId = undefined;
     }, delay || 3000);
+    return timeoutId;
 }
 
 /**
@@ -41,7 +42,16 @@ function showTipDialog(message, positiveCallback = null, showNegativeButton = tr
 
     document.body.insertAdjacentElement('beforeEnd', div);
 
-    removeElementDelay(div);
+    let timeoutId = removeElementDelay(div);
+    div.onmouseover = function(e) {
+        if (timeoutId) {
+            window.clearTimeout(timeoutId);
+            timeoutId = undefined;
+        }
+    };
+    div.onmouseout = function(e) {
+        timeoutId = removeElementDelay(div);
+    }
 }
 
 function showBoundSuccessTipDialog() {
@@ -57,7 +67,7 @@ export default {
     showPrimaryShortcutUnbound(pressedKey){
         let innerHtml = `<p>the shortcut key <span id="as-injection-shortcut">ALT+SHIFT+${pressedKey}</span> 
             not bound for this domain yet!</p>
-            <p>Would you like to bound this secondary key with the url?</p>`;
+            <p>Would you like to bound this primary key with the url?</p>`;
         showTipDialog(innerHtml, function() {
             chrome.runtime.sendMessage({save: true, key: pressedKey}, response => {
                 showBoundSuccessTipDialog();
