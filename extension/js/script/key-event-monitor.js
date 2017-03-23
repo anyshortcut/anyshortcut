@@ -87,7 +87,7 @@ function triggerShortcut() {
             if (secondKey.releasedAt && secondKey.releasedAt) {
                 triggerQuickSecondaryShortcut(firstKey.keyCode, secondKey.keyCode);
             } else {
-                if (firstKey.releasedAt - firstKey.pressedAt > 1000) {
+                if (firstKey.releasedAt - firstKey.pressedAt > 800) {
                     triggerQuickSecondaryShortcut(firstKey.keyCode, firstKey.keyCode);
                 } else {
                     triggerPrimaryShortcut(firstKey.keyCode);

@@ -5,31 +5,35 @@
 }
 
 .as-injection-div {
-    background: #ffffff;
+    background: #4F6EC8;
     padding: 20px;
+    font-size: 18px;
     margin: 0 auto;
     position: fixed;
     text-align: center;
-    top: 10px;
+    top: 80px;
     left: 0;
     right: 0;
     border: 3px solid #4F6EC8;
+    color: #eeeeee;
+    border-radius: 8px;
     width: fit-content;
     z-index: 999999999;
 }
 
-.as-injection-p {
-    font-size: 18px;
-    color: #168D4D;
-}
+/*.as-injection-div p button {*/
+/*font-size: 15px;*/
+/*}*/
 
 .as-injection-button {
     float: right;
+    font-weight: bold;
     color: #4F6EC8;
     padding: 5px;
 }
 
 #as-injection-shortcut {
     font-weight: bold;
-    color: #4F6EC8;
+    font-size: 18px;
+    color: #ffffff;
 }
