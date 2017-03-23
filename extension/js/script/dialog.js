@@ -1,6 +1,8 @@
 function removeElementDelay(element, delay) {
     let timeoutId = window.setTimeout(() => {
-        document.body.removeChild(element);
+        if (document.body.contains(element)) {
+            document.body.removeChild(element);
+        }
         window.clearTimeout(timeoutId);
         timeoutId = undefined;
     }, delay || 3000);
@@ -40,7 +42,6 @@ function showTipDialog(message, positiveCallback = null, showNegativeButton = tr
         div.appendChild(negativeButton);
     }
 
-    document.body.insertAdjacentElement('beforeEnd', div);
 
     let timeoutId = removeElementDelay(div);
     div.onmouseover = function(e) {
@@ -51,7 +52,18 @@ function showTipDialog(message, positiveCallback = null, showNegativeButton = tr
     };
     div.onmouseout = function(e) {
         timeoutId = removeElementDelay(div);
-    }
+    };
+    document.addEventListener('keyup', function(e) {
+        if (!e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
+            if (e.keyCode === 27) {
+                window.clearTimeout(timeoutId);
+                timeoutId = undefined;
+                removeElementDelay(div, 80);
+            }
+        }
+    });
+
+    document.body.insertAdjacentElement('beforeEnd', div);
 }
 
 function showBoundSuccessTipDialog() {
