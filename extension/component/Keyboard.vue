@@ -18,20 +18,10 @@
         padding: 0;
     }
 
-    /*#container {*/
-    /*position: absolute;*/
-    /*z-index: 1000;*/
-    /*left: 0;*/
-    /*top: 0;*/
-    /*width: 100%;*/
-    /*height: 100%;*/
-    /*}*/
-
-    #keyboard {
-        margin: 0;
-        /*padding: 180px 0 0;*/
-        list-style: none;
-        background-color: #ffffff;
+    #container {
+        margin: 0 auto;
+        position: relative;
+        width: 450px;
     }
 
     .clear_left {
@@ -39,19 +29,19 @@
     }
 
     #keyboard .number {
-        width: 32px;
+        width: 40px;
     }
 
     #keyboard .letter_q {
-        margin-left: 10px;
+        margin-left: 15px;
     }
 
     #keyboard .letter_a {
-        margin-left: 35px;
+        margin-left: 38px;
     }
 
     #keyboard .letter_z {
-        margin-left: 70px;
+        margin-left: 72px;
     }
 
     #keyboard li {
@@ -60,9 +50,9 @@
     }
 
     #keyboard .button {
-        width: 30px;
-        height: 30px;
-        line-height: 30px;
+        width: 35px;
+        height: 35px;
+        line-height: 35px;
         text-align: center;
         font-size: 15px;
         background: #fff;

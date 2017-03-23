@@ -15,7 +15,7 @@
     right: 0;
     border: 3px solid #4F6EC8;
     width: fit-content;
-    z-index: 99999;
+    z-index: 999999999;
 }
 
 .as-injection-p {
