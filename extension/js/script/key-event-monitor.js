@@ -119,8 +119,12 @@ function monitorKeyUp(e) {
 
 function monitorKeyDown(e) {
     e = keyCodeHelper.ensureWindowEvent(e);
-    let keyCode = e.keyCode;
+    if (!isValidModifierKey(e)) {
+        // Ignore invalid modifier key
+        return;
+    }
 
+    let keyCode = e.keyCode;
     if (!keyCodeHelper.isValidKeyCode(keyCode)) {
         // Ignore invalid key code.
         return;
@@ -177,6 +181,9 @@ function cleanUp() {
     secondKey = EMPTY_KEY;
 }
 
+function isValidModifierKey(e) {
+    return isValidFullModifier(e) || isValidOptionModifier(e);
+}
 /*
  * Check the event key modifier is full valid or not.
  */
