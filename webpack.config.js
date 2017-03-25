@@ -1,16 +1,16 @@
-var webpack = require('webpack');
+let webpack = require('webpack');
 
 module.exports = {
     entry: {
-        content_script: './extension/js/script/key-event-monitor.js',
+        content_script: './js/script/key-event-monitor.js',
         background: [
-            './extension/js/background/message-handler.js',
-            './extension/js/background/commands.js',
-            './extension/js/background/injector.js',
-            './extension/js/background/app.js',
+            './js/background/message-handler.js',
+            './js/background/commands.js',
+            './js/background/injector.js',
+            './js/background/app.js',
         ],
-        popup: './extension/js/popup.js',
-        index: './extension/js/index.js',
+        popup: './js/popup.js',
+        index: './js/index.js',
     },
     output: {
         path: 'extension/build',
@@ -49,6 +49,4 @@ module.exports = {
             'BUILD_BASE_URL': JSON.stringify(process.env.BUILD_BASE_URL),
         })
     ]
-
-
 };
