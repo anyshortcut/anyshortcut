@@ -1,3 +1,4 @@
+const path = require('path');
 let webpack = require('webpack');
 
 module.exports = {
@@ -13,35 +14,57 @@ module.exports = {
         index: './js/index.js',
     },
     output: {
-        path: 'extension/build',
+        path: path.resolve(__dirname, 'extension/build'),
         filename: '[name].js'
     },
     module: {
-        loaders: [
+        rules: [
             {
                 // use vue-loader for *.vue files
                 test: /\.vue$/,
-                loader: 'vue',
-                exclude: /node_modules/
+                loader: 'vue-loader',
+                include: [
+                    path.resolve(__dirname, "component")
+                ],
+                exclude: [
+                    path.resolve(__dirname, "node_modules")
+                ],
+                options: {
+                    presets: ["es2015"]
+                },
             },
             {
                 // use babel-loader for *.js files
                 test: /\.js$/,
-                loader: 'babel',
-                // important: exclude files in node_modules
-                // otherwise it's going to be really slow!
-                exclude: /node_modules/
+                loader: 'babel-loader',
+                include: [
+                    path.resolve(__dirname, "js")
+                ],
+                exclude: [
+                    path.resolve(__dirname, "node_modules")
+                ],
+            },
+            {
+                // use less-loader for *.less files
+                test: /\.less$/,
+                loader: [
+                    'style-loader',
+                    'css-loader',
+                    'less-loader'
+                ],
+                include: [
+                    path.resolve(__dirname, "less")
+                ],
+                exclude: [
+                    path.resolve(__dirname, "node_modules")
+                ],
             }
-        ]
+        ],
     },
     resolve: {
         alias: {
             'vue$': 'vue/dist/vue.common.js'
         }
-    },
-    babel: {
-        presets: ['es2015'],
-        plugins: ['transform-runtime']
     },
     plugins: [
         new webpack.DefinePlugin({

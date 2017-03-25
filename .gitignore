@@ -5,3 +5,4 @@ build
 target
 *.crx
 *.pem
+npm-debug.log
