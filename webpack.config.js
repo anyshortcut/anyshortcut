@@ -11,11 +11,11 @@ module.exports = {
         background: [
             './js/background/message-handler.js',
             './js/background/commands.js',
-            './js/background/injector.js',
             './js/background/app.js',
         ],
         popup: './js/popup.js',
         index: './js/index.js',
+        auth_popup: './js/script/auth-popup-injection.js',
     },
     output: {
         path: path.resolve(__dirname, 'extension/dist'),
@@ -51,7 +51,6 @@ module.exports = {
                             noIeCompat: true
                         }
                     }],
-                    fallback: 'style-loader'
                 })
             }
         ],

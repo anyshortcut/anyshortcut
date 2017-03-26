@@ -42,7 +42,7 @@ function injectResources(tabId, files) {
 
 export default {
     injectTabContentScriptManually(tabId){
-        injectResources(tabId, ['build/content_script.js'])
+        injectResources(tabId, ['dist/content_script.js'])
             .then(() => {
                 console.log('inject success!');
             }).catch(error => {
@@ -50,7 +50,7 @@ export default {
         });
     },
     injectAuthPopupWindowScript(tabId){
-        injectResources(tabId, ['js/script/auth-popup-injection.js'])
+        injectResources(tabId, ['dist/auth_popup.js'])
             .then(() => {
                 console.log('inject success!');
             }).catch(error => {
