@@ -44,7 +44,7 @@
         "dist/content_script.js"
       ],
       "css": [
-        "css/injection-tips.css"
+        "dist/css/content_script.css"
       ],
       "all_frames": true,
       "run_at": "document_start"

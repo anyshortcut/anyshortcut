@@ -1,3 +1,5 @@
+require("../../less/injection-tips.less");
+
 function removeElementDelay(element, delay) {
     let timeoutId = window.setTimeout(() => {
         if (document.body.contains(element)) {

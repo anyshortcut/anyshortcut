@@ -5,7 +5,7 @@ import Keyboard from "../component/Keyboard.vue";
 import common from "./common.js";
 import auth from "./background/auth.js";
 
-require('../less/popup.less');
+require("../less/popup.less");
 
 window.onload = function() {
     let vm = new Vue({
