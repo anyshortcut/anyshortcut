@@ -1,5 +1,9 @@
 const path = require('path');
-let webpack = require('webpack');
+const webpack = require('webpack');
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const extractLess = new ExtractTextPlugin({
+    filename: "css/[name].css",
+});
 
 module.exports = {
     entry: {
@@ -14,7 +18,7 @@ module.exports = {
         index: './js/index.js',
     },
     output: {
-        path: path.resolve(__dirname, 'extension/build'),
+        path: path.resolve(__dirname, 'extension/dist'),
         filename: '[name].js'
     },
     module: {
@@ -22,6 +26,7 @@ module.exports = {
             {
                 // use vue-loader for *.vue files
                 test: /\.vue$/,
+                // Rule.loader is a shortcut to Rule.use: [ { loader } ]
                 loader: 'vue-loader',
                 include: [
                     path.resolve(__dirname, "component")
@@ -29,35 +34,25 @@ module.exports = {
                 exclude: [
                     path.resolve(__dirname, "node_modules")
                 ],
-                options: {
-                    presets: ["es2015"]
-                },
-            },
-            {
-                // use babel-loader for *.js files
-                test: /\.js$/,
-                loader: 'babel-loader',
-                include: [
-                    path.resolve(__dirname, "js")
-                ],
-                exclude: [
-                    path.resolve(__dirname, "node_modules")
-                ],
+                // options: {
+                //     presets: ["es2015"]
+                // },
             },
             {
                 // use less-loader for *.less files
                 test: /\.less$/,
-                loader: [
-                    'style-loader',
-                    'css-loader',
-                    'less-loader'
-                ],
-                include: [
-                    path.resolve(__dirname, "less")
-                ],
-                exclude: [
-                    path.resolve(__dirname, "node_modules")
-                ],
+                use: extractLess.extract({
+                    use: [{
+                        loader: 'css-loader'
+                    }, {
+                        loader: 'less-loader',
+                        options: {
+                            strictMath: true,
+                            noIeCompat: true
+                        }
+                    }],
+                    fallback: 'style-loader'
+                })
             }
         ],
     },
@@ -70,6 +65,7 @@ module.exports = {
         new webpack.DefinePlugin({
             'BUILD_DEBUG': JSON.stringify(process.env.BUILD_DEBUG),
             'BUILD_BASE_URL': JSON.stringify(process.env.BUILD_BASE_URL),
-        })
+        }),
+        extractLess,
     ]
 };

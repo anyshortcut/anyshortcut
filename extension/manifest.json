@@ -19,7 +19,7 @@
   },
   "background": {
     "scripts": [
-      "build/background.js"
+      "dist/background.js"
     ],
     "persistent": true
   },
@@ -41,7 +41,7 @@
       ],
       "match_about_blank": true,
       "js": [
-        "build/content_script.js"
+        "dist/content_script.js"
       ],
       "css": [
         "css/injection-tips.css"
