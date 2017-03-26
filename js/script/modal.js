@@ -13,11 +13,14 @@ function removeElementDelay(element, delay) {
 
 /**
  *
- * @param message the message to show in dialog, text or html
+ * @param message the message to show in modal, text or html
  * @param positiveCallback
  * @param showNegativeButton whether to show the negative button.
  */
-function showTipDialog(message, positiveCallback = null, showNegativeButton = true) {
+function openModal(message, positiveCallback = null, showNegativeButton = true) {
+    let modal = document.createElement('div');
+    modal.className = 'modal-overlay';
+
     let div = document.createElement('div');
     div.className = 'as-injection-div';
     div.innerHTML = message;
@@ -27,7 +30,7 @@ function showTipDialog(message, positiveCallback = null, showNegativeButton = tr
     positiveButton.textContent = 'Yes';
     positiveButton.className = 'as-injection-button';
     positiveButton.onclick = () => {
-        removeElementDelay(div, 80);
+        removeElementDelay(modal, 50);
         if (positiveCallback) {
             positiveCallback();
         }
@@ -39,13 +42,13 @@ function showTipDialog(message, positiveCallback = null, showNegativeButton = tr
         negativeButton.textContent = 'No';
         negativeButton.className = 'as-injection-button';
         negativeButton.onclick = () => {
-            removeElementDelay(div, 80);
+            removeElementDelay(modal, 50);
         };
         div.appendChild(negativeButton);
     }
 
 
-    let timeoutId = removeElementDelay(div);
+    let timeoutId = removeElementDelay(modal);
     div.onmouseover = function(e) {
         if (timeoutId) {
             window.clearTimeout(timeoutId);
@@ -53,19 +56,20 @@ function showTipDialog(message, positiveCallback = null, showNegativeButton = tr
         }
     };
     div.onmouseout = function(e) {
-        timeoutId = removeElementDelay(div);
+        timeoutId = removeElementDelay(modal);
     };
     document.addEventListener('keyup', function(e) {
         if (!e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
             if (e.keyCode === 27) {
                 window.clearTimeout(timeoutId);
                 timeoutId = undefined;
-                removeElementDelay(div, 80);
+                removeElementDelay(modal, 50);
             }
         }
     });
 
-    document.body.insertAdjacentElement('beforeEnd', div);
+    modal.appendChild(div);
+    document.body.insertAdjacentElement('beforeEnd', modal);
 }
 
 function showBoundSuccessTipDialog() {
@@ -82,7 +86,7 @@ export default {
         let innerHtml = `<p>the shortcut key <span id="as-injection-shortcut">ALT+SHIFT+${pressedKey}</span> 
             not bound for this domain yet!</p>
             <p>Would you like to bound this primary key with the url?</p>`;
-        showTipDialog(innerHtml, function() {
+        openModal(innerHtml, function() {
             chrome.runtime.sendMessage({save: true, key: pressedKey}, response => {
                 showBoundSuccessTipDialog();
             });
@@ -91,7 +95,7 @@ export default {
     showSecondaryShortcutUnbound(pressedKey){
         let innerHtml = `<p>the secondary shortcut key <span id="as-injection-shortcut">ALT+${pressedKey}</span> 
                         not bound for this domain yet!</p><p>Would you like to bound this secondary key with the domain?</p>`;
-        showTipDialog(innerHtml, function() {
+        openModal(innerHtml, function() {
             chrome.runtime.sendMessage({
                 secondarySave: true,
                 key: pressedKey,
@@ -105,6 +109,6 @@ export default {
         let innerHtml = `<p>the quick secondary shortcut key 
                         <span id="as-injection-shortcut">SHIFT+ALT+${primaryPressedKey}➯${secondaryPressedKey}</span> 
                         not bound yet!</p>`;
-        showTipDialog(innerHtml, null, false);
+        openModal(innerHtml, null, false);
     }
 }

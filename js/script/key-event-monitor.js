@@ -1,5 +1,5 @@
 import keyCodeHelper from '../keycode.js';
-import dialog from './dialog.js';
+import modal from './modal.js';
 
 const EMPTY_KEY = {
     keyCode: 0,
@@ -27,7 +27,7 @@ function triggerPrimaryShortcut(keyCode) {
                 location.href = url;
             }
         } else {
-            dialog.showPrimaryShortcutUnbound(keyCodeChar);
+            modal.showPrimaryShortcutUnbound(keyCodeChar);
         }
     });
     cleanUp();
@@ -48,7 +48,7 @@ function triggerSecondaryShortcut(keyCode) {
                 location.href = url;
             }
         } else {
-            dialog.showSecondaryShortcutUnbound(String.fromCharCode(keyCode))
+            modal.showSecondaryShortcutUnbound(String.fromCharCode(keyCode))
         }
     });
     cleanUp();
@@ -69,7 +69,7 @@ function triggerQuickSecondaryShortcut(primaryKeyCode, secondaryKeyCode) {
                 location.href = url;
             }
         } else {
-            dialog.showQuickSecondaryShortcutFailed(String.fromCharCode(primaryKeyCode),
+            modal.showQuickSecondaryShortcutFailed(String.fromCharCode(primaryKeyCode),
                 String.fromCharCode(secondaryKeyCode))
         }
     });
