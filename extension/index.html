@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Options</title>
-    <script src="./build/index.js"></script>
-    <script src="./build/content_script.js"></script>
+    <script src="dist/index.js"></script>
+    <script src="dist/content_script.js"></script>
 </head>
 <body>
 <div id="vue">
@@ -32,10 +32,10 @@
 
     How to quick open secondary shortcut:
     <form>
-        <input type="radio" id="qs_blank" v-model="quickSecondaryByBlank" value="true"><label for="s_blank">Open in new
+        <input type="radio" id="qs_blank" v-model="quickSecondaryByBlank" value="true"><label for="qs_blank">Open in new
         tab</label>
         <br>
-        <input type="radio" id="qs_self" v-model="quickSecondaryByBlank" value="false"><label for="s_self">Open in same
+        <input type="radio" id="qs_self" v-model="quickSecondaryByBlank" value="false"><label for="qs_self">Open in same
         tab</label>
     </form>
 </div>
