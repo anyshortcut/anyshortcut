@@ -12,6 +12,7 @@ chrome.runtime.onMessage.addListener(onMessageReceiver);
 
 if (auth.isAuthenticated()) {
     getAllShortcuts();
+    pref.sync();
 }
 
 /**
@@ -78,14 +79,14 @@ function checkUrlBound(url) {
  */
 function setPopupIcon(bound) {
     const icon = bound ? {
-            path: {
-                '16': 'images/icon32.png'
-            }
-        } : {
-            path: {
-                '16': 'images/icon32-gray.png'
-            }
-        };
+        path: {
+            '16': 'images/icon32.png'
+        }
+    } : {
+        path: {
+            '16': 'images/icon32-gray.png'
+        }
+    };
     chrome.browserAction.setIcon(icon);
 }
 
@@ -116,7 +117,7 @@ function onMessageReceiver(message, sender, sendResponse) {
                 let value = primaryShortcuts[key];
                 sendResponse({
                     url: value.url,
-                    byBlank: pref.isOpenPrimaryShortcutByBlank()
+                    byBlank: pref.isPrimaryBlank()
                 });
 
                 client.increaseShortcutOpenTimes(value.id)
@@ -176,7 +177,7 @@ function onMessageReceiver(message, sender, sendResponse) {
                     let shortcut = shortcuts[secondaryKey];
                     sendResponse({
                         url: shortcut.url,
-                        byBlank: pref.isQuickOpenSecondaryShortcutByBlank()
+                        byBlank: pref.isQuickSecondaryBlank()
                     });
                     client.increaseShortcutOpenTimes(shortcut.id)
                         .then(response => {
@@ -203,7 +204,7 @@ function onMessageReceiver(message, sender, sendResponse) {
                     let shortcut = shortcuts[message.key];
                     sendResponse({
                         url: shortcut.url,
-                        byBlank: pref.isOpenSecondaryShortcutByBlank()
+                        byBlank: pref.isSecondaryBlank()
                     });
                     client.increaseShortcutOpenTimes(shortcut.id)
                         .then(response => {
@@ -275,6 +276,7 @@ function onMessageReceiver(message, sender, sendResponse) {
         case message.loginSuccessful: {
             auth.signin();
             getAllShortcuts();
+            pref.sync();
             break;
         }
         case message.logoutSuccessful: {

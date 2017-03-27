@@ -1,28 +1,20 @@
 import Vue from "vue";
+import prefs from "./prefs.js";
 
 window.onload = function() {
     let vm = new Vue({
         el: '#vue',
         data: {
-            primaryByBlank: null,
-            secondaryByBlank: null,
-            quickSecondaryByBlank: null,
+            preference: prefs.localPreference()
         },
         watch: {
-            'primaryByBlank': function() {
-                localStorage.setItem('primaryByBlank', this.primaryByBlank);
-            },
-            'secondaryByBlank': function() {
-                localStorage.setItem('secondaryByBlank', this.secondaryByBlank);
-            },
-            'quickSecondaryByBlank': function() {
-                localStorage.setItem('quickSecondaryByBlank', this.quickSecondaryByBlank);
+            preference: {
+                // use deep property to watch nested property changed.
+                deep: true,
+                handler: function(newValue) {
+                    prefs.update(newValue);
+                }
             }
         },
-        created: function() {
-            this.primaryByBlank = localStorage.getItem('primaryByBlank');
-            this.secondaryByBlank = localStorage.getItem('secondaryByBlank');
-            this.quickSecondaryByBlank = localStorage.getItem('quickSecondaryByBlank');
-        }
     });
 };

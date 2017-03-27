@@ -1,17 +1,38 @@
+import client from "./background/client.js";
+// Default preference value.
+const DEFAULT_PREFERENCE = {
+    primary_blank: true,
+    secondary_blank: false,
+    quick_secondary_blank: true,
+};
+
 export default {
-    setOpenPrimaryShortcutByBlank(flag){
-        localStorage.setItem('primaryByBlank', flag);
+    localPreference(){
+        return JSON.parse(localStorage.getItem('preference')) || DEFAULT_PREFERENCE;
     },
-    isOpenPrimaryShortcutByBlank(){
-        return localStorage.getItem('primaryByBlank') === 'true';
+    isPrimaryBlank(){
+        let preference = this.localPreference();
+        return preference['primary_blank'];
     },
-    setOpenSecondaryShortcutByBlank(flag){
-        localStorage.setItem('secondaryByBlank', flag);
+    isSecondaryBlank(){
+        let preference = this.localPreference();
+        return preference['secondary_blank'];
     },
-    isOpenSecondaryShortcutByBlank(){
-        return localStorage.getItem('secondaryByBlank') === 'true';
+    isQuickSecondaryBlank(){
+        let preference = this.localPreference();
+        return preference['quick_secondary_blank'];
     },
-    isQuickOpenSecondaryShortcutByBlank(){
-        return localStorage.getItem('quickSecondaryByBlank') === 'true';
+    update(preference) {
+        if (preference) {
+            localStorage.setItem('preference', JSON.stringify(preference));
+            client.updatePreference(preference);
+        }
+    },
+    sync() {
+        client.getPreferences().then(preference => {
+            localStorage.setItem('preference', JSON.stringify(preference));
+        }).catch(error => {
+            console.log(error);
+        });
     }
 }
