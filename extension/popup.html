@@ -12,21 +12,21 @@
 <body>
 <div id="vue">
 
-    <header>
-        <div class="pure-g">
-            <div class="pure-u-1-3">
-                <a href="https://anyshortcut.com" target="_blank"><img src="images/icon.png" alt="">
-                    <span style="font-weight: bold">anyshortcut</span></a>
-            </div>
-            <div class="pure-u-1-3">
-            </div>
-            <div class="pure-u-1-3">
-                <a href="index.html" target="_blank"><i class="fa fa-cog"></i> settings</a>
-            </div>
-        </div>
-    </header>
-
     <div v-if="authenticated">
+        <header>
+            <div class="pure-g">
+                <div class="pure-u-1-3">
+                    <a href="https://anyshortcut.com" target="_blank"><img src="images/icon.png" alt="">
+                        <span style="font-weight: bold">anyshortcut</span></a>
+                </div>
+                <div class="pure-u-1-3">
+                </div>
+                <div class="pure-u-1-3">
+                    <a href="index.html" target="_blank"><i class="fa fa-cog"></i> settings</a>
+                </div>
+            </div>
+        </header>
+
         <div id="bound_tips">{{boundTips}}</div>
         <div id="unbind_div" v-if="shortcut">
             <div id="unbind_guide" v-if="shortcut.primary">
@@ -66,23 +66,14 @@
                           @key-hover-over="onKeyHoverOver"
                           @key-hover-leave="onHoverLeave">
                 </keyboard>
-                <div id="popover"
-                     v-show="showPopper"
-                     @mouseover="onHoverOver"
-                     @mouseleave="onHoverLeave">
-                    <div v-if="hoveredShortcut && !forceBinding">
-                        <p>{{key}}</p>
-                        <p>{{hoveredShortcut.comment || hoveredShortcut.title}}</p>
-                        <button @click="forceBinding = true">Still bind the shortcut?</button>
-                    </div>
-                    <div v-else>
-                        Bind shortcut key!
-                        <p>{{key}}</p>
-                        <input v-model="comment" placeholder="Comment for this url" required/>
-                        <br>
-                        <input @click="handleShortcutBinding" id="bind_shortcut_button" type="button" value="Save"/>
-                    </div>
-                </div>
+                <popover id="popover"
+                         v-show="showPopper"
+                         :key-char="key"
+                         :shortcut="hoveredShortcut"
+                         @mouseover.native="onHoverOver"
+                         @mouseleave.native="onHoverLeave"
+                         @bind-click="handleShortcutBinding">
+                </popover>
             </div>
 
         </div>
@@ -99,7 +90,11 @@
         </div>
     </div>
 
-    <div v-else class="is-center">
+    <div v-else class="unauth-panel">
+        <div>
+            <a href="https://anyshortcut.com" target="_blank"><img src="images/icon.png" alt="">
+                <span style="font-weight: bold">anyshortcut</span></a>
+        </div>
         <img src="images/btn_google_signin.png" alt="Google Sign In" @click="loginWithGoogle">
     </div>
 </div>

@@ -1,7 +1,8 @@
 import Vue from "vue";
 import moment from "moment";
-import Popper from "popper.js";
+import Popper from "popper";
 import Keyboard from "../component/Keyboard.vue";
+import Popover from "../component/Popover.vue";
 import common from "./common.js";
 import auth from "./background/auth.js";
 
@@ -16,9 +17,7 @@ window.onload = function() {
             shortcut: null,
             boundTips: '',
             boundKeys: null,// All bound keys, for keyboard component usage.
-            comment: null,
             primary: true,
-            forceBinding: false, // Bind shortcut by force or not
             shortcuts: null,
             showPopper: false,
         },
@@ -26,6 +25,7 @@ window.onload = function() {
             authenticated: function() {
                 return auth.isAuthenticated();
             },
+            // A mouse hovered shortcut computed object
             hoveredShortcut: function() {
                 if (this.boundKeys && this.boundKeys.indexOf(this.key) !== -1) {
                     return this.shortcuts[this.key];
@@ -35,7 +35,8 @@ window.onload = function() {
             }
         },
         components: {
-            Keyboard
+            Keyboard,
+            Popover,
         },
         filters: {
             //Custom filter to use moment.js format time as fromNow type.
@@ -53,7 +54,6 @@ window.onload = function() {
                 new Popper(target, document.querySelector("#popover"), {
                     placement: "top"
                 });
-                this.forceBinding = false;
             },
             onHoverLeave: function() {
                 this._timeoutId = setTimeout(() => {
@@ -65,7 +65,11 @@ window.onload = function() {
                 this.showPopper = true;
                 clearTimeout(this._timeoutId);
             },
-            handleShortcutBinding: function() {
+            handleShortcutBinding: function(keyChar, comment, forceBinding) {
+                this.key = keyChar;
+                this.comment = comment;
+                this.forceBinding = forceBinding;
+
                 if (!this.key) {
                     this.boundTips = 'Must select a key';
                     return;
