@@ -5,6 +5,7 @@ import Keyboard from "../component/Keyboard.vue";
 import Popover from "../component/Popover.vue";
 import common from "./common.js";
 import auth from "./background/auth.js";
+import _ from "lodash";
 
 require("../less/popup.less");
 
@@ -15,6 +16,7 @@ window.onload = function() {
             tab: null,
             key: null,// Selected and hovered key
             shortcut: null,
+            domainPrimaryShortcut: null, //current tab domain primary shortcut.
             boundTips: '',
             boundKeys: null,// All bound keys, for keyboard component usage.
             primary: true,
@@ -24,6 +26,12 @@ window.onload = function() {
         computed: {
             authenticated: function() {
                 return auth.isAuthenticated();
+            },
+            currentTabTitle: function() {
+                if (this.tab && this.tab.title) {
+                    return this.tab.title.substring(0, 20);
+                }
+                return '';
             },
             // A mouse hovered shortcut computed object
             hoveredShortcut: function() {
@@ -149,10 +157,21 @@ window.onload = function() {
             },
             queryShortcuts(){
                 chrome.runtime.sendMessage({all: true, url: this.tab.url}, response => {
-                    if (!common.isObjectEmpty(response.secondaryShortcuts)) {
+                    // Find current tab domain primary shortcut.
+                    _.forOwn(response.primaryShortcuts, (shortcut) => {
+                        if (common.isUrlEndsWithDomain(this.tab.url, shortcut.domain)) {
+                            this.domainPrimaryShortcut = shortcut;
+                            // return false to exit the for iterate after find the result.
+                            return false;
+                        }
+                    });
+
+                    if (this.domainPrimaryShortcut) {
+                        // If current tab domain bound primary shortcut, then only permit to bound secondary shortcuts.
+                        // TODO display the primary shortcut when show secondary shortcut keys?
                         this.shortcuts = response.secondaryShortcuts;
                         this.primary = false;
-                    } else if (!common.isObjectEmpty(response.primaryShortcuts)) {
+                    } else {
                         this.shortcuts = response.primaryShortcuts;
                         this.primary = true;
                     }

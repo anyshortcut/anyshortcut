@@ -29,6 +29,10 @@ export default {
         //Check slash ignore equality, ignore url schema equality.
         return trimTrailSlash(stripUrlSchema(url1)) === trimTrailSlash(stripUrlSchema(url2));
     },
+    isUrlEndsWithDomain(url, domain){
+        let hostname = this.getHostnameFromUrl(url);
+        return this.isHostnameEndsWithDomain(hostname, domain);
+    },
     getHostnameFromUrl(url){
         let a = document.createElement('a');
         a.href = url;
