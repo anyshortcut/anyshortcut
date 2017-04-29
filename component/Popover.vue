@@ -7,7 +7,8 @@
     <div v-else>
         Bind shortcut key!
         <p>{{keyChar}}</p>
-        <input v-model="comment" placeholder="Comment for this url" required/>
+        <input v-model="comment" value="comment" placeholder="Comment for this url"
+               autofocus @focus.native="$event.target.select()" required/>
         <br>
         <input @click="bind" type="button" value="Save"/>
     </div>
@@ -19,7 +20,6 @@
         name: 'Popper',
         data(){
             return {
-                comment: null,// Shortcut comment
                 forceBinding: false,// Bind shortcut by force or not
             }
         },
@@ -27,6 +27,9 @@
             keyChar: {
                 type: String,
                 default: null,
+            },
+            comment: {
+                type: String,
             },
             shortcut: {
                 type: Object,

@@ -69,6 +69,7 @@
                 <popover id="popover"
                          v-show="showPopper"
                          :key-char="key"
+                         :comment="currentTabTitle"
                          :shortcut="hoveredShortcut"
                          @mouseover.native="onHoverOver"
                          @mouseleave.native="onHoverLeave"
