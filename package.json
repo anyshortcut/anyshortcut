@@ -16,6 +16,7 @@
   "homepage": "https://gitlab.com/Folyd/Spruce#README",
   "dependencies": {
     "axios": "^0.15.2",
+    "lodash": "^4.17.4",
     "moment": "^2.12.0",
     "popper.js": "^1.0.8",
     "vue": "^2.2.5"
