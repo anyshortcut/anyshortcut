@@ -168,7 +168,6 @@ window.onload = function() {
 
                     if (this.domainPrimaryShortcut) {
                         // If current tab domain bound primary shortcut, then only permit to bound secondary shortcuts.
-                        // TODO display the primary shortcut when show secondary shortcut keys?
                         this.shortcuts = response.secondaryShortcuts;
                         this.primary = false;
                     } else {
@@ -190,17 +189,12 @@ window.onload = function() {
                 });
             },
             checkShortcutBound(shortcuts){
-                for (let key in shortcuts) {
-                    // Simply checks to see if this is a property specific to this class,
-                    // and not one inherited from the base class.
-                    if (shortcuts.hasOwnProperty(key)) {
-                        let shortcut = shortcuts[key];
-                        if (common.isUrlEquivalent(shortcut.url, this.tab.url)) {
-                            this.shortcut = shortcut;
-                            break;
-                        }
+                _.forOwn(shortcuts, shortcut => {
+                    if (common.isUrlEquivalent(shortcut.url, this.tab.url)) {
+                        this.shortcut = shortcut;
+                        return false;
                     }
-                }
+                });
             }
         },
         created: function() {
