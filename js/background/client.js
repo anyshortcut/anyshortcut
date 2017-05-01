@@ -7,6 +7,15 @@ let request = axios.create({
     contentType: "application/json; charset=utf-8",
 });
 
+// Add custom axios interceptor for custom request authenticated check.
+request.interceptors.request.use(config => {
+    config.headers.common['Authorization'] = localStorage.getItem('token');
+    console.log(localStorage.getItem('token'));
+    // return Promise.resolve(config.data);
+    return config;
+}, error => {
+    return Promise.reject(error);
+});
 // Add custom axios interceptor for custom error handle.
 request.interceptors.response.use(response => {
     let code = response.data.code;

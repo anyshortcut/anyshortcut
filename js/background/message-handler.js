@@ -274,17 +274,6 @@ function onMessageReceiver(message, sender, sendResponse) {
             sendResponse(response);
             break;
         }
-        case message.loginSuccessful: {
-            auth.signin();
-            getAllShortcuts();
-            pref.sync();
-            break;
-        }
-        case message.logoutSuccessful: {
-            auth.logout();
-            primaryShortcuts = secondaryShortcuts = {};
-            break;
-        }
         default: {
             break;
         }
@@ -319,6 +308,11 @@ function onTabActivated(activeInfo) {
 /**
  * Receive external message.
  */
-function onMessageExternal(request, sender, sendResponse) {
-    console.log(request.token);
+function onMessageExternal(message, sender, sendResponse) {
+    console.log(message);
+    auth.signin(message.toke);
+    getAllShortcuts();
+    pref.sync();
+    sendResponse(true);
+    return true;
 }

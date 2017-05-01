@@ -54,7 +54,7 @@ window.onload = function() {
         },
         methods: {
             loginWithGoogle: function() {
-                auth.openAuthPopupWindow();
+                auth.openAuthPage();
             },
             onKeyHoverOver: function(target) {
                 this.onHoverOver();

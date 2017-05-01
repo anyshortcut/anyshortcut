@@ -15,7 +15,6 @@ module.exports = {
         ],
         popup: './js/popup.js',
         index: './js/index.js',
-        auth_popup: './js/script/auth-popup-injection.js',
     },
     output: {
         path: path.resolve(__dirname, 'extension/dist'),

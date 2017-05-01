@@ -48,13 +48,5 @@ export default {
             }).catch(error => {
             console.log(`Error occur ${error}`);
         });
-    },
-    injectAuthPopupWindowScript(tabId){
-        injectResources(tabId, ['dist/auth_popup.js'])
-            .then(() => {
-                console.log('inject success!');
-            }).catch(error => {
-            console.log(`Error occur ${error}`);
-        });
     }
 }

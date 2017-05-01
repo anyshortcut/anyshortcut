@@ -2,18 +2,18 @@ import config from "../config.js";
 import injector from "./injector.js";
 
 let auth = {
-    openAuthPopupWindow(){
+    openAuthPage(){
         let url = config.baseURL + '/app.html#/login';
         window.open(url);
     },
     isAuthenticated(){
-        return localStorage.getItem('authenticated') === 'true';
+        return !!localStorage.getItem('token');
     },
     logout(){
-        localStorage.setItem('authenticated', false);
+        localStorage.removeItem('token');
     },
-    signin(){
-        localStorage.setItem('authenticated', true);
+    signin(token){
+        localStorage.setItem('token', token);
     }
 };
 
