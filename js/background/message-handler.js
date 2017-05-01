@@ -9,6 +9,7 @@ let secondaryShortcuts = {};
 chrome.tabs.onActivated.addListener(onTabActivated);
 chrome.tabs.onUpdated.addListener(onTabUpdated);
 chrome.runtime.onMessage.addListener(onMessageReceiver);
+chrome.runtime.onMessageExternal.addListener(onMessageExternal);
 
 if (auth.isAuthenticated()) {
     getAllShortcuts();
@@ -313,4 +314,11 @@ function onTabActivated(activeInfo) {
     chrome.tabs.get(activeInfo.tabId, tab => {
         handleOnTabInfoUpdate(tab.url);
     });
+}
+
+/**
+ * Receive external message.
+ */
+function onMessageExternal(request, sender, sendResponse) {
+    console.log(request.token);
 }

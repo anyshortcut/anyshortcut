@@ -63,5 +63,10 @@
       },
       "description": "Jump to home page of current url"
     }
+  },
+  "externally_connectable": {
+    "matches": [
+      "*://*.anyshortcut.com/*"
+    ]
   }
 }
