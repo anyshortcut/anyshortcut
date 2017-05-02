@@ -310,7 +310,7 @@ function onTabActivated(activeInfo) {
  */
 function onMessageExternal(message, sender, sendResponse) {
     console.log(message);
-    auth.signin(message.toke);
+    auth.signin(message.token);
     getAllShortcuts();
     pref.sync();
     sendResponse(true);
