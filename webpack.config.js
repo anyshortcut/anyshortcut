@@ -28,7 +28,8 @@ module.exports = {
                 // Rule.loader is a shortcut to Rule.use: [ { loader } ]
                 loader: 'vue-loader',
                 include: [
-                    path.resolve(__dirname, "component")
+                    path.resolve(__dirname, "component"),
+                    path.resolve(__dirname, "view"),
                 ],
                 exclude: [
                     path.resolve(__dirname, "node_modules")
