@@ -14,7 +14,6 @@ module.exports = {
             './js/background/app.js',
         ],
         popup: './js/popup.js',
-        index: './js/index.js',
     },
     output: {
         path: path.resolve(__dirname, 'extension/dist'),
