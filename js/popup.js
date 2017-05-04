@@ -7,7 +7,7 @@ import PreferenceView from "../view/Preferences.vue";
 require("../less/popup.less");
 
 window.onload = function() {
-    let vm = new Vue({
+    let app = new Vue({
         el: '#vue',
         data: {
             currentView: null,
@@ -22,12 +22,18 @@ window.onload = function() {
             MainView,
             PreferenceView,
         },
-        created(){
-            if (auth.isAuthenticated()) {
-                this.currentView = MainView;
-            } else {
-                this.currentView = WelcomeView;
-            }
-        }
     });
+
+    function onHashChange() {
+        let view = window.location.hash.replace(/#\/?/, '');
+        if (view) {
+            app.currentView = view;
+        } else {
+            window.location.hash = '#/main';
+            app.currentView = 'main';
+        }
+    }
+
+    window.addEventListener('hashchange', onHashChange);
+    onHashChange();
 };

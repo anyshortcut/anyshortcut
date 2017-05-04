@@ -4,13 +4,13 @@
             <div class="pure-g">
                 <div class="pure-u-1-3">
                     <a href="https://anyshortcut.com" target="_blank">
-                        <!--<img src="../extension/images/icon.png" alt="">-->
+                        <img src="../extension/images/icon.png" alt="">
                         <span style="font-weight: bold">anyshortcut</span></a>
                 </div>
                 <div class="pure-u-1-3">
                 </div>
                 <div class="pure-u-1-3">
-                    <a href="index.html" target="_blank"><i class="fa fa-cog"></i> settings</a>
+                    <a href="#/setting"><i class="fa fa-cog"></i> settings</a>
                 </div>
             </div>
         </header>

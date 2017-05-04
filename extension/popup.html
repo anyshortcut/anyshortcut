@@ -11,7 +11,11 @@
 </head>
 <body>
 <div id="vue">
-    <component :is="currentView"></component>
+    <template v-if="authenticated">
+        <main-view v-if="currentView=='main'"></main-view>
+        <preference-view v-else="currentView=='setting'"></preference-view>
+    </template>
+    <welcome-view v-else></welcome-view>
 </div>
 </body>
 </html>
