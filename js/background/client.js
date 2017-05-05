@@ -10,7 +10,6 @@ let request = axios.create({
 // Add custom axios interceptor for custom request authenticated check.
 request.interceptors.request.use(config => {
     config.headers.common['Authorization'] = localStorage.getItem('token');
-    console.log(localStorage.getItem('token'));
     // return Promise.resolve(config.data);
     return config;
 }, error => {
