@@ -81,9 +81,20 @@
                 </li>
             </ul>
         </div>
+        <div v-show="loading" class="loading">
+            <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+        </div>
+
     </div>
 </template>
 <style lang="css">
+    div.loading {
+        position: fixed;
+        bottom: 50%;
+        right: 50%;
+        color: gray;
+        text-align: center;
+    }
 </style>
 <script type="es6">
     import moment from "moment";
@@ -106,6 +117,7 @@
                 primary: true,
                 shortcuts: null,
                 showPopper: false,
+                loading: false,
             }
         },
         computed: {
@@ -169,12 +181,15 @@
                 }
             },
             bindPrimaryShortcut: function() {
+                this.loading = true;
                 chrome.runtime.sendMessage({
                     save: true,
                     key: this.key,
                     comment: this.comment,
                     force: this.forceBinding,
                 }, result => {
+                    this.loading = false;
+
                     if (result) {
                         this.boundTips = 'Great job!you have bound a shortcut for this url!';
                         this.queryShortcuts();
@@ -185,12 +200,16 @@
                 });
             },
             bindSecondaryShortcut: function() {
+                this.loading = true;
+
                 chrome.runtime.sendMessage({
                     secondarySave: true,
                     key: this.key,
                     comment: this.comment,
                     force: this.forceBinding,
                 }, result => {
+                    this.loading = false;
+
                     if (result) {
                         this.queryShortcuts();
                     } else {
@@ -199,6 +218,7 @@
                 });
             },
             handleShortcutUnbinding: function() {
+                // FIXME: fix unbind shortcut, local data didn't update properly
                 if (this.shortcut) {
                     if (this.shortcut.primary) {
                         this.unbindPrimaryShortcut();
@@ -208,7 +228,11 @@
                 }
             },
             unbindPrimaryShortcut: function() {
+                this.loading = true;
+
                 chrome.runtime.sendMessage({remove: true, key: this.shortcut.key}, result => {
+                    this.loading = false;
+
                     if (result) {
                         this.shortcut = null;
                         this.boundTips = 'Delete Success!';
@@ -219,12 +243,16 @@
                 });
             },
             unbindSecondaryShortcut: function() {
+                this.loading = true;
+
                 chrome.runtime.sendMessage({
                     secondaryRemove: true,
                     id: this.shortcut.id,
                     key: this.shortcut.key,
                     url: this.tab.url,
                 }, result => {
+                    this.loading = false;
+
                     if (result) {
                         this.shortcut = null;
                         this.boundTips = 'Delete Success!';
