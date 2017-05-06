@@ -104,15 +104,19 @@ function monitorKeyUp(e) {
         fireKeyUp(e);
     } else {
         // left key and right key is 37 and 39
-        if (isValidFullModifier(e)
-            && [37, 39].indexOf(e.keyCode) > -1) {
-            let numberOfEntries = window.history.length - 1;
-            //Step value is -1 if the left key,otherwise +1 if right key.
-            let step = e.keyCode - 38;
+        if (isValidFullModifier(e)) {
+            if ([37, 39].indexOf(e.keyCode) > -1) {
+                let numberOfEntries = window.history.length - 1;
+                //Step value is -1 if the left key,otherwise +1 if right key.
+                let step = e.keyCode - 38;
 
-            for (let i = 0; i < numberOfEntries; i++) {
-                window.history.go(step);
+                for (let i = 0; i < numberOfEntries; i++) {
+                    window.history.go(step);
+                }
+            } else if (e.keyCode === 188) { // 'Comma' key code is 188.
+                modal.showShortcutKeyboard();
             }
+
         }
     }
 }

@@ -110,5 +110,10 @@ export default {
                         <span id="as-injection-shortcut">SHIFT+ALT+${primaryPressedKey}➯${secondaryPressedKey}</span> 
                         not bound yet!</p>`;
         openModal(innerHtml, null, false);
+    },
+    showShortcutKeyboard(){
+        let src = location.protocol + '//anyshortcut.com';
+        let frame = `<iframe src="${src}"></iframe>`;
+        openModal(frame, null, null);
     }
 }
