@@ -3,7 +3,7 @@ import auth from "./auth.js";
 import config from "../config.js";
 
 let request = axios.create({
-    baseURL: config.baseURL,
+    baseURL: config.apiURL,
     contentType: "application/json; charset=utf-8",
 });
 

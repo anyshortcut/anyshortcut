@@ -71,7 +71,8 @@ module.exports = {
     plugins: [
         new webpack.DefinePlugin({
             'BUILD_DEBUG': JSON.stringify(process.env.BUILD_DEBUG),
-            'BUILD_BASE_URL': JSON.stringify(process.env.BUILD_BASE_URL),
+            'BUILD_SCHEMA': JSON.stringify(process.env.BUILD_SCHEMA),
+            'BUILD_DOMAIN': JSON.stringify(process.env.BUILD_DOMAIN),
         }),
         extractLess,
     ]
