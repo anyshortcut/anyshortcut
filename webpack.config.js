@@ -6,6 +6,7 @@ const extractLess = new ExtractTextPlugin({
 });
 
 module.exports = {
+    context: path.resolve('./src'),
     entry: {
         content_script: './js/script/key-event-monitor.js',
         background: [
@@ -28,8 +29,7 @@ module.exports = {
                 // Rule.loader is a shortcut to Rule.use: [ { loader } ]
                 loader: 'vue-loader',
                 include: [
-                    path.resolve(__dirname, "component"),
-                    path.resolve(__dirname, "view"),
+                    path.resolve(__dirname, "src"),
                 ],
                 exclude: [
                     path.resolve(__dirname, "node_modules")

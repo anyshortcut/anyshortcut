@@ -7,4 +7,5 @@ build
 target
 *.crx
 *.pem
+*.zip
 npm-debug.log
