@@ -17,6 +17,7 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'extension/dist'),
+        publicPath: './dist/',
         filename: '[name].js'
     },
     module: {
@@ -53,10 +54,18 @@ module.exports = {
                 })
             },
             {
+                test: /\.html$/,
+                loader: 'html-loader',
+                options: {
+                    attrs: ['img:src', 'img:data-src']
+                }
+            },
+            {
                 test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
                 loader: 'url-loader',
                 options: {
                     limit: 10000,
+                    name: 'img/[name].[ext]',
                     // name: utils.assetsPath('img/[name].[hash:7].[ext]')
                 }
             }

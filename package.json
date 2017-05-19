@@ -31,6 +31,8 @@
     "extract-text-webpack-plugin": "^2.1.0",
     "less": "^2.7.2",
     "less-loader": "^4.0.2",
+    "file-loader": "^0.11.1",
+    "html-loader": "^0.4.5",
     "url-loader": "^0.5.8",
     "vue-hot-reload-api": "^1.3.3",
     "vue-html-loader": "^1.2.4",
@@ -40,6 +42,6 @@
   },
   "scripts": {
     "build_dev": "BUILD_DEBUG=true BUILD_DOMAIN=spruce.com BUILD_SCHEMA='http://' webpack --progress --hide-modules --colors --profile",
-    "build_production": "BUILD_DEBUG=false BUILD_DOMAIN=anyshortcut.com BUILD_SCHEMA='https://' webpack --progress --hide-modules --colors --profile"
+    "build_production": "BUILD_DEBUG=false BUILD_DOMAIN=anyshortcut.com BUILD_SCHEMA='http://' webpack --progress --hide-modules --colors --profile"
   }
 }

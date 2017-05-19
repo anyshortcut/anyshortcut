@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <div class="logo">
-            <img src="../extension/images/icon48.png" alt=""><span>anyshortcut</span>
+            <img src="../img/icon48.png" alt=""><span>anyshortcut</span>
         </div>
         <a :href="signInUrl" target="_blank">Sign in</a> now to boost your productivity!
         <br>

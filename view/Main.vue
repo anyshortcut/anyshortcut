@@ -4,7 +4,7 @@
             <div class="pure-g">
                 <div class="pure-u-1-3">
                     <a href="https://anyshortcut.com" target="_blank">
-                        <img src="../extension/images/icon.png" alt="">
+                        <img src="../img/icon.png" alt="">
                         <span style="font-weight: bold">anyshortcut</span></a>
                 </div>
                 <div class="pure-u-1-3">
