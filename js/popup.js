@@ -6,34 +6,33 @@ import PreferenceView from "../view/Preferences.vue";
 
 require("../less/popup.less");
 
-window.onload = function() {
-    let app = new Vue({
-        el: '#vue',
-        data: {
-            currentView: null,
-        },
-        computed: {
-            authenticated: function() {
-                return auth.isAuthenticated();
-            }
-        },
-        components: {
-            WelcomeView,
-            MainView,
-            PreferenceView,
-        },
-    });
-
-    function onHashChange() {
-        let view = window.location.hash.replace(/#\/?/, '');
-        if (view) {
-            app.currentView = view;
-        } else {
-            window.location.hash = '#/main';
-            app.currentView = 'main';
+let app = new Vue({
+    data: {
+        currentView: null,
+    },
+    computed: {
+        authenticated: function() {
+            return auth.isAuthenticated();
         }
-    }
+    },
+    components: {
+        WelcomeView,
+        MainView,
+        PreferenceView,
+    },
+});
 
-    window.addEventListener('hashchange', onHashChange);
-    onHashChange();
-};
+function onHashChange() {
+    let view = window.location.hash.replace(/#\/?/, '');
+    if (view) {
+        app.currentView = view;
+    } else {
+        window.location.hash = '#/main';
+        app.currentView = 'main';
+    }
+}
+
+window.addEventListener('hashchange', onHashChange);
+onHashChange();
+
+app.$mount('#vue');
