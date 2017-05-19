@@ -81,11 +81,11 @@ function checkUrlBound(url) {
 function setPopupIcon(bound) {
     const icon = bound ? {
         path: {
-            '16': 'images/icon32.png'
+            '16': 'icon/icon32.png'
         }
     } : {
         path: {
-            '16': 'images/icon32-gray.png'
+            '16': 'icon/icon32-gray.png'
         }
     };
     chrome.browserAction.setIcon(icon);
