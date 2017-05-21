@@ -15,7 +15,6 @@
             </div>
         </header>
 
-        <div id="bound_tips">{{boundTips}}</div>
         <div id="unbind_div" v-if="shortcut">
             <div id="unbind_guide" v-if="shortcut.primary">
                 <span>
@@ -112,7 +111,6 @@
                 key: null,// Selected and hovered key
                 shortcut: null,
                 domainPrimaryShortcut: null, //current tab domain primary shortcut.
-                boundTips: '',
                 boundKeys: null,// All bound keys, for keyboard component usage.
                 primary: true,
                 shortcuts: null,
@@ -170,7 +168,7 @@
                 this.forceBinding = forceBinding;
 
                 if (!this.key) {
-                    this.boundTips = 'Must select a key';
+                    this.$message.warn('Must select a key!');
                     return;
                 }
 
@@ -191,11 +189,11 @@
                     this.loading = false;
 
                     if (result) {
-                        this.boundTips = 'Great job!you have bound a shortcut for this url!';
+                        this.$message.success('Great job!you have bound a shortcut for this url!');
                         this.queryShortcuts();
                     }
                     else {
-                        this.boundTips = 'Ooops!';
+                        this.$message.error('Ooops!');
                     }
                 });
             },
@@ -213,7 +211,7 @@
                     if (result) {
                         this.queryShortcuts();
                     } else {
-                        this.boundTips = 'Ooops!';
+                        this.$message.error('Ooops!');
                     }
                 });
             },
@@ -235,10 +233,10 @@
 
                     if (result) {
                         this.shortcut = null;
-                        this.boundTips = 'Delete Success!';
+                        this.$message.success('Delete Success!');
                         this.queryShortcuts();
                     } else {
-                        this.boundTips = 'Ooops!';
+                        this.$message.error('Ooops!');
                     }
                 });
             },
@@ -255,10 +253,10 @@
 
                     if (result) {
                         this.shortcut = null;
-                        this.boundTips = 'Delete Success!';
+                        this.$message.success('Delete Success!');
                         this.queryShortcuts();
                     } else {
-                        this.boundTips = 'Ooops!';
+                        this.$message.error('Ooops!');
                     }
                 });
             },
