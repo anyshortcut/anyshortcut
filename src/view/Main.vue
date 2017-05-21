@@ -95,7 +95,7 @@
         text-align: center;
     }
 </style>
-<script type="es6">
+<script>
     import moment from "moment";
     import Popper from "popper";
     import Keyboard from "../component/Keyboard.vue";
@@ -172,93 +172,68 @@
                     return;
                 }
 
+                let options;
                 if (this.primary) {
-                    this.bindPrimaryShortcut();
+                    options = {
+                        save: true,
+                        key: this.key,
+                        comment: this.comment,
+                        force: this.forceBinding,
+                    };
                 } else {
-                    this.bindSecondaryShortcut();
+                    options = {
+                        secondarySave: true,
+                        key: this.key,
+                        comment: this.comment,
+                        force: this.forceBinding,
+                    };
                 }
-            },
-            bindPrimaryShortcut: function() {
+
                 this.loading = true;
-                chrome.runtime.sendMessage({
-                    save: true,
-                    key: this.key,
-                    comment: this.comment,
-                    force: this.forceBinding,
-                }, result => {
+                chrome.runtime.sendMessage(options, result => {
                     this.loading = false;
 
                     if (result) {
-                        this.$message.success('Great job!you have bound a shortcut for this url!');
                         this.queryShortcuts();
+                        this.$message.success('Great job!you have bound a shortcut for this url!');
                     }
                     else {
                         this.$message.error('Ooops!');
                     }
                 });
-            },
-            bindSecondaryShortcut: function() {
-                this.loading = true;
 
-                chrome.runtime.sendMessage({
-                    secondarySave: true,
-                    key: this.key,
-                    comment: this.comment,
-                    force: this.forceBinding,
-                }, result => {
-                    this.loading = false;
-
-                    if (result) {
-                        this.queryShortcuts();
-                    } else {
-                        this.$message.error('Ooops!');
-                    }
-                });
             },
             handleShortcutUnbinding: function() {
-                // FIXME: fix unbind shortcut, local data didn't update properly
                 if (this.shortcut) {
+                    let options;
                     if (this.shortcut.primary) {
-                        this.unbindPrimaryShortcut();
+                        options = {
+                            remove: true,
+                            key: this.shortcut.key
+                        }
                     } else {
-                        this.unbindSecondaryShortcut();
+                        options = {
+                            secondaryRemove: true,
+                            id: this.shortcut.id,
+                            key: this.shortcut.key,
+                            url: this.tab.url,
+                        }
                     }
+
+                    chrome.runtime.sendMessage(options, result => {
+                        this.loading = false;
+
+                        if (result) {
+                            this.shortcut = null;
+                            this.domainPrimaryShortcut = null;
+                            this.$message.success('Delete Success!');
+                            this.queryShortcuts();
+                        } else {
+                            this.$message.error('Ooops!');
+                        }
+                    });
+
                 }
-            },
-            unbindPrimaryShortcut: function() {
-                this.loading = true;
-
-                chrome.runtime.sendMessage({remove: true, key: this.shortcut.key}, result => {
-                    this.loading = false;
-
-                    if (result) {
-                        this.shortcut = null;
-                        this.$message.success('Delete Success!');
-                        this.queryShortcuts();
-                    } else {
-                        this.$message.error('Ooops!');
-                    }
-                });
-            },
-            unbindSecondaryShortcut: function() {
-                this.loading = true;
-
-                chrome.runtime.sendMessage({
-                    secondaryRemove: true,
-                    id: this.shortcut.id,
-                    key: this.shortcut.key,
-                    url: this.tab.url,
-                }, result => {
-                    this.loading = false;
-
-                    if (result) {
-                        this.shortcut = null;
-                        this.$message.success('Delete Success!');
-                        this.queryShortcuts();
-                    } else {
-                        this.$message.error('Ooops!');
-                    }
-                });
             },
             queryShortcuts(){
                 chrome.runtime.sendMessage({all: true, url: this.tab.url}, response => {
