@@ -27,8 +27,12 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babel-runtime": "^6.23.0",
+    "chalk": "^1.1.3",
     "css-loader": "^0.23.1",
     "extract-text-webpack-plugin": "^2.1.0",
+    "semver": "^5.3.0",
+    "shelljs": "^0.7.6",
+    "ora": "^1.2.0",
     "less": "^2.7.2",
     "less-loader": "^4.0.2",
     "file-loader": "^0.11.1",
@@ -43,5 +47,9 @@
   "scripts": {
     "build_dev": "BUILD_DEBUG=true BUILD_DOMAIN=spruce.com BUILD_SCHEMA='http://' webpack --progress --hide-modules --colors --profile",
     "build_production": "BUILD_DEBUG=false BUILD_DOMAIN=anyshortcut.com BUILD_SCHEMA='http://' webpack --progress --hide-modules --colors --profile"
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "npm": ">= 3.0.0"
   }
 }

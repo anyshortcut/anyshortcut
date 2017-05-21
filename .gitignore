@@ -2,8 +2,6 @@
 .idea
 node_modules
 dist
-build.js
-build
 target
 *.crx
 *.pem

@@ -87,7 +87,7 @@
 
     </div>
 </template>
-<style lang="css">
+<style lang="less">
     div.loading {
         position: fixed;
         bottom: 50%;

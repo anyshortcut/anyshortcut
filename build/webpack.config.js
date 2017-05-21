@@ -1,12 +1,14 @@
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const utils = require('./utils');
+const config = require('./config');
 const extractLess = new ExtractTextPlugin({
     filename: "css/[name].css",
 });
 
 module.exports = {
-    context: path.resolve('./src'),
+    context: path.resolve('../src'),
     entry: {
         content_script: './js/script/key-event-monitor.js',
         background: [
@@ -17,7 +19,7 @@ module.exports = {
         popup: './js/popup.js',
     },
     output: {
-        path: path.resolve(__dirname, 'extension/dist'),
+        path: path.resolve(__dirname, '../extension/dist'),
         publicPath: './dist/',
         filename: '[name].js'
     },
@@ -28,15 +30,12 @@ module.exports = {
                 test: /\.vue$/,
                 // Rule.loader is a shortcut to Rule.use: [ { loader } ]
                 loader: 'vue-loader',
-                include: [
-                    path.resolve(__dirname, "src"),
-                ],
-                exclude: [
-                    path.resolve(__dirname, "node_modules")
-                ],
-                // options: {
-                //     presets: ["es2015"]
-                // },
+                options: {
+                    loaders: utils.cssLoaders({
+                        sourceMap: config.isProduction,
+                        extract: config.isProduction
+                    }),
+                }
             },
             {
                 // use less-loader for *.less files
@@ -66,9 +65,8 @@ module.exports = {
                 options: {
                     limit: 10000,
                     name: 'img/[name].[ext]',
-                    // name: utils.assetsPath('img/[name].[hash:7].[ext]')
                 }
-            }
+            },
         ],
     },
     resolve: {
@@ -79,9 +77,9 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({
-            'BUILD_DEBUG': JSON.stringify(process.env.BUILD_DEBUG),
-            'BUILD_SCHEMA': JSON.stringify(process.env.BUILD_SCHEMA),
-            'BUILD_DOMAIN': JSON.stringify(process.env.BUILD_DOMAIN),
+            'BUILD_DEBUG': JSON.stringify(config.env.debug),
+            'BUILD_SCHEMA': JSON.stringify(config.env.schema),
+            'BUILD_DOMAIN': JSON.stringify(config.env.domain),
         }),
         extractLess,
     ]
