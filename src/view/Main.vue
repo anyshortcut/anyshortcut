@@ -60,7 +60,7 @@
                 <popover id="popover"
                          v-show="showPopper"
                          :key-char="key"
-                         :comment="currentTabTitle"
+                         :current-tab-title="currentTabTitle"
                          :shortcut="hoveredShortcut"
                          @mouseover.native="onHoverOver"
                          @mouseleave.native="onHoverLeave"
@@ -163,8 +163,6 @@
                 clearTimeout(this._timeoutId);
             },
             handleShortcutBinding: function(keyChar, comment, forceBinding) {
-                this.key = keyChar;
-                this.comment = comment;
                 this.forceBinding = forceBinding;
 
                 if (!this.key) {
@@ -176,15 +174,15 @@
                 if (this.primary) {
                     options = {
                         save: true,
-                        key: this.key,
-                        comment: this.comment,
+                        key: keyChar,
+                        comment: comment,
                         force: this.forceBinding,
                     };
                 } else {
                     options = {
                         secondarySave: true,
-                        key: this.key,
-                        comment: this.comment,
+                        key: keyChar,
+                        comment: comment,
                         force: this.forceBinding,
                     };
                 }
