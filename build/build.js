@@ -20,4 +20,4 @@ webpack(webpackConfig, function(err, stats) {
         }) + '\n\n');
 
     console.log(chalk.cyan('  Build complete.\n'));
-})
+});
