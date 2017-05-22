@@ -5,7 +5,6 @@ import MainView from "../view/Main.vue";
 import PreferenceView from "../view/Preferences.vue";
 import Message from "../component/message.js";
 
-require("../less/popup.less");
 
 Vue.prototype.$message = Message;
 

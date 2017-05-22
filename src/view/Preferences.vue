@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="preference-view">
         <a href="#/main"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>back</a>
         <div>
             How to open primary shortcut:
@@ -33,7 +33,14 @@
         </div>
     </div>
 </template>
-<style lang="css">
+<style lang="less">
+    @import "../less/common.less";
+
+    #preference-view {
+        line-height: 2em;
+        width: 400px;
+        height: 450px;
+    }
 </style>
 <script type="es6">
     import prefs from "../js/prefs.js";

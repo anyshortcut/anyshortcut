@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div id="welcome-view">
         <div class="logo">
             <img src="../img/icon48.png" alt=""><span>anyshortcut</span>
         </div>
@@ -8,9 +8,13 @@
         <b>It's free!</b>
     </div>
 </template>
-<style lang="css">
-    .content {
+<style lang="less">
+    @import "../less/common.less";
+
+    #welcome-view {
         line-height: 2em;
+        width: @normal-width;
+        height: @normal-height;
     }
 
     .logo {

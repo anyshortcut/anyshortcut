@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="main-view">
         <header>
             <div class="pure-g">
                 <div class="pure-u-1-3">
@@ -87,6 +87,82 @@
     </div>
 </template>
 <style lang="less">
+    @import "../less/common.less";
+
+    #main-view {
+        width: @normal-width;
+        height: @normal-height;
+    }
+
+    a:visited, a:active {
+        color: @primary-color;
+    }
+
+    ul {
+        list-style: none outside;
+    }
+
+    li {
+        text-align: left;
+        margin: 2px;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    .is-center {
+        text-align: center;
+    }
+
+    header {
+        padding: 5px;
+        border-bottom: #eeeeee solid 2px;
+    }
+
+    header img, i {
+        vertical-align: middle;
+    }
+
+    #shortcut_key, #option-shortcut-key {
+        border-color: rgb(61, 149, 92);
+        width: 35px;
+        text-align: center;
+        font-weight: bold;
+        font-size: medium;
+        text-transform: uppercase;
+    }
+
+    #bind_shortcut_button {
+        background-color: rgb(61, 149, 92);
+        text-align: center;
+        padding: 10px;
+        color: white;
+        align-self: center;
+        border: none;
+        border-radius: 3px;
+        margin: 20px;
+        width: 80%;
+    }
+
+    #unbind_shortcut_button {
+        background-color: rgb(181, 61, 10);
+        text-align: center;
+        padding: 10px;
+        color: white;
+        align-self: center;
+        border: none;
+        border-radius: 3px;
+        margin: 20px;
+        width: 80%;
+    }
+
+    #popover {
+        border: 2px #dd4814;
+        background-color: #ffffff;
+        width: 50%;
+    }
+
     div.loading {
         position: fixed;
         bottom: 50%;
