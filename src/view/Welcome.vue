@@ -9,7 +9,7 @@
     </div>
 </template>
 <style lang="less">
-    @import "../less/common.less";
+    @import "../less/_common.less";
 
     #welcome-view {
         line-height: 2em;

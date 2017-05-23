@@ -13,7 +13,7 @@
     </transition>
 </template>
 <style lang="less">
-    @import "../less/var.less";
+    @import "../less/_var.less";
 
     .message {
         box-shadow: @message-shadow;

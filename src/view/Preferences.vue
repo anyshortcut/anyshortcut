@@ -34,7 +34,7 @@
     </div>
 </template>
 <style lang="less">
-    @import "../less/common.less";
+    @import "../less/_common.less";
 
     #preference-view {
         line-height: 2em;
