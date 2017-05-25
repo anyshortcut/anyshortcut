@@ -45,8 +45,8 @@
     "webpack": "^2.4.1"
   },
   "scripts": {
-    "build_dev": "BUILD_DEBUG=true BUILD_DOMAIN=spruce.com BUILD_SCHEMA='http://' webpack --progress --hide-modules --colors --profile",
-    "build_production": "BUILD_DEBUG=false BUILD_DOMAIN=anyshortcut.com BUILD_SCHEMA='http://' webpack --progress --hide-modules --colors --profile"
+    "build_dev": "node build/build.js",
+    "build_production": "NODE_ENV=production node build/build.js"
   },
   "engines": {
     "node": ">= 4.0.0",
