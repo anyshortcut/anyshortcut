@@ -149,7 +149,8 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
         case message.save: {
             common.getCurrentTab(tab => {
-                client.bindShortcut(message.key, {
+                client.bindShortcut({
+                    key: message.key,
                     url: tab.url,
                     title: tab.title,
                     favicon: tab.favIconUrl,
@@ -223,7 +224,8 @@ function onMessageReceiver(message, sender, sendResponse) {
         case message.secondarySave: {
             // Save option access bound item data.
             common.getCurrentTab(tab => {
-                client.bindShortcut(message.key, {
+                client.bindShortcut({
+                    key: message.key,
                     url: tab.url,
                     title: tab.title,
                     favicon: tab.favIconUrl,

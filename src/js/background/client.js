@@ -31,8 +31,8 @@ request.interceptors.response.use(response => {
 });
 
 export default {
-    bindShortcut(key, shortcut){
-        return request.post(`/shortcut/key/${key}`, shortcut);
+    bindShortcut(shortcut){
+        return request.post(`/shortcut/key`, shortcut);
     },
     unbindShortcut(id){
         return request.put(`/shortcut/${id}/unbind`);
