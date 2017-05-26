@@ -1,0 +1,136 @@
+<template>
+    <section class="pure-g">
+        <div class="pure-u-1">
+            <p v-if="primary">
+                Specify the shortcut:
+            </p>
+            <div v-else>
+                <p v-if="domainPrimaryShortcut">
+                    The domain <b>{{domainPrimaryShortcut.domain}}</b>
+                    already bound with <b>SHIFT+ALT+{{domainPrimaryShortcut.key}}</b>
+                </p>
+                Specify the secondary shortcut for this domain:
+            </div>
+            <br>
+        </div>
+
+        <div class="pure-u-1 is-center">
+            <keyboard :bound-keys="boundKeys"
+                      @key-hover-over="onKeyHoverOver"
+                      @key-hover-leave="onHoverLeave">
+            </keyboard>
+            <popover id="popover"
+                     v-show="showPopper"
+                     :key-char="keyChar"
+                     :current-tab-title="currentTabTitle"
+                     :shortcut="hoveredShortcut"
+                     @mouseover.native="onHoverOver"
+                     @mouseleave.native="onHoverLeave"
+                     @bind-click="handleShortcutBinding">
+            </popover>
+        </div>
+
+    </section>
+</template>
+<style lang="css">
+</style>
+<script type="es6">
+    import Popper from "popper";
+    import Keyboard from "../component/Keyboard.vue";
+    import Popover from "../component/Popover.vue";
+
+    export default{
+        name: 'bind-view',
+        data(){
+            return {
+                keyChar: null,
+                showPopper: false,
+            };
+        },
+        props: {
+            tabTitle: {
+                type: String
+            },
+            tabUrl: {
+                type: String
+            },
+            primary: {
+                type: Boolean,
+            },
+            domainPrimaryShortcut: {
+                type: Object,
+                default: function() {
+                    return {};
+                },
+            },
+            boundKeys: {
+                type: Array
+            }
+        },
+        computed: {
+            currentTabTitle: function() {
+                if (this.tabTitle) {
+                    return this.tabTitle.substring(0, 20);
+                }
+                return '';
+            },
+            // A mouse hovered shortcut computed object
+            hoveredShortcut: function() {
+                if (this.boundKeys && this.boundKeys.indexOf(this.key) !== -1) {
+                    return this.shortcuts[this.key];
+                } else {
+                    return null;
+                }
+            }
+        },
+        components: {
+            Keyboard,
+            Popover,
+        },
+        methods: {
+            onKeyHoverOver: function(target) {
+                this.onHoverOver();
+                this.keyChar = target.innerText;
+                new Popper(target, document.querySelector("#popover"), {
+                    placement: "top"
+                });
+            },
+            onHoverLeave: function() {
+                this._timeoutId = setTimeout(() => {
+                    this.key = null;
+                    this.showPopper = false;
+                }, 200);
+            },
+            onHoverOver: function() {
+                this.showPopper = true;
+                clearTimeout(this._timeoutId);
+            },
+            handleShortcutBinding: function(keyChar, comment, forceBinding) {
+                this.forceBinding = forceBinding;
+
+                let options;
+                if (this.primary) {
+                    options = {
+                        save: true,
+                        key: keyChar,
+                        comment: comment,
+                        force: this.forceBinding,
+                    };
+                } else {
+                    options = {
+                        secondarySave: true,
+                        key: keyChar,
+                        comment: comment,
+                        force: this.forceBinding,
+                    };
+                }
+
+                this.$emit('pre-bind');
+                chrome.runtime.sendMessage(options, result => {
+                    this.$emit('post-bind', result);
+                });
+
+            },
+        }
+    }
+</script>

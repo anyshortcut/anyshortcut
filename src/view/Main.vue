@@ -15,59 +15,23 @@
             </div>
         </header>
 
-        <div id="unbind_div" v-if="shortcut">
-            <div id="unbind_guide" v-if="shortcut.primary">
-                <span>
-                    <strong>ALT</strong>
-                </span>
-                <span>+</span>
-                <span>
-                    <strong>SHIFT</strong>
-                </span>
-                <span>+</span>
-                <span>
-                    <strong id="bound_shortcut_key">{{shortcut.key}}</strong>
-                </span>
-            </div>
-            <div v-else>
-                <p>The url already bound with <b>ALT+{{shortcut.key}}</b></p>
-            </div>
-            <p id="bound_time">{{shortcut.created_time | fromNow}}</p>
-            <button @click="handleShortcutUnbinding" id="unbind_shortcut_button">Delete Shortcut</button>
+        <div v-if="shortcut">
+            <bound-view :shortcut="shortcut"
+                        :tab-url="tabUrl"
+                        @pre-unbind="loading=true"
+                        @post-unbind="onPostUnbind">
+            </bound-view>
         </div>
-        <div id="bind_div" class="pure-g" v-else>
 
-            <div class="pure-u-1">
-                <p v-if="primary">
-                    Specify the shortcut:
-                </p>
-                <div v-else>
-                    <p v-if="domainPrimaryShortcut">
-                        The domain <b>{{domainPrimaryShortcut.domain}}</b>
-                        already bound with <b>SHIFT+ALT+{{domainPrimaryShortcut.key}}</b>
-                    </p>
-                    Specify the secondary shortcut for this domain:
-                </div>
-                <br>
-            </div>
-
-
-            <div class="pure-u-1 is-center">
-                <keyboard :bound-keys="boundKeys"
-                          @key-hover-over="onKeyHoverOver"
-                          @key-hover-leave="onHoverLeave">
-                </keyboard>
-                <popover id="popover"
-                         v-show="showPopper"
-                         :key-char="key"
-                         :current-tab-title="currentTabTitle"
-                         :shortcut="hoveredShortcut"
-                         @mouseover.native="onHoverOver"
-                         @mouseleave.native="onHoverLeave"
-                         @bind-click="handleShortcutBinding">
-                </popover>
-            </div>
-
+        <div class="pure-g" v-else>
+            <bind-view :bound-keys="boundKeys"
+                       :primary="primary"
+                       :domain-primary-shortcut="domainPrimaryShortcut"
+                       :tab-title="tabTitle"
+                       :tab-url="tabUrl"
+                       @pre-bind="loading=true"
+                       @post-bind="onPostBind">
+            </bind-view>
         </div>
         <br>
 
@@ -172,148 +136,58 @@
     }
 </style>
 <script>
-    import moment from "moment";
-    import Popper from "popper";
-    import Keyboard from "../component/Keyboard.vue";
-    import Popover from "../component/Popover.vue";
     import common from "../js/common.js";
     import _ from "lodash";
+    import BoundView from "./BoundView.vue";
+    import BindView from "./BindView.vue";
 
     export default{
         name: 'main-view',
         data(){
             return {
-                tab: null,
-                key: null,// Selected and hovered key
+                tabTitle: null,
+                tabUrl: null,
                 shortcut: null,
                 domainPrimaryShortcut: null, //current tab domain primary shortcut.
                 boundKeys: null,// All bound keys, for keyboard component usage.
                 primary: true,
                 shortcuts: null,
-                showPopper: false,
                 loading: false,
             }
         },
-        computed: {
-            currentTabTitle: function() {
-                if (this.tab && this.tab.title) {
-                    return this.tab.title.substring(0, 20);
-                }
-                return '';
-            },
-            // A mouse hovered shortcut computed object
-            hoveredShortcut: function() {
-                if (this.boundKeys && this.boundKeys.indexOf(this.key) !== -1) {
-                    return this.shortcuts[this.key];
-                } else {
-                    return null;
-                }
-            }
-        },
         components: {
-            Keyboard,
-            Popover,
-        },
-        filters: {
-            //Custom filter to use moment.js format time as fromNow type.
-            fromNow: function(time) {
-                return moment(time).fromNow();
-            }
+            BoundView,
+            BindView,
         },
         methods: {
-            onKeyHoverOver: function(target) {
-                this.onHoverOver();
-                this.key = target.innerText;
-                new Popper(target, document.querySelector("#popover"), {
-                    placement: "top"
-                });
-            },
-            onHoverLeave: function() {
-                this._timeoutId = setTimeout(() => {
-                    this.key = null;
-                    this.showPopper = false;
-                }, 200);
-            },
-            onHoverOver: function() {
-                this.showPopper = true;
-                clearTimeout(this._timeoutId);
-            },
-            handleShortcutBinding: function(keyChar, comment, forceBinding) {
-                this.forceBinding = forceBinding;
+            onPostBind: function(result) {
+                this.loading = false;
 
-                if (!this.key) {
-                    this.$message.warn('Must select a key!');
-                    return;
+                if (result) {
+                    this.queryShortcuts();
+                    this.$message.success('Great job!you have bound a shortcut for this url!');
                 }
+                else {
+                    this.$message.error('Ooops!');
+                }
+            },
+            onPostUnbind: function(result) {
+                this.loading = false;
 
-                let options;
-                if (this.primary) {
-                    options = {
-                        save: true,
-                        key: keyChar,
-                        comment: comment,
-                        force: this.forceBinding,
-                    };
+                if (result) {
+                    this.shortcut = null;
+                    this.domainPrimaryShortcut = null;
+                    this.$message.success('Delete Success!');
+                    this.queryShortcuts();
                 } else {
-                    options = {
-                        secondarySave: true,
-                        key: keyChar,
-                        comment: comment,
-                        force: this.forceBinding,
-                    };
-                }
-
-                this.loading = true;
-                chrome.runtime.sendMessage(options, result => {
-                    this.loading = false;
-
-                    if (result) {
-                        this.queryShortcuts();
-                        this.$message.success('Great job!you have bound a shortcut for this url!');
-                    }
-                    else {
-                        this.$message.error('Ooops!');
-                    }
-                });
-
-            },
-            handleShortcutUnbinding: function() {
-                if (this.shortcut) {
-                    let options;
-                    if (this.shortcut.primary) {
-                        options = {
-                            remove: true,
-                            key: this.shortcut.key
-                        }
-                    } else {
-                        options = {
-                            secondaryRemove: true,
-                            id: this.shortcut.id,
-                            key: this.shortcut.key,
-                            url: this.tab.url,
-                        }
-                    }
-
-                    chrome.runtime.sendMessage(options, result => {
-                        this.loading = false;
-
-                        if (result) {
-                            this.shortcut = null;
-                            this.domainPrimaryShortcut = null;
-                            this.$message.success('Delete Success!');
-                            this.queryShortcuts();
-                        } else {
-                            this.$message.error('Ooops!');
-                        }
-                    });
-
+                    this.$message.error('Ooops!');
                 }
             },
             queryShortcuts(){
-                chrome.runtime.sendMessage({all: true, url: this.tab.url}, response => {
+                chrome.runtime.sendMessage({all: true, url: this.tabUrl}, response => {
                     // Find current tab domain primary shortcut.
                     _.forOwn(response.primaryShortcuts, (shortcut) => {
-                        if (common.isUrlEndsWithDomain(this.tab.url, shortcut.domain)) {
+                        if (common.isUrlEndsWithDomain(this.tabUrl, shortcut.domain)) {
                             this.domainPrimaryShortcut = shortcut;
                             // return false to exit the for iterate after find the result.
                             return false;
@@ -344,7 +218,7 @@
             },
             checkShortcutBound(shortcuts){
                 _.forOwn(shortcuts, shortcut => {
-                    if (common.isUrlEquivalent(shortcut.url, this.tab.url)) {
+                    if (common.isUrlEquivalent(shortcut.url, this.tabUrl)) {
                         this.shortcut = shortcut;
                         return false;
                     }
@@ -353,7 +227,8 @@
         },
         created: function() {
             common.getCurrentTab(tab => {
-                this.tab = tab;
+                this.tabTitle = tab.title;
+                this.tabUrl = tab.url;
                 this.queryShortcuts();
             });
         }
