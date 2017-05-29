@@ -30,14 +30,40 @@
             </popover>
         </div>
 
+        <br>
+
+        <div class="pure-u-1 is-center" v-if="primary">
+            Or specify two keystroke primary key:
+            <br>
+            <div class="two-keystroke">
+                <input class="keystroke" type="text" v-model="strokeKeyChar">
+                <input class="comment" type="text" v-model="comment">
+                <input type="button" value="Bind" @click="bindKeystrokeShortcut">
+            </div>
+        </div>
+
     </section>
 </template>
-<style lang="css">
+<style lang="less">
     #popover {
         border: 2px #dd4814;
         background-color: #ffffff;
         width: 50%;
     }
+
+    .two-keystroke {
+        display: inline-block;
+
+        input {
+            margin: 10px;
+        }
+
+        .keystroke {
+            width: 50px;
+            height: 35px;
+        }
+    }
+
 </style>
 <script type="es6">
     import Popper from "popper";
@@ -49,6 +75,9 @@
         data(){
             return {
                 keyChar: null,
+                strokeKeyChar: null,
+                comment: this.currentTabTitle,
+                lastKeyChar: null,
                 showPopper: false,
             };
         },
@@ -135,6 +164,19 @@
                     this.$emit('post-bind', result);
                 });
 
+            },
+            bindKeystrokeShortcut: function() {
+                let options = {
+                    save: true,
+                    key: this.strokeKeyChar,
+                    comment: this.comment,
+                    force: false,
+                };
+
+                this.$emit('pre-bind');
+                chrome.runtime.sendMessage(options, result => {
+                    this.$emit('post-bind', result);
+                });
             },
         }
     }
