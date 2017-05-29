@@ -10,7 +10,7 @@
                 </span>
             <span>+</span>
             <span>
-                    <strong id="bound_shortcut_key">{{shortcut.key}}</strong>
+                    <strong>{{shortcut.key}}</strong>
                 </span>
         </div>
         <div v-else>
@@ -21,7 +21,17 @@
     </section>
 </template>
 <style lang="css">
-
+    #unbind_shortcut_button {
+        background-color: rgb(181, 61, 10);
+        text-align: center;
+        padding: 10px;
+        color: white;
+        align-self: center;
+        border: none;
+        border-radius: 3px;
+        margin: 20px;
+        width: 80%;
+    }
 </style>
 <script type="es6">
     import moment from "moment";

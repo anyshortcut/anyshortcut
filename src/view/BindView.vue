@@ -33,6 +33,11 @@
     </section>
 </template>
 <style lang="css">
+    #popover {
+        border: 2px #dd4814;
+        background-color: #ffffff;
+        width: 50%;
+    }
 </style>
 <script type="es6">
     import Popper from "popper";

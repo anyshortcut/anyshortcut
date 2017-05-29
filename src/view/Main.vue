@@ -88,45 +88,6 @@
         vertical-align: middle;
     }
 
-    #shortcut_key, #option-shortcut-key {
-        border-color: rgb(61, 149, 92);
-        width: 35px;
-        text-align: center;
-        font-weight: bold;
-        font-size: medium;
-        text-transform: uppercase;
-    }
-
-    #bind_shortcut_button {
-        background-color: rgb(61, 149, 92);
-        text-align: center;
-        padding: 10px;
-        color: white;
-        align-self: center;
-        border: none;
-        border-radius: 3px;
-        margin: 20px;
-        width: 80%;
-    }
-
-    #unbind_shortcut_button {
-        background-color: rgb(181, 61, 10);
-        text-align: center;
-        padding: 10px;
-        color: white;
-        align-self: center;
-        border: none;
-        border-radius: 3px;
-        margin: 20px;
-        width: 80%;
-    }
-
-    #popover {
-        border: 2px #dd4814;
-        background-color: #ffffff;
-        width: 50%;
-    }
-
     div.loading {
         position: fixed;
         bottom: 50%;
