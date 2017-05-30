@@ -3,9 +3,10 @@ import modal from './modal.js';
 
 const EMPTY_KEY = {
     keyCode: 0,
-    target: null,
-    alt: false,
-    shift: false,
+    altKey: false,
+    shiftKey: false,
+    ctrlKey: false,
+    metaKey: false,
     pressedAt: null,
     releasedAt: null,
 };
@@ -88,9 +89,9 @@ function triggerShortcut() {
     console.log('first key:', firstKey, ' second key:', secondKey);
 
     if (firstKey.pressedAt && firstKey.releasedAt) {
-        if (isValidOptionModifier(firstKey.target)) {
+        if (isValidOptionModifier(firstKey)) {
             triggerSecondaryShortcut(firstKey.keyCode);
-        } else if (isValidFullModifier(firstKey.target)) {
+        } else if (isValidFullModifier(firstKey)) {
             if (secondKey.pressedAt && secondKey.releasedAt) {
                 triggerQuickSecondaryShortcut(firstKey.keyCode, secondKey.keyCode);
             } else {
@@ -153,18 +154,20 @@ function monitorKeyDown(e) {
     if (!firstKey.pressedAt) {
         firstKey = {
             keyCode: keyCode,
-            target: e,
-            shift: e.shift,
-            alt: e.alt,
+            shiftKey: e.shiftKey,
+            altKey: e.altKey,
+            ctrlKey: e.ctrlKey,
+            metaKey: e.metaKey,
             pressedAt: Date.now(),
             releasedAt: null,
         };
     } else if (!secondKey.pressedAt) {
         secondKey = {
             keyCode: keyCode,
-            target: e,
-            shift: e.shift,
-            alt: e.alt,
+            shiftKey: e.shiftKey,
+            altKey: e.altKey,
+            ctrlKey: e.ctrlKey,
+            metaKey: e.metaKey,
             pressedAt: Date.now(),
             releasedAt: null,
         };
