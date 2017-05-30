@@ -3,6 +3,7 @@ import modal from './modal.js';
 
 const EMPTY_KEY = {
     keyCode: 0,
+    keyCodeChar: null,
     altKey: false,
     shiftKey: false,
     ctrlKey: false,
@@ -16,8 +17,7 @@ let secondKey = EMPTY_KEY;
 let triggerTimeoutId = null;
 
 
-function triggerPrimaryShortcut(keyCode) {
-    let keyCodeChar = String.fromCharCode(keyCode);
+function triggerPrimaryShortcut(keyCodeChar) {
     chrome.runtime.sendMessage({request: true, key: keyCodeChar}, response => {
         if (response) {
             let url = response.url;
@@ -34,11 +34,11 @@ function triggerPrimaryShortcut(keyCode) {
 }
 
 
-function triggerSecondaryShortcut(keyCode) {
+function triggerSecondaryShortcut(keyCodeChar) {
     chrome.runtime.sendMessage({
         secondaryRequest: true,
         location: location,
-        key: String.fromCharCode(keyCode).toUpperCase()// Convert the key to uppercase.
+        key: keyCodeChar,
     }, response => {
         if (response) {
             let url = response.url;
@@ -48,18 +48,18 @@ function triggerSecondaryShortcut(keyCode) {
                 location.href = url;
             }
         } else {
-            modal.showSecondaryShortcutUnbound(String.fromCharCode(keyCode))
+            modal.showSecondaryShortcutUnbound(keyCodeChar)
         }
     });
     cleanUp();
 }
 
 
-function triggerQuickSecondaryShortcut(primaryKeyCode, secondaryKeyCode) {
+function triggerQuickSecondaryShortcut(primaryKeyCodeChar, secondaryKeyCodeChar) {
     chrome.runtime.sendMessage({
         quickSecondaryRequest: true,
-        primaryKey: String.fromCharCode(primaryKeyCode),
-        secondaryKey: String.fromCharCode(secondaryKeyCode),
+        primaryKey: primaryKeyCodeChar,
+        secondaryKey: secondaryKeyCodeChar,
     }, response => {
         if (response) {
             let url = response.url;
@@ -69,8 +69,7 @@ function triggerQuickSecondaryShortcut(primaryKeyCode, secondaryKeyCode) {
                 location.href = url;
             }
         } else {
-            modal.showQuickSecondaryShortcutFailed(String.fromCharCode(primaryKeyCode),
-                String.fromCharCode(secondaryKeyCode))
+            modal.showQuickSecondaryShortcutFailed(primaryKeyCodeChar, secondaryKeyCodeChar);
         }
     });
     cleanUp();
@@ -90,13 +89,14 @@ function triggerShortcut() {
 
     if (firstKey.pressedAt && firstKey.releasedAt) {
         if (isValidOptionModifier(firstKey)) {
-            triggerSecondaryShortcut(firstKey.keyCode);
+            triggerSecondaryShortcut(firstKey.keyCodeChar);
         } else if (isValidFullModifier(firstKey)) {
             if (secondKey.pressedAt && secondKey.releasedAt) {
-                triggerQuickSecondaryShortcut(firstKey.keyCode, secondKey.keyCode);
+                triggerQuickSecondaryShortcut(firstKey.keyCodeChar, secondKey.keyCodeChar);
+                // triggerPrimaryShortcut(firstKey.keyCodeChar + secondKey.keyCodeChar);
             } else {
                 triggerTimeoutId = window.setTimeout(function() {
-                    triggerPrimaryShortcut(firstKey.keyCode);
+                    triggerPrimaryShortcut(firstKey.keyCodeChar);
                 }, 382);
             }
         }
@@ -105,6 +105,10 @@ function triggerShortcut() {
 
 function monitorKeyUp(e) {
     e = keyCodeHelper.ensureWindowEvent(e);
+    if (!isValidModifierKey(e)) {
+        // Ignore invalid modifier key
+        return;
+    }
 
     if (keyCodeHelper.isValidKeyCode(e.keyCode)) {
         if (!firstKey.releasedAt) {
@@ -151,26 +155,21 @@ function monitorKeyDown(e) {
         return;
     }
 
+    let pressedKey = {
+        keyCode: keyCode,
+        keyCodeChar: String.fromCharCode(keyCode),
+        shiftKey: e.shiftKey,
+        altKey: e.altKey,
+        ctrlKey: e.ctrlKey,
+        metaKey: e.metaKey,
+        pressedAt: Date.now(),
+        releasedAt: null,
+    };
+
     if (!firstKey.pressedAt) {
-        firstKey = {
-            keyCode: keyCode,
-            shiftKey: e.shiftKey,
-            altKey: e.altKey,
-            ctrlKey: e.ctrlKey,
-            metaKey: e.metaKey,
-            pressedAt: Date.now(),
-            releasedAt: null,
-        };
+        firstKey = pressedKey;
     } else if (!secondKey.pressedAt) {
-        secondKey = {
-            keyCode: keyCode,
-            shiftKey: e.shiftKey,
-            altKey: e.altKey,
-            ctrlKey: e.ctrlKey,
-            metaKey: e.metaKey,
-            pressedAt: Date.now(),
-            releasedAt: null,
-        };
+        secondKey = pressedKey;
     }
 }
 
