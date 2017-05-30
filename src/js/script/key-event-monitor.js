@@ -10,10 +10,9 @@ const EMPTY_KEY = {
     releasedAt: null,
 };
 
-let pressedKeyNumber = 0;
-let releasedKeyNumber = 0;
 let firstKey = EMPTY_KEY;
 let secondKey = EMPTY_KEY;
+let triggerTimeoutId = null;
 
 
 function triggerPrimaryShortcut(keyCode) {
@@ -80,18 +79,24 @@ function triggerQuickSecondaryShortcut(primaryKeyCode, secondaryKeyCode) {
  * Trigger shortcut.
  */
 function triggerShortcut() {
+    if (triggerTimeoutId) {
+        // Clear previous session timeout if existed
+        window.clearTimeout(triggerTimeoutId);
+        triggerTimeoutId = null;
+    }
+
+    console.log('first key:', firstKey, ' second key:', secondKey);
+
     if (firstKey.pressedAt && firstKey.releasedAt) {
         if (isValidOptionModifier(firstKey.target)) {
             triggerSecondaryShortcut(firstKey.keyCode);
         } else if (isValidFullModifier(firstKey.target)) {
-            if (secondKey.releasedAt && secondKey.releasedAt) {
+            if (secondKey.pressedAt && secondKey.releasedAt) {
                 triggerQuickSecondaryShortcut(firstKey.keyCode, secondKey.keyCode);
             } else {
-                if (firstKey.releasedAt - firstKey.pressedAt > 800) {
-                    triggerQuickSecondaryShortcut(firstKey.keyCode, firstKey.keyCode);
-                } else {
+                triggerTimeoutId = window.setTimeout(function() {
                     triggerPrimaryShortcut(firstKey.keyCode);
-                }
+                }, 382);
             }
         }
     }
@@ -101,7 +106,13 @@ function monitorKeyUp(e) {
     e = keyCodeHelper.ensureWindowEvent(e);
 
     if (keyCodeHelper.isValidKeyCode(e.keyCode)) {
-        fireKeyUp(e);
+        if (!firstKey.releasedAt) {
+            firstKey.releasedAt = Date.now();
+        } else if (!secondKey.releasedAt) {
+            secondKey.releasedAt = Date.now();
+        }
+
+        triggerShortcut()
     } else {
         // left key and right key is 37 and 39
         if (isValidFullModifier(e)) {
@@ -134,9 +145,8 @@ function monitorKeyDown(e) {
         return;
     }
 
-    if ((firstKey && firstKey.keyCode === keyCode)
-        || (secondKey && secondKey.keyCode === keyCode)) {
-        // Prevent repeat trigger down event.
+    // Prevent repeat trigger down event.
+    if (firstKey && firstKey.keyCode === keyCode && !firstKey.releasedAt) {
         return;
     }
 
@@ -149,7 +159,6 @@ function monitorKeyDown(e) {
             pressedAt: Date.now(),
             releasedAt: null,
         };
-        pressedKeyNumber++;
     } else if (!secondKey.pressedAt) {
         secondKey = {
             keyCode: keyCode,
@@ -159,30 +168,13 @@ function monitorKeyDown(e) {
             pressedAt: Date.now(),
             releasedAt: null,
         };
-        pressedKeyNumber++;
-    }
-}
-
-function fireKeyUp(e) {
-    let keyCode = e.keyCode;
-    if (firstKey.keyCode === keyCode) {
-        firstKey.releasedAt = Date.now();
-        releasedKeyNumber++;
-    } else if (secondKey.keyCode === keyCode) {
-        secondKey.releasedAt = Date.now();
-        releasedKeyNumber++;
-    }
-
-    if (pressedKeyNumber === releasedKeyNumber) {
-        triggerShortcut()
     }
 }
 
 function cleanUp() {
-    pressedKeyNumber = 0;
-    releasedKeyNumber = 0;
     firstKey = EMPTY_KEY;
     secondKey = EMPTY_KEY;
+    triggerTimeoutId = null;
 }
 
 function isValidModifierKey(e) {
