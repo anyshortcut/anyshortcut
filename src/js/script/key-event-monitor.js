@@ -54,16 +54,22 @@ function triggerSecondaryShortcut(keyCodeChar) {
 }
 
 
-function triggerQuickSecondaryShortcut(primaryKeyCodeChar, secondaryKeyCodeChar) {
+function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
     chrome.runtime.sendMessage({
-        quickSecondaryRequest: true,
-        primaryKey: primaryKeyCodeChar,
-        secondaryKey: secondaryKeyCodeChar,
+        query: true, firstKey: firstKeyCodeChar, secondKey: secondKeyCodeChar
     }, response => {
-        if (response) {
-            openShortcut(response);
+        let primaryShortcut = response.primaryShortcut;
+        let secondaryShortcut = response.secondaryShortcut;
+
+        if (primaryShortcut && secondaryShortcut) {
+            // Primary and secondary shortcut both exist,
+            // show a dialog let user choose one.
+        } else if (primaryShortcut) {
+            openShortcut(primaryShortcut);
+        } else if (secondaryShortcut) {
+            openShortcut(secondaryShortcut);
         } else {
-            modal.showQuickSecondaryShortcutFailed(primaryKeyCodeChar, secondaryKeyCodeChar);
+            // Neither shortcut bound.
         }
     });
     cleanUp();
@@ -86,8 +92,7 @@ function triggerShortcut() {
             triggerSecondaryShortcut(firstKey.keyCodeChar);
         } else if (isValidFullModifier(firstKey)) {
             if (secondKey.pressedAt && secondKey.releasedAt) {
-                triggerQuickSecondaryShortcut(firstKey.keyCodeChar, secondKey.keyCodeChar);
-                // triggerPrimaryShortcut(firstKey.keyCodeChar + secondKey.keyCodeChar);
+                triggerQueryShortcut(firstKey.keyCodeChar, secondKey.keyCodeChar);
             } else {
                 triggerTimeoutId = window.setTimeout(function() {
                     triggerPrimaryShortcut(firstKey.keyCodeChar);

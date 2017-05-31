@@ -110,27 +110,66 @@ function handleOnTabInfoUpdate(url) {
     setPopupIcon(url ? checkUrlBound(url) : false);
 }
 
+function requestPrimaryShortcut(key) {
+    if (primaryShortcuts.hasOwnProperty(key)) {
+        let value = primaryShortcuts[key];
+        client.increaseShortcutOpenTimes(value.id)
+            .then(response => {
+                Object.assign(primaryShortcuts, response);
+            }).catch(error => {
+            console.log(error);
+        });
+        return {
+            url: value.url,
+            byBlank: pref.isPrimaryBlank()
+        };
+    } else {
+        // The shortcut key not bound yet.
+        return null;
+    }
+}
+
+function quickRequestSecondaryShortcut(primaryKey, secondaryKey) {
+    if (primaryShortcuts.hasOwnProperty(primaryKey)) {
+        let value = primaryShortcuts[primaryKey];
+        let domain = value.domain;
+
+        let shortcuts = secondaryShortcuts[domain];
+        if (shortcuts && shortcuts.hasOwnProperty(secondaryKey)) {
+            let shortcut = shortcuts[secondaryKey];
+            client.increaseShortcutOpenTimes(shortcut.id)
+                .then(response => {
+                    Object.assign(shortcuts, response);
+                }).catch(error => {
+                console.log(error);
+            });
+
+            return {
+                url: shortcut.url,
+                byBlank: pref.isQuickSecondaryBlank()
+            };
+
+        } else {
+            // Not bound any key for this domain name yet or not exist the key
+            return null;
+        }
+    } else {
+        // The shortcut key not bound yet.
+        return null;
+    }
+}
+
 function onMessageReceiver(message, sender, sendResponse) {
     switch (true) {
+        case message.query: {
+            sendResponse({
+                primaryShortcut: requestPrimaryShortcut(message.firstKey + message.secondKey),
+                secondaryShortcut: quickRequestSecondaryShortcut(message.firstKey, message.secondKey),
+            });
+            break;
+        }
         case message.request: {
-            let key = message.key;
-            if (primaryShortcuts.hasOwnProperty(key)) {
-                let value = primaryShortcuts[key];
-                sendResponse({
-                    url: value.url,
-                    byBlank: pref.isPrimaryBlank()
-                });
-
-                client.increaseShortcutOpenTimes(value.id)
-                    .then(response => {
-                        Object.assign(primaryShortcuts, response);
-                    }).catch(error => {
-                    console.log(error);
-                });
-            } else {
-                // The shortcut key not bound yet.
-                sendResponse(null);
-            }
+            sendResponse(requestPrimaryShortcut(message.key));
             break;
         }
         case message.remove: {
@@ -165,36 +204,6 @@ function onMessageReceiver(message, sender, sendResponse) {
                     console.log(error);
                 });
             });
-            break;
-        }
-        case message.quickSecondaryRequest: {
-            let primaryKey = message.primaryKey;
-            let secondaryKey = message.secondaryKey;
-            if (primaryShortcuts.hasOwnProperty(primaryKey)) {
-                let value = primaryShortcuts[primaryKey];
-                let domain = value.domain;
-
-                let shortcuts = secondaryShortcuts[domain];
-                if (shortcuts && shortcuts.hasOwnProperty(secondaryKey)) {
-                    let shortcut = shortcuts[secondaryKey];
-                    sendResponse({
-                        url: shortcut.url,
-                        byBlank: pref.isQuickSecondaryBlank()
-                    });
-                    client.increaseShortcutOpenTimes(shortcut.id)
-                        .then(response => {
-                            Object.assign(shortcuts, response);
-                        }).catch(error => {
-                        console.log(error);
-                    });
-                } else {
-                    // Not bound any key for this domain name yet or not exist the key
-                    sendResponse(null);
-                }
-            } else {
-                // The shortcut key not bound yet.
-                sendResponse(null);
-            }
             break;
         }
         case message.secondaryRequest: {
