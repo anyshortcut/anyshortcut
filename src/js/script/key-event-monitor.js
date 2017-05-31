@@ -1,4 +1,4 @@
-import keyCodeHelper from '../keycode.js';
+import helper from './helper.js';
 import modal from './modal.js';
 
 const EMPTY_KEY = {
@@ -16,20 +16,11 @@ let firstKey = EMPTY_KEY;
 let secondKey = EMPTY_KEY;
 let triggerTimeoutId = null;
 
-function openShortcut(shortcut) {
-    let url = shortcut.url;
-    if (shortcut.byBlank) {
-        window.open(url);
-    } else {
-        location.href = url;
-    }
-}
-
 
 function triggerPrimaryShortcut(keyCodeChar) {
     chrome.runtime.sendMessage({request: true, key: keyCodeChar}, shortcut => {
         if (shortcut) {
-            openShortcut(shortcut);
+            helper.openShortcut(shortcut);
         } else {
             modal.showPrimaryShortcutUnbound(keyCodeChar);
         }
@@ -45,7 +36,7 @@ function triggerSecondaryShortcut(keyCodeChar) {
         key: keyCodeChar,
     }, shortcut => {
         if (shortcut) {
-            openShortcut(shortcut);
+            helper.openShortcut(shortcut);
         } else {
             modal.showSecondaryShortcutUnbound(keyCodeChar)
         }
@@ -63,13 +54,15 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
 
         if (primaryShortcut && secondaryShortcut) {
             // Primary and secondary shortcut both exist,
-            // show a dialog let user choose one.
+            // show a chooser let user choose one.
+            modal.showQueryShortcutChooser(primaryShortcut, secondaryShortcut);
         } else if (primaryShortcut) {
-            openShortcut(primaryShortcut);
+            helper.openShortcut(primaryShortcut);
         } else if (secondaryShortcut) {
-            openShortcut(secondaryShortcut);
+            helper.openShortcut(secondaryShortcut);
         } else {
             // Neither shortcut bound.
+            modal.showQueryShortcutFailed(firstKeyCodeChar, secondKeyCodeChar);
         }
     });
     cleanUp();
@@ -88,9 +81,9 @@ function triggerShortcut() {
     console.log('first key:', firstKey, ' second key:', secondKey);
 
     if (firstKey.pressedAt && firstKey.releasedAt) {
-        if (isValidOptionModifier(firstKey)) {
+        if (helper.isValidOptionModifier(firstKey)) {
             triggerSecondaryShortcut(firstKey.keyCodeChar);
-        } else if (isValidFullModifier(firstKey)) {
+        } else if (helper.isValidFullModifier(firstKey)) {
             if (secondKey.pressedAt && secondKey.releasedAt) {
                 triggerQueryShortcut(firstKey.keyCodeChar, secondKey.keyCodeChar);
             } else {
@@ -103,13 +96,13 @@ function triggerShortcut() {
 }
 
 function monitorKeyUp(e) {
-    e = keyCodeHelper.ensureWindowEvent(e);
-    if (!isValidModifierKey(e)) {
+    e = helper.ensureWindowEvent(e);
+    if (!helper.isValidModifierKey(e)) {
         // Ignore invalid modifier key
         return;
     }
 
-    if (keyCodeHelper.isValidKeyCode(e.keyCode)) {
+    if (helper.isValidKeyCode(e.keyCode)) {
         if (!firstKey.releasedAt) {
             firstKey.releasedAt = Date.now();
         } else if (!secondKey.releasedAt) {
@@ -119,7 +112,7 @@ function monitorKeyUp(e) {
         triggerShortcut()
     } else {
         // left key and right key is 37 and 39
-        if (isValidFullModifier(e)) {
+        if (helper.isValidFullModifier(e)) {
             if ([37, 39].indexOf(e.keyCode) > -1) {
                 let numberOfEntries = window.history.length - 1;
                 //Step value is -1 if the left key,otherwise +1 if right key.
@@ -137,14 +130,14 @@ function monitorKeyUp(e) {
 }
 
 function monitorKeyDown(e) {
-    e = keyCodeHelper.ensureWindowEvent(e);
-    if (!isValidModifierKey(e)) {
+    e = helper.ensureWindowEvent(e);
+    if (!helper.isValidModifierKey(e)) {
         // Ignore invalid modifier key
         return;
     }
 
     let keyCode = e.keyCode;
-    if (!keyCodeHelper.isValidKeyCode(keyCode)) {
+    if (!helper.isValidKeyCode(keyCode)) {
         // Ignore invalid key code.
         return;
     }
@@ -176,20 +169,6 @@ function cleanUp() {
     firstKey = EMPTY_KEY;
     secondKey = EMPTY_KEY;
     triggerTimeoutId = null;
-}
-
-function isValidModifierKey(e) {
-    return isValidFullModifier(e) || isValidOptionModifier(e);
-}
-/*
- * Check the event key modifier is full valid or not.
- */
-function isValidFullModifier(e) {
-    return e && e.shiftKey && e.altKey && !e.ctrlKey && !e.metaKey;
-}
-
-function isValidOptionModifier(e) {
-    return e && e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey;
 }
 
 document.addEventListener('keyup', monitorKeyUp, false);
