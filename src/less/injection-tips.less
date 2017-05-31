@@ -2,33 +2,44 @@
 
 @modal-z-index: 999999999;
 
-.as-injection-div {
-  background: @primary-color;
-  padding: 20px;
-  font-size: 18px;
+.modal-container {
+  background: white;
+  color: grey;
   margin: 0 auto;
   position: fixed;
-  text-align: center;
   top: 80px;
   left: 0;
   right: 0;
-  color: #eeeeee;
-  border-radius: 8px;
+  border-radius: 5px;
   width: fit-content;
   z-index: @modal-z-index;
 }
 
-.as-injection-button {
+.modal-header {
+  vertical-align: middle;
+  border-bottom: #eeeeee solid 2px;
+  padding: 15px;
+}
+
+.modal-header-close {
   float: right;
-  font-weight: bold;
-  color: @primary-color;
-  padding: 5px;
+  color: grey;
+  padding: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.modal-content {
+  padding: 20px;
+  font-size: 18px;
+  text-align: center;
 }
 
 #as-injection-shortcut {
   font-weight: bold;
   font-size: 18px;
-  color: #ffffff;
 }
 
 div.modal-overlay {

@@ -112,15 +112,18 @@ function handleOnTabInfoUpdate(url) {
 
 function requestPrimaryShortcut(key) {
     if (primaryShortcuts.hasOwnProperty(key)) {
-        let value = primaryShortcuts[key];
-        client.increaseShortcutOpenTimes(value.id)
+        let shortcut = primaryShortcuts[key];
+        client.increaseShortcutOpenTimes(shortcut.id)
             .then(response => {
                 Object.assign(primaryShortcuts, response);
             }).catch(error => {
             console.log(error);
         });
         return {
-            url: value.url,
+            url: shortcut.url,
+            title: shortcut.title,
+            favicon: shortcut.favicon,
+            comment: shortcut.comment,
             byBlank: pref.isPrimaryBlank()
         };
     } else {
@@ -146,6 +149,9 @@ function quickRequestSecondaryShortcut(primaryKey, secondaryKey) {
 
             return {
                 url: shortcut.url,
+                title: shortcut.title,
+                favicon: shortcut.favicon,
+                comment: shortcut.comment,
                 byBlank: pref.isQuickSecondaryBlank()
             };
 
