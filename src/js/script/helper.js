@@ -66,5 +66,11 @@ export default {
         } else {
             location.href = url;
         }
+
+        chrome.runtime.sendMessage({
+            increase: true,
+            shortcutId: shortcut.id,
+            primary: shortcut.primary,
+        });
     },
 };

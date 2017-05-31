@@ -32,7 +32,7 @@ function triggerPrimaryShortcut(keyCodeChar) {
 function triggerSecondaryShortcut(keyCodeChar) {
     chrome.runtime.sendMessage({
         secondaryRequest: true,
-        location: location,
+        hostname: location.hostname,
         key: keyCodeChar,
     }, shortcut => {
         if (shortcut) {

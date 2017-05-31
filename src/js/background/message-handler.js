@@ -110,24 +110,39 @@ function handleOnTabInfoUpdate(url) {
     setPopupIcon(url ? checkUrlBound(url) : false);
 }
 
+function makeResponseShortcut(shortcut, byBlank) {
+    return {
+        id: shortcut.id,
+        url: shortcut.url,
+        title: shortcut.title,
+        favicon: shortcut.favicon,
+        comment: shortcut.comment,
+        primary: shortcut.primary,
+        byBlank: byBlank,
+    }
+}
+
 function requestPrimaryShortcut(key) {
     if (primaryShortcuts.hasOwnProperty(key)) {
         let shortcut = primaryShortcuts[key];
-        client.increaseShortcutOpenTimes(shortcut.id)
-            .then(response => {
-                Object.assign(primaryShortcuts, response);
-            }).catch(error => {
-            console.log(error);
-        });
-        return {
-            url: shortcut.url,
-            title: shortcut.title,
-            favicon: shortcut.favicon,
-            comment: shortcut.comment,
-            byBlank: pref.isPrimaryBlank()
-        };
+        return makeResponseShortcut(shortcut, pref.isPrimaryBlank());
     } else {
         // The shortcut key not bound yet.
+        return null;
+    }
+}
+
+function requestSecondaryShortcut(key, hostname) {
+    // Access options shortcut key for correct domain.
+    let domain = getBoundDomainByHostname(hostname);
+    if (domain) {
+        let shortcuts = secondaryShortcuts[domain];
+        if (shortcuts.hasOwnProperty(key)) {
+            let shortcut = shortcuts[key];
+            return makeResponseShortcut(shortcut, pref.isSecondaryBlank());
+        }
+    } else {
+        // Not bound any key for this domain name yet or not exist the key
         return null;
     }
 }
@@ -140,21 +155,7 @@ function quickRequestSecondaryShortcut(primaryKey, secondaryKey) {
         let shortcuts = secondaryShortcuts[domain];
         if (shortcuts && shortcuts.hasOwnProperty(secondaryKey)) {
             let shortcut = shortcuts[secondaryKey];
-            client.increaseShortcutOpenTimes(shortcut.id)
-                .then(response => {
-                    Object.assign(shortcuts, response);
-                }).catch(error => {
-                console.log(error);
-            });
-
-            return {
-                url: shortcut.url,
-                title: shortcut.title,
-                favicon: shortcut.favicon,
-                comment: shortcut.comment,
-                byBlank: pref.isQuickSecondaryBlank()
-            };
-
+            return makeResponseShortcut(shortcut, pref.isQuickSecondaryBlank());
         } else {
             // Not bound any key for this domain name yet or not exist the key
             return null;
@@ -213,27 +214,7 @@ function onMessageReceiver(message, sender, sendResponse) {
             break;
         }
         case message.secondaryRequest: {
-            // Access options shortcut key for correct domain.
-            let domain = getBoundDomainByHostname(message.location.hostname);
-            if (domain) {
-                let shortcuts = secondaryShortcuts[domain];
-                if (shortcuts.hasOwnProperty(message.key)) {
-                    let shortcut = shortcuts[message.key];
-                    sendResponse({
-                        url: shortcut.url,
-                        byBlank: pref.isSecondaryBlank()
-                    });
-                    client.increaseShortcutOpenTimes(shortcut.id)
-                        .then(response => {
-                            Object.assign(shortcuts, response);
-                        }).catch(error => {
-                        console.log(error);
-                    });
-                    break;
-                }
-            }
-            // Not bound any key for this domain name yet or not exist the key
-            sendResponse(null);
+            sendResponse(requestSecondaryShortcut(message.key, message.hostname));
             break;
         }
         case message.secondarySave: {
@@ -291,6 +272,18 @@ function onMessageReceiver(message, sender, sendResponse) {
             sendResponse(response);
             break;
         }
+        case message.increase:
+            client.increaseShortcutOpenTimes(message.shortcutId)
+                .then(response => {
+                    if (message.primary) {
+                        Object.assign(primaryShortcuts, response);
+                    } else {
+                        // TODO secondary shortcut case...
+                    }
+                }).catch(error => {
+                console.log(error);
+            });
+            break;
         default: {
             break;
         }
