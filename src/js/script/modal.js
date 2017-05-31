@@ -43,7 +43,9 @@ function buildHeader(onClose) {
 
 function buildModal(content) {
     let modal = document.createElement('div');
-    modal.className = 'modal-overlay';
+    modal.className = 'modal';
+    // Set a dedicated attribute to handle css mixed issue.
+    modal.setAttribute('c-xs-fe2cxw', '');
 
     let container = document.createElement('div');
     container.className = 'modal-container';
@@ -79,18 +81,18 @@ function buildModal(content) {
 
 export default {
     showPrimaryShortcutUnbound(pressedKey){
-        let innerHtml = `<p>the shortcut key <span id="as-injection-shortcut">ALT+SHIFT+${pressedKey}</span> 
+        let innerHtml = `<p>the shortcut key <span class="shortcut">ALT+SHIFT+${pressedKey}</span> 
             not bound for this domain yet!</p>`;
         openModal(innerHtml);
     },
     showSecondaryShortcutUnbound(pressedKey){
-        let innerHtml = `<p>the secondary shortcut key <span id="as-injection-shortcut">ALT+${pressedKey}</span> 
+        let innerHtml = `<p>the secondary shortcut key <span class="shortcut">ALT+${pressedKey}</span> 
                         not bound for this domain yet!</p>`;
         openModal(innerHtml);
     },
     showQueryShortcutFailed(firstKey, secondKey){
-        let innerHtml = `<p>neither <span id="as-injection-shortcut">SHIFT+ALT+${firstKey}${secondKey}</span>
-                        nor <span id="as-injection-shortcut">SHIFT+ALT+${firstKey}➯${secondKey}</span> 
+        let innerHtml = `<p>neither <span class="shortcut">SHIFT+ALT+${firstKey}${secondKey}</span>
+                        nor <span class="shortcut">SHIFT+ALT+${firstKey}➯${secondKey}</span> 
                         bound yet!</p>`;
         openModal(innerHtml);
     },

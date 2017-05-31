@@ -2,47 +2,7 @@
 
 @modal-z-index: 999999999;
 
-.modal-container {
-  background: white;
-  color: grey;
-  margin: 0 auto;
-  position: fixed;
-  top: 80px;
-  left: 0;
-  right: 0;
-  border-radius: 5px;
-  width: fit-content;
-  z-index: @modal-z-index;
-}
-
-.modal-header {
-  vertical-align: middle;
-  border-bottom: #eeeeee solid 2px;
-  padding: 15px;
-}
-
-.modal-header-close {
-  float: right;
-  color: grey;
-  padding: 10px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  outline: none;
-}
-
-.modal-content {
-  padding: 20px;
-  font-size: 18px;
-  text-align: center;
-}
-
-#as-injection-shortcut {
-  font-weight: bold;
-  font-size: 18px;
-}
-
-div.modal-overlay {
+.modal[c-xs-fe2cxw] {
   background: rgba(37, 40, 43, 0.6);
   position: fixed;
   right: 0;
@@ -50,4 +10,44 @@ div.modal-overlay {
   bottom: 0;
   left: 0;
   z-index: (@modal-z-index - 1);
+
+  .modal-container {
+    background: white;
+    color: grey;
+    margin: 0 auto;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    right: 0;
+    border-radius: 5px;
+    width: fit-content;
+    z-index: @modal-z-index;
+  }
+
+  .modal-header {
+    vertical-align: middle;
+    border-bottom: #eeeeee solid 2px;
+    padding: 15px;
+  }
+
+  .modal-header-close {
+    float: right;
+    color: grey;
+    padding: 10px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+  }
+
+  .modal-content {
+    padding: 20px;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .shortcut {
+    font-weight: bold;
+    font-size: 18px;
+  }
 }
