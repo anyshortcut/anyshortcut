@@ -16,16 +16,20 @@ let firstKey = EMPTY_KEY;
 let secondKey = EMPTY_KEY;
 let triggerTimeoutId = null;
 
+function openShortcut(shortcut) {
+    let url = shortcut.url;
+    if (shortcut.byBlank) {
+        window.open(url);
+    } else {
+        location.href = url;
+    }
+}
+
 
 function triggerPrimaryShortcut(keyCodeChar) {
-    chrome.runtime.sendMessage({request: true, key: keyCodeChar}, response => {
-        if (response) {
-            let url = response.url;
-            if (response.byBlank) {
-                window.open(url);
-            } else {
-                location.href = url;
-            }
+    chrome.runtime.sendMessage({request: true, key: keyCodeChar}, shortcut => {
+        if (shortcut) {
+            openShortcut(shortcut);
         } else {
             modal.showPrimaryShortcutUnbound(keyCodeChar);
         }
@@ -39,14 +43,9 @@ function triggerSecondaryShortcut(keyCodeChar) {
         secondaryRequest: true,
         location: location,
         key: keyCodeChar,
-    }, response => {
-        if (response) {
-            let url = response.url;
-            if (response.byBlank) {
-                window.open(url);
-            } else {
-                location.href = url;
-            }
+    }, shortcut => {
+        if (shortcut) {
+            openShortcut(shortcut);
         } else {
             modal.showSecondaryShortcutUnbound(keyCodeChar)
         }
@@ -62,12 +61,7 @@ function triggerQuickSecondaryShortcut(primaryKeyCodeChar, secondaryKeyCodeChar)
         secondaryKey: secondaryKeyCodeChar,
     }, response => {
         if (response) {
-            let url = response.url;
-            if (response.byBlank) {
-                window.open(url);
-            } else {
-                location.href = url;
-            }
+            openShortcut(response);
         } else {
             modal.showQuickSecondaryShortcutFailed(primaryKeyCodeChar, secondaryKeyCodeChar);
         }
