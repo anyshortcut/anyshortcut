@@ -50,12 +50,6 @@ function buildModal(content) {
     let container = document.createElement('div');
     container.className = 'modal-container';
 
-    container.appendChild(buildHeader(function(e) {
-        window.clearTimeout(timeoutId);
-        timeoutId = undefined;
-        removeElementDelay(modal, 50);
-    }));
-
     let timeoutId = removeElementDelay(modal);
     container.onmouseover = function(e) {
         if (timeoutId) {
@@ -73,6 +67,12 @@ function buildModal(content) {
             removeElementDelay(modal, 50);
         }
     });
+
+    container.appendChild(buildHeader(function(e) {
+        window.clearTimeout(timeoutId);
+        timeoutId = undefined;
+        removeElementDelay(modal, 50);
+    }));
 
     container.appendChild(content);
     modal.appendChild(container);

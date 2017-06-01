@@ -78,8 +78,6 @@ function triggerShortcut() {
         triggerTimeoutId = null;
     }
 
-    console.log('first key:', firstKey, ' second key:', secondKey);
-
     if (firstKey.pressedAt && firstKey.releasedAt) {
         if (helper.isValidOptionModifier(firstKey)) {
             triggerSecondaryShortcut(firstKey.keyCodeChar);
@@ -89,7 +87,7 @@ function triggerShortcut() {
             } else {
                 triggerTimeoutId = window.setTimeout(function() {
                     triggerPrimaryShortcut(firstKey.keyCodeChar);
-                }, 382);
+                }, helper.delayTime);
             }
         }
     }
