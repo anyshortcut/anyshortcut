@@ -43,7 +43,7 @@ function buildHeader(onClose) {
 
 function buildModal(content) {
     let modal = document.createElement('div');
-    modal.className = 'modal';
+    modal.id = 'anyshortcut-modal';
     // Set a dedicated attribute to handle css mixed issue.
     modal.setAttribute('c-xs-fe2cxw', '');
 

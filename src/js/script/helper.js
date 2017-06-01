@@ -38,7 +38,7 @@ const dictionaries = {
 };
 
 export default {
-    delayTime: 200,
+    delayTime: 300,
     ensureWindowEvent(e) {
         return e ? e : window.event;
     },
