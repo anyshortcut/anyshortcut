@@ -205,10 +205,11 @@ function onMessageReceiver(message, sender, sendResponse) {
                     force: message.force || false,
                 }).then(response => {
                     Object.assign(primaryShortcuts, response);
-                    sendResponse("Success");
+                    sendResponse(true);
                     setPopupIcon(true);
                 }).catch(error => {
                     console.log(error);
+                    sendResponse(false);
                 });
             });
             break;
@@ -238,6 +239,7 @@ function onMessageReceiver(message, sender, sendResponse) {
                     sendResponse(true);
                 }).catch(error => {
                     console.log(error);
+                    sendResponse(false);
                 });
             });
             break;
