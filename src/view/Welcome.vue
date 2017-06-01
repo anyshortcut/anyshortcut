@@ -1,23 +1,30 @@
 <template>
-    <div id="welcome-view">
-        <div class="logo">
+    <main>
+        <figure class="logo">
             <img src="../img/icon48.png" alt=""><span>anyshortcut</span>
-        </div>
-        <a :href="signInUrl" target="_blank">Sign in</a> now to boost your productivity!
-        <br>
-        <b>It's free!</b>
-    </div>
+            <figcaption> Open any website by any shortcut! </figcaption>
+        </figure>
+        <section>
+            <a :href="signInUrl" target="_blank">Sign in</a> now to boost productivity and sync your shortcuts!
+        </section>
+        <footer>
+            <a :href="tryUrl" target="_blank" class="grey-link">I just wanna a try now</a>
+        </footer>
+    </main>
 </template>
-<style lang="less">
+<style lang="less" scoped>
     @import "../less/_common.less";
 
-    #welcome-view {
+    main {
         line-height: 2em;
-        width: @normal-width;
-        height: @normal-height;
+        width: 400px;
     }
 
-    .logo {
+    figure {
+        vertical-align: middle;
+    }
+
+    figure span {
         color: #4F6EC8;
         font-size: 35px;
         font-weight: bold;
@@ -25,14 +32,32 @@
         margin: 30px;
     }
 
-    .logo img {
-        vertical-align: middle;
+    figure img {
         padding: 10px;
+    }
+
+    figcaption {
+        color: gray;
+        font-size: 16px;
+    }
+
+    section {
+        padding: 20px;
     }
 
     a:focus {
         text-decoration: none;
         outline: none;
+    }
+
+    footer {
+        padding: 10px;
+    }
+
+    .grey-link {
+        text-decoration: underline;
+        color: grey;
+        font-size: 14px;
     }
 </style>
 <script type="es6">
@@ -43,6 +68,9 @@
         computed: {
             signInUrl: function() {
                 return config.baseURL + '/sign_in';
+            },
+            tryUrl: function() {
+                return config.baseURL + '/try'
             }
         }
     }
