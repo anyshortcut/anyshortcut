@@ -9,7 +9,7 @@ const productionEnv = {
 const developmentEnv = {
     debug: true,
     schema: 'http://',
-    domain: 'spruce.com',
+    domain: 'dev.anyshortcut.com',
 };
 
 module.exports = {
