@@ -169,5 +169,13 @@ function cleanUp() {
     triggerTimeoutId = null;
 }
 
-document.addEventListener('keyup', monitorKeyUp, false);
-document.addEventListener('keydown', monitorKeyDown, false);
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    console.log('on message in tab: authenticated=' + message.authenticated);
+    if (message.authenticated) {
+        document.addEventListener('keyup', monitorKeyUp, false);
+        document.addEventListener('keydown', monitorKeyDown, false);
+    } else {
+        document.removeEventListener('keyup', monitorKeyUp, false);
+        document.removeEventListener('keydown', monitorKeyDown, false);
+    }
+});

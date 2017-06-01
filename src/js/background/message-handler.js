@@ -12,8 +12,16 @@ chrome.runtime.onMessage.addListener(onMessageReceiver);
 chrome.runtime.onMessageExternal.addListener(onMessageExternal);
 
 if (auth.isAuthenticated()) {
+    doAfterAuthenticated();
+}
+
+function doAfterAuthenticated() {
     getAllShortcuts();
     pref.sync();
+
+    common.iterateAllWindowTabs(tabId => {
+        chrome.tabs.sendMessage(tabId, {authenticated: true});
+    });
 }
 
 /**
@@ -323,8 +331,7 @@ function onTabActivated(activeInfo) {
 function onMessageExternal(message, sender, sendResponse) {
     console.log(message);
     auth.signin(message.token);
-    getAllShortcuts();
-    pref.sync();
+    doAfterAuthenticated();
     sendResponse(true);
     return true;
 }
