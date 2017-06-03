@@ -37,7 +37,7 @@
             <br>
             <div class="two-keystroke">
                 <input class="keystroke" type="text" v-model="strokeKeyChar">
-                <input class="comment" type="text" v-model="comment">
+                <input class="comment" type="text" v-model="strokeComment">
                 <input type="button" value="Bind" @click="bindKeystrokeShortcut">
             </div>
         </div>
@@ -76,7 +76,7 @@
             return {
                 keyChar: null,
                 strokeKeyChar: null,
-                comment: null,
+                strokeComment: null,
                 boundKeys: [],// All bound keys, for keyboard component usage.
                 tabTitle: null,
                 showPopper: false,
@@ -158,15 +158,8 @@
                 });
             },
             bindKeystrokeShortcut: function() {
-                let options = {
-                    save: true,
-                    key: this.strokeKeyChar,
-                    comment: this.comment,
-                    force: false,
-                };
-
                 this.$emit('pre-bind');
-                chrome.runtime.sendMessage(options, result => {
+                this.$background.bindPrimaryShortcut(this.strokeKeyChar, this.strokeComment, this.tab, false, result => {
                     this.$emit('post-bind', result);
                 });
             },
