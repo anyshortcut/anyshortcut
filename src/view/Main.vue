@@ -24,11 +24,10 @@
         </div>
 
         <div class="pure-g" v-else>
-            <bind-view :bound-keys="boundKeys"
+            <bind-view :shortcuts="shortcuts"
                        :primary="primary"
                        :domain-primary-shortcut="domainPrimaryShortcut"
                        :tab-title="tabTitle"
-                       :tab-url="tabUrl"
                        @pre-bind="loading=true"
                        @post-bind="onPostBind">
             </bind-view>
@@ -110,7 +109,6 @@
                 tabUrl: null,
                 shortcut: null,
                 domainPrimaryShortcut: null, //current tab domain primary shortcut.
-                boundKeys: null,// All bound keys, for keyboard component usage.
                 primary: true,
                 shortcuts: null,
                 loading: false,
@@ -162,10 +160,6 @@
                     } else {
                         this.shortcuts = response.primaryShortcuts;
                         this.primary = true;
-                    }
-
-                    if (this.shortcuts) {
-                        this.boundKeys = Object.keys(this.shortcuts);
                     }
 
                     // Iterate both primary shortcuts and secondary shortcuts

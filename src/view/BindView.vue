@@ -22,7 +22,7 @@
             <popover id="popover"
                      v-show="showPopper"
                      :key-char="keyChar"
-                     :current-tab-title="currentTabTitle"
+                     :current-tab-title="tabTitle"
                      :shortcut="hoveredShortcut"
                      @mouseover.native="onHoverOver"
                      @mouseleave.native="onHoverLeave"
@@ -76,16 +76,13 @@
             return {
                 keyChar: null,
                 strokeKeyChar: null,
-                comment: this.currentTabTitle,
-                lastKeyChar: null,
+                comment: null,
+                boundKeys: [],// All bound keys, for keyboard component usage.
                 showPopper: false,
             };
         },
         props: {
             tabTitle: {
-                type: String
-            },
-            tabUrl: {
                 type: String
             },
             primary: {
@@ -97,25 +94,27 @@
                     return {};
                 },
             },
-            boundKeys: {
-                type: Array
+            shortcuts: {
+                type: Object,
+                default: function() {
+                    return null;
+                }
             }
         },
         computed: {
-            currentTabTitle: function() {
-                if (this.tabTitle) {
-                    return this.tabTitle.substring(0, 20);
-                }
-                return '';
-            },
             // A mouse hovered shortcut computed object
             hoveredShortcut: function() {
-                if (this.boundKeys && this.boundKeys.indexOf(this.key) !== -1) {
-                    return this.shortcuts[this.key];
+                if (this.boundKeys && this.boundKeys.indexOf(this.keyChar) !== -1) {
+                    return this.shortcuts[this.keyChar];
                 } else {
                     return null;
                 }
             }
+        },
+        watch: {
+            shortcuts: function(newValue) {
+                this.boundKeys = Object.keys(newValue);
+            },
         },
         components: {
             Keyboard,
@@ -163,7 +162,6 @@
                 chrome.runtime.sendMessage(options, result => {
                     this.$emit('post-bind', result);
                 });
-
             },
             bindKeystrokeShortcut: function() {
                 let options = {
