@@ -121,6 +121,7 @@
                 this.loading = false;
 
                 if (result) {
+                    this.$background.setPopupIcon(true);
                     this.queryShortcuts();
                     this.$message.success('Great job!you have bound a shortcut for this url!');
                 }
@@ -132,6 +133,8 @@
                 this.loading = false;
 
                 if (result) {
+                    this.$background.setPopupIcon(false);
+
                     this.shortcut = null;
                     this.domainPrimaryShortcut = null;
                     this.$message.success('Delete Success!');

@@ -53,7 +53,6 @@ window.bindPrimaryShortcut = function(key, comment, tab, force, callback) {
     }).then(response => {
         Object.assign(primaryShortcuts, response);
         callback(true);
-        // window.setPopupIcon(true);
     }).catch(error => {
         console.log(error);
         callback(false);
@@ -65,7 +64,6 @@ window.removePrimaryShortcut = function(shortcut, callback) {
         .then(response => {
             delete primaryShortcuts[shortcut.key];
             callback(true);
-            // window.setPopupIcon(false);
         }).catch(error => {
         console.log(error);
         callback(false);
