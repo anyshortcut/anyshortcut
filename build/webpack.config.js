@@ -12,6 +12,7 @@ module.exports = {
     entry: {
         content_script: './js/script/key-event-monitor.js',
         background: [
+            './js/background/shortcut.js',
             './js/background/extension.js',
             './js/background/message.js',
             './js/background/commands.js',

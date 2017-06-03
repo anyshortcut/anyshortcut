@@ -41,21 +41,6 @@ function getAllShortcuts() {
     });
 }
 
-/**
- * Get bound domain from Secondary shortcuts by hostname.
- * @param hostname
- * @returns {*}
- */
-function getBoundDomainByHostname(hostname) {
-    for (let domain of Object.keys(secondaryShortcuts)) {
-        if (secondaryShortcuts.hasOwnProperty(domain)
-            && common.isHostnameEndsWithDomain(hostname, domain)) {
-            return domain;
-        }
-    }
-    return null;
-}
-
 function makeResponseShortcut(shortcut, byBlank) {
     return {
         id: shortcut.id,
@@ -80,7 +65,7 @@ function requestPrimaryShortcut(key) {
 
 function requestSecondaryShortcut(key, hostname) {
     // Access options shortcut key for correct domain.
-    let domain = getBoundDomainByHostname(hostname);
+    let domain = window.getBoundDomainByHostname(hostname);
     if (domain) {
         let shortcuts = secondaryShortcuts[domain];
         if (shortcuts.hasOwnProperty(key)) {
@@ -125,83 +110,8 @@ function onMessageReceiver(message, sender, sendResponse) {
             sendResponse(requestPrimaryShortcut(message.key));
             break;
         }
-        case message.remove: {
-            // Delete the url shortcut.
-            let shortcut = primaryShortcuts[message.key];
-            client.unbindShortcut(shortcut.id)
-                .then(response => {
-                    delete primaryShortcuts[message.key];
-                    sendResponse(true);
-                    window.setPopupIcon(false);
-                }).catch(error => {
-                console.log(error);
-                sendResponse(false);
-            });
-            break;
-        }
-        case message.save: {
-            common.getCurrentTab(tab => {
-                client.bindShortcut({
-                    key: message.key,
-                    url: tab.url,
-                    title: tab.title,
-                    favicon: tab.favIconUrl,
-                    comment: message.comment,
-                    primary: true,
-                    force: message.force || false,
-                }).then(response => {
-                    Object.assign(primaryShortcuts, response);
-                    sendResponse(true);
-                    window.setPopupIcon(true);
-                }).catch(error => {
-                    console.log(error);
-                    sendResponse(false);
-                });
-            });
-            break;
-        }
         case message.secondaryRequest: {
             sendResponse(requestSecondaryShortcut(message.key, message.hostname));
-            break;
-        }
-        case message.secondarySave: {
-            // Save option access bound item data.
-            common.getCurrentTab(tab => {
-                client.bindShortcut({
-                    key: message.key,
-                    url: tab.url,
-                    title: tab.title,
-                    favicon: tab.favIconUrl,
-                    comment: message.comment,
-                    primary: false,
-                    force: message.force || false,
-                }).then(response => {
-                    let domain = response[message.key]['domain'];
-                    if (!secondaryShortcuts.hasOwnProperty(domain)) {
-                        secondaryShortcuts[domain] = {}
-                    }
-                    Object.assign(secondaryShortcuts[domain], response);
-
-                    sendResponse(true);
-                }).catch(error => {
-                    console.log(error);
-                    sendResponse(false);
-                });
-            });
-            break;
-        }
-        case message.secondaryRemove: {
-            client.unbindShortcut(message.id)
-                .then(response => {
-                    sendResponse(true);
-                    let hostname = common.getHostnameFromUrl(message.url);
-                    let domain = getBoundDomainByHostname(hostname);
-                    let shortcuts = secondaryShortcuts[domain];
-                    delete shortcuts[message.key];
-                })
-                .catch(error => {
-                    sendResponse(false);
-                });
             break;
         }
         case message.all: {
@@ -210,7 +120,7 @@ function onMessageReceiver(message, sender, sendResponse) {
             if (message.url) {
                 // Only return the domain specific secondary shortcuts when the message.url was represent.
                 let hostname = common.getHostnameFromUrl(message.url);
-                let domain = getBoundDomainByHostname(hostname);
+                let domain = window.getBoundDomainByHostname(hostname);
                 response['secondaryShortcuts'] = domain ? secondaryShortcuts[domain] : {};
             } else {
                 // Else return all secondary shortcuts.
