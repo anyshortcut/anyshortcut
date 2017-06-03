@@ -1,6 +1,11 @@
 import helper from './helper.js';
 import modal from './modal.js';
 
+chrome.runtime.sendMessage({resolve: true}, authenticated => {
+    console.log('resolve authenticated:', authenticated);
+    resolveEventListener(authenticated);
+});
+
 const EMPTY_KEY = {
     keyCode: 0,
     keyCodeChar: null,
@@ -172,13 +177,17 @@ function cleanUp() {
     triggerTimeoutId = null;
 }
 
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    console.log('on message in tab: authenticated=' + message.authenticated);
-    if (message.authenticated) {
+function resolveEventListener(authenticated) {
+    if (authenticated) {
         document.addEventListener('keyup', monitorKeyUp, false);
         document.addEventListener('keydown', monitorKeyDown, false);
     } else {
         document.removeEventListener('keyup', monitorKeyUp, false);
         document.removeEventListener('keydown', monitorKeyDown, false);
     }
+}
+
+chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
+    console.log('on message in tab: authenticated=' + message.authenticated);
+    resolveEventListener(message.authenticated);
 });

@@ -18,6 +18,10 @@ function doAfterAuthenticated() {
 
 function onMessageReceiver(message, sender, sendResponse) {
     switch (true) {
+        case message.resolve: {
+            sendResponse(auth.isAuthenticated());
+            break;
+        }
         case message.query: {
             sendResponse({
                 byBlank: pref.isQuickSecondaryBlank(),
