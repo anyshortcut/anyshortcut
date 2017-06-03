@@ -96,7 +96,7 @@ export default {
                         bound yet!</p>`;
         openModal(innerHtml);
     },
-    showQueryShortcutChooser(primaryShortcut, secondaryShortcut){
+    showQueryShortcutChooser(primaryShortcut, secondaryShortcut, byBlank){
         let innerHtml = `<ul>
                             <li><div>
                             #1 <img src="${primaryShortcut.favicon}" alt=""> ${primaryShortcut.title}
@@ -117,7 +117,7 @@ export default {
             }
 
             if (shortcut) {
-                helper.openShortcut(shortcut);
+                helper.openShortcut(shortcut, byBlank);
                 removeElementDelay(modal, 50);
                 document.removeEventListener('keyup', chooserEventListener);
             }

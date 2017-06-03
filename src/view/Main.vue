@@ -142,7 +142,7 @@
             },
             queryShortcuts(){
                 let primaryShortcuts = this.$background.primaryShortcuts;
-                let secondaryShortcuts = this.$background.getSecondaryShortcutByUrl(this.tab.url);
+                let secondaryShortcuts = this.$background.getSecondaryShortcutsByUrl(this.tab.url);
 
                 // Find current tab domain primary shortcut.
                 _.forOwn(primaryShortcuts, (shortcut) => {

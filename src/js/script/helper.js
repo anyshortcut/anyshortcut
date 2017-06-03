@@ -60,9 +60,9 @@ export default {
     isValidOptionModifier(e) {
         return e && e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey;
     },
-    openShortcut(shortcut) {
+    openShortcut(shortcut, byBlank) {
         let url = shortcut.url;
-        if (shortcut.byBlank) {
+        if (byBlank) {
             window.open(url);
         } else {
             location.href = url;

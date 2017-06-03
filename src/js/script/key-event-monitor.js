@@ -18,9 +18,12 @@ let triggerTimeoutId = null;
 
 
 function triggerPrimaryShortcut(keyCodeChar) {
-    chrome.runtime.sendMessage({request: true, key: keyCodeChar}, shortcut => {
-        if (shortcut) {
-            helper.openShortcut(shortcut);
+    chrome.runtime.sendMessage({
+        request: true,
+        key: keyCodeChar
+    }, response => {
+        if (response.shortcut) {
+            helper.openShortcut(response.shortcut, response.byBlank);
         } else {
             modal.showPrimaryShortcutUnbound(keyCodeChar);
         }
@@ -34,9 +37,9 @@ function triggerSecondaryShortcut(keyCodeChar) {
         secondaryRequest: true,
         hostname: location.hostname,
         key: keyCodeChar,
-    }, shortcut => {
-        if (shortcut) {
-            helper.openShortcut(shortcut);
+    }, response => {
+        if (response.shortcut) {
+            helper.openShortcut(response.shortcut, response.byBlank);
         } else {
             modal.showSecondaryShortcutUnbound(keyCodeChar)
         }
@@ -55,11 +58,11 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
         if (primaryShortcut && secondaryShortcut) {
             // Primary and secondary shortcut both exist,
             // show a chooser let user choose one.
-            modal.showQueryShortcutChooser(primaryShortcut, secondaryShortcut);
+            modal.showQueryShortcutChooser(primaryShortcut, secondaryShortcut, response.byBlank);
         } else if (primaryShortcut) {
-            helper.openShortcut(primaryShortcut);
+            helper.openShortcut(primaryShortcut, response.byBlank);
         } else if (secondaryShortcut) {
-            helper.openShortcut(secondaryShortcut);
+            helper.openShortcut(secondaryShortcut, response.byBlank);
         } else {
             // Neither shortcut bound.
             modal.showQueryShortcutFailed(firstKeyCodeChar, secondKeyCodeChar);
