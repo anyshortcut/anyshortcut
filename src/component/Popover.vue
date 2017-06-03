@@ -20,7 +20,7 @@
         name: 'Popper',
         data(){
             return {
-                comment: this.currentTabTitle,
+                comment: null,
                 forceBinding: false,// Bind shortcut by force or not
             }
         },
@@ -29,7 +29,7 @@
                 type: String,
                 default: null,
             },
-            currentTabTitle: {
+            tabTitle: {
                 type: String,
             },
             shortcut: {
@@ -42,6 +42,13 @@
         watch: {
             keyChar: function() {
                 this.forceBinding = false;
+            },
+            tabTitle: function(newValue) {
+                if (this.tabTitle) {
+                    this.comment = newValue.substring(0, 20);
+                } else {
+                    this.comment = '';
+                }
             }
         },
         methods: {

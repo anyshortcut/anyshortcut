@@ -22,7 +22,7 @@
             <popover id="popover"
                      v-show="showPopper"
                      :key-char="keyChar"
-                     :current-tab-title="tabTitle"
+                     :tab-title="tabTitle"
                      :shortcut="hoveredShortcut"
                      @mouseover.native="onHoverOver"
                      @mouseleave.native="onHoverLeave"
