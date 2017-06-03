@@ -1,6 +1,31 @@
 import client from './client.js';
 import common from '../common.js';
 
+window.primaryShortcuts = {};
+window.secondaryShortcuts = {};
+
+/**
+ * Sync all shortcuts from server.
+ */
+window.syncAllShortcuts = function() {
+    client.getPrimaryShortcuts().then(shortcuts => {
+        shortcuts = shortcuts || [];
+        shortcuts.forEach(item => {
+            Object.assign(primaryShortcuts, item)
+        });
+        console.log('primary:', primaryShortcuts);
+    }).catch(error => {
+        console.log(error);
+    });
+
+    client.getSecondaryShortcuts().then(shortcuts => {
+        secondaryShortcuts = shortcuts || {};
+        console.log('secondary:', secondaryShortcuts);
+    }).catch(error => {
+        console.log(error);
+    });
+};
+
 /**
  * Get bound domain from Secondary shortcuts by hostname.
  * @param hostname
@@ -83,4 +108,11 @@ window.removeSecondaryShortcut = function(shortcut, callback) {
         console.log(error);
         callback(false);
     });
+};
+
+window.getSecondaryShortcutByUrl = function(url) {
+    // Only return the domain specific secondary shortcuts by url.
+    let hostname = common.getHostnameFromUrl(url);
+    let domain = getBoundDomainByHostname(hostname);
+    return domain ? secondaryShortcuts[domain] : {};
 };

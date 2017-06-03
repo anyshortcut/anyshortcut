@@ -141,33 +141,31 @@
                 }
             },
             queryShortcuts(){
-                chrome.runtime.sendMessage({all: true, url: this.tabUrl}, response => {
-                    // Find current tab domain primary shortcut.
-                    _.forOwn(response.primaryShortcuts, (shortcut) => {
-                        if (common.isUrlEndsWithDomain(this.tabUrl, shortcut.domain)) {
-                            this.domainPrimaryShortcut = shortcut;
-                            // return false to exit the for iterate after find the result.
-                            return false;
-                        }
-                    });
+                let primaryShortcuts = this.$background.primaryShortcuts;
+                let secondaryShortcuts = this.$background.getSecondaryShortcutByUrl(this.tab.url);
 
-                    if (this.domainPrimaryShortcut) {
-                        // If current tab domain bound primary shortcut, then only permit to bound secondary shortcuts.
-                        this.shortcuts = response.secondaryShortcuts;
-                        this.primary = false;
-                    } else {
-                        this.shortcuts = response.primaryShortcuts;
-                        this.primary = true;
-                    }
-
-                    // Iterate both primary shortcuts and secondary shortcuts
-                    // to ensure don't miss the bound shortcut.
-                    for (let key in response) {
-                        if (response.hasOwnProperty(key)) {
-                            this.checkShortcutBound(response[key]);
-                        }
+                // Find current tab domain primary shortcut.
+                _.forOwn(primaryShortcuts, (shortcut) => {
+                    if (common.isUrlEndsWithDomain(this.tab.url, shortcut.domain)) {
+                        this.domainPrimaryShortcut = shortcut;
+                        // return false to exit the for iterate after find the result.
+                        return false;
                     }
                 });
+
+                if (this.domainPrimaryShortcut) {
+                    // If current tab domain bound primary shortcut,
+                    // then only permit to bound secondary shortcuts.
+                    this.shortcuts = secondaryShortcuts;
+                    this.primary = false;
+                } else {
+                    this.shortcuts = primaryShortcuts;
+                    this.primary = true;
+                }
+
+                // Iterate both primary shortcuts firstly to find the bound shortcut,
+                // otherwise to iterate secondary shortcuts to ensure don't miss the bound shortcut.
+                this.checkShortcutBound(primaryShortcuts) || this.checkShortcutBound(secondaryShortcuts);
             },
             checkShortcutBound(shortcuts){
                 _.forOwn(shortcuts, shortcut => {

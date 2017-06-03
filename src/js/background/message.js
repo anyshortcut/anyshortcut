@@ -3,41 +3,16 @@ import client from './client.js';
 import common from '../common.js';
 import pref from '../prefs.js';
 
-window.primaryShortcuts = {};
-window.secondaryShortcuts = {};
-
 if (auth.isAuthenticated()) {
     doAfterAuthenticated();
 }
 
 function doAfterAuthenticated() {
-    getAllShortcuts();
+    window.syncAllShortcuts();
     pref.sync();
 
     common.iterateAllWindowTabs(tabId => {
         chrome.tabs.sendMessage(tabId, {authenticated: true});
-    });
-}
-
-/**
- * Get all shortcuts from server.
- */
-function getAllShortcuts() {
-    client.getPrimaryShortcuts().then(shortcuts => {
-        shortcuts = shortcuts || [];
-        shortcuts.forEach(item => {
-            Object.assign(primaryShortcuts, item)
-        });
-        console.log('primary:', primaryShortcuts);
-    }).catch(error => {
-        console.log(error);
-    });
-
-    client.getSecondaryShortcuts().then(shortcuts => {
-        secondaryShortcuts = shortcuts || {};
-        console.log('secondary:', secondaryShortcuts);
-    }).catch(error => {
-        console.log(error);
     });
 }
 
@@ -54,8 +29,8 @@ function makeResponseShortcut(shortcut, byBlank) {
 }
 
 function requestPrimaryShortcut(key) {
-    if (primaryShortcuts.hasOwnProperty(key)) {
-        let shortcut = primaryShortcuts[key];
+    if (window.primaryShortcuts.hasOwnProperty(key)) {
+        let shortcut = window.primaryShortcuts[key];
         return makeResponseShortcut(shortcut, pref.isPrimaryBlank());
     } else {
         // The shortcut key not bound yet.
@@ -67,7 +42,7 @@ function requestSecondaryShortcut(key, hostname) {
     // Access options shortcut key for correct domain.
     let domain = window.getBoundDomainByHostname(hostname);
     if (domain) {
-        let shortcuts = secondaryShortcuts[domain];
+        let shortcuts = window.secondaryShortcuts[domain];
         if (shortcuts.hasOwnProperty(key)) {
             let shortcut = shortcuts[key];
             return makeResponseShortcut(shortcut, pref.isSecondaryBlank());
@@ -79,11 +54,11 @@ function requestSecondaryShortcut(key, hostname) {
 }
 
 function quickRequestSecondaryShortcut(primaryKey, secondaryKey) {
-    if (primaryShortcuts.hasOwnProperty(primaryKey)) {
-        let value = primaryShortcuts[primaryKey];
+    if (window.primaryShortcuts.hasOwnProperty(primaryKey)) {
+        let value = window.primaryShortcuts[primaryKey];
         let domain = value.domain;
 
-        let shortcuts = secondaryShortcuts[domain];
+        let shortcuts = window.secondaryShortcuts[domain];
         if (shortcuts && shortcuts.hasOwnProperty(secondaryKey)) {
             let shortcut = shortcuts[secondaryKey];
             return makeResponseShortcut(shortcut, pref.isQuickSecondaryBlank());
@@ -114,27 +89,11 @@ function onMessageReceiver(message, sender, sendResponse) {
             sendResponse(requestSecondaryShortcut(message.key, message.hostname));
             break;
         }
-        case message.all: {
-            // Return all shortcuts.
-            let response = {};
-            if (message.url) {
-                // Only return the domain specific secondary shortcuts when the message.url was represent.
-                let hostname = common.getHostnameFromUrl(message.url);
-                let domain = window.getBoundDomainByHostname(hostname);
-                response['secondaryShortcuts'] = domain ? secondaryShortcuts[domain] : {};
-            } else {
-                // Else return all secondary shortcuts.
-                response['secondaryShortcuts'] = secondaryShortcuts;
-            }
-            response['primaryShortcuts'] = primaryShortcuts;
-            sendResponse(response);
-            break;
-        }
         case message.increase:
             client.increaseShortcutOpenTimes(message.shortcutId)
                 .then(response => {
                     if (message.primary) {
-                        Object.assign(primaryShortcuts, response);
+                        Object.assign(window.primaryShortcuts, response);
                     } else {
                         // TODO secondary shortcut case...
                     }
@@ -146,8 +105,8 @@ function onMessageReceiver(message, sender, sendResponse) {
             break;
         }
     }
-    console.log('primary:', primaryShortcuts);
-    console.log('secondary:', secondaryShortcuts);
+    console.log('primary:', window.primaryShortcuts);
+    console.log('secondary:', window.secondaryShortcuts);
     //Must return true otherwise sendResponse() not working.
     //More detail see official documentations [chrome.runtime.onMessage()].
     return true;
