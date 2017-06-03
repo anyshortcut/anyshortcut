@@ -78,12 +78,13 @@
                 strokeKeyChar: null,
                 comment: null,
                 boundKeys: [],// All bound keys, for keyboard component usage.
+                tabTitle: null,
                 showPopper: false,
             };
         },
         props: {
-            tabTitle: {
-                type: String
+            tab: {
+                type: Object
             },
             primary: {
                 type: Boolean,
@@ -115,6 +116,9 @@
             shortcuts: function(newValue) {
                 this.boundKeys = Object.keys(newValue);
             },
+            tab: function(newValue) {
+                this.tabTitle = newValue.title;
+            }
         },
         components: {
             Keyboard,
@@ -141,25 +145,15 @@
             handleShortcutBinding: function(keyChar, comment, forceBinding) {
                 this.forceBinding = forceBinding;
 
-                let options;
+                let bindFunction;
                 if (this.primary) {
-                    options = {
-                        save: true,
-                        key: keyChar,
-                        comment: comment,
-                        force: this.forceBinding,
-                    };
+                    bindFunction = this.$background.bindPrimaryShortcut;
                 } else {
-                    options = {
-                        secondarySave: true,
-                        key: keyChar,
-                        comment: comment,
-                        force: this.forceBinding,
-                    };
+                    bindFunction = this.$background.bindSecondaryShortcut;
                 }
 
                 this.$emit('pre-bind');
-                chrome.runtime.sendMessage(options, result => {
+                bindFunction(keyChar, comment, this.tab, forceBinding, result => {
                     this.$emit('post-bind', result);
                 });
             },

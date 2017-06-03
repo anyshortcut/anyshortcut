@@ -17,7 +17,6 @@
 
         <div v-if="shortcut">
             <bound-view :shortcut="shortcut"
-                        :tab-url="tabUrl"
                         @pre-unbind="loading=true"
                         @post-unbind="onPostUnbind">
             </bound-view>
@@ -27,7 +26,7 @@
             <bind-view :shortcuts="shortcuts"
                        :primary="primary"
                        :domain-primary-shortcut="domainPrimaryShortcut"
-                       :tab-title="tabTitle"
+                       :tab="tab"
                        @pre-bind="loading=true"
                        @post-bind="onPostBind">
             </bind-view>
@@ -105,8 +104,7 @@
         name: 'main-view',
         data(){
             return {
-                tabTitle: null,
-                tabUrl: null,
+                tab: null,
                 shortcut: null,
                 domainPrimaryShortcut: null, //current tab domain primary shortcut.
                 primary: true,
@@ -173,7 +171,7 @@
             },
             checkShortcutBound(shortcuts){
                 _.forOwn(shortcuts, shortcut => {
-                    if (common.isUrlEquivalent(shortcut.url, this.tabUrl)) {
+                    if (common.isUrlEquivalent(shortcut.url, this.tab.url)) {
                         this.shortcut = shortcut;
                         return false;
                     }
@@ -182,8 +180,7 @@
         },
         created: function() {
             common.getCurrentTab(tab => {
-                this.tabTitle = tab.title;
-                this.tabUrl = tab.url;
+                this.tab = tab;
                 this.queryShortcuts();
             });
         }

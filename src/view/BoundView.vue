@@ -42,9 +42,6 @@
             return {};
         },
         props: {
-            tabUrl: {
-                type: String
-            },
             shortcut: {
                 type: Object,
                 default: function() {
@@ -61,26 +58,17 @@
         methods: {
             handleShortcutUnbinding: function() {
                 if (this.shortcut) {
-                    let options;
+                    let removeFunction;
                     if (this.shortcut.primary) {
-                        options = {
-                            remove: true,
-                            key: this.shortcut.key
-                        }
+                        removeFunction = this.$background.removePrimaryShortcut;
                     } else {
-                        options = {
-                            secondaryRemove: true,
-                            id: this.shortcut.id,
-                            key: this.shortcut.key,
-                            url: this.tabUrl,
-                        }
+                        removeFunction = this.$background.removeSecondaryShortcut;
                     }
 
                     this.$emit('pre-unbind');
-                    chrome.runtime.sendMessage(options, result => {
+                    removeFunction(this.shortcut, result => {
                         this.$emit('post-unbind', result);
                     });
-
                 }
             },
         }

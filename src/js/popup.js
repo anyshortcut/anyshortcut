@@ -7,6 +7,7 @@ import Message from "../component/message.js";
 
 
 Vue.prototype.$message = Message;
+Vue.prototype.$background = chrome.extension.getBackgroundPage();
 
 let app = new Vue({
     data: {
