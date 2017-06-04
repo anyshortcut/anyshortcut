@@ -2,7 +2,7 @@ import common from '../common.js';
 /**
  * Current active tab in current window.
  */
-let activeTab;
+window.activeTab = null;
 /**
  * A object contain recent tab ids in each window.
  */
@@ -32,7 +32,7 @@ function onTabActivated(activeInfo) {
             recentTabIds.push(tab.id);
         });
 
-        activeTab = tab;
+        window.activeTab = tab;
     });
 }
 
@@ -77,7 +77,7 @@ function onWindowFocusChanged(windowId) {
 
     //Get new active tab when window focuse changed.
     common.getCurrentTab(tab => {
-        activeTab = tab;
+        window.activeTab = tab;
     });
 }
 
@@ -171,7 +171,7 @@ function toggleToRecentTab(recentTabIds) {
     let lastIndex = recentTabIds.length - 1;
     for (let i = lastIndex; i >= 0; i--) {
         nextTabId = recentTabIds[i];
-        if (nextTabId !== activeTab.id) {
+        if (nextTabId !== window.activeTab.id) {
             // Swap last two elements position.
             let lastTabId = recentTabIds[lastIndex];
             recentTabIds[lastIndex] = recentTabIds[lastIndex - 1];

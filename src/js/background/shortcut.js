@@ -41,7 +41,8 @@ window.syncAllShortcuts = function() {
     });
 };
 
-window.bindPrimaryShortcut = function(key, comment, tab, force, callback) {
+window.bindPrimaryShortcut = function(key, comment, force, callback) {
+    let tab = window.activeTab;
     client.bindShortcut({
         key: key,
         url: tab.url,
@@ -70,7 +71,8 @@ window.removePrimaryShortcut = function(shortcut, callback) {
     });
 };
 
-window.bindSecondaryShortcut = function(key, comment, tab, force, callback) {
+window.bindSecondaryShortcut = function(key, comment, force, callback) {
+    let tab = window.activeTab;
     client.bindShortcut({
         key: key,
         url: tab.url,

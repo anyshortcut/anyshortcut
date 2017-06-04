@@ -153,15 +153,12 @@
                 }
 
                 this.$emit('pre-bind');
-                bindFunction(keyChar, comment, this.tab, forceBinding, result => {
+                bindFunction(keyChar, comment, forceBinding, result => {
                     this.$emit('post-bind', result);
                 });
             },
             bindKeystrokeShortcut: function() {
-                this.$emit('pre-bind');
-                this.$background.bindPrimaryShortcut(this.strokeKeyChar, this.strokeComment, this.tab, false, result => {
-                    this.$emit('post-bind', result);
-                });
+                this.handleShortcutBinding(this.strokeKeyChar, this.strokeComment, false);
             },
         }
     }

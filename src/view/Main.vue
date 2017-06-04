@@ -15,22 +15,19 @@
             </div>
         </header>
 
-        <div v-if="shortcut">
-            <bound-view :shortcut="shortcut"
-                        @pre-unbind="loading=true"
-                        @post-unbind="onPostUnbind">
-            </bound-view>
-        </div>
+        <bound-view v-if="shortcut"
+                    :shortcut="shortcut"
+                    @pre-unbind="loading=true"
+                    @post-unbind="onPostUnbind">
+        </bound-view>
 
-        <div class="pure-g" v-else>
-            <bind-view :shortcuts="shortcuts"
-                       :primary="primary"
-                       :domain-primary-shortcut="domainPrimaryShortcut"
-                       :tab="tab"
-                       @pre-bind="loading=true"
-                       @post-bind="onPostBind">
-            </bind-view>
-        </div>
+        <bind-view v-else
+                   :shortcuts="shortcuts"
+                   :primary="primary"
+                   :domain-primary-shortcut="domainPrimaryShortcut"
+                   @pre-bind="loading=true"
+                   @post-bind="onPostBind">
+        </bind-view>
         <br>
 
         <div class="is-center">
@@ -104,7 +101,6 @@
         name: 'main-view',
         data(){
             return {
-                tab: null,
                 shortcut: null,
                 domainPrimaryShortcut: null, //current tab domain primary shortcut.
                 primary: true,
@@ -144,12 +140,13 @@
                 }
             },
             queryShortcuts(){
+                let activeTab = this.$background.activeTab;
                 let primaryShortcuts = this.$background.primaryShortcuts;
-                let secondaryShortcuts = this.$background.getSecondaryShortcutsByUrl(this.tab.url);
+                let secondaryShortcuts = this.$background.getSecondaryShortcutsByUrl(activeTab.url);
 
                 // Find current tab domain primary shortcut.
                 _.forOwn(primaryShortcuts, (shortcut) => {
-                    if (common.isUrlEndsWithDomain(this.tab.url, shortcut.domain)) {
+                    if (common.isUrlEndsWithDomain(activeTab.url, shortcut.domain)) {
                         this.domainPrimaryShortcut = shortcut;
                         // return false to exit the for iterate after find the result.
                         return false;
@@ -172,7 +169,7 @@
             },
             checkShortcutBound(shortcuts){
                 _.forOwn(shortcuts, shortcut => {
-                    if (common.isUrlEquivalent(shortcut.url, this.tab.url)) {
+                    if (common.isUrlEquivalent(shortcut.url, this.$background.activeTab.url)) {
                         this.shortcut = shortcut;
                         return false;
                     }
@@ -180,10 +177,7 @@
             }
         },
         created: function() {
-            common.getCurrentTab(tab => {
-                this.tab = tab;
-                this.queryShortcuts();
-            });
+            this.queryShortcuts();
         }
     }
 </script>
