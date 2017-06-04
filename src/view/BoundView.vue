@@ -1,20 +1,10 @@
 <template>
     <section>
         <div v-if="shortcut.primary">
-                <span>
-                    <strong>ALT</strong>
-                </span>
-            <span>+</span>
-            <span>
-                    <strong>SHIFT</strong>
-                </span>
-            <span>+</span>
-            <span>
-                    <strong>{{shortcut.key}}</strong>
-                </span>
+            <span class="shortcut">ALT+SHIFT+{{ shortcut.key }}</span>
         </div>
         <div v-else>
-            <p>The url already bound with <b>ALT+{{shortcut.key}}</b></p>
+            <p>The url already bound with <span class="shortcut">ALT+{{ shortcut.key }}</span></p>
         </div>
         <p id="bound_time">{{shortcut.created_time | fromNow}}</p>
         <button @click="handleShortcutUnbinding" id="unbind_shortcut_button">Delete Shortcut</button>

@@ -7,7 +7,7 @@
             <div v-else>
                 <p v-if="domainPrimaryShortcut">
                     The domain <b>{{domainPrimaryShortcut.domain}}</b>
-                    already bound with <b>SHIFT+ALT+{{domainPrimaryShortcut.key}}</b>
+                    already bound with <span class="shortcut">SHIFT+ALT+{{domainPrimaryShortcut.key}}</span>
                 </p>
                 Specify the secondary shortcut for this domain:
             </div>

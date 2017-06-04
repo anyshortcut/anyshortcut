@@ -34,7 +34,7 @@
             <ul v-show="shortcuts && !primary">
                 <p>Here are secondary shortcut list for this domain:</p>
                 <li v-for="(shortcut,key) in shortcuts">
-                    <span><b>{{key}}</b></span>
+                    <span class="shortcut">{{key}}</span>
                     <span>    <a :href="shortcut.url" target="_blank">{{shortcut.comment || shortcut.title}}</a></span>
                 </li>
             </ul>
@@ -89,6 +89,12 @@
         right: 50%;
         color: gray;
         text-align: center;
+    }
+
+    .shortcut {
+        .shortcut-mixin;
+        font-weight: bold;
+        font-size: 16px;
     }
 </style>
 <script>
