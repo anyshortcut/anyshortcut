@@ -77,15 +77,10 @@
                 keyChar: null,
                 strokeKeyChar: null,
                 strokeComment: null,
-                boundKeys: [],// All bound keys, for keyboard component usage.
-                tabTitle: null,
                 showPopper: false,
             };
         },
         props: {
-            tab: {
-                type: Object
-            },
             primary: {
                 type: Boolean,
             },
@@ -110,14 +105,19 @@
                 } else {
                     return null;
                 }
-            }
-        },
-        watch: {
-            shortcuts: function(newValue) {
-                this.boundKeys = Object.keys(newValue);
             },
-            tab: function(newValue) {
-                this.tabTitle = newValue.title;
+            // All bound keys, for keyboard component usage.
+            boundKeys: function() {
+                console.log('computed property boundKeys called');
+                if (this.shortcuts) {
+                    return Object.keys(this.shortcuts);
+                } else {
+                    return [];
+                }
+            },
+            tabTitle: function() {
+                console.log('compute tabTitle:', this.$background.activeTab.title);
+                return this.$background.activeTab.title;
             }
         },
         components: {
