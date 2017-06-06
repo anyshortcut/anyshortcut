@@ -1,5 +1,6 @@
 require('./check-versions')();
 
+const utils = require('./utils');
 const ora = require('ora');
 const chalk = require('chalk');
 const webpack = require('webpack');
@@ -19,5 +20,6 @@ webpack(webpackConfig, function(err, stats) {
             chunkModules: false
         }) + '\n\n');
 
+    utils.execute('say build complete');
     console.log(chalk.cyan('  Build complete.\n'));
 });

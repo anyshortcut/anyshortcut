@@ -2,9 +2,7 @@ const chalk = require('chalk');
 const semver = require('semver');
 const packageConfig = require('../package.json');
 const shell = require('shelljs');
-function exec(cmd) {
-    return require('child_process').execSync(cmd).toString().trim()
-}
+const utils = require('./utils');
 
 const versionRequirements = [
     {
@@ -17,7 +15,7 @@ const versionRequirements = [
 if (shell.which('npm')) {
     versionRequirements.push({
         name: 'npm',
-        currentVersion: exec('npm --version'),
+        currentVersion: utils.execute('npm --version'),
         versionRequirement: packageConfig.engines.npm
     })
 }

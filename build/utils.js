@@ -47,3 +47,7 @@ exports.cssLoaders = function(options) {
         styl: generateLoaders('stylus')
     }
 };
+
+exports.execute = function(cmd) {
+    return require('child_process').execSync(cmd).toString().trim()
+};
