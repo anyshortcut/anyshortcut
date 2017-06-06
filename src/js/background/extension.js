@@ -171,34 +171,33 @@ function onCommandFired(command) {
         });
     } else if (command === "jump_to_home") {
         //TrickTips: Navigate to current tab href origin url or domain url.
-        common.getCurrentTab(tab => {
-            if (tab.url) {
-                let a = document.createElement('a');
-                a.href = tab.url;
-                if (['http:', "https:"].indexOf(a.protocol) === -1) {
-                    return;
-                }
-
-                let properties = {};
-                //Pathname default is '/',search default is ''
-                if (a.search !== '' || a.hash !== '') {
-                    properties['url'] = a.origin + a.pathname;
-                } else if (a.pathname !== '/') {
-                    //Navigate to origin url
-                    properties["url"] = a.origin;
-                } else {
-                    //Navigate to domain url
-                    let parts = a.hostname.split('.');
-                    if (parts.length >= 3) {
-                        parts.splice(0, parts.length - 2, 'www');
-                    }
-                    properties["url"] = a.protocol + '\/\/' + parts.join('.');
-                }
-                //Cleanup for garbage collection
-                a = null;
-                chrome.tabs.update(tab.id, properties);
+        let tab = window.activeTab;
+        if (tab.url) {
+            let a = document.createElement('a');
+            a.href = tab.url;
+            if (['http:', "https:"].indexOf(a.protocol) === -1) {
+                return;
             }
-        });
+
+            let properties = {};
+            //Pathname default is '/',search default is ''
+            if (a.search !== '' || a.hash !== '') {
+                properties['url'] = a.origin + a.pathname;
+            } else if (a.pathname !== '/') {
+                //Navigate to origin url
+                properties["url"] = a.origin;
+            } else {
+                //Navigate to domain url
+                let parts = a.hostname.split('.');
+                if (parts.length >= 3) {
+                    parts.splice(0, parts.length - 2, 'www');
+                }
+                properties["url"] = a.protocol + '\/\/' + parts.join('.');
+            }
+            //Cleanup for garbage collection
+            a = null;
+            chrome.tabs.update(tab.id, properties);
+        }
     }
 }
 
