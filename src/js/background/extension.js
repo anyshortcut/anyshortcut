@@ -107,6 +107,8 @@ function onTabActivated(activeInfo) {
  *@param tab Gives the state of the tab that was updated.
  */
 function onTabUpdated(tabId, changeInfo, tab) {
+    // Update activeTab where tab updated.
+    window.activeTab = tab;
     handleOnTabInfoUpdate(tab.url);
 }
 
