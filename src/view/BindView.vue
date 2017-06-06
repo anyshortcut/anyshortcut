@@ -1,6 +1,6 @@
 <template>
-    <section class="pure-g">
-        <div class="pure-u-1">
+    <section class="bind-view">
+        <div>
             <p v-if="primary">
                 Specify the shortcut:
             </p>
@@ -14,7 +14,7 @@
             <br>
         </div>
 
-        <div class="pure-u-1 is-center">
+        <div>
             <keyboard :bound-keys="boundKeys"
                       @key-hover-over="onKeyHoverOver"
                       @key-hover-leave="onHoverLeave">
@@ -32,7 +32,7 @@
 
         <br>
 
-        <div class="pure-u-1 is-center" v-if="primary">
+        <div v-if="primary">
             Or specify two keystroke primary key:
             <br>
             <div class="two-keystroke">
@@ -45,6 +45,11 @@
     </section>
 </template>
 <style lang="less">
+    .bind-view {
+        display: flex;
+        flex-direction: column;
+    }
+
     #popover {
         border: 2px #dd4814;
         background-color: #ffffff;

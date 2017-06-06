@@ -1,6 +1,10 @@
 <template>
-    <div id="preference-view">
-        <a href="#/main"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>back</a>
+    <div class="preference-view">
+        <header class="preference-header">
+            <a class="back-icon" href="#/main"><i class="fa fa-lg fa-chevron-circle-left" aria-hidden="true"></i></a>
+            Preferences
+        </header>
+
         <div>
             How to open primary shortcut:
             <form>
@@ -36,10 +40,19 @@
 <style lang="less">
     @import "../less/_common.less";
 
-    #preference-view {
+    .preference-view {
         line-height: 2em;
         width: 400px;
         height: 450px;
+    }
+
+    .preference-header {
+        .header;
+        justify-content: flex-start;
+    }
+
+    .back-icon {
+        padding: 0 10px;
     }
 </style>
 <script type="es6">

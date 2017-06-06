@@ -1,17 +1,14 @@
 <template>
-    <div id="main-view">
-        <header>
-            <div class="pure-g">
-                <div class="pure-u-1-3">
-                    <a href="https://anyshortcut.com" target="_blank">
-                        <img src="../img/icon.png" alt="">
-                        <span style="font-weight: bold">anyshortcut</span></a>
-                </div>
-                <div class="pure-u-1-3">
-                </div>
-                <div class="pure-u-1-3">
-                    <a href="#/setting"><i class="fa fa-cog"></i> settings</a>
-                </div>
+    <div class="main-view">
+        <header class="main-header">
+            <div>
+                <a class="brand" href="https://anyshortcut.com" target="_blank">
+                    <img src="../img/icon.png" alt="">
+                    <span style="font-weight: bold">anyshortcut</span>
+                </a>
+            </div>
+            <div>
+                <a href="#/setting"><i class="fa fa-cog"></i> settings</a>
             </div>
         </header>
 
@@ -30,7 +27,7 @@
         </bind-view>
         <br>
 
-        <div class="is-center">
+        <section>
             <ul v-show="shortcuts && !primary">
                 <p>Here are secondary shortcut list for this domain:</p>
                 <li v-for="(shortcut,key) in shortcuts">
@@ -38,7 +35,7 @@
                     <span>    <a :href="shortcut.url" target="_blank">{{shortcut.comment || shortcut.title}}</a></span>
                 </li>
             </ul>
-        </div>
+        </section>
         <div v-show="loading" class="loading">
             <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
         </div>
@@ -46,11 +43,28 @@
     </div>
 </template>
 <style lang="less">
-    @import "../less/_common.less";
+    @import "../less/_var.less";
 
-    #main-view {
+    .main-view {
         width: @normal-width;
         height: @normal-height;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+    }
+
+    .main-header {
+        .header;
+    }
+
+    .brand {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+
+        img {
+            margin: 0 10px;
+        }
     }
 
     a:visited, a:active {
@@ -68,19 +82,7 @@
 
     a {
         text-decoration: none;
-    }
-
-    .is-center {
-        text-align: center;
-    }
-
-    header {
-        padding: 5px;
-        border-bottom: #eeeeee solid 2px;
-    }
-
-    header img, i {
-        vertical-align: middle;
+        outline: none;
     }
 
     div.loading {

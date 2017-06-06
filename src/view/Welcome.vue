@@ -4,7 +4,7 @@
             <img src="../img/icon48.png" alt=""><span>anyshortcut</span>
             <figcaption> Open any website by any shortcut! </figcaption>
         </figure>
-        <section>
+        <section class="introduction">
             <a :href="signInUrl" target="_blank">Sign in</a> now to boost productivity and sync your shortcuts!
         </section>
         <footer>
@@ -18,18 +18,26 @@
     main {
         line-height: 2em;
         width: 400px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
     }
 
-    figure {
-        vertical-align: middle;
-    }
+    .logo {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        margin: 20px;
 
-    figure span {
-        color: #4F6EC8;
-        font-size: 35px;
-        font-weight: bold;
-        font-family: "Arial Rounded MT Bold", serif;
-        margin: 30px;
+        span {
+            color: #4F6EC8;
+            font-size: 35px;
+            font-weight: bold;
+            font-family: "Arial Rounded MT Bold", serif;
+            margin: 10px;
+        }
     }
 
     figure img {
@@ -39,10 +47,13 @@
     figcaption {
         color: gray;
         font-size: 16px;
+        display: flex;
+        align-self: center;
+        align-content: center;
     }
 
-    section {
-        padding: 20px;
+    .introduction {
+        padding: 10px 40px;
     }
 
     a:focus {
