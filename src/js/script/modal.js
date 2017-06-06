@@ -44,7 +44,6 @@ function buildHeader(onClose) {
 function buildModal(content) {
     let modal = document.createElement('div');
     modal.className = 'anyshortcut-modal';
-    // Set a dedicated attribute to handle css mixed issue.
 
     let container = document.createElement('div');
     container.className = 'anyshortcut-modal-container';

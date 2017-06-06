@@ -19,7 +19,7 @@
                       @key-hover-over="onKeyHoverOver"
                       @key-hover-leave="onHoverLeave">
             </keyboard>
-            <popover id="popover"
+            <popover class="popover"
                      v-show="showPopper"
                      :key-char="keyChar"
                      :tab-title="tabTitle"
@@ -45,13 +45,16 @@
     </section>
 </template>
 <style lang="less">
+    @import "../less/_var.less";
+
     .bind-view {
         display: flex;
         flex-direction: column;
     }
 
-    #popover {
-        border: 2px #dd4814;
+    .popover {
+        border: 1.2px solid @primary-color;
+        border-radius: 3px;
         background-color: #ffffff;
         width: 50%;
     }
