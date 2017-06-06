@@ -2,55 +2,18 @@
 
 @modal-z-index: 999999999;
 
-#anyshortcut-modal[c-xs-fe2cxw] {
+.anyshortcut-modal {
   background: rgba(37, 40, 43, 0.6);
-  position: fixed;
+  display:flex;
+  justify-content:center;
+  align-items:start;
+  position:fixed;
+  margin:0 auto;
   right: 0;
   top: 0;
   bottom: 0;
   left: 0;
   z-index: (@modal-z-index - 1);
-
-  .modal-container {
-    background: white;
-    color: grey;
-    margin: 0 auto;
-    position: fixed;
-    top: 80px;
-    left: 0;
-    right: 0;
-    border-radius: 5px;
-    width: fit-content;
-    z-index: @modal-z-index;
-  }
-
-  .modal-header {
-    vertical-align: middle;
-    border-bottom: #eeeeee solid 2px;
-    padding: 15px;
-  }
-
-  .modal-header-close {
-    float: right;
-    color: grey;
-    padding: 10px;
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    outline: none;
-  }
-
-  .modal-content {
-    padding: 20px;
-    font-size: 18px;
-    text-align: center;
-  }
-
-  .shortcut {
-    .shortcut-mixin;
-    font-weight: bold;
-    font-size: 18px;
-  }
 
   ul {
     list-style: none outside;
@@ -60,4 +23,45 @@
       padding: 10px;
     }
   }
+}
+
+.anyshortcut-modal-container {
+  display:flex;
+  flex-direction:column;
+  color: grey;
+  margin-top: 80px;
+  background: white;
+  border-radius: 5px;
+  min-width:450px;
+  z-index: @modal-z-index;
+}
+
+.anyshortcut-modal-header {
+  display:flex;
+  padding:10px;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom: #eeeeee solid 1.3px;
+}
+
+.anyshortcut-modal-close {
+  float: right;
+  color: grey;
+  padding: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+}
+
+.anyshortcut-modal-content {
+  padding: 20px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.anyshortcut-shortcut {
+  .shortcut-mixin;
+  font-weight: bold;
+  font-size: 18px;
 }

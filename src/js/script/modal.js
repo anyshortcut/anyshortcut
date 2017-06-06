@@ -17,7 +17,7 @@ function removeElementDelay(element, delay) {
  */
 function openModal(content) {
     let div = document.createElement('div');
-    div.className = 'modal-content';
+    div.className = 'anyshortcut-modal-content';
     div.innerHTML = content;
 
     let modal = buildModal(div);
@@ -27,11 +27,11 @@ function openModal(content) {
 
 function buildHeader(onClose) {
     let header = document.createElement('div');
-    header.className = 'modal-header';
+    header.className = 'anyshortcut-modal-header';
     header.textContent = 'anyshortcut';
 
     let closeButton = document.createElement('button');
-    closeButton.className = 'modal-header-close';
+    closeButton.className = 'anyshortcut-modal-close';
     closeButton.textContent = 'X';
     if (onClose) {
         closeButton.onclick = onClose;
@@ -43,12 +43,11 @@ function buildHeader(onClose) {
 
 function buildModal(content) {
     let modal = document.createElement('div');
-    modal.id = 'anyshortcut-modal';
+    modal.className = 'anyshortcut-modal';
     // Set a dedicated attribute to handle css mixed issue.
-    modal.setAttribute('c-xs-fe2cxw', '');
 
     let container = document.createElement('div');
-    container.className = 'modal-container';
+    container.className = 'anyshortcut-modal-container';
 
     let timeoutId = removeElementDelay(modal);
     container.onmouseover = function(e) {
@@ -81,18 +80,18 @@ function buildModal(content) {
 
 export default {
     showPrimaryShortcutUnbound(pressedKey){
-        let innerHtml = `<p>the shortcut key <span class="shortcut">ALT+SHIFT+${pressedKey}</span> 
+        let innerHtml = `<p>the shortcut key <span class="anyshortcut-shortcut">ALT+SHIFT+${pressedKey}</span> 
             not bound for this domain yet!</p>`;
         openModal(innerHtml);
     },
     showSecondaryShortcutUnbound(pressedKey){
-        let innerHtml = `<p>the secondary shortcut key <span class="shortcut">ALT+${pressedKey}</span> 
+        let innerHtml = `<p>the secondary shortcut key <span class="anyshortcut-shortcut">ALT+${pressedKey}</span> 
                         not bound for this domain yet!</p>`;
         openModal(innerHtml);
     },
     showQueryShortcutFailed(firstKey, secondKey){
-        let innerHtml = `<p>neither <span class="shortcut">SHIFT+ALT+${firstKey}${secondKey}</span>
-                        nor <span class="shortcut">SHIFT+ALT+${firstKey}➯${secondKey}</span> 
+        let innerHtml = `<p>neither <span class="anyshortcut-shortcut">SHIFT+ALT+${firstKey}${secondKey}</span>
+                        nor <span class="anyshortcut-shortcut">SHIFT+ALT+${firstKey}➯${secondKey}</span> 
                         bound yet!</p>`;
         openModal(innerHtml);
     },
