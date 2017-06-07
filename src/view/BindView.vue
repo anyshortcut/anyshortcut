@@ -19,7 +19,7 @@
                       @key-hover-over="onKeyHoverOver"
                       @key-hover-leave="onHoverLeave">
             </keyboard>
-            <popover class="popover"
+            <popover id="popover"
                      v-show="showPopper"
                      :key-char="keyChar"
                      :tab-title="tabTitle"
@@ -52,7 +52,7 @@
         flex-direction: column;
     }
 
-    .popover {
+    #popover {
         border: 1.2px solid @primary-color;
         border-radius: 3px;
         background-color: #ffffff;

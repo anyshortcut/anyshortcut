@@ -47,7 +47,7 @@
 
     .main-view {
         width: @normal-width;
-        height: @normal-height;
+        min-height: @normal-height;
         display: flex;
         flex-direction: column;
         align-content: center;
