@@ -53,10 +53,10 @@
     }
 
     #popover {
-        border: 1.2px solid @primary-color;
         border-radius: 3px;
         background-color: #ffffff;
         width: 50%;
+        box-shadow: @box-shadow-base;
     }
 
     .two-keystroke {

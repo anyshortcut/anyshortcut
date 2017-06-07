@@ -51,6 +51,7 @@
         display: flex;
         flex-direction: column;
         align-content: center;
+        background: @content-bgcolor;
     }
 
     .main-header {

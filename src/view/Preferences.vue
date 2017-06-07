@@ -44,6 +44,7 @@
         line-height: 2em;
         width: 400px;
         height: 450px;
+        background: @content-bgcolor;
     }
 
     .preference-header {

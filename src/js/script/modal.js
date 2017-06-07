@@ -1,4 +1,4 @@
-require("../../less/injection-tips.less");
+require("../../less/content-script.less");
 import helper from "./helper.js";
 
 function removeElementDelay(element, delay) {
