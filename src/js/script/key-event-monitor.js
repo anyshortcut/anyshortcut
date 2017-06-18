@@ -149,7 +149,7 @@ function monitorKeyDown(e) {
     }
 
     // Prevent repeat trigger down event.
-    if (firstKey && firstKey.keyCode === keyCode && !firstKey.releasedAt) {
+    if(e.repeat){
         return;
     }
 
