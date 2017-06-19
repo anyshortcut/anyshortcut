@@ -108,7 +108,11 @@ function onTabActivated(activeInfo) {
  */
 function onTabUpdated(tabId, changeInfo, tab) {
     // Update activeTab where tab updated.
-    window.activeTab = tab;
+
+    // Only update activeTab info when window.activeTab.id === tab.id
+    if (window.activeTab && window.activeTab.id === tab.id) {
+        window.activeTab = tab;
+    }
     handleOnTabInfoUpdate(tab.url);
 }
 
