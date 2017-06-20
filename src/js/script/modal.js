@@ -12,22 +12,27 @@ function removeElementDelay(element, delay) {
     return timeoutId;
 }
 
+function createDiv(className) {
+    let div = document.createElement('div');
+    div.className = className;
+    return div;
+}
+
 /**
  * @param content the message to show in modal, text or html
  */
 function openModal(content) {
-    let div = document.createElement('div');
-    div.className = 'anyshortcut-modal-content';
+    let div = createDiv('anyshortcut-modal-content');
     div.innerHTML = content;
 
     let modal = buildModal(div);
     document.body.insertAdjacentElement('beforeEnd', modal);
+    modal.focus();
     return modal;
 }
 
 function buildHeader(onClose) {
-    let header = document.createElement('div');
-    header.className = 'anyshortcut-modal-header';
+    let header = createDiv('anyshortcut-modal-header');
     header.textContent = 'anyshortcut';
 
     let closeButton = document.createElement('button');
@@ -42,11 +47,10 @@ function buildHeader(onClose) {
 }
 
 function buildModal(content) {
-    let modal = document.createElement('div');
-    modal.className = 'anyshortcut-modal';
+    let modal = createDiv('anyshortcut-modal');
+    modal.tabIndex = 0;
 
-    let container = document.createElement('div');
-    container.className = 'anyshortcut-modal-container';
+    let container = createDiv('anyshortcut-modal-container');
 
     let timeoutId = removeElementDelay(modal);
     container.onmouseover = function(e) {
@@ -58,7 +62,7 @@ function buildModal(content) {
     container.onmouseout = function(e) {
         timeoutId = removeElementDelay(modal);
     };
-    document.addEventListener('keyup', function(e) {
+    modal.addEventListener('keyup', function(e) {
         if (e.keyCode === 27) {
             window.clearTimeout(timeoutId);
             timeoutId = undefined;
@@ -117,10 +121,10 @@ export default {
             if (shortcut) {
                 helper.openShortcut(shortcut, byBlank);
                 removeElementDelay(modal, 50);
-                document.removeEventListener('keyup', chooserEventListener);
+                modal.removeEventListener('keyup', chooserEventListener);
             }
         };
-        document.addEventListener('keyup', chooserEventListener);
+        modal.addEventListener('keyup', chooserEventListener);
     },
     showShortcutKeyboard(){
         // Do nothing yet
