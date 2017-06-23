@@ -157,3 +157,13 @@ window.getSecondaryShortcutsByUrl = function(url) {
     let domain = getBoundDomainByHostname(hostname);
     return domain ? secondaryShortcuts[domain] : {};
 };
+
+window.getSecondaryShortcutsByPrimaryKey = function(primaryKey) {
+    let primaryShortcut = primaryShortcuts[primaryKey];
+    if (primaryShortcut) {
+        let domain = primaryShortcut.domain;
+        return secondaryShortcuts[domain] || {};
+    }
+
+    return {};
+};

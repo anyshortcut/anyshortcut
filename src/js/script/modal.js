@@ -126,7 +126,7 @@ export default {
         };
         modal.addEventListener('keyup', chooserEventListener);
     },
-    showShortcutKeyboard(){
-        // Do nothing yet
+    showSecondaryShortcutList(shortcuts){
+        alert('list secondary' + JSON.stringify(shortcuts));
     }
 }
