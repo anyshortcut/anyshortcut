@@ -112,14 +112,17 @@ export default {
         let chooserEventListener = function(e) {
             let keyCode = e.keyCode;
             let shortcut = null;
+            let openByBlank = null;
             if (keyCode === 49) {
                 shortcut = primaryShortcut;
+                openByBlank = byBlank.primary;
             } else if (keyCode === 50) {
                 shortcut = secondaryShortcut;
+                openByBlank = byBlank.secondary;
             }
 
             if (shortcut) {
-                helper.openShortcut(shortcut, byBlank);
+                helper.openShortcut(shortcut, openByBlank);
                 removeElementDelay(modal, 50);
                 modal.removeEventListener('keyup', chooserEventListener);
             }

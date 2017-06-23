@@ -65,9 +65,9 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
             // show a chooser let user choose one.
             modal.showQueryShortcutChooser(primaryShortcut, secondaryShortcut, response.byBlank);
         } else if (primaryShortcut) {
-            helper.openShortcut(primaryShortcut, response.byBlank);
+            helper.openShortcut(primaryShortcut, response.byBlank.primary);
         } else if (secondaryShortcut) {
-            helper.openShortcut(secondaryShortcut, response.byBlank);
+            helper.openShortcut(secondaryShortcut, response.byBlank.secondary);
         } else {
             // Neither shortcut bound.
             modal.showQueryShortcutFailed(firstKeyCodeChar, secondKeyCodeChar);
@@ -149,7 +149,7 @@ function monitorKeyDown(e) {
     }
 
     // Prevent repeat trigger down event.
-    if(e.repeat){
+    if (e.repeat) {
         return;
     }
 

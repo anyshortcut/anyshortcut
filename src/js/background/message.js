@@ -24,7 +24,10 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
         case message.query: {
             sendResponse({
-                byBlank: pref.isQuickSecondaryBlank(),
+                byBlank: {
+                    primary: pref.isQuickSecondaryBlank(),
+                    secondary: pref.isQuickSecondaryBlank(),
+                },
                 primaryShortcut: window.getPrimaryShortcut(message.firstKey + message.secondKey),
                 secondaryShortcut: window.getSecondaryShortcutQuickly(message.firstKey, message.secondKey),
             });
