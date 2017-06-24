@@ -20,6 +20,7 @@ const EMPTY_KEY = {
 let firstKey = EMPTY_KEY;
 let secondKey = EMPTY_KEY;
 let triggerTimeoutId = null;
+let listTimeoutId = null;
 
 
 function triggerPrimaryShortcut(keyCodeChar) {
@@ -76,10 +77,30 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
     cleanUp();
 }
 
+function triggerSecondaryShortcutList(key) {
+    if (listTimeoutId) {
+        window.clearTimeout(listTimeoutId);
+    }
+
+    listTimeoutId = window.setTimeout(function() {
+        chrome.runtime.sendMessage({
+            listSecondary: true, key: key
+        }, response => {
+            modal.showSecondaryShortcutList(key,response.shortcuts, response.byBlank);
+            cleanUp();
+        });
+    }, 2000);
+}
+
 /**
  * Trigger shortcut.
  */
 function triggerShortcut() {
+    if (listTimeoutId) {
+        window.clearTimeout(listTimeoutId);
+        listTimeoutId = null;
+    }
+
     if (triggerTimeoutId) {
         // Clear previous session timeout if existed
         window.clearTimeout(triggerTimeoutId);
@@ -128,7 +149,7 @@ function monitorKeyUp(e) {
                     window.history.go(step);
                 }
             } else if (e.keyCode === 188) { // 'Comma' key code is 188.
-                modal.showShortcutKeyboard();
+                // do noting...
             }
 
         }
@@ -166,8 +187,12 @@ function monitorKeyDown(e) {
 
     if (!firstKey.pressedAt) {
         firstKey = pressedKey;
+
+        triggerSecondaryShortcutList(firstKey.keyCodeChar);
     } else if (!secondKey.pressedAt) {
         secondKey = pressedKey;
+
+        triggerSecondaryShortcutList(firstKey.keyCodeChar + secondKey.keyCodeChar);
     }
 }
 
@@ -175,6 +200,7 @@ function cleanUp() {
     firstKey = EMPTY_KEY;
     secondKey = EMPTY_KEY;
     triggerTimeoutId = null;
+    listTimeoutId = null;
 }
 
 function resolveEventListener(authenticated) {

@@ -47,6 +47,13 @@ function onMessageReceiver(message, sender, sendResponse) {
             });
             break;
         }
+        case message.listSecondary: {
+            sendResponse({
+                byBlank: pref.isQuickSecondaryBlank(),
+                shortcuts: window.getSecondaryShortcutsByPrimaryKey(message.key)
+            });
+            break
+        }
         case message.increase:
             client.increaseShortcutOpenTimes(message.shortcutId)
                 .then(response => {

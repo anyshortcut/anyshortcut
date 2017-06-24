@@ -110,26 +110,63 @@ export default {
         let modal = openModal(innerHtml);
 
         let chooserEventListener = function(e) {
-            let keyCode = e.keyCode;
-            let shortcut = null;
-            let openByBlank = null;
-            if (keyCode === 49) {
-                shortcut = primaryShortcut;
-                openByBlank = byBlank.primary;
-            } else if (keyCode === 50) {
-                shortcut = secondaryShortcut;
-                openByBlank = byBlank.secondary;
-            }
+            if (helper.isValidKeyCodeWithoutModifiers(e)) {
+                let keyCode = e.keyCode;
+                let shortcut = null;
+                let openByBlank = null;
+                if (keyCode === 49) {
+                    shortcut = primaryShortcut;
+                    openByBlank = byBlank.primary;
+                } else if (keyCode === 50) {
+                    shortcut = secondaryShortcut;
+                    openByBlank = byBlank.secondary;
+                }
 
-            if (shortcut) {
-                helper.openShortcut(shortcut, openByBlank);
-                removeElementDelay(modal, 50);
-                modal.removeEventListener('keyup', chooserEventListener);
+                if (shortcut) {
+                    helper.openShortcut(shortcut, openByBlank);
+                    removeElementDelay(modal, 50);
+                    modal.removeEventListener('keyup', chooserEventListener);
+                }
             }
         };
         modal.addEventListener('keyup', chooserEventListener);
     },
-    showShortcutKeyboard(){
-        // Do nothing yet
+    showSecondaryShortcutList(pressedKey, shortcuts, byBlank){
+        let innerHtml;
+
+        if (Object.keys(shortcuts).length === 0) {
+            innerHtml = `<div>There is no secondary shortcuts for 
+                             <span class="anyshortcut-shortcut">ALT+SHIFT+${pressedKey}</span>
+                         </div>`
+        } else {
+            let liElements = '';
+            for (let key in shortcuts) {
+                if (shortcuts.hasOwnProperty(key)) {
+                    let shortcut = shortcuts[key];
+                    liElements += `<li><div>
+                            ${shortcut.key} <img src="${shortcut.favicon}" alt=""> ${shortcut.title}
+                </div></li>`;
+                }
+            }
+
+            innerHtml = `<div>There are secondary shortcuts for <span class="anyshortcut-shortcut">ALT+SHIFT+${pressedKey}</span><ul>`
+                + liElements + `</ul></div>`;
+        }
+
+        let modal = openModal(innerHtml);
+
+        let listEventListener = function(e) {
+            if (helper.isValidKeyCodeWithoutModifiers(e)) {
+
+                let keyCodeChar = String.fromCharCode(e.keyCode);
+                if (shortcuts.hasOwnProperty(keyCodeChar)) {
+                    helper.openShortcut(shortcuts[keyCodeChar], byBlank);
+                    removeElementDelay(modal, 50);
+                    modal.removeEventListener('keyup', listEventListener);
+                }
+            }
+        };
+
+        modal.addEventListener('keyup', listEventListener);
     }
 }
