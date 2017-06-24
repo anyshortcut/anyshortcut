@@ -86,7 +86,7 @@ function triggerSecondaryShortcutList(key) {
         chrome.runtime.sendMessage({
             listSecondary: true, key: key
         }, response => {
-            modal.showSecondaryShortcutList(key,response.shortcuts, response.byBlank);
+            modal.showSecondaryShortcutList(key, response.shortcuts, response.byBlank);
             cleanUp();
         });
     }, 2000);
@@ -188,11 +188,15 @@ function monitorKeyDown(e) {
     if (!firstKey.pressedAt) {
         firstKey = pressedKey;
 
-        triggerSecondaryShortcutList(firstKey.keyCodeChar);
+        if (helper.isValidFullModifier(e)) {
+            triggerSecondaryShortcutList(firstKey.keyCodeChar);
+        }
     } else if (!secondKey.pressedAt) {
         secondKey = pressedKey;
 
-        triggerSecondaryShortcutList(firstKey.keyCodeChar + secondKey.keyCodeChar);
+        if (helper.isValidFullModifier(e)) {
+            triggerSecondaryShortcutList(firstKey.keyCodeChar + secondKey.keyCodeChar);
+        }
     }
 }
 
