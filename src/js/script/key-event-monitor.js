@@ -199,8 +199,9 @@ function triggerSecondaryShortcutList(key) {
             listSecondary: true, key: key
         }, response => {
             modal.showSecondaryShortcutList(response.shortcuts, response.byBlank);
+            cleanUp();
         });
-    }, 2500);
+    }, 2000);
 }
 
 function resolveEventListener(authenticated) {

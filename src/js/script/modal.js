@@ -110,23 +110,50 @@ export default {
         let modal = openModal(innerHtml);
 
         let chooserEventListener = function(e) {
-            let keyCode = e.keyCode;
-            let shortcut = null;
-            if (keyCode === 49) {
-                shortcut = primaryShortcut;
-            } else if (keyCode === 50) {
-                shortcut = secondaryShortcut;
-            }
+            if (helper.isValidKeyCodeWithoutModifiers(e)) {
+                let keyCode = e.keyCode;
+                let shortcut = null;
+                if (keyCode === 49) {
+                    shortcut = primaryShortcut;
+                } else if (keyCode === 50) {
+                    shortcut = secondaryShortcut;
+                }
 
-            if (shortcut) {
-                helper.openShortcut(shortcut, byBlank);
-                removeElementDelay(modal, 50);
-                modal.removeEventListener('keyup', chooserEventListener);
+                if (shortcut) {
+                    helper.openShortcut(shortcut, byBlank);
+                    removeElementDelay(modal, 50);
+                    modal.removeEventListener('keyup', chooserEventListener);
+                }
             }
         };
         modal.addEventListener('keyup', chooserEventListener);
     },
-    showSecondaryShortcutList(shortcuts){
-        alert('list secondary' + JSON.stringify(shortcuts));
+    showSecondaryShortcutList(shortcuts, byBlank){
+        let liElements = '';
+        for (let key in shortcuts) {
+            if (shortcuts.hasOwnProperty(key)) {
+                let shortcut = shortcuts[key];
+                liElements += `<li><div>
+                            ${shortcut.key} <img src="${shortcut.favicon}" alt=""> ${shortcut.title}
+                </div></li>`;
+            }
+        }
+
+        let innerHtml = '<ul>' + liElements + '</ul>';
+        let modal = openModal(innerHtml);
+
+        let listEventListener = function(e) {
+            if (helper.isValidKeyCodeWithoutModifiers(e)) {
+
+                let keyCodeChar = String.fromCharCode(e.keyCode);
+                if (shortcuts.hasOwnProperty(keyCodeChar)) {
+                    helper.openShortcut(shortcuts[keyCodeChar], byBlank);
+                    removeElementDelay(modal, 50);
+                    modal.removeEventListener('keyup', listEventListener);
+                }
+            }
+        };
+
+        modal.addEventListener('keyup', listEventListener);
     }
 }
