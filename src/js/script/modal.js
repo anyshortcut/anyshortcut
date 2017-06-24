@@ -128,18 +128,28 @@ export default {
         };
         modal.addEventListener('keyup', chooserEventListener);
     },
-    showSecondaryShortcutList(shortcuts, byBlank){
-        let liElements = '';
-        for (let key in shortcuts) {
-            if (shortcuts.hasOwnProperty(key)) {
-                let shortcut = shortcuts[key];
-                liElements += `<li><div>
+    showSecondaryShortcutList(pressedKey, shortcuts, byBlank){
+        let innerHtml;
+
+        if (Object.keys(shortcuts).length === 0) {
+            innerHtml = `<div>There is no secondary shortcuts for 
+                             <span class="anyshortcut-shortcut">ALT+SHIFT+${pressedKey}</span>
+                         </div>`
+        } else {
+            let liElements = '';
+            for (let key in shortcuts) {
+                if (shortcuts.hasOwnProperty(key)) {
+                    let shortcut = shortcuts[key];
+                    liElements += `<li><div>
                             ${shortcut.key} <img src="${shortcut.favicon}" alt=""> ${shortcut.title}
                 </div></li>`;
+                }
             }
+
+            innerHtml = `<div>There are secondary shortcuts for <span class="anyshortcut-shortcut">ALT+SHIFT+${pressedKey}</span><ul>`
+                + liElements + `</ul></div>`;
         }
 
-        let innerHtml = '<ul>' + liElements + '</ul>';
         let modal = openModal(innerHtml);
 
         let listEventListener = function(e) {

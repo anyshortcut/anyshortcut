@@ -77,6 +77,21 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
     cleanUp();
 }
 
+function triggerSecondaryShortcutList(key) {
+    if (listTimeoutId) {
+        window.clearTimeout(listTimeoutId);
+    }
+
+    listTimeoutId = window.setTimeout(function() {
+        chrome.runtime.sendMessage({
+            listSecondary: true, key: key
+        }, response => {
+            modal.showSecondaryShortcutList(key,response.shortcuts, response.byBlank);
+            cleanUp();
+        });
+    }, 2000);
+}
+
 /**
  * Trigger shortcut.
  */
@@ -186,22 +201,6 @@ function cleanUp() {
     secondKey = EMPTY_KEY;
     triggerTimeoutId = null;
     listTimeoutId = null;
-}
-
-
-function triggerSecondaryShortcutList(key) {
-    if (listTimeoutId) {
-        window.clearTimeout(listTimeoutId);
-    }
-
-    listTimeoutId = window.setTimeout(function() {
-        chrome.runtime.sendMessage({
-            listSecondary: true, key: key
-        }, response => {
-            modal.showSecondaryShortcutList(response.shortcuts, response.byBlank);
-            cleanUp();
-        });
-    }, 2000);
 }
 
 function resolveEventListener(authenticated) {
