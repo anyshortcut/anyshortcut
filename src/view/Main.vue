@@ -23,7 +23,9 @@
                    :primary="primary"
                    :domain-primary-shortcut="domainPrimaryShortcut"
                    @pre-bind="loading=true"
-                   @post-bind="onPostBind">
+                   @post-bind="onPostBind"
+                   @pre-unbind="loading=true"
+                   @post-unbind="onPostUnbind">
         </bind-view>
         <br>
 

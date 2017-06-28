@@ -19,15 +19,26 @@
                       @key-hover-over="onKeyHoverOver"
                       @key-hover-leave="onHoverLeave">
             </keyboard>
-            <popover id="popover"
-                     v-show="showPopper"
-                     :key-char="keyChar"
-                     :tab-title="tabTitle"
-                     :shortcut="hoveredShortcut"
-                     @mouseover.native="onHoverOver"
-                     @mouseleave.native="onHoverLeave"
-                     @bind-click="handleShortcutBinding">
-            </popover>
+            <div id="popover"
+                 v-show="showPopper"
+                 @mouseover="onHoverOver"
+                 @mouseleave="onHoverLeave">
+                <div v-if="hoveredShortcut">
+                    <p>{{keyChar}}</p>
+                    <p>{{hoveredShortcut.comment || hoveredShortcut.title}}</p>
+                    <button @click="handleShortcutUnbinding">Delete?</button>
+                </div>
+                <div v-else>
+                    Bind shortcut key!
+                    <p>{{keyChar}}</p>
+                    <input v-model="comment"
+                           placeholder="Comment for this url"
+                           maxlength="20"
+                           autofocus @focus.native="$event.target.select()" required/>
+                    <br>
+                    <input @click="handleShortcutBinding" type="button" value="Save"/>
+                </div>
+            </div>
         </div>
 
         <br>
@@ -76,13 +87,13 @@
 <script type="es6">
     import Popper from "popper";
     import Keyboard from "../component/Keyboard.vue";
-    import Popover from "../component/Popover.vue";
 
     export default{
         name: 'bind-view',
         data(){
             return {
                 keyChar: null,
+                comment: null,
                 strokeKeyChar: null,
                 strokeComment: null,
                 showPopper: false,
@@ -130,7 +141,6 @@
         },
         components: {
             Keyboard,
-            Popover,
         },
         methods: {
             onKeyHoverOver: function(target) {
@@ -150,9 +160,7 @@
                 this.showPopper = true;
                 clearTimeout(this._timeoutId);
             },
-            handleShortcutBinding: function(keyChar, comment, forceBinding) {
-                this.forceBinding = forceBinding;
-
+            handleShortcutBinding: function() {
                 let bindFunction;
                 if (this.primary) {
                     bindFunction = this.$background.bindPrimaryShortcut;
@@ -161,12 +169,27 @@
                 }
 
                 this.$emit('pre-bind');
-                bindFunction(keyChar, comment, forceBinding, result => {
+                bindFunction(this.keyChar, this.comment, result => {
                     this.$emit('post-bind', result);
                 });
             },
             bindKeystrokeShortcut: function() {
-                this.handleShortcutBinding(this.strokeKeyChar, this.strokeComment, false);
+                this.handleShortcutBinding(this.strokeKeyChar, this.strokeComment);
+            },
+            handleShortcutUnbinding: function() {
+                if (this.hoveredShortcut) {
+                    let removeFunction;
+                    if (this.hoveredShortcut.primary) {
+                        removeFunction = this.$background.removePrimaryShortcut;
+                    } else {
+                        removeFunction = this.$background.removeSecondaryShortcut;
+                    }
+
+                    this.$emit('pre-unbind');
+                    removeFunction(this.hoveredShortcut, result => {
+                        this.$emit('post-unbind', result);
+                    });
+                }
             },
         }
     }

@@ -41,7 +41,7 @@ window.syncAllShortcuts = function() {
     });
 };
 
-window.bindPrimaryShortcut = function(key, comment, force, callback) {
+window.bindPrimaryShortcut = function(key, comment, callback) {
     let tab = window.activeTab;
     client.bindShortcut({
         key: key,
@@ -50,7 +50,6 @@ window.bindPrimaryShortcut = function(key, comment, force, callback) {
         favicon: tab.favIconUrl,
         comment: comment,
         primary: true,
-        force: force || false,
     }).then(response => {
         Object.assign(primaryShortcuts, response);
         callback(true);
@@ -71,7 +70,7 @@ window.removePrimaryShortcut = function(shortcut, callback) {
     });
 };
 
-window.bindSecondaryShortcut = function(key, comment, force, callback) {
+window.bindSecondaryShortcut = function(key, comment, callback) {
     let tab = window.activeTab;
     client.bindShortcut({
         key: key,
@@ -80,7 +79,6 @@ window.bindSecondaryShortcut = function(key, comment, force, callback) {
         favicon: tab.favIconUrl,
         comment: comment,
         primary: false,
-        force: force || false,
     }).then(response => {
         let domain = response[key]['domain'];
         if (!secondaryShortcuts.hasOwnProperty(domain)) {
