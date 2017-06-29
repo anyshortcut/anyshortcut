@@ -120,20 +120,11 @@
         computed: {
             // A mouse hovered shortcut computed object
             hoveredShortcut: function() {
-                if (this.boundKeys && this.boundKeys.indexOf(this.keyChar) !== -1) {
-                    return this.shortcuts[this.keyChar];
-                } else {
-                    return null;
-                }
+                return this.shortcuts[this.keyChar];
             },
             // All bound keys, for keyboard component usage.
             boundKeys: function() {
-                this.$message.info('computed property boundKeys called');
-                if (this.shortcuts) {
-                    return Object.keys(this.shortcuts);
-                } else {
-                    return [];
-                }
+                return this.shortcuts ? Object.keys(this.shortcuts) : [];
             },
         },
         components: {

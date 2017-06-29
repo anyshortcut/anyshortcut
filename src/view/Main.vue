@@ -164,13 +164,18 @@
                     }
                 });
 
+                // Due to Javascript object reference, we need to pick by a new shortcuts Object,
+                // otherwise can't trigger BindView shortcuts value change.
+                let pickByFunction = (value, key) => {
+                    return key.length === 1;
+                };
                 if (this.domainPrimaryShortcut) {
                     // If current tab domain bound primary shortcut,
                     // then only permit to bound secondary shortcuts.
-                    this.shortcuts = secondaryShortcuts;
+                    this.shortcuts = _.pickBy(secondaryShortcuts, pickByFunction);
                     this.primary = false;
                 } else {
-                    this.shortcuts = primaryShortcuts;
+                    this.shortcuts = _.pickBy(primaryShortcuts, pickByFunction);
                     this.primary = true;
                 }
 
