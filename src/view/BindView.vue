@@ -26,7 +26,7 @@
                 <div v-if="hoveredShortcut">
                     <p>{{keyChar}}</p>
                     <p>{{hoveredShortcut.comment || hoveredShortcut.title}}</p>
-                    <button @click="handleShortcutUnbinding">Delete?</button>
+                    <button @click="handleShortcutUnbinding(hoveredShortcut)">Delete?</button>
                 </div>
                 <div v-else>
                     Bind shortcut key!
@@ -36,7 +36,7 @@
                            maxlength="20"
                            autofocus @focus.native="$event.target.select()" required/>
                     <br>
-                    <input @click="handleShortcutBinding" type="button" value="Save"/>
+                    <input @click="handleShortcutBinding(keyChar,comment)" type="button" value="Save"/>
                 </div>
             </div>
         </div>
@@ -49,7 +49,7 @@
             <div class="two-keystroke">
                 <input class="keystroke" type="text" v-model="strokeKeyChar">
                 <input class="comment" type="text" v-model="strokeComment">
-                <input type="button" value="Bind" @click="bindKeystrokeShortcut">
+                <input type="button" value="Bind" @click="handleShortcutBinding(strokeKeyChar,strokeComment)">
             </div>
         </div>
 
@@ -87,6 +87,7 @@
 <script type="es6">
     import Popper from "popper";
     import Keyboard from "../component/Keyboard.vue";
+    import mixin from "../js/mixin.js";
 
     export default{
         name: 'bind-view',
@@ -142,6 +143,7 @@
         components: {
             Keyboard,
         },
+        mixins: [mixin],
         methods: {
             onKeyHoverOver: function(target) {
                 this.onHoverOver();
@@ -159,37 +161,6 @@
             onHoverOver: function() {
                 this.showPopper = true;
                 clearTimeout(this._timeoutId);
-            },
-            handleShortcutBinding: function() {
-                let bindFunction;
-                if (this.primary) {
-                    bindFunction = this.$background.bindPrimaryShortcut;
-                } else {
-                    bindFunction = this.$background.bindSecondaryShortcut;
-                }
-
-                this.$emit('pre-bind');
-                bindFunction(this.keyChar, this.comment, result => {
-                    this.$emit('post-bind', result);
-                });
-            },
-            bindKeystrokeShortcut: function() {
-                this.handleShortcutBinding(this.strokeKeyChar, this.strokeComment);
-            },
-            handleShortcutUnbinding: function() {
-                if (this.hoveredShortcut) {
-                    let removeFunction;
-                    if (this.hoveredShortcut.primary) {
-                        removeFunction = this.$background.removePrimaryShortcut;
-                    } else {
-                        removeFunction = this.$background.removeSecondaryShortcut;
-                    }
-
-                    this.$emit('pre-unbind');
-                    removeFunction(this.hoveredShortcut, result => {
-                        this.$emit('post-unbind', result);
-                    });
-                }
             },
         }
     }

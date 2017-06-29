@@ -7,7 +7,7 @@
             <p>The url already bound with <span class="shortcut">ALT+{{ shortcut.key }}</span></p>
         </div>
         <p id="bound_time">{{shortcut.created_time | fromNow}}</p>
-        <button @click="handleShortcutUnbinding" id="unbind_shortcut_button">Delete Shortcut</button>
+        <button @click="handleShortcutUnbinding(shortcut)" id="unbind_shortcut_button">Delete Shortcut</button>
     </section>
 </template>
 <style lang="css">
@@ -25,6 +25,7 @@
 </style>
 <script type="es6">
     import moment from "moment";
+    import mixin from "../js/mixin.js";
 
     export default{
         name: 'bound-view',
@@ -45,22 +46,6 @@
                 return moment(time).fromNow();
             }
         },
-        methods: {
-            handleShortcutUnbinding: function() {
-                if (this.shortcut) {
-                    let removeFunction;
-                    if (this.shortcut.primary) {
-                        removeFunction = this.$background.removePrimaryShortcut;
-                    } else {
-                        removeFunction = this.$background.removeSecondaryShortcut;
-                    }
-
-                    this.$emit('pre-unbind');
-                    removeFunction(this.shortcut, result => {
-                        this.$emit('post-unbind', result);
-                    });
-                }
-            },
-        }
+        mixins: [mixin],
     }
 </script>
