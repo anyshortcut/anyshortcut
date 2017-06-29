@@ -84,10 +84,12 @@
         data(){
             return {
                 selectedKey: null,
-                keys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
+                keys: [
+                    '1', '2', '3', '4', '5', '6', '7', '8', '9', '0',
                     'Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P',
                     'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L',
-                    'Z', 'X', 'C', 'V', 'B', 'N', 'M']
+                    'Z', 'X', 'C', 'V', 'B', 'N', 'M'
+                ]
             }
         },
         props: {
@@ -104,15 +106,6 @@
                 this.selectedKey = null;
                 // Emit a key-changed event to notify that the selectedKey changed.
                 this.$emit('key-changed', this.selectedKey);
-            }
-        },
-        directives: {
-            //A custom nested directive that can check the target element disabled property according to
-            // already bound key array.
-            disabled: {
-                update: function(el, binding) {
-                    el.disabled = binding.value;
-                }
             }
         },
         methods: {
