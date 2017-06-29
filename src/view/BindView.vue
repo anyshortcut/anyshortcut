@@ -94,7 +94,7 @@
         data(){
             return {
                 keyChar: null,
-                comment: null,
+                comment: this.$background.activeTab.title,
                 strokeKeyChar: null,
                 strokeComment: null,
                 showPopper: false,
@@ -128,17 +128,13 @@
             },
             // All bound keys, for keyboard component usage.
             boundKeys: function() {
-                console.log('computed property boundKeys called');
+                this.$message.info('computed property boundKeys called');
                 if (this.shortcuts) {
                     return Object.keys(this.shortcuts);
                 } else {
                     return [];
                 }
             },
-            tabTitle: function() {
-                console.log('compute tabTitle:', this.$background.activeTab.title);
-                return this.$background.activeTab.title;
-            }
         },
         components: {
             Keyboard,
