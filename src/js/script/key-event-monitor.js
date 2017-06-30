@@ -89,7 +89,7 @@ function triggerSecondaryShortcutList(key) {
             modal.showSecondaryShortcutList(key, response.shortcuts, response.byBlank);
             cleanUp();
         });
-    }, 2000);
+    }, 800);
 }
 
 /**
