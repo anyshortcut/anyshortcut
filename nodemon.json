@@ -1,0 +1,16 @@
+{
+  "verbose": true,
+  "ignore": [
+    "src/img/"
+  ],
+  "events": {
+    "restart": "echo 'Detecting source code change...'"
+  },
+  "watch": [
+    "src/"
+  ],
+  "env": {
+    "NODE_ENV": "development"
+  },
+  "ext": "js less vue"
+}
