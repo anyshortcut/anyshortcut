@@ -2,7 +2,7 @@
     <section class="bind-view">
         <div>
             <p v-if="primary">
-                Specify the shortcut:
+                Specify the primary shortcut:
             </p>
             <div v-else>
                 <p v-if="domainPrimaryShortcut">
@@ -38,6 +38,7 @@
                     <br>
                     <input @click="handleShortcutBinding(keyChar,comment)" type="button" value="Save"/>
                 </div>
+                <div class="popper-arrow" x-arrow></div>
             </div>
         </div>
 
@@ -68,6 +69,21 @@
         background-color: #ffffff;
         width: 50%;
         box-shadow: @box-shadow-base;
+        padding: 5px;
+    }
+
+    .popper-arrow {
+        position: absolute;
+        display: block;
+        width: 0;
+        height: 0;
+        border-width: 10px;
+        border-style: solid dashed dashed dashed;
+        border-color: #ffffff transparent transparent transparent;
+        bottom: -20px;
+        left: calc(50% - 5px);
+        margin-top: 0;
+        margin-bottom: 0;
     }
 
     .two-keystroke {
