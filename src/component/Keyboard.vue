@@ -3,43 +3,26 @@
         <div class="keyboard">
             <div class="keyboard-row">
                 <div class="key weak" v-visible="showIndicator">`</div>
-                <div class="key number">1</div>
-                <div class="key number">2</div>
-                <div class="key number">3</div>
-                <div class="key number">4</div>
-                <div class="key number">5</div>
-                <div class="key number">6</div>
-                <div class="key number">7</div>
-                <div class="key number">8</div>
-                <div class="key number">9</div>
-                <div class="key number">0</div>
+                <div v-for="key in '1234567890'"
+                     :class="{'highlight': key === highlightKey,'disabled':resolveDisabled(key)}"
+                     class="key number">{{ key }}
+                </div>
                 <div class="key weak invisible"></div>
             </div>
             <div class="keyboard-row">
                 <div class="key weak" v-visible="showIndicator">↹</div>
-                <div class="key">Q</div>
-                <div class="key">W</div>
-                <div class="key">E</div>
-                <div class="key">R</div>
-                <div class="key">T</div>
-                <div class="key">Y</div>
-                <div class="key">U</div>
-                <div class="key">I</div>
-                <div class="key">O</div>
-                <div class="key">P</div>
+                <div v-for="key in 'QWERTYUIOP'"
+                     :class="{'highlight': key === highlightKey,'disabled':resolveDisabled(key)}"
+                     class="key">{{ key }}
+                </div>
                 <div class="key weak invisible"></div>
             </div>
             <div class="keyboard-row">
                 <div class="key weak extra-size-two" v-visible="showIndicator">⇪</div>
-                <div class="key">A</div>
-                <div class="key">S</div>
-                <div class="key">D</div>
-                <div class="key">F</div>
-                <div class="key">G</div>
-                <div class="key">H</div>
-                <div class="key">J</div>
-                <div class="key">K</div>
-                <div class="key">L</div>
+                <div v-for="key in 'ASDFGHJKL'"
+                     :class="{'highlight': key === highlightKey,'disabled':resolveDisabled(key)}"
+                     class="key">{{ key }}
+                </div>
                 <div class="key weak extra-size-two invisible"></div>
             </div>
             <div class="keyboard-row">
@@ -47,12 +30,10 @@
                      v-visible="showIndicator"
                      :class="{highlight:primary}">shift
                 </div>
-                <div class="key">Z</div>
-                <div class="key">X</div>
-                <div class="key">C</div>
-                <div class="key">V</div>
-                <div class="key">B</div>
-                <div class="key">N</div>
+                <div v-for="key in 'ZXCVBNM'"
+                     :class="{'highlight': key === highlightKey,'disabled':resolveDisabled(key)}"
+                     class="key">{{ key }}
+                </div>
                 <div class="key disabled">M</div>
                 <div class="key weak double-size lowercase lower-right invisible">shift
                 </div>
@@ -222,6 +203,12 @@
                     return false;
                 }
             },
+            highlightKey: {
+                type: String,
+                default: function() {
+                    return null;
+                }
+            },
             primary: {
                 type: Boolean,
                 default: function() {
@@ -246,10 +233,6 @@
                 this.selectedKey = null;
                 // Emit a key-changed event to notify that the selectedKey changed.
                 this.$emit('key-changed', this.selectedKey);
-
-                document.querySelectorAll('.key').forEach(element => {
-                    this.resolveDisabled(element);
-                });
             },
         },
         methods: {
@@ -259,32 +242,19 @@
                 this.selectedKey = event.target.innerText;
                 this.$emit('key-changed', this.selectedKey);
             },
-            resolveDisabled: function(element) {
-                if (this.boundKeys && this.boundKeys.indexOf(element.innerText) !== -1) {
-                    element.className += ' disabled';
-                } else {
-                    element.className = element.className.replace('disabled', '');
-                }
+            resolveDisabled: function(key) {
+                return this.boundKeys && this.boundKeys.indexOf(key) !== -1;
             },
-            toggleWeakElementVisibility: function(visible) {
-                document.querySelectorAll('.weak').forEach(element => {
-                    element.style.visibility = visible ? 'visible' : 'hidden';
-                });
-            }
         },
         mounted: function() {
             // Query key elements exclude weak element, then add mouse event listener.
             document.querySelectorAll('.key:not(.weak)').forEach(element => {
                 element.addEventListener('mouseover', () => {
                     this.$emit('key-hover-over', element);
-                    element.className += ' highlight';
                 });
                 element.addEventListener('mouseleave', () => {
                     this.$emit('key-hover-leave', element);
-                    element.className = element.className.replace('highlight', '');
                 });
-
-                this.resolveDisabled(element);
             });
         },
     }
