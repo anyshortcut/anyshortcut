@@ -17,6 +17,7 @@
         <div>
             <keyboard :bound-keys="boundKeys"
                       :show-indicator="showPopper"
+                      :highlight-key="keyChar"
                       :primary="primary"
                       @key-hover-over="onKeyHoverOver"
                       @key-hover-leave="onHoverLeave">
@@ -159,7 +160,7 @@
             },
             onHoverLeave: function() {
                 this._timeoutId = setTimeout(() => {
-                    this.key = null;
+                    this.keyChar = null;
                     this.showPopper = false;
                 }, 200);
             },
