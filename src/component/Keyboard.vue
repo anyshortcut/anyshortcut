@@ -2,7 +2,7 @@
     <div class="container">
         <div class="keyboard">
             <div class="keyboard-row">
-                <div class="key weak"></div>
+                <div class="key weak" v-visible="showIndicator"></div>
                 <div class="key number">1</div>
                 <div class="key number">2</div>
                 <div class="key number">3</div>
@@ -13,10 +13,10 @@
                 <div class="key number">8</div>
                 <div class="key number">9</div>
                 <div class="key number">0</div>
-                <div class="key weak"></div>
+                <div class="key weak" v-visible="showIndicator"></div>
             </div>
             <div class="keyboard-row">
-                <div class="key weak"></div>
+                <div class="key weak" v-visible="showIndicator"></div>
                 <div class="key">Q</div>
                 <div class="key">W</div>
                 <div class="key">E</div>
@@ -27,10 +27,10 @@
                 <div class="key">I</div>
                 <div class="key">O</div>
                 <div class="key">P</div>
-                <div class="key weak"></div>
+                <div class="key weak" v-visible="showIndicator"></div>
             </div>
             <div class="keyboard-row">
-                <div class="key weak extra-size-two"></div>
+                <div class="key weak extra-size-two" v-visible="showIndicator"></div>
                 <div class="key">A</div>
                 <div class="key">S</div>
                 <div class="key">D</div>
@@ -40,10 +40,12 @@
                 <div class="key">J</div>
                 <div class="key">K</div>
                 <div class="key">L</div>
-                <div class="key weak extra-size-two"></div>
+                <div class="key weak extra-size-two" v-visible="showIndicator"></div>
             </div>
             <div class="keyboard-row">
-                <div class="key weak highlight double-size lowercase lower-left">shift</div>
+                <div class="key weak highlight double-size lowercase lower-left"
+                     v-visible="showIndicator">shift
+                </div>
                 <div class="key">Z</div>
                 <div class="key">X</div>
                 <div class="key">C</div>
@@ -51,16 +53,31 @@
                 <div class="key">B</div>
                 <div class="key">N</div>
                 <div class="key disabled">M</div>
-                <div class="key weak double-size lowercase lower-right">shift</div>
+                <div class="key weak double-size lowercase lower-right"
+                     v-visible="showIndicator">shift
+                </div>
             </div>
             <div class="keyboard-row">
-                <div class="key weak lower-left lowercase">ctrl</div>
-                <div class="key weak lower-center lowercase highlight">alt</div>
-                <div class="key weak lower-center lowercase extra-size-two">&#8984;</div>
-                <div class="key weak space-bar"></div>
-                <div class="key weak lower-center lowercase extra-size-two">&#8984;</div>
-                <div class="key weak lower-center lowercase">alt</div>
-                <div class="key weak lower-right lowercase">ctrl</div>
+                <div class="key weak lower-left lowercase"
+                     v-visible="showIndicator">ctrl
+                </div>
+                <div class="key weak lower-center lowercase highlight"
+                     v-visible="showIndicator">alt
+                </div>
+                <div class="key weak lower-center lowercase extra-size-two"
+                     v-visible="showIndicator">&#8984;
+                </div>
+                <div class="key weak space-bar"
+                     v-visible="showIndicator"></div>
+                <div class="key weak lower-center lowercase extra-size-two"
+                     v-visible="showIndicator">&#8984;
+                </div>
+                <div class="key weak lower-center lowercase"
+                     v-visible="showIndicator">alt
+                </div>
+                <div class="key weak lower-right lowercase"
+                     v-visible="showIndicator">ctrl
+                </div>
             </div>
         </div>
     </div>
@@ -199,6 +216,23 @@
                 default: function() {
                     return [];
                 }
+            },
+            showIndicator: {
+                type: Boolean,
+                default: function() {
+                    return false;
+                }
+            },
+        },
+        directives: {
+            visible: {
+                update: function(el, binding) {
+                    if (binding.value) {
+                        el.style.visibility = 'visible';
+                    } else {
+                        el.style.visibility = 'hidden';
+                    }
+                }
             }
         },
         watch: {
@@ -209,9 +243,9 @@
                 this.$emit('key-changed', this.selectedKey);
 
                 document.querySelectorAll('.key').forEach(element => {
-                    this.resolveDisableProperty(element);
+                    this.resolveDisabled(element);
                 });
-            }
+            },
         },
         methods: {
             onKeyClick: function(event) {
@@ -220,7 +254,7 @@
                 this.selectedKey = event.target.innerText;
                 this.$emit('key-changed', this.selectedKey);
             },
-            resolveDisableProperty: function(element) {
+            resolveDisabled: function(element) {
                 if (this.boundKeys && this.boundKeys.indexOf(element.innerText) !== -1) {
                     element.className += ' disabled';
                 } else {
@@ -234,17 +268,16 @@
             }
         },
         mounted: function() {
-            document.querySelectorAll('.key').forEach(element => {
+            // Query key elements exclude weak element, then add mouse event listener.
+            document.querySelectorAll('.key:not(.weak)').forEach(element => {
                 element.addEventListener('mouseover', () => {
                     this.$emit('key-hover-over', element);
-                    this.toggleWeakElementVisibility(true);
                 });
                 element.addEventListener('mouseleave', () => {
                     this.$emit('key-hover-leave', element);
-                    this.toggleWeakElementVisibility(false);
                 });
 
-                this.resolveDisableProperty(element);
+                this.resolveDisabled(element);
             });
         },
     }
