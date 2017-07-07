@@ -11,7 +11,6 @@
                 </p>
                 Specify the secondary shortcut for this domain:
             </div>
-            <br>
         </div>
 
         <div>
@@ -38,14 +37,11 @@
                            placeholder="Comment for this url"
                            maxlength="20"
                            autofocus @focus.native="$event.target.select()" required/>
-                    <br>
                     <input @click="handleShortcutBinding(keyChar,comment)" type="button" value="Save"/>
                 </div>
                 <div class="popper-arrow" x-arrow></div>
             </div>
         </div>
-
-        <br>
 
         <div v-if="primary">
             Or specify two keystroke primary key:

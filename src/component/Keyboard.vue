@@ -34,7 +34,6 @@
                      :class="{'highlight': key === highlightKey,'disabled':resolveDisabled(key)}"
                      class="key">{{ key }}
                 </div>
-                <div class="key disabled">M</div>
                 <div class="key weak double-size lowercase lower-right invisible">shift
                 </div>
             </div>
@@ -66,7 +65,7 @@
     }
 
     .container {
-        max-width: 500px;
+        max-width: 480px;
         margin: 5px auto;
     }
 

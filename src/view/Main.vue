@@ -27,8 +27,6 @@
                    @pre-unbind="loading=true"
                    @post-unbind="onPostUnbind">
         </bind-view>
-        <br>
-
         <section>
             <ul v-show="shortcuts && !primary">
                 <p>Here are secondary shortcut list for this domain:</p>
