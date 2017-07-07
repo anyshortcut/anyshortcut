@@ -43,8 +43,9 @@
                 <div class="key weak extra-size-two" v-visible="showIndicator"></div>
             </div>
             <div class="keyboard-row">
-                <div class="key weak highlight double-size lowercase lower-left"
-                     v-visible="showIndicator">shift
+                <div class="key weak double-size lowercase lower-left"
+                     v-visible="showIndicator"
+                     :class="{highlight:primary}">shift
                 </div>
                 <div class="key">Z</div>
                 <div class="key">X</div>
@@ -54,7 +55,8 @@
                 <div class="key">N</div>
                 <div class="key disabled">M</div>
                 <div class="key weak double-size lowercase lower-right"
-                     v-visible="showIndicator">shift
+                     v-visible="showIndicator"
+                     :class="{highlight:primary}">shift
                 </div>
             </div>
             <div class="keyboard-row">
@@ -72,7 +74,7 @@
                 <div class="key weak lower-center lowercase extra-size-two"
                      v-visible="showIndicator">&#8984;
                 </div>
-                <div class="key weak lower-center lowercase"
+                <div class="key weak lower-center lowercase highlight"
                      v-visible="showIndicator">alt
                 </div>
                 <div class="key weak lower-right lowercase"
@@ -221,6 +223,12 @@
                 type: Boolean,
                 default: function() {
                     return false;
+                }
+            },
+            primary: {
+                type: Boolean,
+                default: function() {
+                    return true;
                 }
             },
         },

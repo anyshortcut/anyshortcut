@@ -17,6 +17,7 @@
         <div>
             <keyboard :bound-keys="boundKeys"
                       :show-indicator="showPopper"
+                      :primary="primary"
                       @key-hover-over="onKeyHoverOver"
                       @key-hover-leave="onHoverLeave">
             </keyboard>
