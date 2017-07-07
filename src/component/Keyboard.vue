@@ -186,9 +186,7 @@
     export default{
         name: 'Keyboard',
         data(){
-            return {
-                selectedKey: null,
-            }
+            return {}
         },
         props: {
             boundKeys: {
@@ -227,20 +225,11 @@
                 }
             }
         },
-        watch: {
-            boundKeys: function() {
-                // Restore selectedKey to null where boundKeys changed.
-                this.selectedKey = null;
-                // Emit a key-changed event to notify that the selectedKey changed.
-                this.$emit('key-changed', this.selectedKey);
-            },
-        },
         methods: {
             onKeyClick: function(event) {
                 //What difference between e.currentTarget and e.target,
                 // refer to http://jsfiddle.net/misteroneill/kmn4A/3/
-                this.selectedKey = event.target.innerText;
-                this.$emit('key-changed', this.selectedKey);
+                this.$emit('key-changed', event.target.innerText);
             },
             resolveDisabled: function(key) {
                 return this.boundKeys && this.boundKeys.indexOf(key) !== -1;
