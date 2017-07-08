@@ -49,6 +49,10 @@
       "run_at": "document_start"
     }
   ],
+  "web_accessible_resources": [
+    "icon/*.png",
+    "fonts/*.ttf"
+  ],
   "commands": {
     "toggle_recent_tab": {
       "suggested_key": {

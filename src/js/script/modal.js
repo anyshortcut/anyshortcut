@@ -33,7 +33,12 @@ function openModal(content) {
 
 function buildHeader(onClose) {
     let header = createDiv('anyshortcut-modal-header');
-    header.textContent = 'anyshortcut';
+    let brand = createDiv('');
+    brand.innerHTML = `<a class="brand" href="https://anyshortcut.com" target="_blank">
+                    <img alt="">
+                    <span>anyshortcut</span>
+                </a>`;
+    header.appendChild(brand);
 
     let closeButton = document.createElement('button');
     closeButton.className = 'anyshortcut-modal-close';

@@ -1,14 +1,12 @@
 <template>
     <div class="main-view">
         <header class="main-header">
+            <a class="brand" href="https://anyshortcut.com" target="_blank">
+                <img alt="">
+                <span>anyshortcut</span>
+            </a>
             <div>
-                <a class="brand" href="https://anyshortcut.com" target="_blank">
-                    <img src="../img/icon.png" alt="">
-                    <span style="font-weight: bold">anyshortcut</span>
-                </a>
-            </div>
-            <div>
-                <a href="#/setting"><i class="fa fa-cog"></i> settings</a>
+                <a href="#/setting" class="menu"><i class="fa fa-cog"></i> Setting</a>
             </div>
         </header>
 
@@ -45,6 +43,14 @@
 <style lang="less">
     @import "../less/_var.less";
 
+    body {
+        font-family: "Poppins", sans-serif;
+        font-weight: 400;
+        font-size: 100%;
+        text-align: center;
+        margin: 0 auto;
+    }
+
     .main-view {
         width: @normal-width;
         min-height: @normal-height;
@@ -58,18 +64,14 @@
         .header;
     }
 
-    .brand {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
+    .menu {
+        color: @menu-color;
+        font-size: 12.5px;
+        letter-spacing: 0.6px;
 
-        img {
-            margin: 0 10px;
+        a:visited, a:active {
+            color: @menu-color;
         }
-    }
-
-    a:visited, a:active {
-        color: @primary-color;
     }
 
     ul {
@@ -79,11 +81,6 @@
     li {
         text-align: left;
         margin: 2px;
-    }
-
-    a {
-        text-decoration: none;
-        outline: none;
     }
 
     div.loading {

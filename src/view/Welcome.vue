@@ -12,7 +12,7 @@
         </footer>
     </main>
 </template>
-<style lang="less" scoped>
+<style lang="less">
     @import "../less/_common.less";
 
     main {
@@ -35,7 +35,6 @@
             color: #4F6EC8;
             font-size: 35px;
             font-weight: bold;
-            font-family: "Arial Rounded MT Bold", serif;
             margin: 10px;
         }
     }

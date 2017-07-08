@@ -112,7 +112,6 @@
             position: relative;
             top: 1px;
             left: 1px;
-            border-color: #e5e5e5;
             cursor: pointer;
         }
 
@@ -159,6 +158,7 @@
             border-width: 1px;
             border-style: dashed;
             box-shadow: none;
+            cursor: text;
         }
 
         &.highlight {
