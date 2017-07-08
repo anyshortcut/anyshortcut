@@ -51,6 +51,38 @@
         margin: 0 auto;
     }
 
+    * {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+    }
+
+    p {
+        margin: 0 auto;
+    }
+
+    a {
+        text-decoration: none;
+        outline: none;
+    }
+
+    ul {
+        list-style: none outside;
+    }
+
+    li {
+        text-align: left;
+        margin: 2px;
+    }
+
+    div.loading {
+        position: fixed;
+        bottom: 50%;
+        right: 50%;
+        color: gray;
+        text-align: center;
+    }
+
     .main-view {
         width: @normal-width;
         min-height: @normal-height;
@@ -72,23 +104,6 @@
         a:visited, a:active {
             color: @menu-color;
         }
-    }
-
-    ul {
-        list-style: none outside;
-    }
-
-    li {
-        text-align: left;
-        margin: 2px;
-    }
-
-    div.loading {
-        position: fixed;
-        bottom: 50%;
-        right: 50%;
-        color: gray;
-        text-align: center;
     }
 
     .shortcut {

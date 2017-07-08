@@ -1,5 +1,7 @@
 @import "_var.less";
 
+// Keep _common code as less as possible.
+
 @font-face {
   font-family: "Poppins";
   font-style: normal;
@@ -68,21 +70,6 @@
   font-style: italic;
   font-weight: 700;
   src: url("chrome-extension://__MSG_@@extension_id__/fonts/Poppins-Bold.ttf");
-}
-
-* {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
-p {
-  margin: 0 auto;
-}
-
-a {
-  text-decoration: none;
-  outline: none;
 }
 
 .brand {
@@ -91,6 +78,8 @@ a {
   display: flex;
   align-items: center;
   font-weight: bold;
+  text-decoration: none;
+  outline: none;
 
   img {
     margin: 0 10px;
