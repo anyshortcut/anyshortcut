@@ -4,7 +4,7 @@
             <div class="keyboard-row">
                 <div class="key weak" v-visible="showIndicator">`</div>
                 <div v-for="key in '1234567890'"
-                     :class="{'highlight': key === highlightKey,'disabled':resolveDisabled(key)}"
+                     :class="keyClass(key)"
                      class="key number">{{ key }}
                 </div>
                 <div class="key weak invisible"></div>
@@ -12,7 +12,7 @@
             <div class="keyboard-row">
                 <div class="key weak" v-visible="showIndicator">↹</div>
                 <div v-for="key in 'QWERTYUIOP'"
-                     :class="{'highlight': key === highlightKey,'disabled':resolveDisabled(key)}"
+                     :class="keyClass(key)"
                      class="key">{{ key }}
                 </div>
                 <div class="key weak invisible"></div>
@@ -20,7 +20,7 @@
             <div class="keyboard-row">
                 <div class="key weak extra-size-two" v-visible="showIndicator">⇪</div>
                 <div v-for="key in 'ASDFGHJKL'"
-                     :class="{'highlight': key === highlightKey,'disabled':resolveDisabled(key)}"
+                     :class="keyClass(key)"
                      class="key">{{ key }}
                 </div>
                 <div class="key weak extra-size-two invisible"></div>
@@ -31,7 +31,7 @@
                      :class="{highlight:primary}">shift
                 </div>
                 <div v-for="key in 'ZXCVBNM'"
-                     :class="{'highlight': key === highlightKey,'disabled':resolveDisabled(key)}"
+                     :class="keyClass(key)"
                      class="key">{{ key }}
                 </div>
                 <div class="key weak double-size lowercase lower-right invisible">shift
@@ -230,9 +230,12 @@
                 // refer to http://jsfiddle.net/misteroneill/kmn4A/3/
                 this.$emit('key-changed', event.target.innerText);
             },
-            resolveDisabled: function(key) {
-                return this.boundKeys && this.boundKeys.indexOf(key) !== -1;
-            },
+            keyClass: function(key) {
+                return {
+                    'highlight': key === this.highlightKey,
+                    'disabled': this.boundKeys && this.boundKeys.indexOf(key) !== -1
+                };
+            }
         },
         mounted: function() {
             // Query key elements exclude weak element, then add mouse event listener.
