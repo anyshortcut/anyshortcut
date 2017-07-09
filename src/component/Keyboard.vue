@@ -5,7 +5,7 @@
                 <div class="key weak" v-visible="weakVisibility"></div>
                 <div v-for="key in '1234567890'"
                      :class="keyClass(key)"
-                     class="key number">{{ key }}
+                     class="key">{{ key }}
                 </div>
                 <div class="key weak invisible"></div>
             </div>
@@ -26,7 +26,7 @@
                 <div class="key weak extra-size-two invisible"></div>
             </div>
             <div class="keyboard-row">
-                <div class="key weak double-size lowercase lower-left"
+                <div class="key weak double-size lowercase"
                      v-visible="weakVisibility"
                      :class="{highlight:primary,shift:primary}">
                 </div>
@@ -73,33 +73,27 @@
         display: flex;
     }
 
-    @key-height: 35px;
+    @key-height: 30px;
     .key {
         position: relative;
         display: inline-block;
         vertical-align: middle;
         text-align: center;
-        padding: 3px 2px;
         height: @key-height;
-        margin: 4.5px;
+        margin: 6px;
         letter-spacing: 0.5px;
         color: #3a3a3a;
         background: #ffffff;
         flex: 1;
         border-style: solid;
-        border-width: 0.4px;
+        border-width: 0.3px;
         border-color: #E5E5E5;
         border-radius: 3px;
         text-transform: uppercase;
         font-size: 15px;
-        line-height: 1.3;
         white-space: nowrap;
         overflow: hidden;
-
-        span {
-            display: inline-block;
-            vertical-align: middle;
-        }
+        cursor: pointer;
 
         &::before {
             display: inline-block;
@@ -112,11 +106,6 @@
             position: relative;
             top: 1px;
             left: 1px;
-            cursor: pointer;
-        }
-
-        &.number {
-            margin: 4px 5px;
         }
 
         &.extra-size {
@@ -195,12 +184,6 @@
                     return [];
                 }
             },
-            showIndicator: {
-                type: Boolean,
-                default: function() {
-                    return false;
-                }
-            },
             highlightKey: {
                 type: String,
                 default: function() {
@@ -216,7 +199,7 @@
         },
         computed: {
             weakVisibility: function() {
-                return this.showIndicator && this.boundKeys.indexOf(this.highlightKey) === -1;
+                return this.highlightKey !== null;
             }
         },
         directives: {
