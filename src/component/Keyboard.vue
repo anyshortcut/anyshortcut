@@ -2,7 +2,7 @@
     <div class="container">
         <div class="keyboard">
             <div class="keyboard-row">
-                <div class="key weak" v-visible="showIndicator">`</div>
+                <div class="key weak" v-visible="weakVisibility"></div>
                 <div v-for="key in '1234567890'"
                      :class="keyClass(key)"
                      class="key number">{{ key }}
@@ -10,7 +10,7 @@
                 <div class="key weak invisible"></div>
             </div>
             <div class="keyboard-row">
-                <div class="key weak" v-visible="showIndicator">↹</div>
+                <div class="key weak" v-visible="weakVisibility"></div>
                 <div v-for="key in 'QWERTYUIOP'"
                      :class="keyClass(key)"
                      class="key">{{ key }}
@@ -18,7 +18,7 @@
                 <div class="key weak invisible"></div>
             </div>
             <div class="keyboard-row">
-                <div class="key weak extra-size-two" v-visible="showIndicator">⇪</div>
+                <div class="key weak extra-size-two" v-visible="weakVisibility"></div>
                 <div v-for="key in 'ASDFGHJKL'"
                      :class="keyClass(key)"
                      class="key">{{ key }}
@@ -27,8 +27,8 @@
             </div>
             <div class="keyboard-row">
                 <div class="key weak double-size lowercase lower-left"
-                     v-visible="showIndicator"
-                     :class="{highlight:primary}">shift
+                     v-visible="weakVisibility"
+                     :class="{highlight:primary,shift:primary}">
                 </div>
                 <div v-for="key in 'ZXCVBNM'"
                      :class="keyClass(key)"
@@ -38,18 +38,18 @@
                 </div>
             </div>
             <div class="keyboard-row">
-                <div class="key weak lower-left lowercase" v-visible="showIndicator">ctrl
+                <div class="key weak lower-left lowercase" v-visible="weakVisibility">
                 </div>
                 <div class="key weak lower-center lowercase highlight"
-                     v-visible="showIndicator">alt
+                     v-visible="weakVisibility">alt
                 </div>
                 <div class="key weak lower-center lowercase extra-size-two invisible"
-                     v-visible="showIndicator">&#8984;
+                     v-visible="weakVisibility">
                 </div>
                 <div class="key weak space-bar invisible"
-                     v-visible="showIndicator"></div>
+                     v-visible="weakVisibility"></div>
                 <div class="key weak lower-center lowercase extra-size-two"
-                     v-visible="showIndicator">&#8984;
+                     v-visible="weakVisibility">
                 </div>
                 <div class="key weak lower-center lowercase highlight invisible">alt
                 </div>
@@ -65,7 +65,7 @@
     }
 
     .container {
-        max-width: 480px;
+        max-width: 500px;
         margin: 5px auto;
     }
 
@@ -81,17 +81,17 @@
         text-align: center;
         padding: 3px 2px;
         height: @key-height;
-        margin: 4px;
+        margin: 4.5px;
         letter-spacing: 0.5px;
         color: #3a3a3a;
-        background-color: #ffffff;
+        background: #ffffff;
         flex: 1;
-        box-shadow: inset 0 -2px 0 #aaaaaa,
-        inset 0px 1px 1px -1px #fff,
-        0px 1px 1px 0px #7a7a7a;
+        border-style: solid;
+        border-width: 0.4px;
+        border-color: #E5E5E5;
         border-radius: 3px;
         text-transform: uppercase;
-        font-size: 14px;
+        font-size: 15px;
         line-height: 1.3;
         white-space: nowrap;
         overflow: hidden;
@@ -155,19 +155,20 @@
         &.weak {
             visibility: hidden;
             background-color: #f7f7f7;
-            border-width: 1px;
-            border-style: dashed;
+            border: none;
             box-shadow: none;
             cursor: text;
         }
 
+        &.shift::after {
+            content: 'shift';
+        }
+
         &.highlight {
-            border-color: #dd4814;
-            color: #dd4814;
-            border-width: 1.2px;
-            box-shadow: inset 0 -2px 0 #dd4814,
-            inset 0px 1px 1px -1px #fff,
-            0px 1px 1px 0px #dd4814;
+            background: #E9EDFB;
+            color: #4F6EC8;
+            font-weight: 500;
+            box-shadow: none;
         }
 
         &.invisible {
@@ -175,7 +176,7 @@
         }
 
         &.disabled {
-            background: #cccccc;
+            background: #ececec;
             cursor: text;
         }
 
@@ -213,6 +214,11 @@
                 }
             },
         },
+        computed: {
+            weakVisibility: function() {
+                return this.showIndicator && this.boundKeys.indexOf(this.highlightKey) === -1;
+            }
+        },
         directives: {
             visible: {
                 update: function(el, binding) {
@@ -231,9 +237,10 @@
                 this.$emit('key-changed', event.target.innerText);
             },
             keyClass: function(key) {
-                return {
-                    'highlight': key === this.highlightKey,
-                    'disabled': this.boundKeys && this.boundKeys.indexOf(key) !== -1
+                return this.boundKeys.indexOf(key) !== -1 ? {
+                    'disabled': true
+                } : {
+                    'highlight': key === this.highlightKey
                 };
             }
         },
