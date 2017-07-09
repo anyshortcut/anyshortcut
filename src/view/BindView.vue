@@ -1,22 +1,21 @@
 <template>
     <section class="bind-view">
         <div>
-            <p v-if="primary">
+            <p v-if="primary" class="primary-text">
                 Specify the primary shortcut:
             </p>
             <div v-else>
-                <p v-if="domainPrimaryShortcut">
+                <p v-if="domainPrimaryShortcut"><i class="fa fa-check-square bound-icon" aria-hidden="true"></i>
                     The domain <b>{{domainPrimaryShortcut.domain}}</b>
                     already bound with <span class="shortcut">SHIFT+ALT+{{domainPrimaryShortcut.key}}</span>
                 </p>
-                Specify the secondary shortcut for this domain:
+                <p class="primary-text">Specify the secondary shortcut for this domain:</p>
             </div>
         </div>
 
         <div>
             <keyboard :bound-keys="boundKeys"
-                      :show-indicator="showPopper"
-                      :highlight-key="keyChar"
+                      :highlight-key="highlightKey"
                       :primary="primary"
                       @key-hover-over="onKeyHoverOver"
                       @key-hover-leave="onHoverLeave">
@@ -39,7 +38,7 @@
                            autofocus @focus.native="$event.target.select()" required/>
                     <input @click="handleShortcutBinding(keyChar,comment)" type="button" value="Save"/>
                 </div>
-                <div class="popper-arrow" x-arrow></div>
+                <div class="popper-arrow" :class="{'cursor-pointer':highlightKey !== null}" x-arrow></div>
             </div>
         </div>
 
@@ -61,6 +60,7 @@
     .bind-view {
         display: flex;
         flex-direction: column;
+        margin-top: 20px;
     }
 
     #popover {
@@ -69,6 +69,7 @@
         width: 50%;
         box-shadow: @box-shadow-base;
         padding: 5px;
+        margin-bottom: 5px;
     }
 
     .popper-arrow {
@@ -83,6 +84,10 @@
         left: calc(50% - 5px);
         margin-top: 0;
         margin-bottom: 0;
+    }
+
+    .cursor-pointer {
+        cursor: pointer;
     }
 
     .two-keystroke {
@@ -140,6 +145,13 @@
             // All bound keys, for keyboard component usage.
             boundKeys: function() {
                 return this.shortcuts ? Object.keys(this.shortcuts) : [];
+            },
+            highlightKey: function() {
+                if (this.showPopper && this.boundKeys.indexOf(this.keyChar) === -1) {
+                    return this.keyChar;
+                } else {
+                    return null;
+                }
             },
         },
         components: {
