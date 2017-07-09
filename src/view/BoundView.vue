@@ -1,25 +1,53 @@
 <template>
-    <section>
-        <div v-if="shortcut.primary">
-            <span class="shortcut">ALT+SHIFT+{{ shortcut.key }}</span>
+    <section class="bound-section">
+        <div class="bound-info">
+            <i class="fa fa-check-square fa-3x bound-icon" aria-hidden="true"></i>
+            <div>
+                <div v-if="shortcut.primary">
+                    <span class="shortcut">ALT+SHIFT+{{ shortcut.key }}</span>
+                </div>
+                <div v-else>
+                    <p>The url already bound with <span class="shortcut">ALT+{{ shortcut.key }}</span></p>
+                </div>
+                <p id="bound_time">{{shortcut.created_time | fromNow}}</p>
+            </div>
         </div>
-        <div v-else>
-            <p>The url already bound with <span class="shortcut">ALT+{{ shortcut.key }}</span></p>
-        </div>
-        <p id="bound_time">{{shortcut.created_time | fromNow}}</p>
-        <button @click="handleShortcutUnbinding(shortcut)" id="unbind_shortcut_button">Delete Shortcut</button>
+
+        <button @click="handleShortcutUnbinding(shortcut)" class="delete-button">Delete Shortcut</button>
     </section>
 </template>
-<style lang="css">
-    #unbind_shortcut_button {
+<style lang="less">
+    @import "../less/_var.less";
+
+    .bound-section {
+        display: flex;
+        margin: 25px;
+        flex-direction: column;
+        align-items: center;
+
+        .bound-info {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bound-icon {
+            color: #09BB07;
+            margin: 0 10px;
+        }
+
+    }
+
+    .delete-button {
+        .button;
         background-color: rgb(181, 61, 10);
         text-align: center;
         padding: 10px;
         color: white;
-        align-self: center;
         border: none;
         border-radius: 3px;
-        margin: 20px;
+        margin-top: 20px;
         width: 80%;
     }
 </style>
