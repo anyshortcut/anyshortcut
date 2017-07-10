@@ -3,23 +3,29 @@
         <section class="bound-section">
             <img src="../img/check.svg" alt="" class="bound-icon">
             <div class="bound-info">
-                <div class="bound-shortcut">
-                    <p v-if="shortcut.primary" class="primary-text">Primary shortcut:
-                        <span class="shortcut">ALT+SHIFT+{{ shortcut.key }}</span>
-                    </p>
-                    <p v-else class="primary-text">Secondary shortcut:
-                        <span class="shortcut">ALT+{{ shortcut.key }}</span>
-                    </p>
-                    <img class="delete-button"
-                         @click="showDeleteModal=true"
-                         src="../img/delete.svg" alt="Delete"/>
-                </div>
+                <p v-if="shortcut.primary" class="primary-text">Primary shortcut:
+                    <span class="shortcut">ALT+SHIFT+{{ shortcut.key }}</span>
+                    <span>
+                            <img class="delete-button"
+                                 @click="showDeleteModal=true"
+                                 src="../img/delete.svg" alt="Delete"/>
+                       </span>
+                </p>
+                <p v-else class="primary-text">Secondary shortcut:
+                    <span class="shortcut">ALT+{{ shortcut.key }}</span>
+                    <span>
+                            <img class="delete-button"
+                                 @click="handleShortcutUnbinding(shortcut)"
+                                 src="../img/delete.svg" alt="Delete"/>
+                       </span>
+                </p>
                 <p class="bound-stats">
                     You have open the shortcut <span class="shortcut-property">{{shortcut.open_times}}</span>
                     times since <span class="shortcut-property">{{shortcut.created_time | fromNow}}</span>
                 </p>
             </div>
         </section>
+        
         <div class="shortcut-delete-modal" v-show="showDeleteModal">
             <i class="close" @click="showDeleteModal=false">X</i>
             <p> Feel free to delete the primary shortcut, all secondary shortcuts of the domain still remain.</p>
@@ -55,11 +61,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-        }
-
-        .bound-shortcut {
-            display: flex;
-            align-items: center;
         }
 
         .bound-stats {
