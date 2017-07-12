@@ -27,20 +27,10 @@
         </bind-view>
         <section v-if="domainPrimaryShortcut">
             <p>Secondary shortcut list of <span class="shortcut-domain">{{domainPrimaryShortcut.domain}}</span>:</p>
-            <ul v-if="shortcuts">
-                <li v-for="(shortcut,key) in shortcuts">
-                    <div class="shortcut-secondary">{{key}}</div>
-                    <div class="shortcut-comment">
-                        <a :href="shortcut.url" target="_blank">{{shortcut.comment || shortcut.title}}</a>
-                        <img class="delete-button"
-                             src="../img/delete.svg" alt="Delete"
-                             @click="handleShortcutUnbinding(shortcut)"/>
-                    </div>
-                </li>
-            </ul>
-            <div class="shortcut-empty-list" v-else>
-                No secondary shortcut bound yet, go ahead to bound!
-            </div>
+            <shortcut-list :shortcuts="shortcuts"
+                           @pre-unbind="loading=true"
+                           @post-unbind="onPostUnbind">
+            </shortcut-list>
         </section>
         <div v-show="loading" class="loading">
             <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
@@ -75,15 +65,6 @@
         outline: none;
     }
 
-    ul {
-        list-style: none outside;
-    }
-
-    li {
-        text-align: left;
-        margin: 5px;
-    }
-
     div.loading {
         position: fixed;
         bottom: 50%;
@@ -115,38 +96,13 @@
         }
     }
 
-    .shortcut-secondary {
-        .shortcut;
-        display: inline-block;
-        width: 36px;
-        height: 30px;
-        font-size: 15px;
-    }
-
-    .shortcut-comment {
-        display: inline-block;
-    }
-
-    .delete-button {
-        vertical-align: middle;
-    }
-
-    .delete-button:hover {
-        display: inline-block;
-        cursor: pointer;
-        content: url("../img/delete-dark.svg");
-    }
-
-    .shortcut-empty-list {
-        width: 400px;
-    }
 </style>
 <script>
     import common from "../js/common.js";
     import _ from "lodash";
     import BoundView from "./BoundView.vue";
     import BindView from "./BindView.vue";
-    import mixin from "../js/mixin.js";
+    import ShortcutList from "../component/ShortcutList.vue";
 
     export default{
         name: 'main-view',
@@ -162,8 +118,8 @@
         components: {
             BoundView,
             BindView,
+            ShortcutList,
         },
-        mixins: [mixin],
         methods: {
             onPostBind: function(result) {
                 this.loading = false;
@@ -236,16 +192,5 @@
         created: function() {
             this.queryShortcuts();
         },
-        mounted: function() {
-            this.$on(['pre-bind', 'pre-unbind'], () => {
-                this.loading = true;
-            });
-            this.$on('post-bind', (result) => {
-                this.onPostBind(result);
-            });
-            this.$on('post-unbind', (result) => {
-                this.onPostUnbind(result);
-            });
-        }
     }
 </script>
