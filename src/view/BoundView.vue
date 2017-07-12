@@ -25,7 +25,7 @@
                 </p>
             </div>
         </section>
-        
+
         <div class="shortcut-delete-modal" v-show="showDeleteModal">
             <i class="close" @click="showDeleteModal=false">X</i>
             <p> Feel free to delete the primary shortcut, all secondary shortcuts of the domain still remain.</p>
@@ -65,6 +65,7 @@
 
         .bound-stats {
             padding: 10px;
+            margin-top: 5px;
             text-align: center;
             width: 320px;
             color: #666666;

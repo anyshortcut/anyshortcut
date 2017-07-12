@@ -63,6 +63,7 @@
         margin-top: 20px;
     }
 
+    /* Don't change the #popover id, Popper.js usage */
     #popover {
         border-radius: 3px;
         background-color: #ffffff;
