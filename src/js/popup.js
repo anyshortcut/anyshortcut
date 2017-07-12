@@ -9,6 +9,16 @@ import Message from "../component/message.js";
 Vue.prototype.$message = Message;
 Vue.prototype.$background = chrome.extension.getBackgroundPage();
 
+Vue.directive('visible', {
+    update: function(el, binding) {
+        if (binding.value) {
+            el.style.visibility = 'visible';
+        } else {
+            el.style.visibility = 'hidden';
+        }
+    }
+});
+
 let app = new Vue({
     data: {
         currentView: null,

@@ -202,17 +202,6 @@
                 return this.highlightKey !== null;
             }
         },
-        directives: {
-            visible: {
-                update: function(el, binding) {
-                    if (binding.value) {
-                        el.style.visibility = 'visible';
-                    } else {
-                        el.style.visibility = 'hidden';
-                    }
-                }
-            }
-        },
         methods: {
             onKeyClick: function(event) {
                 //What difference between e.currentTarget and e.target,
