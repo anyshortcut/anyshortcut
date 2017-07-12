@@ -63,6 +63,10 @@
     a {
         text-decoration: none;
         outline: none;
+
+        &:hover, &:visited, &:active {
+            color: inherit;
+        }
     }
 
     div.loading {
