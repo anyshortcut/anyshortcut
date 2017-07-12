@@ -6,7 +6,7 @@
                 <span>anyshortcut</span>
             </a>
             <div>
-                <a href="#/setting" class="menu"><i class="fa fa-cog"></i> Setting</a>
+                <a href="#/setting" class="menu">Settings</a>
             </div>
         </header>
 
@@ -25,14 +25,22 @@
                    @pre-unbind="loading=true"
                    @post-unbind="onPostUnbind">
         </bind-view>
-        <section>
-            <ul v-show="shortcuts && !primary">
-                <p>Here are secondary shortcut list for this domain:</p>
+        <section v-if="domainPrimaryShortcut">
+            <p>Secondary shortcut list of <span class="shortcut-domain">{{domainPrimaryShortcut.domain}}</span>:</p>
+            <ul v-if="shortcuts">
                 <li v-for="(shortcut,key) in shortcuts">
-                    <span class="shortcut">{{key}}</span>
-                    <span>    <a :href="shortcut.url" target="_blank">{{shortcut.comment || shortcut.title}}</a></span>
+                    <div class="shortcut-secondary">{{key}}</div>
+                    <div class="shortcut-comment">
+                        <a :href="shortcut.url" target="_blank">{{shortcut.comment || shortcut.title}}</a>
+                        <img class="delete-button"
+                             src="../img/delete.svg" alt="Delete"
+                             @click="handleShortcutUnbinding(shortcut)"/>
+                    </div>
                 </li>
             </ul>
+            <div class="shortcut-empty-list" v-else>
+                No secondary shortcut bound yet, go ahead to bound!
+            </div>
         </section>
         <div v-show="loading" class="loading">
             <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
@@ -41,12 +49,13 @@
     </div>
 </template>
 <style lang="less">
-    @import "../less/_var.less";
+    @import "../less/_common.less";
 
     body {
         font-family: "Poppins", sans-serif;
         font-weight: 400;
         font-size: 100%;
+        color: @content-font-color;
         text-align: center;
         margin: 0 auto;
     }
@@ -72,7 +81,7 @@
 
     li {
         text-align: left;
-        margin: 2px;
+        margin: 5px;
     }
 
     div.loading {
@@ -106,10 +115,30 @@
         }
     }
 
-    .shortcut {
-        .shortcut-mixin;
-        font-weight: bold;
-        font-size: 16px;
+    .shortcut-secondary {
+        .shortcut;
+        display: inline-block;
+        width: 36px;
+        height: 30px;
+        font-size: 15px;
+    }
+
+    .shortcut-comment {
+        display: inline-block;
+    }
+
+    .delete-button {
+        vertical-align: middle;
+    }
+
+    .delete-button:hover {
+        display: inline-block;
+        cursor: pointer;
+        content: url("../img/delete-dark.svg");
+    }
+
+    .shortcut-empty-list {
+        width: 400px;
     }
 </style>
 <script>
@@ -117,6 +146,7 @@
     import _ from "lodash";
     import BoundView from "./BoundView.vue";
     import BindView from "./BindView.vue";
+    import mixin from "../js/mixin.js";
 
     export default{
         name: 'main-view',
@@ -133,6 +163,7 @@
             BoundView,
             BindView,
         },
+        mixins: [mixin],
         methods: {
             onPostBind: function(result) {
                 this.loading = false;
@@ -204,6 +235,17 @@
         },
         created: function() {
             this.queryShortcuts();
+        },
+        mounted: function() {
+            this.$on(['pre-bind', 'pre-unbind'], () => {
+                this.loading = true;
+            });
+            this.$on('post-bind', (result) => {
+                this.onPostBind(result);
+            });
+            this.$on('post-unbind', (result) => {
+                this.onPostUnbind(result);
+            });
         }
     }
 </script>
