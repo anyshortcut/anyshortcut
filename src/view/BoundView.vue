@@ -1,28 +1,26 @@
 <template>
     <div>
         <section class="bound-section">
-            <img src="../img/check.svg" alt="" class="bound-icon">
             <div class="bound-info">
+                <img src="../img/check.svg" alt="" class="bound-icon">
                 <p v-if="shortcut.primary" class="primary-text">Primary shortcut:
                     <span class="shortcut">ALT+SHIFT+{{ shortcut.key }}</span>
                     <span>
                             <img class="delete-button"
-                                 @click="showDeleteModal=true"
-                                 src="../img/delete-light.svg" alt="Delete"/>
+                                 @click="showDeleteModal=true"/>
                     </span>
                 </p>
-                <p v-else class="primary-text">Secondary shortcut:
+                <p class="primary-text" v-else>Secondary shortcut:
                     <span class="shortcut">ALT+{{ shortcut.key }}</span>
                     <span>
                             <img class="delete-button"
-                                 @click="handleShortcutUnbinding(shortcut)"
-                                 src="../img/delete-light.svg" alt="Delete"/>
+                                 @click="handleShortcutUnbinding(shortcut)"/>
                     </span>
                 </p>
-                <p class="bound-stats">
-                    You have open the shortcut <span class="shortcut-property">{{shortcut.open_times}}</span>
-                    times since <span class="shortcut-property">{{shortcut.created_time | fromNow}}</span>
-                </p>
+            </div>
+            <div class="bound-stats">
+                You have open the shortcut <span class="shortcut-property">{{shortcut.open_times}}</span>
+                times since <span class="shortcut-property">{{shortcut.created_time | fromNow}}</span>
             </div>
         </section>
 
@@ -41,26 +39,24 @@
 
     .bound-section {
         display: flex;
-        margin: 25px;
+        margin: 20px;
 
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
 
+        .bound-info {
+            display: flex;
+            align-items: center;
+        }
+
         .bound-icon {
             background-color: #67D500;
-            width: 70px;
-            height: 70px;
+            width: 30px;
+            height: 30px;
             margin: 0 10px;
             border-radius: 50%;
             padding: 5px;
-        }
-
-        .bound-info {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
         }
 
         .bound-stats {
@@ -75,10 +71,6 @@
         .shortcut-property {
             font-weight: 500;
             color: #333333;
-        }
-
-        .delete-button {
-            vertical-align: middle;
         }
     }
 

@@ -25,7 +25,7 @@
                    @pre-unbind="loading=true"
                    @post-unbind="onPostUnbind">
         </bind-view>
-        <section v-if="domainPrimaryShortcut">
+        <section v-if="domainPrimaryShortcut" class="secondary-shortcut-list">
             <p>Secondary shortcut list of <span class="shortcut-domain">{{domainPrimaryShortcut.domain}}</span>:</p>
             <shortcut-list :shortcuts="shortcuts"
                            @pre-unbind="loading=true"
@@ -98,6 +98,10 @@
         a:visited, a:active {
             color: @menu-color;
         }
+    }
+
+    .secondary-shortcut-list {
+        margin-top: -10px;
     }
 
 </style>

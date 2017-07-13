@@ -10,7 +10,6 @@
                    :href="shortcut.url"
                    target="_blank">{{shortcut.comment || shortcut.title}}</a>
                 <img class="delete-button"
-                     src="../img/delete-light.svg" alt="Delete"
                      v-visible="hoveredKey === key"
                      @click="handleShortcutUnbinding(shortcut)"/>
             </li>
@@ -37,7 +36,7 @@
         border-width: 0;
         border-bottom-width: 1px;
         border-style: solid;
-        padding: 3px 10px;
+        padding: 3px 8px;
         font-size: 15px;
 
         &:hover {
