@@ -21,15 +21,24 @@
                       @key-hover-leave="onHoverLeave">
             </keyboard>
             <div id="popover"
+                 class="popper"
                  v-show="showPopper"
-                 @mouseover="onHoverOver"
-                 @mouseleave="onHoverLeave">
-                <div v-if="hoveredShortcut">
-                    <p>{{keyChar}}</p>
-                    <p>{{hoveredShortcut.comment || hoveredShortcut.title}}</p>
-                    <button @click="handleShortcutUnbinding(hoveredShortcut)">Delete?</button>
+                 @mouseover="onHoverOver">
+                <div class="popper-bound" v-if="hoveredShortcut">
+                    <balloon :animate="true"
+                             :line="false"
+                             :rotate="-50"
+                             :content="keyChar">
+                    </balloon>
+                    <div class="popper-action">
+                        <p class="primary-subtitle">{{hoveredShortcut.comment || hoveredShortcut.title}}</p>
+                        <div class="shortcut-delete-button"
+                             @click="handleShortcutUnbinding(hoveredShortcut);">
+                            Delete
+                        </div>
+                    </div>
                 </div>
-                <div v-else>
+                <div class="popper-bind" v-else>
                     Bind shortcut key!
                     <p>{{keyChar}}</p>
                     <input v-model="comment"
@@ -63,14 +72,25 @@
         margin-top: 20px;
     }
 
-    /* Don't change the #popover id, Popper.js usage */
-    #popover {
+    .popper {
         border-radius: 3px;
         background-color: #ffffff;
         width: 50%;
         box-shadow: @box-shadow-base;
         padding: 5px;
         margin-bottom: 5px;
+    }
+
+    .popper-bound {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .popper-action {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
     }
 
     .popper-arrow {
@@ -107,6 +127,7 @@
 </style>
 <script type="es6">
     import Popper from "popper";
+    import Balloon from "../component/Balloon.vue";
     import Keyboard from "../component/Keyboard.vue";
     import mixin from "../js/mixin.js";
 
@@ -157,6 +178,7 @@
         },
         components: {
             Keyboard,
+            Balloon,
         },
         mixins: [mixin],
         methods: {

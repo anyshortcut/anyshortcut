@@ -26,7 +26,9 @@
 
         <div class="shortcut-delete-modal" v-show="showDeleteModal">
             <i class="close" @click="showDeleteModal=false">X</i>
-            <p> Feel free to delete the primary shortcut, all secondary shortcuts of the domain still remain.</p>
+            <p class="primary-subtitle">
+                Feel free to delete the primary shortcut, all secondary shortcuts of the domain still remain.
+            </p>
             <div class="shortcut-delete-button"
                  @click="handleShortcutUnbinding(shortcut);showDeleteModal=false;">
                 Sure, delete it!
@@ -94,20 +96,6 @@
 
         p {
             margin: 0 25px 20px 25px;
-            color: #2b72dc;
-        }
-
-        .shortcut-delete-button {
-            padding: 2px 30px;
-            background: #d85b52;
-            color: #FFFFFF;
-            text-align: center;
-            cursor: pointer;
-            border-radius: 3px;
-
-            &:hover {
-                background: #aa3030;
-            }
         }
 
         .close {
