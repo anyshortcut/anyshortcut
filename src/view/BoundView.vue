@@ -8,16 +8,16 @@
                     <span>
                             <img class="delete-button"
                                  @click="showDeleteModal=true"
-                                 src="../img/delete.svg" alt="Delete"/>
-                       </span>
+                                 src="../img/delete-light.svg" alt="Delete"/>
+                    </span>
                 </p>
                 <p v-else class="primary-text">Secondary shortcut:
                     <span class="shortcut">ALT+{{ shortcut.key }}</span>
                     <span>
                             <img class="delete-button"
                                  @click="handleShortcutUnbinding(shortcut)"
-                                 src="../img/delete.svg" alt="Delete"/>
-                       </span>
+                                 src="../img/delete-light.svg" alt="Delete"/>
+                    </span>
                 </p>
                 <p class="bound-stats">
                     You have open the shortcut <span class="shortcut-property">{{shortcut.open_times}}</span>
@@ -75,6 +75,10 @@
         .shortcut-property {
             font-weight: 500;
             color: #333333;
+        }
+
+        .delete-button {
+            vertical-align: middle;
         }
     }
 

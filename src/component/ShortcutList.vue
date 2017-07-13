@@ -10,7 +10,7 @@
                    :href="shortcut.url"
                    target="_blank">{{shortcut.comment || shortcut.title}}</a>
                 <img class="delete-button"
-                     src="../img/delete.svg" alt="Delete"
+                     src="../img/delete-light.svg" alt="Delete"
                      v-visible="hoveredKey === key"
                      @click="handleShortcutUnbinding(shortcut)"/>
             </li>
@@ -33,17 +33,19 @@
         display: flex;
         justify-content: flex-start;
         align-items: center;
-        border-radius: 3px;
-        background-color: #fbfbfb;
-        padding: 3px 10px;
-        border-width: 1px;
-        border-color: transparent;
+        border-color: #f4f4f4;
+        border-width: 0;
+        border-bottom-width: 1px;
         border-style: solid;
-        margin: 5px;
+        padding: 3px 10px;
+        font-size: 15px;
 
         &:hover {
-            /*border-color: @primary-color;*/
             background: #f8f8f8;
+        }
+
+        &:last-child {
+            border-width: 0;
         }
     }
 
@@ -51,7 +53,7 @@
         .shortcut;
         display: inline-block;
         width: 38px;
-        height: 30px;
+        height: 28px;
         letter-spacing: 0.6px;
         font-size: 15px;
     }
@@ -65,13 +67,9 @@
         text-overflow: ellipsis;
     }
 
-    .delete-button {
-        visibility: hidden;
-    }
-
     .delete-button:hover {
         cursor: pointer;
-        content: url("../img/delete-dark.svg");
+        content: url("../img/delete.svg");
     }
 
     .shortcut-empty-list {
