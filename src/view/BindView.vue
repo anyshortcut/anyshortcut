@@ -25,17 +25,16 @@
                  v-show="showPopper"
                  @mouseover="onHoverOver">
                 <div class="popper-bound" v-if="hoveredShortcut">
-                    <balloon :animate="true"
-                             :line="false"
-                             :rotate="-50"
-                             :content="keyChar">
-                    </balloon>
-                    <div class="popper-action">
-                        <p class="primary-subtitle">{{hoveredShortcut.comment || hoveredShortcut.title}}</p>
-                        <div class="shortcut-delete-button"
-                             @click="handleShortcutUnbinding(hoveredShortcut);">
-                            Delete
-                        </div>
+                    <div class="shortcut-domain">
+                        <img class="shortcut-favicon"
+                             :src="hoveredShortcut.favicon"
+                             alt="favicon"/>
+                        {{hoveredShortcut.domain}}
+                    </div>
+                    <p class="primary-subtitle">{{hoveredShortcut.comment || hoveredShortcut.title}}</p>
+                    <div class="shortcut-delete-button"
+                         @click="handleShortcutUnbinding(hoveredShortcut);">
+                        Delete
                     </div>
                 </div>
                 <div class="popper-bind" v-else>
@@ -69,7 +68,6 @@
     .bind-view {
         display: flex;
         flex-direction: column;
-        margin-top: 20px;
     }
 
     .popper {
@@ -82,11 +80,6 @@
     }
 
     .popper-bound {
-        display: flex;
-        justify-content: space-around;
-    }
-
-    .popper-action {
         display: flex;
         flex-direction: column;
         align-items: center;
