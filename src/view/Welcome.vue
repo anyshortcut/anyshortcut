@@ -5,8 +5,9 @@
             <figcaption> Open any website by any shortcut! </figcaption>
         </figure>
         <section class="introduction">
-            <a :href="signInUrl" target="_blank">Sign in</a> now to boost productivity and sync your shortcuts!
+            <a :href="signInUrl" target="_blank">Sign up</a> to boost productivity and sync your shortcuts!
         </section>
+        <a class="attractive-button" :href="signInUrl" target="_blank">Sign Up Now!</a>
         <footer>
             <a :href="tryUrl" target="_blank" class="grey-link">I just wanna a try now</a>
         </footer>
@@ -21,6 +22,7 @@
         display: flex;
         flex-direction: column;
         justify-content: center;
+        align-items: center;
     }
 
     .logo {
@@ -33,7 +35,7 @@
 
         span {
             color: #4F6EC8;
-            font-size: 35px;
+            font-size: 30px;
             font-weight: bold;
             margin: 10px;
         }
@@ -45,10 +47,7 @@
 
     figcaption {
         color: gray;
-        font-size: 16px;
-        display: flex;
-        align-self: center;
-        align-content: center;
+        font-size: 15px;
     }
 
     .introduction {
@@ -58,6 +57,14 @@
     a:focus {
         text-decoration: none;
         outline: none;
+    }
+
+    .attractive-button {
+        width: 60%;
+        background: #dd4814;
+        color: #FFFFFF;
+        font-size: 15px;
+        border-radius: 3px;
     }
 
     footer {
