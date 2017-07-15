@@ -5,9 +5,10 @@
                 @mouseover="hoveredKey=key"
                 @mouseleave="hoveredKey=null"
                 v-for="(shortcut,key) in shortcuts">
-                <div class="shortcut-secondary">{{key}}</div>
+                <div class="shortcut-secondary" :title="shortcut.title">{{key}}</div>
                 <a class="shortcut-comment"
                    :href="shortcut.url"
+                   :title="shortcut.url"
                    target="_blank">{{shortcut.comment || shortcut.title}}</a>
                 <img class="delete-button"
                      v-visible="hoveredKey === key"

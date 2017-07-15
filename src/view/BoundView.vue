@@ -4,14 +4,14 @@
             <div class="bound-info">
                 <img src="../img/check.svg" alt="" class="bound-icon">
                 <p v-if="shortcut.primary" class="primary-text">Primary shortcut:
-                    <span class="shortcut">ALT+SHIFT+{{ shortcut.key }}</span>
+                    <span class="shortcut" :title="shortcut.title">ALT+SHIFT+{{ shortcut.key }}</span>
                     <span>
                             <img class="delete-button"
                                  @click="showDeleteModal=true"/>
                     </span>
                 </p>
                 <p class="primary-text" v-else>Secondary shortcut:
-                    <span class="shortcut">ALT+{{ shortcut.key }}</span>
+                    <span class="shortcut" :title="shortcut.title">ALT+{{ shortcut.key }}</span>
                     <span>
                             <img class="delete-button"
                                  @click="handleShortcutUnbinding(shortcut)"/>
