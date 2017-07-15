@@ -29,7 +29,7 @@
                         <img class="shortcut-favicon"
                              :src="hoveredShortcut.favicon"
                              alt="favicon"/>
-                        {{hoveredShortcut.domain}}
+                        {{hoveredShortcutDomain}}
                     </div>
                     <p class="primary-subtitle">{{hoveredShortcut.comment || hoveredShortcut.title}}</p>
                     <div class="shortcut-delete-button"
@@ -123,6 +123,7 @@
     import Balloon from "../component/Balloon.vue";
     import Keyboard from "../component/Keyboard.vue";
     import mixin from "../js/mixin.js";
+    import common from "../js/common.js";
 
     export default{
         name: 'bind-view',
@@ -156,6 +157,13 @@
             // A mouse hovered shortcut computed object
             hoveredShortcut: function() {
                 return this.shortcuts[this.keyChar];
+            },
+            hoveredShortcutDomain: function() {
+                if (this.hoveredShortcut.primary) {
+                    return this.hoveredShortcut.domain;
+                } else {
+                    return common.getHostnameFromUrl(this.hoveredShortcut.url);
+                }
             },
             // All bound keys, for keyboard component usage.
             boundKeys: function() {
