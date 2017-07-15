@@ -37,7 +37,7 @@
     </div>
 </template>
 <style lang="less">
-    @import "../less/_var.less";
+    @import "../less/_common.less";
 
     .bound-section {
         display: flex;
@@ -99,14 +99,9 @@
         }
 
         .close {
+            .close-button;
             display: flex;
             align-self: flex-end;
-            color: #CECECE;
-            padding: 10px;
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            outline: none;
         }
     }
 

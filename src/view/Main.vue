@@ -26,7 +26,9 @@
                    @post-unbind="onPostUnbind">
         </bind-view>
         <section v-if="domainPrimaryShortcut" class="secondary-shortcut-list">
-            <p>Secondary shortcut list of <span class="shortcut-domain">{{domainPrimaryShortcut.domain}}</span>:</p>
+            <div>
+                Domain secondary shortcuts:
+            </div>
             <shortcut-list :shortcuts="shortcuts"
                            @pre-unbind="loading=true"
                            @post-unbind="onPostUnbind">

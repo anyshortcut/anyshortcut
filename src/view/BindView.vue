@@ -4,11 +4,20 @@
             Specify the primary shortcut:
         </div>
         <div v-else>
-            <p v-if="domainPrimaryShortcut"><i class="fa fa-check-square bound-icon" aria-hidden="true"></i>
-                The domain <b>{{domainPrimaryShortcut.domain}}</b>
-                already bound with <span class="shortcut">SHIFT+ALT+{{domainPrimaryShortcut.key}}</span>
-            </p>
-            <div class="primary-text">Specify the secondary shortcut for this domain:</div>
+            <div v-if="domainPrimaryShortcut && showDomainBoard" class="domain-primary-bound">
+                <span class="shortcut-domain">
+                    <img class="shortcut-favicon"
+                         :src="domainPrimaryShortcut.favicon"
+                         alt="favicon"/>
+                    {{domainPrimaryShortcut.domain}}
+                </span>
+                already bound primary shortcut
+                <span class="shortcut" :title="domainPrimaryShortcut.title">{{domainPrimaryShortcut.key}}</span>
+
+                <span class="close" @click="showDomainBoard=false">X</span>
+            </div>
+            <div class="margin-top-28" v-else></div>
+            <div class="primary-text">Specify the secondary shortcut:</div>
         </div>
 
         <div>
@@ -21,7 +30,8 @@
             <div id="popover"
                  class="popper"
                  v-show="showPopper"
-                 @mouseover="onHoverOver">
+                 @mouseover="onHoverOver"
+                 @mouseleave="onHoverLeave">
                 <div class="popper-bound" v-if="hoveredShortcut">
                     <div class="shortcut-domain">
                         <img class="shortcut-favicon"
@@ -66,7 +76,7 @@
     </section>
 </template>
 <style lang="less">
-    @import "../less/_var.less";
+    @import "../less/_common.less";
 
     .bind-view {
         display: flex;
@@ -127,6 +137,21 @@
         cursor: pointer;
     }
 
+    .domain-primary-bound {
+        position: relative;
+        padding: 8px;
+        color: #888888;
+        margin: 5px;
+        box-shadow: @box-shadow-base;
+
+        .close {
+            .close-button;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+    }
+
     .two-keystroke {
         display: inline-block;
 
@@ -161,6 +186,7 @@
                 strokeKeyChar: null,
                 strokeComment: null,
                 showPopper: false,
+                showDomainBoard: true,
             };
         },
         props: {
