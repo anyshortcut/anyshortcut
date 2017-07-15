@@ -1,13 +1,14 @@
 <template>
     <main>
-        <figure class="logo">
-            <img src="../img/icon48.png" alt=""><span>anyshortcut</span>
-            <figcaption> Open any website by any shortcut! </figcaption>
-        </figure>
+        <a class="anyshortcut" href="https://anyshortcut.com" target="_blank">
+            <img class="brand-logo" alt="">
+            <span>anyshortcut</span>
+        </a>
+        <img class="balloon-image" src="../img/computer-and-balloons.svg" alt="">
         <section class="introduction">
-            <a :href="signInUrl" target="_blank">Sign up</a> to boost productivity and sync your shortcuts!
+            Sign in to boost productivity and sync your shortcuts!
         </section>
-        <a class="attractive-button" :href="signInUrl" target="_blank">Sign Up Now!</a>
+        <a class="attractive-button" :href="signInUrl" target="_blank">Sign Up Now</a>
         <footer>
             <a :href="tryUrl" target="_blank" class="grey-link">I just wanna a try now</a>
         </footer>
@@ -25,33 +26,24 @@
         align-items: center;
     }
 
-    .logo {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-        margin: 20px;
-
-        span {
-            color: #4F6EC8;
-            font-size: 30px;
-            font-weight: bold;
-            margin: 10px;
-        }
+    .anyshortcut {
+        .brand;
+        font-size: 18px;
+        position: relative;
+        top: 0;
+        left: 0;
+        padding: 8px;
+        align-self: flex-start;
     }
 
-    figure img {
-        padding: 10px;
-    }
-
-    figcaption {
-        color: gray;
-        font-size: 15px;
+    .balloon-image {
+        margin: 15px;
     }
 
     .introduction {
         padding: 10px 40px;
+        font-weight: 600;
+        font-size: 16px;
     }
 
     a:focus {
@@ -61,10 +53,14 @@
 
     .attractive-button {
         width: 60%;
-        background: #dd4814;
+        background: linear-gradient(@secondary-color, @primary-color);
         color: #FFFFFF;
         font-size: 15px;
         border-radius: 3px;
+
+        &:hover {
+            background: linear-gradient(@primary-color, #3A56A8);
+        }
     }
 
     footer {
