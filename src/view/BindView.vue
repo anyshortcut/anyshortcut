@@ -1,16 +1,14 @@
 <template>
     <section class="bind-view">
-        <div>
-            <p v-if="primary" class="primary-text">
-                Specify the primary shortcut:
+        <div v-if="primary" class="primary-text margin-top-28">
+            Specify the primary shortcut:
+        </div>
+        <div v-else>
+            <p v-if="domainPrimaryShortcut"><i class="fa fa-check-square bound-icon" aria-hidden="true"></i>
+                The domain <b>{{domainPrimaryShortcut.domain}}</b>
+                already bound with <span class="shortcut">SHIFT+ALT+{{domainPrimaryShortcut.key}}</span>
             </p>
-            <div v-else>
-                <p v-if="domainPrimaryShortcut"><i class="fa fa-check-square bound-icon" aria-hidden="true"></i>
-                    The domain <b>{{domainPrimaryShortcut.domain}}</b>
-                    already bound with <span class="shortcut">SHIFT+ALT+{{domainPrimaryShortcut.key}}</span>
-                </p>
-                <p class="primary-text">Specify the secondary shortcut for this domain:</p>
-            </div>
+            <div class="primary-text">Specify the secondary shortcut for this domain:</div>
         </div>
 
         <div>
@@ -28,6 +26,7 @@
                     <div class="shortcut-domain">
                         <img class="shortcut-favicon"
                              :src="hoveredShortcut.favicon"
+                             @loadstart="$event.target.src=null"
                              alt="favicon"/>
                         {{hoveredShortcutDomain}}
                     </div>
@@ -38,13 +37,17 @@
                     </div>
                 </div>
                 <div class="popper-bind" v-else>
-                    Bind shortcut key!
-                    <p>{{keyChar}}</p>
-                    <input v-model="comment"
+                    <label for="comment">Input comment for the shortcut</label>
+                    <input id="comment"
+                           class="shortcut-comment-input"
+                           v-model="comment"
                            placeholder="Comment for this url"
-                           maxlength="20"
+                           maxlength="50"
                            autofocus @focus.native="$event.target.select()" required/>
-                    <input @click="handleShortcutBinding(keyChar,comment)" type="button" value="Save"/>
+                    <div class="shortcut-bind-button"
+                         @click="handleShortcutBinding(keyChar,comment)">
+                        Bind
+                    </div>
                 </div>
                 <div class="popper-arrow" :class="{'cursor-pointer':highlightKey !== null}" x-arrow></div>
             </div>
@@ -79,11 +82,31 @@
         margin-bottom: 5px;
     }
 
-    .popper-bound {
+    .popper-bound, .popper-bind {
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
+    }
+
+    .shortcut-comment-input {
+        width: 220px;
+        height: 25px;
+        margin: 3px;
+        padding: 3px;
+        font-size: 14px;
+        color: @secondary-color;
+        border: solid #cecece 1px;
+
+        &:focus {
+            border: solid @primary-color 1px;
+        }
+    }
+
+    .shortcut-bind-button {
+        .button;
+        background-color: @secondary-color;
+        color: white;
     }
 
     .popper-arrow {
@@ -93,7 +116,7 @@
         height: 0;
         border-width: 10px;
         border-style: solid dashed dashed dashed;
-        border-color: #ffffff transparent transparent transparent;
+        border-color: @header-bgcolor transparent transparent transparent;
         bottom: -20px;
         left: calc(50% - 5px);
         margin-top: 0;
@@ -115,6 +138,10 @@
             width: 50px;
             height: 35px;
         }
+    }
+
+    .margin-top-28 {
+        margin-top: 28px;
     }
 
 </style>

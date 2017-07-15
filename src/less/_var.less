@@ -1,4 +1,5 @@
 @primary-color: #4F6EC8;
+@secondary-color: #2b72dc;
 @header-bgcolor: #FAFBFC;
 @content-bgcolor: #FFFFFF;
 @content-font-color: #131916;
@@ -51,7 +52,7 @@
 }
 
 .primary-subtitle {
-  color: #2b72dc;
+  color: @secondary-color;
   font-size: 16px;
 }
 
@@ -61,14 +62,22 @@
 }
 
 .shortcut-delete-button {
+  .button;
   padding: 2px 30px;
   background: #d85b52;
   color: #FFFFFF;
-  text-align: center;
-  cursor: pointer;
-  border-radius: 3px;
 
   &:hover {
     background: #aa3030;
   }
+}
+
+.button() {
+  cursor: pointer;
+  padding: 5px 25px;
+  height: 28px;
+  border-radius: 3px;
+  font-size: 14px;
+  box-shadow: @box-shadow-base;
+  text-align: center;
 }
