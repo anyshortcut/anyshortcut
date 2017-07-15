@@ -35,7 +35,7 @@ function buildHeader(onClose) {
     let header = createDiv('anyshortcut-modal-header');
     let brand = createDiv('');
     brand.innerHTML = `<a class="brand" href="https://anyshortcut.com" target="_blank">
-                    <img alt="">
+                    <img class="brand-logo" alt="">
                     <span>anyshortcut</span>
                 </a>`;
     header.appendChild(brand);

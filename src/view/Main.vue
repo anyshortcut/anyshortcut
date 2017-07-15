@@ -2,12 +2,10 @@
     <div class="main-view">
         <header class="main-header">
             <a class="brand" href="https://anyshortcut.com" target="_blank">
-                <img alt="">
+                <img class="brand-logo" alt="">
                 <span>anyshortcut</span>
             </a>
-            <div>
-                <a href="#/setting" class="menu">Settings</a>
-            </div>
+            <a href="#/setting" class="menu">Settings</a>
         </header>
 
         <bound-view v-if="shortcut"
@@ -70,10 +68,6 @@
     a {
         text-decoration: none;
         outline: none;
-
-        &:hover, &:visited, &:active {
-            color: inherit;
-        }
     }
 
     div.loading {
