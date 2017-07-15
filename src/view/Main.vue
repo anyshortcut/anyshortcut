@@ -27,7 +27,12 @@
         </bind-view>
         <section v-if="domainPrimaryShortcut" class="secondary-shortcut-list">
             <div>
-                Domain secondary shortcuts:
+                <span class="shortcut-domain">
+                    <img class="shortcut-favicon"
+                         :src="domainPrimaryShortcut.favicon"
+                         alt="favicon"/>
+                    {{domainPrimaryShortcut.domain}}
+                </span>'s secondary shortcuts:
             </div>
             <shortcut-list :shortcuts="shortcuts"
                            @pre-unbind="loading=true"
@@ -103,7 +108,11 @@
     }
 
     .secondary-shortcut-list {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         margin-top: -10px;
+        font-size: 16px;
     }
 
 </style>

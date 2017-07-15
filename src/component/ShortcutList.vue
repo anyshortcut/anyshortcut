@@ -1,23 +1,22 @@
 <template>
-    <div>
-        <ul v-if="shortcuts">
-            <li class="shortcut-list-item"
-                @mouseover="hoveredKey=key"
-                @mouseleave="hoveredKey=null"
-                v-for="(shortcut,key) in shortcuts">
-                <div class="shortcut-secondary" :title="shortcut.title">{{key}}</div>
-                <a class="shortcut-comment"
-                   :href="shortcut.url"
-                   :title="shortcut.url"
-                   target="_blank">{{shortcut.comment || shortcut.title}}</a>
-                <img class="delete-button"
-                     v-visible="hoveredKey === key"
-                     @click="handleShortcutUnbinding(shortcut)"/>
-            </li>
-        </ul>
-        <div class="shortcut-empty-list" v-else>
-            No secondary shortcut bound yet, go ahead to bound!
-        </div>
+    <ul v-if="Object.keys(shortcuts).length">
+        <li class="shortcut-list-item"
+            @mouseover="hoveredKey=key"
+            @mouseleave="hoveredKey=null"
+            v-for="(shortcut,key) in shortcuts">
+            <div class="shortcut-secondary" :title="shortcut.title">{{key}}</div>
+            <a class="shortcut-comment"
+               :href="shortcut.url"
+               :title="shortcut.url"
+               target="_blank">{{shortcut.comment || shortcut.title}}</a>
+            <img class="delete-button"
+                 v-visible="hoveredKey === key"
+                 @click="handleShortcutUnbinding(shortcut)"/>
+        </li>
+    </ul>
+    <div class="shortcut-empty-list" v-else>
+        <img src="../img/grey-balloons.svg" alt="">
+        <p>No secondary shortcut bound yet, go ahead to bound!</p>
     </div>
 </template>
 <style lang="less">
@@ -26,7 +25,8 @@
     ul {
         list-style: none outside;
         margin: 0 auto;
-        padding: 10px 40px;
+        padding: 5px;
+        width: 420px;
     }
 
     .shortcut-list-item {
@@ -73,7 +73,21 @@
     }
 
     .shortcut-empty-list {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
         width: 400px;
+        text-align: center;
+
+        img {
+            margin: 10px;
+        }
+
+        p {
+            color: #999999;
+            padding: 8px 80px;
+            font-size: 14px;
+        }
     }
 </style>
 <script type="es6">
