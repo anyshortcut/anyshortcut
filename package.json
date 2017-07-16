@@ -17,9 +17,10 @@
   "dependencies": {
     "axios": "^0.15.2",
     "lodash": "^4.17.4",
+    "lodash.template": "^4.4.0",
     "moment": "^2.18.1",
-    "popper.js": "^1.10.6",
-    "vue": "^2.3.4"
+    "popper.js": "^1.10.8",
+    "vue": "^2.4.1"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
