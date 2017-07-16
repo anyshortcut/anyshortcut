@@ -28,27 +28,15 @@ function openModal(content) {
 
     let modal = buildModal(div);
     document.body.insertAdjacentElement('beforeEnd', modal);
+
+    let closeButton = document.getElementById('anyshortcut-modal-close');
+    closeButton.onclick = function() {
+        window.clearTimeout(timeoutId);
+        timeoutId = undefined;
+        removeElementDelay(modal, 50);
+    };
     modal.focus();
     return modal;
-}
-
-function buildHeader(onClose) {
-    let header = createDiv('anyshortcut-modal-header');
-    let brand = createDiv('');
-    brand.innerHTML = `<a class="brand" href="https://anyshortcut.com" target="_blank">
-                    <img class="brand-logo" alt="">
-                    <span>anyshortcut</span>
-                </a>`;
-    header.appendChild(brand);
-
-    let closeButton = createDiv('anyshortcut-modal-close');
-    closeButton.textContent = 'X';
-    if (onClose) {
-        closeButton.onclick = onClose;
-    }
-
-    header.appendChild(closeButton);
-    return header;
 }
 
 function buildModal(content) {
@@ -75,12 +63,9 @@ function buildModal(content) {
         }
     });
 
-    container.appendChild(buildHeader(function(e) {
-        window.clearTimeout(timeoutId);
-        timeoutId = undefined;
-        removeElementDelay(modal, 50);
-    }));
-
+    let header = createDiv('anyshortcut-modal-header');
+    header.innerHTML = template.compile(template.modalHeader);
+    container.appendChild(header);
     container.appendChild(content);
     modal.appendChild(container);
     return modal;

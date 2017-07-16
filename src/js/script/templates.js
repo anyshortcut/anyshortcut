@@ -1,6 +1,12 @@
 import _ from "lodash";
 
 // Lodash templates
+const modalHeader = `<a class="brand" href="https://anyshortcut.com" target="_blank">
+    <img class="brand-logo" alt="">
+    <span>anyshortcut</span>
+</a>
+<div class="anyshortcut-modal-close" id="anyshortcut-modal-close">X</div>`;
+
 const shortcutNotFound = '<p>The <%- shortcutType %> shortcut key <span class="anyshortcut-shortcut"><%- key %></span>not bound for this domain yet!</p>';
 
 const queryShortcutFailed = '<p>Neither <span class="anyshortcut-shortcut">SHIFT+ALT+<%- firstKey %><%- secondKey %></span> nor <span class="anyshortcut-shortcut">SHIFT+ALT+<%- firstKey %>➯<%- secondKey %></span> bound yet!</p>';
@@ -33,6 +39,7 @@ const shortcutListEmpty = `<img class="grey-balloons" alt="">
 </div>`;
 
 export default {
+    modalHeader,
     shortcutNotFound,
     queryShortcutFailed,
     queryShortcutChooser,

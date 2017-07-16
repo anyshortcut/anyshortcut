@@ -50,6 +50,7 @@
     }
   ],
   "web_accessible_resources": [
+    "dist/img/*",
     "icon/*.png",
     "fonts/*.ttf"
   ],
