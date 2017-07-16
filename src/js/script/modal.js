@@ -1,5 +1,6 @@
 require("../../less/content-script.less");
 import helper from "./helper.js";
+import template from "./templates.js";
 
 function removeElementDelay(element, delay) {
     let timeoutId = window.setTimeout(() => {
@@ -40,8 +41,7 @@ function buildHeader(onClose) {
                 </a>`;
     header.appendChild(brand);
 
-    let closeButton = document.createElement('button');
-    closeButton.className = 'anyshortcut-modal-close';
+    let closeButton = createDiv('anyshortcut-modal-close');
     closeButton.textContent = 'X';
     if (onClose) {
         closeButton.onclick = onClose;
@@ -88,31 +88,27 @@ function buildModal(content) {
 
 export default {
     showPrimaryShortcutUnbound(pressedKey){
-        let innerHtml = `<p>the shortcut key <span class="anyshortcut-shortcut">ALT+SHIFT+${pressedKey}</span> 
-            not bound for this domain yet!</p>`;
-        openModal(innerHtml);
+        openModal(template.compile(template.shortcutNotFound, {
+            shortcutType: "primary",
+            key: "ALT+SHIFT+" + pressedKey
+        }));
     },
     showSecondaryShortcutUnbound(pressedKey){
-        let innerHtml = `<p>the secondary shortcut key <span class="anyshortcut-shortcut">ALT+${pressedKey}</span> 
-                        not bound for this domain yet!</p>`;
-        openModal(innerHtml);
+        openModal(template.compile(template.shortcutNotFound, {
+            shortcutType: "secondary",
+            key: "ALT+" + pressedKey,
+        }));
     },
     showQueryShortcutFailed(firstKey, secondKey){
-        let innerHtml = `<p>neither <span class="anyshortcut-shortcut">SHIFT+ALT+${firstKey}${secondKey}</span>
-                        nor <span class="anyshortcut-shortcut">SHIFT+ALT+${firstKey}➯${secondKey}</span> 
-                        bound yet!</p>`;
-        openModal(innerHtml);
+        openModal(template.compile(template.queryShortcutFailed, {
+            firstKey: firstKey,
+            secondKey: secondKey,
+        }));
     },
     showQueryShortcutChooser(primaryShortcut, secondaryShortcut, byBlank){
-        let innerHtml = `<ul>
-                            <li><div>
-                            #1 <img src="${primaryShortcut.favicon}" alt=""> ${primaryShortcut.title}
-                            </div></li>
-                            <li><div>
-                            #2 <img src="${secondaryShortcut.favicon}" alt=""> ${secondaryShortcut.title}
-                            </div></li>
-                        </ul>`;
-        let modal = openModal(innerHtml);
+        let modal = openModal(template.compile(template.queryShortcutChooser, {
+            shortcuts: [primaryShortcut, secondaryShortcut]
+        }));
 
         let chooserEventListener = function(e) {
             if (helper.isValidKeyCodeWithoutModifiers(e)) {
@@ -140,22 +136,12 @@ export default {
         let innerHtml;
 
         if (Object.keys(shortcuts).length === 0) {
-            innerHtml = `<div>There is no secondary shortcuts for 
-                             <span class="anyshortcut-shortcut">ALT+SHIFT+${pressedKey}</span>
-                         </div>`
+            innerHtml = template.compile(template.shortcutListEmpty, {key: pressedKey});
         } else {
-            let liElements = '';
-            for (let key in shortcuts) {
-                if (shortcuts.hasOwnProperty(key)) {
-                    let shortcut = shortcuts[key];
-                    liElements += `<li><div>
-                            ${shortcut.key} <img src="${shortcut.favicon}" alt=""> ${shortcut.title}
-                </div></li>`;
-                }
-            }
-
-            innerHtml = `<div>There are secondary shortcuts for <span class="anyshortcut-shortcut">ALT+SHIFT+${pressedKey}</span><ul>`
-                + liElements + `</ul></div>`;
+            innerHtml = template.compile(template.shortcutList, {
+                key: pressedKey,
+                shortcuts: shortcuts
+            });
         }
 
         let modal = openModal(innerHtml);
