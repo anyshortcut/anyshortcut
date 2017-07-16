@@ -58,6 +58,7 @@
         font-size: 15px;
     }
 
+    @shortcut-comment-color: #333333;
     .shortcut-comment {
         margin: 0 10px;
         flex: 1;
@@ -65,6 +66,11 @@
         text-align: left;
         white-space: nowrap;
         text-overflow: ellipsis;
+        color: @shortcut-comment-color;
+
+        &:visited, &:active {
+            color: @shortcut-comment-color;
+        }
     }
 
     .delete-button:hover {
@@ -80,13 +86,15 @@
         text-align: center;
 
         img {
-            margin: 10px;
+            margin-top: 20px;
+            margin-bottom: 10px;
         }
 
         p {
             color: #999999;
             padding: 8px 80px;
             font-size: 14px;
+            line-height: 1.5;
         }
     }
 </style>

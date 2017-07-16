@@ -5,10 +5,12 @@
             <span>anyshortcut</span>
         </a>
         <img class="balloon-image" src="../img/computer-and-balloons.svg" alt="">
-        <section class="introduction">
+        <div class="introduction">
             Sign in to boost productivity and sync your shortcuts!
-        </section>
-        <a class="attractive-button" :href="signInUrl" target="_blank">Sign Up Now</a>
+        </div>
+        <a class="attractive-button" :href="signInUrl"
+           title="No email register required"
+           target="_blank">Sign In Now</a>
         <footer>
             <a :href="tryUrl" target="_blank" class="grey-link">I just wanna a try now</a>
         </footer>
@@ -37,13 +39,15 @@
     }
 
     .balloon-image {
-        margin: 15px;
+        margin: 20px;
     }
 
     .introduction {
-        padding: 10px 40px;
+        padding: 10px;
+        margin: 25px;
         font-weight: 600;
         font-size: 16px;
+        line-height: 1.5;
     }
 
     a:focus {
@@ -65,6 +69,8 @@
 
     footer {
         padding: 10px;
+        font-size: 13px;
+        margin: 5px;
     }
 
     .grey-link {
