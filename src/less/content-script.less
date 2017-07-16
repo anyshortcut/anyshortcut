@@ -18,11 +18,6 @@
 
   ul {
     list-style: none outside;
-
-    li {
-      text-align: left;
-      padding: 10px;
-    }
   }
 }
 
@@ -57,4 +52,40 @@
 .anyshortcut-shortcut {
   .shortcut;
   font-size: 18px;
+}
+
+.anyshortcut-secondary-shortcut {
+  .anyshortcut-shortcut;
+  width: 38px;
+  height: 28px;
+  letter-spacing: 0.6px;
+  //display: inline-block;
+}
+
+.anyshortcut-shortcut-item {
+  display: flex;
+  align-items: center;
+  border-color: #f4f4f4;
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-style: solid;
+  padding: 3px 8px;
+  font-size: 15px;
+
+  &:hover {
+    background: #f8f8f8;
+  }
+
+  &:last-child {
+    border-width: 0;
+  }
+
+  a {
+    .overflow-ellipsis;
+    position: relative;
+    width: 100%;
+    text-align: left;
+    text-decoration: none;
+    outline: none;
+  }
 }

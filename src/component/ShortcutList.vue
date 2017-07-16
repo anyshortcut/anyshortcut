@@ -60,12 +60,12 @@
 
     @shortcut-comment-color: #333333;
     .shortcut-comment {
+        .overflow-ellipsis;
+        position: relative;
+        width: 80%;
         margin: 0 10px;
-        flex: 1;
         text-transform: capitalize;
         text-align: left;
-        white-space: nowrap;
-        text-overflow: ellipsis;
         color: @shortcut-comment-color;
 
         &:visited, &:active {
