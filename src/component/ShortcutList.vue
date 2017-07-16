@@ -15,7 +15,7 @@
         </li>
     </ul>
     <div class="shortcut-empty-list" v-else>
-        <img src="../img/grey-balloons.svg" alt="">
+        <img class="grey-balloons" alt="">
         <p>No secondary shortcut bound yet, go ahead to bound!</p>
     </div>
 </template>
@@ -84,11 +84,6 @@
         flex-direction: column;
         width: 400px;
         text-align: center;
-
-        img {
-            margin-top: 20px;
-            margin-bottom: 10px;
-        }
 
         p {
             color: #999999;
