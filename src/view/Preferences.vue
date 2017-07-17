@@ -1,39 +1,31 @@
 <template>
     <div class="preference-view">
         <header class="preference-header">
-            <a class="back-icon" href="#/main"><i class="fa fa-lg fa-chevron-circle-left" aria-hidden="true"></i></a>
-            Preferences
+            <a href="#/main"><img src="../img/back.svg" class="back-icon"/></a>
+            Setting
         </header>
 
-        <div>
-            How to open primary shortcut:
-            <form>
-                <input type="radio" id="p_blank" v-model='preference.primary_blank' :value="true">
-                <label for="p_blank">Open in new tab</label>
-                <br>
-                <input type="radio" id="p_self" v-model="preference.primary_blank" :value="false">
-                <label for="p_self">Open in same tab</label>
-            </form>
-            <br>
+        <div class="preference-group">
+            <div class="preference-title">
+                Open shortcut in new tab
+                <div class="preference-title-help">* Open in the same tab is default</div>
+            </div>
 
-            How to open secondary shortcut:
-            <form>
-                <input type="radio" id="s_blank" v-model="preference.secondary_blank" :value="true">
-                <label for="s_blank">Open in new tab</label>
-                <br>
-                <input type="radio" id="s_self" v-model="preference.secondary_blank" :value="false">
-                <label for="s_self">Open in same tab</label>
-            </form>
-            <br>
-
-            How to quick open secondary shortcut:
-            <form>
-                <input type="radio" id="qs_blank" v-model="preference.quick_secondary_blank" :value="true">
-                <label for="qs_blank">Open in new tab</label>
-                <br>
-                <input type="radio" id="qs_self" v-model="preference.quick_secondary_blank" :value="false">
-                <label for="qs_self">Open in same tab</label>
-            </form>
+            <div class="preference-item">
+                <label for="primary-blank">Primary shortcut</label>
+                <input id="primary-blank" type="checkbox"
+                       v-model='preference.primary_blank'>
+            </div>
+            <div class="preference-item">
+                <label for="secondary-blank">Secondary shortcut</label>
+                <input id="secondary-blank" type="checkbox"
+                       v-model='preference.secondary_blank'>
+            </div>
+            <div class="preference-item">
+                <label for="quick-secondary-blank">Quick secondary shortcut</label>
+                <input id="quick-secondary-blank" type="checkbox"
+                       v-model='preference.quick_secondary_blank'>
+            </div>
         </div>
     </div>
 </template>
@@ -53,7 +45,43 @@
     }
 
     .back-icon {
-        padding: 0 10px;
+        padding: 5px 10px;
+        vertical-align: middle;
+    }
+
+    .preference-group {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 5px 0;
+        margin: 10px 0;
+
+        border-top: solid #DDDDDD 1px;
+        border-bottom: solid #DDDDDD 1px;
+        background-color: #fbfbfb;
+
+        .preference-title {
+            font-size: 18px;
+            font-weight: 500;
+            color: @secondary-color;
+            line-height: 1.5;
+            padding: 0 15px;
+        }
+
+        .preference-title-help {
+            font-size: 12px;
+            color: #999999;
+            text-align: start;
+        }
+        .preference-item {
+            display: flex;
+            align-items: center;
+            position: relative;
+            width: 100%;
+            padding: 0 10px;
+            border-bottom: solid #f8f8f8 1px;
+            justify-content: space-between;
+        }
     }
 </style>
 <script type="es6">
