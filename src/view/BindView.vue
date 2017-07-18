@@ -113,12 +113,6 @@
         }
     }
 
-    .shortcut-bind-button {
-        .button;
-        background-color: @secondary-color;
-        color: white;
-    }
-
     .popper-arrow {
         position: absolute;
         display: block;

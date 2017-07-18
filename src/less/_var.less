@@ -63,13 +63,16 @@
 
 .shortcut-delete-button {
   .button;
+  .negative-gradient;
   padding: 2px 30px;
-  background: #d85b52;
   color: #FFFFFF;
+}
 
-  &:hover {
-    background: #aa3030;
-  }
+.shortcut-bind-button {
+  .button;
+  .positive-gradient;
+  padding: 2px 30px;
+  color: #FFFFFF;
 }
 
 .button() {
@@ -80,4 +83,20 @@
   font-size: 14px;
   box-shadow: @box-shadow-base;
   text-align: center;
+}
+
+.positive-gradient() {
+  background: linear-gradient(@secondary-color, @primary-color);
+
+  &:hover {
+    background: linear-gradient(@primary-color, #3A56A8);
+  }
+}
+
+.negative-gradient() {
+  background: linear-gradient(#d85b52, #aa3030);
+
+  &:hover {
+    background: linear-gradient(#aa3030, #902626);
+  }
 }
