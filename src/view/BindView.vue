@@ -63,12 +63,12 @@
             </div>
         </div>
 
-        <div v-if="primary">
+        <div v-if="primary && prefs.isCompoundShortcutEnable()">
             Or specify two keystroke primary key:
             <br>
             <div class="two-keystroke">
-                <input class="keystroke" type="text" v-model="strokeKeyChar">
-                <input class="comment" type="text" v-model="strokeComment">
+                <input class="keystroke" v-model="strokeKeyChar">
+                <input class="comment" v-model="strokeComment">
                 <input type="button" value="Bind" @click="handleShortcutBinding(strokeKeyChar,strokeComment)">
             </div>
         </div>
@@ -176,10 +176,11 @@
     import Keyboard from "../component/Keyboard.vue";
     import mixin from "../js/mixin.js";
     import common from "../js/common.js";
+    import prefs from "../js/prefs.js";
 
-    export default{
+    export default {
         name: 'bind-view',
-        data(){
+        data() {
             return {
                 keyChar: null,
                 comment: this.$background.activeTab.title,
@@ -187,6 +188,7 @@
                 strokeComment: null,
                 showPopper: false,
                 showDomainBoard: true,
+                prefs: prefs,
             };
         },
         props: {

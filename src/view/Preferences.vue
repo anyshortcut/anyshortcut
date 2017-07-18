@@ -27,15 +27,22 @@
                        v-model='preference.quick_secondary_blank'>
             </div>
         </div>
+
+        <div class="preference-group">
+            <div class="preference-item">
+                <label for="enable-compound-shortcut"> Enable compound shortcut</label>
+                <input id="enable-compound-shortcut" type="checkbox"
+                       v-model='preference.compound_shortcut_enable'>
+            </div>
+            <div class="preference-title-help">* You can bind two letter primary shortcut</div>
+        </div>
     </div>
 </template>
 <style lang="less">
     @import "../less/_common.less";
 
     .preference-view {
-        line-height: 2em;
-        width: 400px;
-        height: 450px;
+        width: 350px;
         background: @content-bgcolor;
     }
 
@@ -79,6 +86,7 @@
             position: relative;
             width: 100%;
             padding: 0 10px;
+            font-size: 15px;
             border-bottom: solid #f8f8f8 1px;
             justify-content: space-between;
         }
@@ -86,7 +94,8 @@
 </style>
 <script type="es6">
     import prefs from "../js/prefs.js";
-    export default{
+
+    export default {
         name: 'preference-view',
         data() {
             return {
