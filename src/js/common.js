@@ -5,8 +5,7 @@ export default {
      * @param {function(tab)} callback - called when the URL of the current tab
      *   is found.
      */
-    getCurrentTab(callback)
-    {
+    getCurrentTab(callback) {
         // Query filter to be passed to chrome.tabs.query - see
         // https://developer.chrome.com/extensions/tabs#method-query
         let queryInfo = {
@@ -29,7 +28,7 @@ export default {
      *
      * @param {function(tab.id)} callback
      */
-    iterateAllWindowTabs(callback){
+    iterateAllWindowTabs(callback) {
         chrome.windows.getAll({populate: true, windowTypes: ['normal']}, windows => {
             windows.forEach(window => {
                 window.tabs.filter(tab => {
@@ -40,32 +39,33 @@ export default {
             });
         });
     },
-    isUrlEquivalent(url1, url2){
+    isUrlEquivalent(url1, url2) {
         //Check slash ignore equality, ignore url schema equality.
         return trimTrailSlash(stripUrlSchema(url1)) === trimTrailSlash(stripUrlSchema(url2));
     },
-    isUrlEndsWithDomain(url, domain){
+    isUrlEndsWithDomain(url, domain) {
         let hostname = this.getHostnameFromUrl(url);
         return this.isHostnameEndsWithDomain(hostname, domain);
     },
-    getHostnameFromUrl(url){
+    getHostnameFromUrl(url) {
         let a = document.createElement('a');
         a.href = url;
         return a.hostname;
     },
-    isHostnameEndsWithDomain(hostname, domain){
+    isHostnameEndsWithDomain(hostname, domain) {
         return hostname.endsWith(`.${domain}`) || hostname === domain;
     },
     /**
      * Check a javascript object empty or not.
      * @param obj
      */
-    isObjectEmpty(obj){
+    isObjectEmpty(obj) {
         // because Object.keys(new Date()).length === 0;
         // we have to do some additional check
         return Object.keys(obj).length === 0 && obj.constructor === Object
     }
 }
+
 /**
  * Remove trail slash.
  */

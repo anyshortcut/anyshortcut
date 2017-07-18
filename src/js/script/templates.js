@@ -45,7 +45,7 @@ export default {
     queryShortcutChooser,
     shortcutList,
     shortcutListEmpty,
-    compile(template, data){
+    compile(template, data) {
         return _.template(template)(data);
     }
 };

@@ -72,25 +72,25 @@ function buildModal(content) {
 }
 
 export default {
-    showPrimaryShortcutUnbound(pressedKey){
+    showPrimaryShortcutUnbound(pressedKey) {
         openModal(template.compile(template.shortcutNotFound, {
             shortcutType: "primary",
             key: "ALT+SHIFT+" + pressedKey
         }));
     },
-    showSecondaryShortcutUnbound(pressedKey){
+    showSecondaryShortcutUnbound(pressedKey) {
         openModal(template.compile(template.shortcutNotFound, {
             shortcutType: "secondary",
             key: "ALT+" + pressedKey,
         }));
     },
-    showQueryShortcutFailed(firstKey, secondKey){
+    showQueryShortcutFailed(firstKey, secondKey) {
         openModal(template.compile(template.queryShortcutFailed, {
             firstKey: firstKey,
             secondKey: secondKey,
         }));
     },
-    showQueryShortcutChooser(primaryShortcut, secondaryShortcut, byBlank){
+    showQueryShortcutChooser(primaryShortcut, secondaryShortcut, byBlank) {
         let modal = openModal(template.compile(template.queryShortcutChooser, {
             shortcuts: [primaryShortcut, secondaryShortcut]
         }));
@@ -117,7 +117,7 @@ export default {
         };
         modal.addEventListener('keyup', chooserEventListener);
     },
-    showSecondaryShortcutList(pressedKey, shortcuts, byBlank){
+    showSecondaryShortcutList(pressedKey, shortcuts, byBlank) {
         let innerHtml;
 
         if (Object.keys(shortcuts).length === 0) {

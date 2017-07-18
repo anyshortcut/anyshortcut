@@ -31,28 +31,28 @@ request.interceptors.response.use(response => {
 });
 
 export default {
-    bindShortcut(shortcut){
+    bindShortcut(shortcut) {
         return request.post(`/shortcut/key`, shortcut);
     },
-    unbindShortcut(id){
+    unbindShortcut(id) {
         return request.put(`/shortcut/${id}/unbind`);
     },
-    increaseShortcutOpenTimes(id){
+    increaseShortcutOpenTimes(id) {
         return request.put(`/shortcut/${id}/times`);
     },
     /**
      * Get all shortcut data from server
      */
-    getPrimaryShortcuts(){
+    getPrimaryShortcuts() {
         return request.get('/shortcuts?type=primary');
     },
-    getSecondaryShortcuts(){
+    getSecondaryShortcuts() {
         return request.get('/shortcuts?type=secondary');
     },
-    getPreferences(){
+    getPreferences() {
         return request.get('/user/preference');
     },
-    updatePreference(preference){
+    updatePreference(preference) {
         return request.put('/user/preference', preference);
     },
 };

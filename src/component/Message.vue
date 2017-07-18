@@ -72,8 +72,8 @@
 
 </style>
 <script type="es6">
-    export default{
-        data(){
+    export default {
+        data() {
             return {
                 visible: false,
                 message: '',
@@ -121,7 +121,7 @@
                 }
             }
         },
-        mounted(){
+        mounted() {
             this.startTimer();
         }
     };

@@ -1,4 +1,5 @@
 import common from '../common.js';
+
 /**
  * Current active tab in current window.
  */
@@ -129,6 +130,7 @@ function onTabDetached(tabId, detachInfo) {
         tabIds.splice(index, 1);
     }
 }
+
 /**
  * A callback function to detect current tab been removed or closed.
  *@param tabId

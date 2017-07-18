@@ -1,11 +1,11 @@
 let auth = {
-    isAuthenticated(){
+    isAuthenticated() {
         return !!localStorage.getItem('token');
     },
-    logout(){
+    logout() {
         localStorage.removeItem('token');
     },
-    signin(token){
+    signin(token) {
         localStorage.setItem('token', token);
     }
 };

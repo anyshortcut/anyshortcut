@@ -41,7 +41,7 @@ function injectResources(tabId, files) {
 }
 
 export default {
-    injectTabContentScriptManually(tabId){
+    injectTabContentScriptManually(tabId) {
         injectResources(tabId, ['dist/content_script.js'])
             .then(() => {
                 console.log('inject success!');

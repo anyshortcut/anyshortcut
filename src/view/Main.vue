@@ -80,7 +80,6 @@
 
     .main-view {
         width: @normal-width;
-        min-height: @normal-height;
         display: flex;
         flex-direction: column;
         align-content: center;
@@ -117,9 +116,9 @@
     import BindView from "./BindView.vue";
     import ShortcutList from "../component/ShortcutList.vue";
 
-    export default{
+    export default {
         name: 'main-view',
-        data(){
+        data() {
             return {
                 shortcut: null,
                 domainPrimaryShortcut: null, //current tab domain primary shortcut.
@@ -160,7 +159,7 @@
                     this.$message.error('Ooops!');
                 }
             },
-            queryShortcuts(){
+            queryShortcuts() {
                 let activeTab = this.$background.activeTab;
                 let primaryShortcuts = this.$background.primaryShortcuts;
                 let secondaryShortcuts = this.$background.getSecondaryShortcutsByUrl(activeTab.url);
@@ -193,7 +192,7 @@
                 // otherwise to iterate secondary shortcuts to ensure don't miss the bound shortcut.
                 this.checkShortcutBound(primaryShortcuts) || this.checkShortcutBound(secondaryShortcuts);
             },
-            checkShortcutBound(shortcuts){
+            checkShortcutBound(shortcuts) {
                 _.forOwn(shortcuts, shortcut => {
                     if (common.isUrlEquivalent(shortcut.url, this.$background.activeTab.url)) {
                         this.shortcut = shortcut;

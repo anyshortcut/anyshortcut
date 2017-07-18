@@ -48,7 +48,7 @@ export default {
     isValidKeyCode(keyCode) {
         return dictionaries[keyCode];
     },
-    isValidKeyCodeWithoutModifiers(e){
+    isValidKeyCodeWithoutModifiers(e) {
         return e && this.isValidKeyCode(e.keyCode) && !e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey;
     },
     isValidModifierKey(e) {

@@ -172,9 +172,9 @@
     }
 </style>
 <script type="es6">
-    export default{
+    export default {
         name: 'Keyboard',
-        data(){
+        data() {
             return {}
         },
         props: {

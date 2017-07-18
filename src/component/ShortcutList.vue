@@ -96,9 +96,9 @@
 <script type="es6">
     import mixin from "../js/mixin.js";
 
-    export default{
+    export default {
         name: 'shortcut-list',
-        data(){
+        data() {
             return {
                 hoveredKey: null
             }
