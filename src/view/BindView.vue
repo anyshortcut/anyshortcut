@@ -63,15 +63,9 @@
             </div>
         </div>
 
-        <div v-if="primary && prefs.isCompoundShortcutEnable()">
-            Or specify two keystroke primary key:
-            <br>
-            <div class="two-keystroke">
-                <input class="keystroke" v-model="strokeKeyChar">
-                <input class="comment" v-model="strokeComment">
-                <input type="button" value="Bind" @click="handleShortcutBinding(strokeKeyChar,strokeComment)">
-            </div>
-        </div>
+        <compound-bind v-if="primary && prefs.isCompoundShortcutEnable()"
+                       @bind-compound-shortcut="handleShortcutBinding">
+        </compound-bind>
 
     </section>
 </template>
@@ -146,19 +140,6 @@
         }
     }
 
-    .two-keystroke {
-        display: inline-block;
-
-        input {
-            margin: 10px;
-        }
-
-        .keystroke {
-            width: 50px;
-            height: 35px;
-        }
-    }
-
     .margin-top-28 {
         margin-top: 28px;
     }
@@ -168,6 +149,7 @@
     import Popper from "popper";
     import Balloon from "../component/Balloon.vue";
     import Keyboard from "../component/Keyboard.vue";
+    import CompoundBind from "../component/CompoundBind.vue";
     import mixin from "../js/mixin.js";
     import common from "../js/common.js";
     import prefs from "../js/prefs.js";
@@ -178,8 +160,6 @@
             return {
                 keyChar: null,
                 comment: this.$background.activeTab.title,
-                strokeKeyChar: null,
-                strokeComment: null,
                 showPopper: false,
                 showDomainBoard: true,
                 prefs: prefs,
@@ -229,6 +209,7 @@
         components: {
             Keyboard,
             Balloon,
+            CompoundBind,
         },
         mixins: [mixin],
         methods: {
