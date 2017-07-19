@@ -1,25 +1,42 @@
 <template>
-    <div>
-        Or specify two keystroke primary key:
-        <br>
-        <div class="two-keystroke">
-            <input class="keystroke" v-model="strokeKeyChar">
-            <input class="comment" v-model="strokeComment">
-            <input type="button" value="Bind" @click="emitBindEvent">
+    <div class="compound-shortcut">
+        <div class="primary-text">Specify primary compound key:</div>
+        <div class="compound-shortcut-form">
+            <input class="compound-key" maxlength="2" minlength="2"
+                   v-model="compoundKey"
+                   @focus="onCompoundKeyFocus">
+            <input id="comment"
+                   class="shortcut-comment-input"
+                   v-model="comment"
+                   placeholder="Comment for this url"
+                   maxlength="50"
+                   required/>
         </div>
+        <div class="shortcut-bind-button" @click="emitBindEvent">Bind</div>
     </div>
 </template>
 <style lang="less">
-    .two-keystroke {
-        display: inline-block;
+    .compound-shortcut {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-        input {
-            margin: 10px;
-        }
+        padding: 0 0 15px 0;
+    }
 
-        .keystroke {
+    .compound-shortcut-form {
+        display: flex;
+        align-items: center;
+
+        .compound-key {
             width: 50px;
-            height: 35px;
+            height: 25px;
+            margin: 10px;
+            text-transform: uppercase;
+            font-size: 18px;
+            text-align: center;
+            font-weight: 500;
+            letter-spacing: 1.5px;;
         }
 
     }
@@ -31,14 +48,17 @@
         name: 'compound-bind',
         data() {
             return {
-                strokeKeyChar: null,
-                strokeComment: null,
+                compoundKey: null,
+                comment: null,
             };
         },
         mixins: [mixin],
         methods: {
             emitBindEvent: function() {
-                this.$emit('bind-compound-shortcut', this.strokeKeyChar, this.strokeComment);
+                this.$emit('bind-compound-shortcut', this.compoundKey, this.comment);
+            },
+            onCompoundKeyFocus: function() {
+                this.comment = this.comment || this.$background.activeTab.title;
             }
         }
     }
