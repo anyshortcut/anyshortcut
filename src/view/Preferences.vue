@@ -8,7 +8,7 @@
         <div class="preference-group">
             <div class="preference-title">
                 Open shortcut in new tab
-                <div class="preference-title-help">* Open in the same tab is default</div>
+                <div class="preference-title-help">Open in the same tab is default</div>
             </div>
 
             <div class="preference-item">
@@ -27,14 +27,14 @@
                        v-model='preference.quick_secondary_blank'>
             </div>
         </div>
-
+        <div class="preference-divider"></div>
         <div class="preference-group">
             <div class="preference-item">
                 <label for="enable-compound-shortcut"> Enable compound shortcut</label>
                 <input id="enable-compound-shortcut" type="checkbox"
                        v-model='preference.compound_shortcut_enable'>
             </div>
-            <div class="preference-title-help">* You can bind two letter primary shortcut</div>
+            <div class="preference-title-help">You can bind two letter primary shortcut</div>
         </div>
     </div>
 </template>
@@ -63,15 +63,11 @@
         padding: 5px 0;
         margin: 10px 0;
 
-        border-top: solid #DDDDDD 1px;
-        border-bottom: solid #DDDDDD 1px;
-        background-color: #fbfbfb;
-
         .preference-title {
-            font-size: 18px;
+            font-size: 17px;
             font-weight: 500;
-            color: @secondary-color;
             line-height: 1.5;
+            color: @secondary-color;
             padding: 0 15px;
         }
 
@@ -80,16 +76,28 @@
             color: #999999;
             text-align: start;
         }
+
         .preference-item {
             display: flex;
             align-items: center;
             position: relative;
             width: 100%;
-            padding: 0 10px;
-            font-size: 15px;
-            border-bottom: solid #f8f8f8 1px;
+            padding: 5px 10px;
+            font-size: 14px;
             justify-content: space-between;
+            cursor: pointer;
+
+            &:hover {
+                background: #f8f8f8;
+            }
         }
+    }
+
+    .preference-divider {
+        background-color: @header-bgcolor;
+        height: 15px;
+        border-top: solid #eeeeee 1px;
+        border-bottom: solid #eeeeee 1px;
     }
 </style>
 <script type="es6">
