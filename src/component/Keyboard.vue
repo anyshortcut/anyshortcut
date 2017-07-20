@@ -7,7 +7,7 @@
                      :class="keyClass(key)"
                      class="key">{{ key }}
                 </div>
-                <div class="key weak invisible"></div>
+                <div class="key weak invisible" v-visible="weakVisibility"></div>
             </div>
             <div class="keyboard-row">
                 <div class="key weak" v-visible="weakVisibility"></div>
@@ -15,7 +15,7 @@
                      :class="keyClass(key)"
                      class="key">{{ key }}
                 </div>
-                <div class="key weak invisible"></div>
+                <div class="key weak invisible" v-visible="weakVisibility"></div>
             </div>
             <div class="keyboard-row">
                 <div class="key weak extra-size-two" v-visible="weakVisibility"></div>
@@ -23,7 +23,9 @@
                      :class="keyClass(key)"
                      class="key">{{ key }}
                 </div>
-                <div class="key weak extra-size-two invisible"></div>
+                <div class="key weak extra-size-two invisible"
+                     v-visible="weakVisibility">
+                </div>
             </div>
             <div class="keyboard-row">
                 <div class="key weak double-size lowercase"
@@ -34,11 +36,13 @@
                      :class="keyClass(key)"
                      class="key">{{ key }}
                 </div>
-                <div class="key weak double-size lowercase lower-right invisible">shift
+                <div class="key weak double-size lowercase invisible"
+                     v-visible="weakVisibility"
+                     :class="{highlight:primary,shift:primary}">
                 </div>
             </div>
             <div class="keyboard-row">
-                <div class="key weak lower-left lowercase" v-visible="weakVisibility">
+                <div class="key weak lowercase" v-visible="weakVisibility">
                 </div>
                 <div class="key weak lower-center lowercase highlight"
                      v-visible="weakVisibility">alt
@@ -47,13 +51,16 @@
                      v-visible="weakVisibility">
                 </div>
                 <div class="key weak space-bar invisible"
-                     v-visible="weakVisibility"></div>
+                     v-visible="weakVisibility">
+                </div>
                 <div class="key weak lower-center lowercase extra-size-two"
                      v-visible="weakVisibility">
                 </div>
-                <div class="key weak lower-center lowercase highlight invisible">alt
+                <div class="key weak lower-center lowercase highlight invisible"
+                     v-visible="weakVisibility">alt
                 </div>
-                <div class="key weak lower-right lowercase invisible">ctrl
+                <div class="key weak lowercase invisible"
+                     v-visible="weakVisibility">
                 </div>
             </div>
         </div>
@@ -123,16 +130,6 @@
             text-transform: lowercase;
         }
 
-        &.lower-right {
-            vertical-align: bottom;
-            text-align: right;
-            padding-right: 5px;
-        }
-        &.lower-left {
-            vertical-align: bottom;
-            text-align: left;
-            padding-left: 5px;
-        }
         &.lower-center {
             vertical-align: bottom;
         }

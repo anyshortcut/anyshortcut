@@ -81,7 +81,6 @@
             padding: 8px 15px;
             font-size: 14px;
             justify-content: space-between;
-            cursor: pointer;
 
             &:hover {
                 background: #f8f8f8;
