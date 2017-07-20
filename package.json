@@ -20,6 +20,7 @@
     "lodash.template": "^4.4.0",
     "moment": "^2.18.1",
     "popper.js": "^1.10.8",
+    "tooltip.js": "^1.1.4",
     "vue": "^2.4.1"
   },
   "devDependencies": {
