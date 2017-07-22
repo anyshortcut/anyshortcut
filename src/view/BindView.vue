@@ -1,7 +1,7 @@
 <template>
     <section class="bind-view">
         <div v-if="primary" class="primary-text margin-top-28">
-            Specify the primary shortcut:
+            Specify primary shortcut:
         </div>
         <div v-else>
             <div v-if="domainPrimaryShortcut && showDomainBoard" class="domain-primary-bound">
@@ -32,33 +32,9 @@
                  v-show="showPopper"
                  @mouseover="onHoverOver"
                  @mouseleave="onHoverLeave">
-                <div class="popper-bound" v-if="hoveredShortcut">
-                    <div class="shortcut-domain">
-                        <img class="shortcut-favicon"
-                             :src="hoveredShortcut.favicon"
-                             @loadstart="$event.target.src=null"
-                             alt="favicon"/>
-                        {{hoveredShortcutDomain}}
-                    </div>
-                    <p class="primary-subtitle">{{hoveredShortcut.comment || hoveredShortcut.title}}</p>
-                    <div class="shortcut-delete-button"
-                         @click="$bus.emit('unbind-shortcut',shortcut)">
-                        Delete
-                    </div>
-                </div>
-                <div class="popper-bind" v-else>
-                    <label for="comment">Input comment for the shortcut</label>
-                    <input id="comment"
-                           class="shortcut-comment-input"
-                           v-model="comment"
-                           placeholder="Comment for this url"
-                           maxlength="50"
-                           autofocus @focus.native="$event.target.select()" required/>
-                    <div class="shortcut-bind-button"
-                         @click="$bus.emit('bind-shortcut',keyChar,comment)">
-                        Bind
-                    </div>
-                </div>
+                <shortcut-board :shortcut="hoveredShortcut"
+                                :key-char="keyChar">
+                </shortcut-board>
                 <div class="popper-arrow" :class="{'cursor-pointer':highlightKey !== null}" x-arrow></div>
             </div>
         </div>
@@ -83,27 +59,6 @@
         box-shadow: @box-shadow-base;
         padding: 5px;
         margin-bottom: 5px;
-    }
-
-    .popper-bound, .popper-bind {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-    }
-
-    .shortcut-comment-input {
-        width: 220px;
-        height: 25px;
-        margin: 3px;
-        padding: 3px;
-        font-size: 14px;
-        color: @secondary-color;
-        border: solid #cecece 1px;
-
-        &:focus {
-            border: solid @primary-color 1px;
-        }
     }
 
     .popper-arrow {
@@ -147,8 +102,8 @@
 <script type="es6">
     import Popper from "popper";
     import Keyboard from "../component/Keyboard.vue";
+    import ShortcutBoard from "../component/ShortcutBoard.vue";
     import CompoundBind from "../component/CompoundBind.vue";
-    import common from "../js/common.js";
     import prefs from "../js/prefs.js";
 
     export default {
@@ -156,7 +111,6 @@
         data() {
             return {
                 keyChar: null,
-                comment: this.$background.activeTab.title,
                 showPopper: false,
                 showDomainBoard: true,
                 prefs: prefs,
@@ -184,13 +138,6 @@
             hoveredShortcut: function() {
                 return this.shortcuts[this.keyChar];
             },
-            hoveredShortcutDomain: function() {
-                if (this.hoveredShortcut.primary) {
-                    return this.hoveredShortcut.domain;
-                } else {
-                    return common.getHostnameFromUrl(this.hoveredShortcut.url);
-                }
-            },
             // All bound keys, for keyboard component usage.
             boundKeys: function() {
                 return this.shortcuts ? Object.keys(this.shortcuts) : [];
@@ -205,6 +152,7 @@
         },
         components: {
             Keyboard,
+            ShortcutBoard,
             CompoundBind,
         },
         methods: {
