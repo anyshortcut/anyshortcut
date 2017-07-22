@@ -9,19 +9,13 @@
         </header>
 
         <bound-view v-if="shortcut"
-                    :shortcut="shortcut"
-                    @pre-unbind="loading=true"
-                    @post-unbind="onPostUnbind">
+                    :shortcut="shortcut">
         </bound-view>
 
         <bind-view v-else
                    :shortcuts="shortcuts"
                    :primary="primary"
-                   :domain-primary-shortcut="domainPrimaryShortcut"
-                   @pre-bind="loading=true"
-                   @post-bind="onPostBind"
-                   @pre-unbind="loading=true"
-                   @post-unbind="onPostUnbind">
+                   :domain-primary-shortcut="domainPrimaryShortcut">
         </bind-view>
         <section v-if="domainPrimaryShortcut" class="secondary-shortcut-list">
             <div>
@@ -32,10 +26,7 @@
                     {{domainPrimaryShortcut.domain}}
                 </span>'s secondary shortcuts:
             </div>
-            <shortcut-list :shortcuts="shortcuts"
-                           @pre-unbind="loading=true"
-                           @post-unbind="onPostUnbind">
-            </shortcut-list>
+            <shortcut-list :shortcuts="shortcuts"></shortcut-list>
         </section>
         <div v-show="loading" class="loading">
             <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
@@ -203,6 +194,15 @@
         },
         created: function() {
             this.queryShortcuts();
+            this.$bus.on(['pre-bind', 'pre-unbind'], () => {
+                this.loading = true;
+            });
+            this.$bus.on('post-bind', (result) => {
+                this.onPostBind(result);
+            });
+            this.$bus.on('post-unbind', (result) => {
+                this.onPostUnbind(result);
+            });
         },
     }
 </script>

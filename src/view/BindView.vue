@@ -147,7 +147,6 @@
 </style>
 <script type="es6">
     import Popper from "popper";
-    import Balloon from "../component/Balloon.vue";
     import Keyboard from "../component/Keyboard.vue";
     import CompoundBind from "../component/CompoundBind.vue";
     import mixin from "../js/mixin.js";
@@ -208,7 +207,6 @@
         },
         components: {
             Keyboard,
-            Balloon,
             CompoundBind,
         },
         mixins: [mixin],

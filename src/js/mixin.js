@@ -8,9 +8,9 @@ export default {
                 bindFunction = this.$background.bindSecondaryShortcut;
             }
 
-            this.$emit('pre-bind');
+            this.$bus.emit('pre-bind');
             bindFunction(keyChar, comment, result => {
-                this.$emit('post-bind', result);
+                this.$bus.emit('post-bind', result);
             });
         },
         handleShortcutUnbinding: function(shortcut) {
@@ -22,9 +22,9 @@ export default {
                     removeFunction = this.$background.removeSecondaryShortcut;
                 }
 
-                this.$emit('pre-unbind');
+                this.$bus.emit('pre-unbind');
                 removeFunction(shortcut, result => {
-                    this.$emit('post-unbind', result);
+                    this.$bus.emit('post-unbind', result);
                 });
             }
         },
