@@ -2,9 +2,10 @@
     <div class="compound-shortcut">
         <div class="primary-text">Specify primary compound key:</div>
         <div class="compound-shortcut-form">
-            <input class="compound-key" maxlength="2" minlength="2"
+            <input id="compound-key" class="compound-key" maxlength="2" minlength="2"
                    v-model="compoundKey"
-                   @focus="onCompoundKeyFocus">
+                   @focus="onCompoundKeyFocus"
+                   @blur="onCompoundKeyBlur">
             <input id="comment"
                    class="shortcut-comment-input"
                    v-model="comment"
@@ -13,6 +14,15 @@
                    required/>
         </div>
         <div class="shortcut-bind-button" @click="emitBindEvent">Bind</div>
+
+        <div id="compound-popover"
+             class="popper"
+             v-show="showPopper">
+            <div v-if="keyStatus=='empty'">Specify two letter key.</div>
+            <div v-else-if="keyStatus=='available'">{{ compoundKey }} is available</div>
+            <div v-else-if="keyStatus=='occupied'">{{ compoundKey }} is occupied.</div>
+            <div class="popper-arrow" x-arrow></div>
+        </div>
     </div>
 </template>
 <style lang="less">
@@ -42,6 +52,7 @@
     }
 </style>
 <script type="es6">
+    import Popper from "popper";
     import mixin from "../js/mixin.js";
 
     export default {
@@ -50,7 +61,14 @@
             return {
                 compoundKey: null,
                 comment: null,
+                showPopper: false,
+                keyStatus: 'empty',
             };
+        },
+        watch: {
+            compoundKey: function() {
+                this.handlePopper();
+            }
         },
         mixins: [mixin],
         methods: {
@@ -59,7 +77,28 @@
             },
             onCompoundKeyFocus: function() {
                 this.comment = this.comment || this.$background.activeTab.title;
+
+                this.showPopper = true;
+                new Popper(document.querySelector("#compound-key"),
+                    document.querySelector("#compound-popover"), {
+                        placement: "top"
+                    });
+            },
+            onCompoundKeyBlur: function() {
+                this.showPopper = false;
+            },
+            handlePopper: function() {
+                if (this.compoundKey.length === 2) {
+                    let shortcut = this.$background.getPrimaryShortcut(this.compoundKey.toUpperCase());
+                    if (shortcut) {
+                        this.keyStatus = 'occupied';
+                    } else {
+                        this.keyStatus = 'available';
+                    }
+                } else {
+                    this.keyStatus = 'empty';
+                }
             }
-        }
+        },
     }
 </script>
