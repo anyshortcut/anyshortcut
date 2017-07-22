@@ -14,7 +14,7 @@
                     <span class="shortcut" :title="shortcut.title">ALT+{{ shortcut.key }}</span>
                     <span>
                             <img class="delete-button"
-                                 @click="handleShortcutUnbinding(shortcut)"/>
+                                 @click="$bus.emit('unbind-shortcut',shortcut)"/>
                     </span>
                 </p>
             </div>
@@ -30,7 +30,7 @@
                 Feel free to delete the primary shortcut, all secondary shortcuts of the domain still remain.
             </p>
             <div class="shortcut-delete-button"
-                 @click="handleShortcutUnbinding(shortcut);showDeleteModal=false;">
+                 @click="$bus.emit('unbind-shortcut',shortcut);showDeleteModal=false;">
                 Sure, delete it!
             </div>
         </div>
@@ -109,11 +109,10 @@
 </style>
 <script type="es6">
     import moment from "moment";
-    import mixin from "../js/mixin.js";
 
-    export default{
+    export default {
         name: 'bound-view',
-        data(){
+        data() {
             return {
                 showDeleteModal: false,
             };
@@ -132,6 +131,5 @@
                 return moment(time).fromNow();
             }
         },
-        mixins: [mixin],
     }
 </script>

@@ -11,7 +11,7 @@
                target="_blank">{{shortcut.comment || shortcut.title}}</a>
             <img class="delete-button"
                  v-visible="hoveredKey === key"
-                 @click="handleShortcutUnbinding(shortcut)"/>
+                 @click="$bus.emit('unbind-shortcut',shortcut)"/>
         </li>
     </ul>
     <div class="shortcut-empty-list" v-else>
@@ -94,8 +94,6 @@
     }
 </style>
 <script type="es6">
-    import mixin from "../js/mixin.js";
-
     export default {
         name: 'shortcut-list',
         data() {
@@ -111,6 +109,5 @@
                 }
             }
         },
-        mixins: [mixin],
     }
 </script>

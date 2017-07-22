@@ -42,7 +42,7 @@
                     </div>
                     <p class="primary-subtitle">{{hoveredShortcut.comment || hoveredShortcut.title}}</p>
                     <div class="shortcut-delete-button"
-                         @click="handleShortcutUnbinding(hoveredShortcut);">
+                         @click="$bus.emit('unbind-shortcut',shortcut)">
                         Delete
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                            maxlength="50"
                            autofocus @focus.native="$event.target.select()" required/>
                     <div class="shortcut-bind-button"
-                         @click="handleShortcutBinding(keyChar,comment)">
+                         @click="$bus.emit('bind-shortcut',keyChar,comment)">
                         Bind
                     </div>
                 </div>
@@ -63,8 +63,7 @@
             </div>
         </div>
 
-        <compound-bind v-if="primary && prefs.isCompoundShortcutEnable()"
-                       @bind-compound-shortcut="handleShortcutBinding">
+        <compound-bind v-if="primary && prefs.isCompoundShortcutEnable()">
         </compound-bind>
 
     </section>
@@ -149,7 +148,6 @@
     import Popper from "popper";
     import Keyboard from "../component/Keyboard.vue";
     import CompoundBind from "../component/CompoundBind.vue";
-    import mixin from "../js/mixin.js";
     import common from "../js/common.js";
     import prefs from "../js/prefs.js";
 
@@ -209,7 +207,6 @@
             Keyboard,
             CompoundBind,
         },
-        mixins: [mixin],
         methods: {
             onKeyHoverOver: function(target) {
                 this.onHoverOver();

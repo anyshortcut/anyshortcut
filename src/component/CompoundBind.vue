@@ -53,7 +53,6 @@
 </style>
 <script type="es6">
     import Popper from "popper";
-    import mixin from "../js/mixin.js";
 
     export default {
         name: 'compound-bind',
@@ -70,10 +69,9 @@
                 this.handlePopper();
             }
         },
-        mixins: [mixin],
         methods: {
             emitBindEvent: function() {
-                this.$emit('bind-compound-shortcut', this.compoundKey, this.comment);
+                this.$bus.emit('bind-shortcut', this.compoundKey, this.comment);
             },
             onCompoundKeyFocus: function() {
                 this.comment = this.comment || this.$background.activeTab.title;

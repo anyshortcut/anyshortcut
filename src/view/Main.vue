@@ -124,6 +124,34 @@
             ShortcutList,
         },
         methods: {
+            bindShortcut: function(keyChar, comment) {
+                let bindFunction;
+                if (this.primary) {
+                    bindFunction = this.$background.bindPrimaryShortcut;
+                } else {
+                    bindFunction = this.$background.bindSecondaryShortcut;
+                }
+
+                this.loading = true;
+                bindFunction(keyChar, comment, result => {
+                    this.onPostBind(result);
+                });
+            },
+            unbindShortcut: function(shortcut) {
+                if (shortcut) {
+                    let removeFunction;
+                    if (shortcut.primary) {
+                        removeFunction = this.$background.removePrimaryShortcut;
+                    } else {
+                        removeFunction = this.$background.removeSecondaryShortcut;
+                    }
+
+                    this.loading = true;
+                    removeFunction(shortcut, result => {
+                        this.onPostUnbind(result);
+                    });
+                }
+            },
             onPostBind: function(result) {
                 this.loading = false;
 
@@ -194,15 +222,8 @@
         },
         created: function() {
             this.queryShortcuts();
-            this.$bus.on(['pre-bind', 'pre-unbind'], () => {
-                this.loading = true;
-            });
-            this.$bus.on('post-bind', (result) => {
-                this.onPostBind(result);
-            });
-            this.$bus.on('post-unbind', (result) => {
-                this.onPostUnbind(result);
-            });
+            this.$bus.on('bind-shortcut', this.bindShortcut);
+            this.$bus.on('unbind-shortcut', this.unbindShortcut);
         },
     }
 </script>
