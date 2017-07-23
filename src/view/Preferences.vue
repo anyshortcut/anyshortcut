@@ -5,41 +5,56 @@
             Setting
         </header>
 
-        <div class="preference-group">
-            <div class="preference-title">
-                Open shortcut in new tab
-                <span>
-                <img id="tooltip-shortcut-open" class="info-img" src="../img/info-grey.svg" alt="info">
-                </span>
+        <div class="preference-item flex-vertical">
+            Open primary shortcut:
+            <div>
+                <input type="radio" id="p-blank" v-model='preference.primary_blank' :value="true">
+                <label for="p-blank" class="preference-subtitle">in new tab</label>
             </div>
-
-            <div class="preference-item">
-                <label for="primary-blank">Primary shortcut</label>
-                <input id="primary-blank" type="checkbox"
-                       v-model='preference.primary_blank'>
-            </div>
-            <div class="preference-item">
-                <label for="secondary-blank">Secondary shortcut</label>
-                <input id="secondary-blank" type="checkbox"
-                       v-model='preference.secondary_blank'>
-            </div>
-            <div class="preference-item">
-                <label for="quick-secondary-blank">Quick secondary shortcut</label>
-                <input id="quick-secondary-blank" type="checkbox"
-                       v-model='preference.quick_secondary_blank'>
+            <div>
+                <input type="radio" id="p-self" v-model="preference.primary_blank" :value="false">
+                <label for="p-self" class="preference-subtitle">in same tab</label>
             </div>
         </div>
         <div class="preference-divider"></div>
-        <div class="preference-group">
-            <div class="preference-item">
-                <label for="enable-compound-shortcut"> Enable compound shortcut
-                    <span>
+        <div class="preference-item flex-vertical">
+            Open secondary shortcut:
+            <div>
+                <input type="radio" id="s-blank" v-model="preference.secondary_blank" :value="true">
+                <label for="s-blank" class="preference-subtitle">in new tab</label>
+            </div>
+            <div>
+                <input type="radio" id="s-self" v-model="preference.secondary_blank" :value="false">
+                <label for="s-self" class="preference-subtitle">in same tab</label>
+            </div>
+        </div>
+
+        <div class="preference-divider"></div>
+
+        <div class="preference-item flex-vertical">
+            <span>Quick open secondary shortcut:
+                <img id="tooltip-quick-secondary-shortcut" class="info-img" src="../img/info-grey.svg" alt="info">
+            </span>
+            <div>
+                <input type="radio" id="qs-blank" v-model="preference.quick_secondary_blank" :value="true">
+                <label for="qs-blank" class="preference-subtitle">in new tab</label>
+            </div>
+            <div>
+                <input type="radio" id="qs-self" v-model="preference.quick_secondary_blank" :value="false">
+                <label for="qs-self" class="preference-subtitle">in same tab</label>
+            </div>
+        </div>
+
+        <div class="preference-divider"></div>
+
+        <div class="preference-item flex-horizontal">
+            <label for="enable-compound-shortcut"> Enable compound shortcut
+                <span>
                         <img id="tooltip-compound-shortcut" class="info-img" src="../img/info-grey.svg" alt="info">
                     </span>
-                </label>
-                <input id="enable-compound-shortcut" type="checkbox"
-                       v-model='preference.compound_shortcut_enable'>
-            </div>
+            </label>
+            <input id="enable-compound-shortcut" type="checkbox"
+                   v-model='preference.compound_shortcut_enable'>
         </div>
     </div>
 </template>
@@ -61,38 +76,36 @@
         vertical-align: middle;
     }
 
-    .preference-group {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
+    .preference-item {
+        padding: 8px 15px;
+        font-size: 14px;
 
-        .preference-title {
-            font-size: 16px;
-            line-height: 1.5;
-            color: @secondary-color;
-            padding: 15px 15px 0;
-        }
-
-        .preference-item {
-            display: flex;
-            align-items: center;
-            position: relative;
-            width: 100%;
-            padding: 8px 15px;
-            font-size: 14px;
-            justify-content: space-between;
-
-            &:hover {
-                background: #f8f8f8;
-            }
+        &:hover {
+            background: #f8f8f8;
         }
     }
 
+    .flex-horizontal {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .flex-vertical {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .preference-subtitle {
+        font-size: 13px;
+        color: #797979;
+    }
+
     .preference-divider {
-        background-color: @header-bgcolor;
-        height: 15px;
-        border-top: solid #eeeeee 1px;
-        border-bottom: solid #eeeeee 1px;
+        background-color: #ececec;
+        height: 1px;
+        margin: 0 10px;
     }
 
     @tooltip-background-color: rgba(23, 23, 23, .7);
@@ -139,10 +152,11 @@
             }
         },
         mounted() {
-            new Tooltip(document.getElementById("tooltip-shortcut-open"), {
+            new Tooltip(document.getElementById("tooltip-quick-secondary-shortcut"), {
                 placement: "top",
-                title: "Open in the same tab is default",
+                title: "Use SHIFT+ALT+PrimaryKey➯SecondaryKey open secondary shortcut in any page",
             });
+
             new Tooltip(document.getElementById("tooltip-compound-shortcut"), {
                 placement: "top",
                 title: "Compound shortcut mean two letter primary shortcut",
