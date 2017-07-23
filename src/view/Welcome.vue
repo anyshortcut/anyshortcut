@@ -8,11 +8,12 @@
         <div class="introduction">
             Sign in to boost productivity and sync your shortcuts!
         </div>
-        <a class="attractive-button" :href="signInUrl"
+        <a class="attractive-button" :href="config.baseURL + '/sign_in'"
            title="No email register required"
            target="_blank">Sign In Now</a>
         <footer>
-            <a :href="tryUrl" target="_blank" class="grey-link">I just wanna a try now</a>
+            <a :href="config.baseURL + '/terms'" target="_blank" class="grey-link">Terms Of Service</a>
+            <a :href="config.baseURL + '/privacy'" target="_blank" class="grey-link">Privacy Policy</a>
         </footer>
     </main>
 </template>
@@ -68,29 +69,25 @@
     }
 
     footer {
-        padding: 10px;
-        font-size: 13px;
-        margin: 5px;
+        font-size: 12px;
+        margin: 30px 0 0;
     }
 
     .grey-link {
+        margin: 0 10px;
         text-decoration: underline;
         color: grey;
-        font-size: 14px;
     }
 </style>
 <script type="es6">
     import config from "../js/config.js";
 
-    export default{
+    export default {
         name: 'welcome-view',
-        computed: {
-            signInUrl: function() {
-                return config.baseURL + '/sign_in';
-            },
-            tryUrl: function() {
-                return config.baseURL + '/try'
+        data() {
+            return {
+                config: config,
             }
-        }
+        },
     }
 </script>
