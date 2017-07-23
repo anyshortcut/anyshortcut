@@ -20,6 +20,6 @@ webpack(webpackConfig, function(err, stats) {
             chunkModules: false
         }) + '\n\n');
 
-    utils.execute('say build complete');
+    utils.execute("terminal-notifier -title 'Spruce' -message 'build complete' -sound default");
     console.log(chalk.cyan('  Build complete.\n'));
 });

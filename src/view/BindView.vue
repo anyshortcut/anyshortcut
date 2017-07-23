@@ -165,7 +165,6 @@
             },
             onHoverLeave: function() {
                 this._timeoutId = setTimeout(() => {
-                    this.keyChar = null;
                     this.showPopper = false;
                 }, 200);
             },
