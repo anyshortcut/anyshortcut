@@ -1,13 +1,13 @@
 <template>
-    <transition name="message-fade">
-        <div class="message"
+    <transition name="toast-fade">
+        <div class="toast"
              v-show="visible"
              @mouseenter="clearTimer"
              @mouseleave="startTimer">
-            <img class="message__img" :src="typeImg" alt="">
-            <div class="message__group">
+            <img class="toast-img" :src="typeImg" alt="">
+            <div class="toast-group">
                 <p>{{ message }}</p>
-                <div class="message__closeBtn" @click="close">x</div>
+                <div class="toast-close-button" @click="close">x</div>
             </div>
         </div>
     </transition>
@@ -15,21 +15,21 @@
 <style lang="less">
     @import "../less/_var.less";
 
-    .message {
-        box-shadow: @message-shadow;
-        min-width: @message-min-width;
-        padding: @message-padding;
+    .toast {
+        box-shadow: @box-shadow-base;
+        min-width: 300px;
+        padding: 10px 12px;
         box-sizing: border-box;
         border-radius: 2px;
         position: fixed;
         left: 50%;
-        top: 20px;
+        top: 1px;
         transform: translateX(-50%);
         background-color: #ffffff;
         transition: opacity 0.3s, transform .4s;
         overflow: hidden;
 
-        .message__group {
+        .toast-group {
             margin-left: 38px;
             position: relative;
             height: 20px;
@@ -38,34 +38,34 @@
             align-items: center;
 
             & p {
-                font-size: @font-size-base;
+                font-size: 14px;
                 margin: 0 34px 0 0;
                 white-space: nowrap;
-                color: @message-content-color;
+                color: black;
                 text-align: justify;
             }
         }
-        .message__img {
+        .toast-img {
             size: 40px;
             position: absolute;
             left: 0;
             top: 0;
         }
-        .message__closeBtn {
+        .toast-close-button {
             position: absolute;
             right: 3px;
             cursor: pointer;
-            color: @message-close-color;
-            font-size: @font-size-base;
+            color: silver;
+            font-size: 14px;
 
             &:hover {
-                color: @message-close-hover-color;
+                color: grey;
             }
         }
     }
 
-    .message-fade-enter,
-    .message-fade-leave-active {
+    .toast-fade-enter,
+    .toast-fade-leave-active {
         opacity: 0;
         transform: translate(-50%, -100%);
     }

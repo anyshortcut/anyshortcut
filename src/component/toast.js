@@ -1,11 +1,11 @@
 import Vue from "vue";
 
-let MessageConstructor = Vue.extend(require("../component/Message.vue"));
+let ToastComponent = Vue.extend(require("./Toast.vue"));
 
 let instances = [];
 let seed = 1;
 
-let Message = function(options) {
+let Toast = function(options) {
     options = options || {};
     if (typeof options === 'string') {
         options = {
@@ -13,13 +13,13 @@ let Message = function(options) {
         };
     }
     let userOnClose = options.onClose;
-    let id = 'message_' + seed++;
+    let id = 'toast_' + seed++;
 
     options.onClose = function() {
-        Message.close(id, userOnClose);
+        Toast.close(id, userOnClose);
     };
 
-    let instance = new MessageConstructor({
+    let instance = new ToastComponent({
         data: options
     });
     instance.id = id;
@@ -33,18 +33,18 @@ let Message = function(options) {
 };
 
 ['success', 'warning', 'info', 'error'].forEach(type => {
-    Message[type] = options => {
+    Toast[type] = options => {
         if (typeof options === 'string') {
             options = {
                 message: options
             };
         }
         options.type = type;
-        return Message(options);
+        return Toast(options);
     };
 });
 
-Message.close = function(id, userOnClose) {
+Toast.close = function(id, userOnClose) {
     for (let i = 0, len = instances.length; i < len; i++) {
         if (id === instances[i].id) {
             if (typeof userOnClose === 'function') {
@@ -56,4 +56,4 @@ Message.close = function(id, userOnClose) {
     }
 };
 
-export default Message;
+export default Toast;

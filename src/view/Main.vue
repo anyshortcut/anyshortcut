@@ -158,10 +158,10 @@
                 if (result) {
                     this.$background.setPopupIcon(true);
                     this.queryShortcuts();
-                    this.$message.success('Great job!you have bound a shortcut for this url!');
+                    this.$toast.success('Great job! you have bound a shortcut for this url!');
                 }
                 else {
-                    this.$message.error('Ooops!');
+                    this.$toast.error('Ooops!');
                 }
             },
             onPostUnbind: function(result) {
@@ -172,10 +172,10 @@
 
                     this.shortcut = null;
                     this.domainPrimaryShortcut = null;
-                    this.$message.success('Delete Success!');
+                    this.$toast.success('Delete Success!');
                     this.queryShortcuts();
                 } else {
-                    this.$message.error('Ooops!');
+                    this.$toast.error('Ooops!');
                 }
             },
             queryShortcuts() {

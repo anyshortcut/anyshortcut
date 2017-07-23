@@ -77,7 +77,7 @@
     }
 
     .preference-item {
-        padding: 8px 15px;
+        padding: 8px 20px;
         font-size: 14px;
 
         &:hover {

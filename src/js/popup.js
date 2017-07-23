@@ -3,10 +3,10 @@ import auth from "./background/auth.js";
 import WelcomeView from "../view/Welcome.vue";
 import MainView from "../view/Main.vue";
 import PreferenceView from "../view/Preferences.vue";
-import Message from "../component/message.js";
+import Toast from "../component/toast.js";
 import Bus from "./vue-bus.js";
 
-Vue.prototype.$message = Message;
+Vue.prototype.$toast = Toast;
 Vue.prototype.$background = chrome.extension.getBackgroundPage();
 
 Vue.directive('visible', function(el, binding) {
