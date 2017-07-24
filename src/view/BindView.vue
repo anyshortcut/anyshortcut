@@ -39,8 +39,8 @@
             </div>
         </div>
 
-        <compound-bind v-if="primary && prefs.isCompoundShortcutEnable()">
-        </compound-bind>
+        <compound-keyboard v-if="primary && prefs.isCompoundShortcutEnable()">
+        </compound-keyboard>
 
     </section>
 </template>
@@ -50,6 +50,8 @@
     .bind-view {
         display: flex;
         flex-direction: column;
+        align-items: center;
+        padding: 0 0 15px;
     }
 
     .popper {
@@ -59,6 +61,7 @@
         box-shadow: @box-shadow-base;
         padding: 5px;
         margin-bottom: 5px;
+        z-index: 999;
     }
 
     .popper-arrow {
@@ -102,8 +105,8 @@
 <script type="es6">
     import Popper from "popper";
     import Keyboard from "../component/Keyboard.vue";
+    import CompoundKeyboard from "../component/CompoundKeyboard.vue";
     import ShortcutBoard from "../component/ShortcutBoard.vue";
-    import CompoundBind from "../component/CompoundBind.vue";
     import prefs from "../js/prefs.js";
 
     export default {
@@ -152,8 +155,8 @@
         },
         components: {
             Keyboard,
+            CompoundKeyboard,
             ShortcutBoard,
-            CompoundBind,
         },
         methods: {
             onKeyHoverOver: function(target) {
