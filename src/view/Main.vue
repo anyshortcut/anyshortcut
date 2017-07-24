@@ -194,8 +194,8 @@
 
                 // Due to Javascript object reference, we need to pick by a new shortcuts Object,
                 // otherwise can't trigger BindView shortcuts value change.
-                let pickByFunction = (value, key) => {
-                    return key.length === 1;
+                let pickByFunction = () => {
+                    return true;
                 };
                 if (this.domainPrimaryShortcut) {
                     // If current tab domain bound primary shortcut,

@@ -39,7 +39,8 @@
             </div>
         </div>
 
-        <compound-keyboard v-if="primary && prefs.isCompoundShortcutEnable()">
+        <compound-keyboard v-if="primary && prefs.isCompoundShortcutEnable()"
+                           :bound-keys="compoundBoundKeys">
         </compound-keyboard>
 
     </section>
@@ -108,6 +109,11 @@
     import CompoundKeyboard from "../component/CompoundKeyboard.vue";
     import ShortcutBoard from "../component/ShortcutBoard.vue";
     import prefs from "../js/prefs.js";
+    import _ from "lodash";
+
+    const pickByFunction = (value, key) => {
+        return key.length === 1;
+    };
 
     export default {
         name: 'bind-view',
@@ -127,14 +133,14 @@
                 type: Object,
                 default: function() {
                     return {};
-                },
+                }
             },
             shortcuts: {
                 type: Object,
                 default: function() {
                     return null;
                 }
-            }
+            },
         },
         computed: {
             // A mouse hovered shortcut computed object
@@ -143,7 +149,10 @@
             },
             // All bound keys, for keyboard component usage.
             boundKeys: function() {
-                return this.shortcuts ? Object.keys(this.shortcuts) : [];
+                return Object.keys(_.pickBy(this.shortcuts, pickByFunction));
+            },
+            compoundBoundKeys: function() {
+                return Object.keys(_.omitBy(this.shortcuts, pickByFunction));
             },
             highlightKey: function() {
                 if (this.showPopper && this.boundKeys.indexOf(this.keyChar) === -1) {

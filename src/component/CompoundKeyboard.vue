@@ -1,9 +1,9 @@
 <template>
     <div class="compound-keyboard">
-        <div v-for="rowKey in ' ' + alphaNumber" class="row">
+        <div v-for="rowKey in ' ' + alphabet" class="row">
             <div class="key column-header" :class="{'left-corner':rowKey===' '}">{{ rowKey }}</div>
             <div class="key" :class="rowClass(rowKey + columnKey)"
-                 v-for="columnKey in alphaNumber">
+                 v-for="columnKey in alphabet">
                 {{rowKey + columnKey }}
             </div>
         </div>
@@ -63,13 +63,36 @@
         name: 'CompoundGrid',
         data() {
             return {
-                alphaNumber: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+                alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+                numbers: '0123456789',
             };
+        },
+        props: {
+            boundKeys: {
+                type: Array,
+                default: function() {
+                    return [];
+                }
+            },
+            highlightKey: {
+                type: String,
+                default: function() {
+                    return null;
+                }
+            },
         },
         methods: {
             rowClass: function(key) {
-                return {
-                    'row-header': key.trim().length === 1,
+                if (key.trim().length === 1) {
+                    return {
+                        'row-header': true,
+                    }
+                } else {
+                    return this.boundKeys.indexOf(key) !== -1 ? {
+                        'disabled': true
+                    } : {
+                        'highlight': key === this.highlightKey
+                    };
                 }
             }
         }
