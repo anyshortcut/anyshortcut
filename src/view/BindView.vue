@@ -38,13 +38,6 @@
             </shortcut-board>
             <div class="popper-arrow" :class="{'cursor-pointer':highlightKey !== null}" x-arrow></div>
         </div>
-
-        <compound-keyboard v-if="primary && prefs.isCompoundShortcutEnable()"
-                           :bound-keys="compoundBoundKeys"
-                           @key-hover-over="onKeyHoverOver"
-                           @key-hover-leave="onHoverLeave">
-        </compound-keyboard>
-
     </section>
 </template>
 <style lang="less">
@@ -108,14 +101,8 @@
 <script type="es6">
     import Popper from "popper";
     import Keyboard from "../component/Keyboard.vue";
-    import CompoundKeyboard from "../component/CompoundKeyboard.vue";
     import ShortcutBoard from "../component/ShortcutBoard.vue";
     import prefs from "../js/prefs.js";
-    import _ from "lodash";
-
-    const pickByFunction = (value, key) => {
-        return key.length === 1;
-    };
 
     export default {
         name: 'bind-view',
@@ -151,10 +138,7 @@
             },
             // All bound keys, for keyboard component usage.
             boundKeys: function() {
-                return Object.keys(_.pickBy(this.shortcuts, pickByFunction));
-            },
-            compoundBoundKeys: function() {
-                return Object.keys(_.omitBy(this.shortcuts, pickByFunction));
+                return Object.keys(this.shortcuts);
             },
             highlightKey: function() {
                 if (this.showPopper && this.boundKeys.indexOf(this.keyChar) === -1) {
@@ -166,7 +150,6 @@
         },
         components: {
             Keyboard,
-            CompoundKeyboard,
             ShortcutBoard,
         },
         methods: {

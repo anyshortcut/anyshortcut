@@ -78,13 +78,13 @@
         display: flex;
     }
 
-    @key-height: 30px;
     .key {
         position: relative;
         display: inline-block;
         vertical-align: middle;
         text-align: center;
-        height: @key-height;
+        height: 30px;
+        width: 30px;
         margin: 6px;
         letter-spacing: 0.5px;
         color: #3a3a3a;
