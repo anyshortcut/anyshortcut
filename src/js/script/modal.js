@@ -2,15 +2,16 @@ require("../../less/content-script.less");
 import helper from "./helper.js";
 import template from "./templates.js";
 
+let timeoutId = undefined;
+
 function removeElementDelay(element, delay) {
-    let timeoutId = window.setTimeout(() => {
+    timeoutId = window.setTimeout(() => {
         if (document.body.contains(element)) {
             document.body.removeChild(element);
         }
         window.clearTimeout(timeoutId);
         timeoutId = undefined;
     }, delay || 3000);
-    return timeoutId;
 }
 
 function createDiv(className) {
@@ -45,15 +46,13 @@ function buildModal(content) {
 
     let container = createDiv('anyshortcut-modal-container');
 
-    let timeoutId = removeElementDelay(modal);
+    removeElementDelay(modal);
     container.onmouseover = function(e) {
-        if (timeoutId) {
-            window.clearTimeout(timeoutId);
-            timeoutId = undefined;
-        }
+        window.clearTimeout(timeoutId);
+        timeoutId = undefined;
     };
     container.onmouseout = function(e) {
-        timeoutId = removeElementDelay(modal);
+        removeElementDelay(modal);
     };
     modal.addEventListener('keyup', function(e) {
         if (e.keyCode === 27) {
@@ -109,9 +108,9 @@ export default {
                 }
 
                 if (shortcut) {
-                    helper.openShortcut(shortcut, openByBlank);
                     removeElementDelay(modal, 50);
                     modal.removeEventListener('keyup', chooserEventListener);
+                    helper.openShortcut(shortcut, openByBlank);
                 }
             }
         };
@@ -136,9 +135,9 @@ export default {
 
                 let keyCodeChar = String.fromCharCode(e.keyCode);
                 if (shortcuts.hasOwnProperty(keyCodeChar)) {
-                    helper.openShortcut(shortcuts[keyCodeChar], byBlank);
                     removeElementDelay(modal, 50);
                     modal.removeEventListener('keyup', listEventListener);
+                    helper.openShortcut(shortcuts[keyCodeChar], byBlank);
                 }
             }
         };
