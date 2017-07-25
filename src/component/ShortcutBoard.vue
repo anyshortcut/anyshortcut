@@ -22,7 +22,7 @@
                maxlength="50"
                autofocus @focus.native="$event.target.select()" required/>
         <div class="shortcut-bind-button"
-             @click="$bus.emit('bind-shortcut',keyChar,comment)">
+             @click="$bus.emit('bind-shortcut',primary,keyChar,comment)">
             Bind
         </div>
     </div>
@@ -73,7 +73,13 @@
                 default: function() {
                     return null;
                 }
-            }
+            },
+            primary: {
+                type: Boolean,
+                default: function() {
+                    return true;
+                }
+            },
         },
         computed: {
             shortcutDomain: function() {

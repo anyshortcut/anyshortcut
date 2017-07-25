@@ -33,6 +33,7 @@
              @mouseover="onHoverOver"
              @mouseleave="onHoverLeave">
             <shortcut-board :shortcut="hoveredShortcut"
+                            :primary="primary"
                             :key-char="keyChar">
             </shortcut-board>
             <div class="popper-arrow" :class="{'cursor-pointer':highlightKey !== null}" x-arrow></div>
