@@ -1,67 +1,65 @@
 <template>
-    <div class="container">
-        <div class="keyboard" id="keyboard">
-            <div class="keyboard-row">
-                <div class="key weak" v-visible="weakVisibility"></div>
-                <div v-for="key in '1234567890'"
-                     :class="keyClass(key)"
-                     class="key">{{ key }}
-                </div>
-                <div class="key weak invisible" v-visible="weakVisibility"></div>
+    <div class="keyboard" id="keyboard">
+        <div class="keyboard-row">
+            <div class="key weak" v-visible="weakVisibility"></div>
+            <div v-for="key in '1234567890'"
+                 :class="keyClass(key)"
+                 class="key">{{ key }}
             </div>
-            <div class="keyboard-row">
-                <div class="key weak" v-visible="weakVisibility"></div>
-                <div v-for="key in 'QWERTYUIOP'"
-                     :class="keyClass(key)"
-                     class="key">{{ key }}
-                </div>
-                <div class="key weak invisible" v-visible="weakVisibility"></div>
+            <div class="key weak invisible" v-visible="weakVisibility"></div>
+        </div>
+        <div class="keyboard-row">
+            <div class="key weak" v-visible="weakVisibility"></div>
+            <div v-for="key in 'QWERTYUIOP'"
+                 :class="keyClass(key)"
+                 class="key">{{ key }}
             </div>
-            <div class="keyboard-row">
-                <div class="key weak extra-size-two" v-visible="weakVisibility"></div>
-                <div v-for="key in 'ASDFGHJKL'"
-                     :class="keyClass(key)"
-                     class="key">{{ key }}
-                </div>
-                <div class="key weak extra-size-two invisible"
-                     v-visible="weakVisibility">
-                </div>
+            <div class="key weak invisible" v-visible="weakVisibility"></div>
+        </div>
+        <div class="keyboard-row">
+            <div class="key weak extra-size-two" v-visible="weakVisibility"></div>
+            <div v-for="key in 'ASDFGHJKL'"
+                 :class="keyClass(key)"
+                 class="key">{{ key }}
             </div>
-            <div class="keyboard-row">
-                <div class="key weak double-size lowercase"
-                     v-visible="weakVisibility"
-                     :class="{highlight:primary,shift:primary}">
-                </div>
-                <div v-for="key in 'ZXCVBNM'"
-                     :class="keyClass(key)"
-                     class="key">{{ key }}
-                </div>
-                <div class="key weak double-size lowercase invisible"
-                     v-visible="weakVisibility"
-                     :class="{highlight:primary,shift:primary}">
-                </div>
+            <div class="key weak extra-size-two invisible"
+                 v-visible="weakVisibility">
             </div>
-            <div class="keyboard-row">
-                <div class="key weak lowercase" v-visible="weakVisibility">
-                </div>
-                <div class="key weak lower-center lowercase highlight"
-                     v-visible="weakVisibility">alt
-                </div>
-                <div class="key weak lower-center lowercase extra-size-two invisible"
-                     v-visible="weakVisibility">
-                </div>
-                <div class="key weak space-bar invisible"
-                     v-visible="weakVisibility">
-                </div>
-                <div class="key weak lower-center lowercase extra-size-two"
-                     v-visible="weakVisibility">
-                </div>
-                <div class="key weak lower-center lowercase highlight invisible"
-                     v-visible="weakVisibility">alt
-                </div>
-                <div class="key weak lowercase invisible"
-                     v-visible="weakVisibility">
-                </div>
+        </div>
+        <div class="keyboard-row">
+            <div class="key weak double-size lowercase"
+                 v-visible="weakVisibility"
+                 :class="{highlight:primary,shift:primary}">
+            </div>
+            <div v-for="key in 'ZXCVBNM'"
+                 :class="keyClass(key)"
+                 class="key">{{ key }}
+            </div>
+            <div class="key weak double-size lowercase invisible"
+                 v-visible="weakVisibility"
+                 :class="{highlight:primary,shift:primary}">
+            </div>
+        </div>
+        <div class="keyboard-row">
+            <div class="key weak lowercase" v-visible="weakVisibility">
+            </div>
+            <div class="key weak lower-center lowercase highlight"
+                 v-visible="weakVisibility">alt
+            </div>
+            <div class="key weak lower-center lowercase extra-size-two invisible"
+                 v-visible="weakVisibility">
+            </div>
+            <div class="key weak space-bar invisible"
+                 v-visible="weakVisibility">
+            </div>
+            <div class="key weak lower-center lowercase extra-size-two"
+                 v-visible="weakVisibility">
+            </div>
+            <div class="key weak lower-center lowercase highlight invisible"
+                 v-visible="weakVisibility">alt
+            </div>
+            <div class="key weak lowercase invisible"
+                 v-visible="weakVisibility">
             </div>
         </div>
     </div>
@@ -71,7 +69,7 @@
         box-sizing: border-box;
     }
 
-    .container {
+    .keyboard {
         max-width: 500px;
         margin: 5px auto;
     }
@@ -106,7 +104,7 @@
             display: inline-block;
             vertical-align: middle;
             height: 100%;
-            content: '';
+            /*content: '';*/
         }
 
         &:hover {

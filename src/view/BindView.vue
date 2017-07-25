@@ -20,27 +20,28 @@
             <div class="primary-text">Specify the secondary shortcut:</div>
         </div>
 
-        <div>
-            <keyboard :bound-keys="boundKeys"
-                      :highlight-key="highlightKey"
-                      :primary="primary"
-                      @key-hover-over="onKeyHoverOver"
-                      @key-hover-leave="onHoverLeave">
-            </keyboard>
-            <div id="popover"
-                 class="popper"
-                 v-show="showPopper"
-                 @mouseover="onHoverOver"
-                 @mouseleave="onHoverLeave">
-                <shortcut-board :shortcut="hoveredShortcut"
-                                :key-char="keyChar">
-                </shortcut-board>
-                <div class="popper-arrow" :class="{'cursor-pointer':highlightKey !== null}" x-arrow></div>
-            </div>
+        <keyboard :bound-keys="boundKeys"
+                  :highlight-key="highlightKey"
+                  :primary="primary"
+                  @key-hover-over="onKeyHoverOver"
+                  @key-hover-leave="onHoverLeave">
+        </keyboard>
+
+        <div id="popover"
+             class="popper"
+             v-show="showPopper"
+             @mouseover="onHoverOver"
+             @mouseleave="onHoverLeave">
+            <shortcut-board :shortcut="hoveredShortcut"
+                            :key-char="keyChar">
+            </shortcut-board>
+            <div class="popper-arrow" :class="{'cursor-pointer':highlightKey !== null}" x-arrow></div>
         </div>
 
         <compound-keyboard v-if="primary && prefs.isCompoundShortcutEnable()"
-                           :bound-keys="compoundBoundKeys">
+                           :bound-keys="compoundBoundKeys"
+                           @key-hover-over="onKeyHoverOver"
+                           @key-hover-leave="onHoverLeave">
         </compound-keyboard>
 
     </section>

@@ -1,15 +1,15 @@
 <template>
-    <div class="compound-keyboard">
+    <div class="compound-keyboard" id="compound-keyboard">
         <div v-for="rowKey in ' ' + alphabet" class="row">
             <div class="key column-header" :class="{'left-corner':rowKey===' '}">{{ rowKey }}</div>
             <div class="key" :class="rowClass(rowKey + columnKey)"
                  v-for="columnKey in alphabet">
-                {{rowKey + columnKey }}
+                {{ rowKey + columnKey }}
             </div>
         </div>
     </div>
 </template>
-<style lang="css">
+<style lang="less">
     .compound-keyboard {
         max-width: 400px;
         max-height: 225px;
@@ -30,13 +30,18 @@
         border-radius: 2px;
         margin: 5px;
         cursor: pointer;
+
+        &.disabled {
+            background: #ececec;
+            cursor: text;
+        }
     }
 
     .key:before {
         display: inline-block;
         vertical-align: middle;
         height: 100%;
-        content: '';
+        /*content: '';*/
     }
 
     .left-corner {
@@ -57,6 +62,7 @@
     .column-header {
         width: 20px;
     }
+
 </style>
 <script type="es6">
     export default {
@@ -89,12 +95,25 @@
                     }
                 } else {
                     return this.boundKeys.indexOf(key) !== -1 ? {
-                        'disabled': true
+                        'raw-key': true,
+                        'disabled': true,
                     } : {
-                        'highlight': key === this.highlightKey
+                        'raw-key': true,
+                        'highlight': key === this.highlightKey,
                     };
                 }
             }
-        }
+        },
+        mounted: function() {
+            // Query key elements exclude weak element, then add mouse event listener.
+            document.getElementById('compound-keyboard').querySelectorAll('.raw-key').forEach(element => {
+                element.addEventListener('mouseover', () => {
+                    this.$emit('key-hover-over', element);
+                });
+                element.addEventListener('mouseleave', () => {
+                    this.$emit('key-hover-leave', element);
+                });
+            });
+        },
     }
 </script>
