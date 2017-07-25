@@ -5,12 +5,25 @@
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 
     <link rel="stylesheet" href="dist/css/popup.css">
+    <style>
+        div.loading {
+            position: fixed;
+            bottom: 50%;
+            right: 50%;
+            color: gray;
+            text-align: center;
+            z-index: 9999;
+        }
+    </style>
 </head>
 <body>
 <div id="vue">
     <template v-if="authenticated">
-        <main-view v-if="currentView=='main'"></main-view>
+        <main-view ref="main" v-if="currentView=='main'"></main-view>
         <preference-view v-else="currentView=='setting'"></preference-view>
+        <div v-show="loading" class="loading">
+            <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
+        </div>
     </template>
     <welcome-view v-else></welcome-view>
 </div>

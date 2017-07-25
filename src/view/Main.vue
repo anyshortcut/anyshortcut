@@ -28,10 +28,6 @@
             </div>
             <shortcut-list :shortcuts="shortcuts"></shortcut-list>
         </section>
-        <div v-show="loading" class="loading">
-            <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
-        </div>
-
     </div>
 </template>
 <style lang="less">
@@ -59,14 +55,6 @@
     a {
         text-decoration: none;
         outline: none;
-    }
-
-    div.loading {
-        position: fixed;
-        bottom: 50%;
-        right: 50%;
-        color: gray;
-        text-align: center;
     }
 
     .main-view {
@@ -124,61 +112,10 @@
             ShortcutList,
         },
         methods: {
-            bindShortcut: function(keyChar, comment) {
-                let bindFunction;
-                if (this.primary) {
-                    bindFunction = this.$background.bindPrimaryShortcut;
-                } else {
-                    bindFunction = this.$background.bindSecondaryShortcut;
-                }
-
-                this.loading = true;
-                bindFunction(keyChar, comment, result => {
-                    this.onPostBind(result);
-                });
-            },
-            unbindShortcut: function(shortcut) {
-                if (shortcut) {
-                    let removeFunction;
-                    if (shortcut.primary) {
-                        removeFunction = this.$background.removePrimaryShortcut;
-                    } else {
-                        removeFunction = this.$background.removeSecondaryShortcut;
-                    }
-
-                    this.loading = true;
-                    removeFunction(shortcut, result => {
-                        this.onPostUnbind(result);
-                    });
-                }
-            },
-            onPostBind: function(result) {
-                this.loading = false;
-
-                if (result) {
-                    this.$background.setPopupIcon(true);
-                    this.queryShortcuts();
-                    this.$toast.success('Great job! you have bound a shortcut for this url!');
-                }
-                else {
-                    this.$toast.error('Ooops!');
-                }
-            },
-            onPostUnbind: function(result) {
-                this.loading = false;
-
-                if (result) {
-                    this.$background.setPopupIcon(false);
-
-                    this.shortcut = null;
-                    this.domainPrimaryShortcut = null;
-                    this.$toast.success('Delete Success!');
-                    this.queryShortcuts();
-                } else {
-                    this.$toast.error('Ooops!');
-                }
-            },
             queryShortcuts() {
+                this.shortcut = null;
+                this.domainPrimaryShortcut = null;
+
                 let activeTab = this.$background.activeTab;
                 let primaryShortcuts = this.$background.primaryShortcuts;
                 let secondaryShortcuts = this.$background.getSecondaryShortcutsByUrl(activeTab.url);
@@ -222,8 +159,6 @@
         },
         created: function() {
             this.queryShortcuts();
-            this.$bus.on('bind-shortcut', this.bindShortcut);
-            this.$bus.on('unbind-shortcut', this.unbindShortcut);
         },
     }
 </script>
