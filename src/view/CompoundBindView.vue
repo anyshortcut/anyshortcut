@@ -1,8 +1,14 @@
 <template>
     <div class="compound-bind-view">
-        <div class="primary-text">Specify primary compound key:</div>
+        <header class="compound-bind-header">
+            <a href="#/main"><img src="../img/back.svg" class="back-icon"/></a>
+            Go back
+        </header>
+
+        <div class="primary-text" style="margin-top: 18px">Specify primary compound key:</div>
         <compound-keyboard
                 :bound-keys="boundKeys"
+                :highlight-key="highlightKey"
                 @key-hover-over="onKeyHoverOver"
                 @key-hover-leave="onHoverLeave">
         </compound-keyboard>
@@ -21,7 +27,20 @@
     </div>
 </template>
 <style lang="less">
+    @import "../less/_common.less";
 
+    .compound-bind-view {
+        width: 560px;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        background: @content-bgcolor;
+    }
+
+    .compound-bind-header {
+        .header;
+        justify-content: flex-start;
+    }
 </style>
 <script type="es6">
     import _ from "lodash";

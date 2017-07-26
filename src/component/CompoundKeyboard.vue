@@ -11,10 +11,10 @@
 </template>
 <style lang="less">
     .compound-keyboard {
-        max-width: 400px;
         max-height: 225px;
         white-space: nowrap;
         overflow: scroll;
+        margin: 10px 32px 20px;
     }
 
     .key {
