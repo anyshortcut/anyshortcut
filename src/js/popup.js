@@ -68,7 +68,12 @@ let app = new Vue({
             this.loading = false;
 
             if (result) {
-                this.refreshMainView();
+                if (this.currentView === 'main') {
+                    this.$refs.main.queryShortcuts();
+                } else if (this.currentView === 'compound-bind') {
+                    window.location.hash = '#/main';
+                    this.currentView === 'main';
+                }
 
                 this.$background.setPopupIcon(true);
                 this.$toast.success('Great job! you have bound a shortcut for this url!');
@@ -81,7 +86,11 @@ let app = new Vue({
             this.loading = false;
 
             if (result) {
-                this.refreshMainView();
+                if (this.currentView === 'main') {
+                    this.$refs.main.queryShortcuts();
+                } else if (this.currentView === 'compound-bind') {
+                    this.$refs.compoundBind.queryShortcuts();
+                }
 
                 this.$background.setPopupIcon(false);
                 this.$toast.success('Delete Success!');
@@ -89,14 +98,6 @@ let app = new Vue({
                 this.$toast.error('Ooops!');
             }
         },
-        refreshMainView: function() {
-            if (this.currentView === 'main') {
-                this.$refs.main.queryShortcuts();
-            } else {
-                window.location.hash = '#/main';
-                this.currentView === 'main';
-            }
-        }
     },
     mounted() {
         this.$bus.on('bind-shortcut', this.bindShortcut);
