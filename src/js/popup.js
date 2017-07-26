@@ -2,6 +2,7 @@ import Vue from "vue";
 import auth from "./background/auth.js";
 import WelcomeView from "../view/Welcome.vue";
 import MainView from "../view/Main.vue";
+import CompoundBindView from "../view/CompoundBindView.vue";
 import PreferenceView from "../view/Preferences.vue";
 import Toast from "../component/toast.js";
 import Bus from "./vue-bus.js";
@@ -26,6 +27,7 @@ let app = new Vue({
     components: {
         WelcomeView,
         MainView,
+        CompoundBindView,
         PreferenceView,
     },
     computed: {
@@ -66,8 +68,9 @@ let app = new Vue({
             this.loading = false;
 
             if (result) {
+                this.refreshMainView();
+
                 this.$background.setPopupIcon(true);
-                this.$refs.main.queryShortcuts();
                 this.$toast.success('Great job! you have bound a shortcut for this url!');
             }
             else {
@@ -78,14 +81,22 @@ let app = new Vue({
             this.loading = false;
 
             if (result) {
-                this.$background.setPopupIcon(false);
+                this.refreshMainView();
 
+                this.$background.setPopupIcon(false);
                 this.$toast.success('Delete Success!');
-                this.$refs.main.queryShortcuts();
             } else {
                 this.$toast.error('Ooops!');
             }
         },
+        refreshMainView: function() {
+            if (this.currentView === 'main') {
+                this.$refs.main.queryShortcuts();
+            } else {
+                window.location.hash = '#/main';
+                this.currentView === 'main';
+            }
+        }
     },
     mounted() {
         this.$bus.on('bind-shortcut', this.bindShortcut);

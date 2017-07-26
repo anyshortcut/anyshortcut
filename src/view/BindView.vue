@@ -27,6 +27,11 @@
                   @key-hover-leave="onHoverLeave">
         </keyboard>
 
+        <a v-if="primary && prefs.isCompoundShortcutEnable()"
+           href="#/compound-bind">
+            Or bind compound shortcut?
+        </a>
+
         <div id="popover"
              class="popper"
              v-show="showPopper"
