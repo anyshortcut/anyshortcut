@@ -1,5 +1,6 @@
 <template>
-    <div class="compound-keyboard" id="compound-keyboard">
+    <div class="compound-keyboard" id="compound-keyboard"
+         @scroll="onScroll">
         <div v-for="rowKey in ' ' + alphabet" class="row">
             <div class="key column-header" :class="{'left-corner':rowKey===' '}">{{ rowKey }}</div>
             <div class="key" :class="rowClass(rowKey + columnKey)"
@@ -71,6 +72,7 @@
             return {
                 alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
                 numbers: '0123456789',
+                scrolling: false,
             };
         },
         props: {
@@ -102,12 +104,24 @@
                         'highlight': key === this.highlightKey,
                     };
                 }
-            }
+            },
+            onScroll: function() {
+                this.scrolling = true;
+                if (this._scrollTimeoutId) {
+                    window.clearTimeout(this._scrollTimeoutId);
+                }
+
+                this._scrollTimeoutId = window.setTimeout(() => {
+                    this.scrolling = false;
+                }, 200);
+            },
         },
         mounted: function() {
             // Query key elements exclude weak element, then add mouse event listener.
             document.getElementById('compound-keyboard').querySelectorAll('.raw-key').forEach(element => {
                 element.addEventListener('mouseover', () => {
+                    if (this.scrolling) return;
+
                     this.$emit('key-hover-over', element);
                 });
                 element.addEventListener('mouseleave', () => {
