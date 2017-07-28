@@ -9,6 +9,7 @@
         <compound-keyboard
                 :bound-keys="boundKeys"
                 :highlight-key="highlightKey"
+                @scroll.native="showPopper=false"
                 @key-hover-over="onKeyHoverOver"
                 @key-hover-leave="onHoverLeave">
         </compound-keyboard>
