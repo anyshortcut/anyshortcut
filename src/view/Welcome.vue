@@ -57,15 +57,10 @@
     }
 
     .attractive-button {
+        .positive-gradient;
         width: 60%;
-        background: linear-gradient(@secondary-color, @primary-color);
-        color: #FFFFFF;
         font-size: 15px;
         border-radius: 3px;
-
-        &:hover {
-            background: linear-gradient(@primary-color, #3A56A8);
-        }
     }
 
     footer {

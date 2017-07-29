@@ -52,14 +52,12 @@
   .button;
   .negative-gradient;
   padding: 2px 30px;
-  color: #FFFFFF;
 }
 
 .shortcut-bind-button {
   .button;
   .positive-gradient;
   padding: 2px 30px;
-  color: #FFFFFF;
 }
 
 .button() {
@@ -73,6 +71,7 @@
 }
 
 .positive-gradient() {
+  color: #FFFFFF;
   background: linear-gradient(@secondary-color, @primary-color);
 
   &:hover {
@@ -82,6 +81,7 @@
 
 .negative-gradient() {
   background: linear-gradient(#d85b52, #aa3030);
+  color: #FFFFFF;
 
   &:hover {
     background: linear-gradient(#aa3030, #902626);

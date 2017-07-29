@@ -28,8 +28,9 @@
         </keyboard>
 
         <a v-if="primary && prefs.isCompoundShortcutEnable()"
+           class="bind-compound-link"
            href="#/compound-bind">
-            Or bind compound shortcut?
+            Bind compound shortcut<span><img src="../img/right-arrow.svg"></span>
         </a>
 
         <div id="popover"
@@ -100,6 +101,16 @@
 
     .margin-top-28 {
         margin-top: 28px;
+    }
+
+    .bind-compound-link {
+        font-size: 15px;
+        color: #515151;
+
+        img {
+            margin: 0 0 0 10px;
+            vertical-align: middle;
+        }
     }
 
 </style>
