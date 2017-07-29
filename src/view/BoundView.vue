@@ -108,7 +108,7 @@
 
 </style>
 <script type="es6">
-    import moment from "moment";
+    import timeago from "timeago.js";
 
     export default {
         name: 'bound-view',
@@ -126,9 +126,8 @@
             }
         },
         filters: {
-            //Custom filter to use moment.js format time as fromNow type.
             fromNow: function(time) {
-                return moment(time).fromNow();
+                return timeago().format(time);
             }
         },
     }
