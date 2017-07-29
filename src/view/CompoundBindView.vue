@@ -9,7 +9,7 @@
         <compound-keyboard
                 :bound-keys="boundKeys"
                 :highlight-key="highlightKey"
-                @scroll.native="showPopper=false"
+                @on-table-scroll="showPopper=false"
                 @key-hover-over="onKeyHoverOver"
                 @key-hover-leave="onHoverLeave">
         </compound-keyboard>
@@ -34,7 +34,7 @@
         width: 560px;
         display: flex;
         flex-direction: column;
-        align-content: center;
+        align-items: center;
         background: @content-bgcolor;
     }
 
