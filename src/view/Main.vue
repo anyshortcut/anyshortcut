@@ -42,21 +42,6 @@
         margin: 0 auto;
     }
 
-    * {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        box-sizing: border-box;
-    }
-
-    p {
-        margin: 0 auto;
-    }
-
-    a {
-        text-decoration: none;
-        outline: none;
-    }
-
     .main-view {
         width: @normal-width;
         display: flex;

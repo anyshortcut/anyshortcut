@@ -2,7 +2,7 @@
     <table class="compound-keyboard" id="compound-keyboard">
         <thead :style="{left:-scrollLeft+'px'}">
         <tr>
-            <th :style="{left:scrollLeft+'px'}"></th>
+            <th></th>
             <th v-for="rowKey in alphabet"
                 class='row-header'>
                 {{ rowKey }}
@@ -12,7 +12,7 @@
         <tbody @scroll="onScroll">
         <tr v-for="rowKey in alphabet">
             <td class="column-header"
-                :style="{left:scrollLeft+'px'}">
+                :style="columnHeaderStyle">
                 {{ rowKey }}
             </td>
             <td clas="key" :class="rowClass(rowKey + columnKey)"
@@ -21,15 +21,28 @@
             </td>
         </tr>
         </tbody>
+        <div class="table-action"></div>
     </table>
 </template>
 <style lang="less">
     @max-width: 400px;
 
     table {
+        position: relative;
         overflow: hidden;
         border-collapse: separate;
         border-spacing: 10px;
+        margin: 0 auto;
+    }
+
+    .table-action {
+        position: absolute;
+        left: 0;
+        top: 10px;
+        width: 35px;
+        height: 30px;
+        background-color: white;
+        z-index: 2;
     }
 
     thead {
@@ -53,14 +66,8 @@
     }
 
     thead th:nth-child(1) {
-        position: relative;
         display: block;
-        z-index: 1;
         width: 24px;
-        height: 24px;
-        border: 1px solid #E9EDFB;
-        color: #4F6EC8;
-        background-color: white;
     }
 
     tbody {
@@ -145,6 +152,15 @@
                     return null;
                 }
             },
+        },
+        computed: {
+            columnHeaderStyle: function() {
+                if (this.scrollLeft <= 10) return;
+
+                return {
+                    left: this.scrollLeft - 10 + 'px',
+                };
+            }
         },
         methods: {
             rowClass: function(key) {
