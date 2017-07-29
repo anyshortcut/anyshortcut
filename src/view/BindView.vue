@@ -3,7 +3,7 @@
         <div v-if="primary" class="primary-text margin-top-28">
             Specify primary shortcut:
         </div>
-        <div v-else>
+        <template v-else>
             <div v-if="domainPrimaryShortcut && showDomainBoard" class="domain-primary-bound">
                 <span class="shortcut-domain">
                     <img class="shortcut-favicon"
@@ -18,7 +18,7 @@
             </div>
             <div class="margin-top-28" v-else></div>
             <div class="primary-text">Specify the secondary shortcut:</div>
-        </div>
+        </template>
 
         <keyboard :bound-keys="boundKeys"
                   :highlight-key="highlightKey"
@@ -52,8 +52,6 @@
     .bind-view {
         display: flex;
         flex-direction: column;
-        align-items: center;
-        padding: 0 0 15px;
     }
 
     .popper {
@@ -106,6 +104,7 @@
     .bind-compound-link {
         font-size: 15px;
         color: #515151;
+        margin-bottom: 10px;
 
         img {
             margin: 0 0 0 10px;

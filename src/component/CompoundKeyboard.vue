@@ -1,31 +1,49 @@
 <template>
-    <table class="compound-keyboard" id="compound-keyboard">
-        <thead :style="{left:-scrollLeft+'px'}">
-        <tr>
-            <th></th>
-            <th v-for="rowKey in alphabet"
-                class='row-header'>
-                {{ rowKey }}
-            </th>
-        </tr>
-        </thead>
-        <tbody @scroll="onScroll">
-        <tr v-for="rowKey in alphabet">
-            <td class="column-header"
-                :style="columnHeaderStyle">
-                {{ rowKey }}
-            </td>
-            <td clas="key" :class="rowClass(rowKey + columnKey)"
-                v-for="columnKey in alphabet">
-                {{rowKey + columnKey }}
-            </td>
-        </tr>
-        </tbody>
+    <div class="compound-keyboard">
+        <table>
+            <thead :style="{left:-scrollLeft+'px'}">
+            <tr>
+                <th></th>
+                <th v-for="rowKey in alphabet"
+                    class='row-header'>
+                    {{ rowKey }}
+                </th>
+            </tr>
+            </thead>
+            <tbody @scroll="onScroll" id="compound-tbody">
+            <tr v-for="rowKey in alphabet">
+                <td class="column-header"
+                    :style="columnHeaderStyle">
+                    {{ rowKey }}
+                </td>
+                <td :class="rowClass(rowKey + columnKey)"
+                    v-for="columnKey in alphabet">
+                    {{rowKey + columnKey }}
+                </td>
+            </tr>
+            </tbody>
+        </table>
         <div class="table-action"></div>
-    </table>
+    </div>
 </template>
 <style lang="less">
     @max-width: 400px;
+
+    .compound-keyboard {
+        position: relative;
+        max-width: @max-width;
+        margin: auto;
+
+        .table-action {
+            position: absolute;
+            left: 0;
+            top: 10px;
+            width: 35px;
+            height: 30px;
+            background-color: white;
+            z-index: 2;
+        }
+    }
 
     table {
         position: relative;
@@ -33,16 +51,6 @@
         border-collapse: separate;
         border-spacing: 10px;
         margin: 0 auto;
-    }
-
-    .table-action {
-        position: absolute;
-        left: 0;
-        top: 10px;
-        width: 35px;
-        height: 30px;
-        background-color: white;
-        z-index: 2;
     }
 
     thead {
@@ -86,6 +94,7 @@
 
     td {
         position: relative;
+        color: #565656;
         min-width: 35px;
         height: 35px;
         line-height: 35px;
@@ -194,7 +203,7 @@
         },
         mounted: function() {
             // Query key elements exclude weak element, then add mouse event listener.
-            document.getElementById('compound-keyboard').querySelectorAll('.raw-key').forEach(element => {
+            document.getElementById('compound-tbody').querySelectorAll('.raw-key').forEach(element => {
                 element.addEventListener('mouseover', () => {
                     if (this.scrolling) return;
 
