@@ -15,6 +15,7 @@
         </compound-keyboard>
 
         <popover ref="popover"
+                 style="width: 50%"
                  @on-show-change="onPopoverShowChange">
             <shortcut-board :shortcut="hoveredShortcut"
                             :primary="true"

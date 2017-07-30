@@ -1,5 +1,5 @@
 <template>
-    <div id="popover"
+    <div ref="popper"
          class="popper"
          v-show="showing"
          @mouseover="show"
@@ -14,7 +14,6 @@
     .popper {
         border-radius: 3px;
         background-color: #ffffff;
-        width: 50%;
         box-shadow: @box-shadow-base;
         padding: 5px;
         margin-bottom: 5px;
@@ -42,6 +41,11 @@
                 showing: false,
             };
         },
+        props: {
+            refId: {
+                type: String,
+            }
+        },
         watch: {
             showing: function(newValue) {
                 this.$emit('on-show-change', newValue);
@@ -65,10 +69,22 @@
             render: function(target) {
                 this.show();
 
-                new Popper(target, document.querySelector("#popover"), {
+                new Popper(target, this.$refs.popper, {
                     placement: "top"
                 });
             },
         },
+        mounted() {
+            let refElement = this.refId ? document.getElementById(this.refId) : null;
+            if (refElement) {
+                refElement.onmouseover = () => {
+                    this.render(refElement);
+                };
+
+                refElement.onmouseleave = () => {
+                    this.hidden();
+                };
+            }
+        }
     }
 </script>
