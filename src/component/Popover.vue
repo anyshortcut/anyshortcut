@@ -42,8 +42,18 @@
                 showing: false,
             };
         },
+        watch: {
+            showing: function(newValue) {
+                this.$emit('on-show-change', newValue);
+            }
+        },
         methods: {
+            dismiss: function() {
+                // Dismiss popover immediately
+                this.showing = false;
+            },
             hidden: function() {
+                // Dismiss popover with delay
                 this._timeoutId = setTimeout(() => {
                     this.showing = false;
                 }, 200);
