@@ -23,9 +23,17 @@
         <keyboard :bound-keys="boundKeys"
                   :highlight-key="highlightKey"
                   :primary="primary"
-                  @key-hover-over="onKeyHoverOver"
+                  @key-hover-over="onHoverOver"
                   @key-hover-leave="onHoverLeave">
         </keyboard>
+
+        <popover ref="popover"
+                 @on-show-change="onPopoverShowChange">
+            <shortcut-board :shortcut="hoveredShortcut"
+                            :primary="primary"
+                            :key-char="keyChar">
+            </shortcut-board>
+        </popover>
 
         <a v-if="primary && prefs.isCompoundShortcutEnable()"
            class="bind-compound-link"
@@ -33,17 +41,6 @@
             Bind compound shortcut<span><img src="../img/right-arrow.svg"></span>
         </a>
 
-        <div id="popover"
-             class="popper"
-             v-show="showPopper"
-             @mouseover="onHoverOver"
-             @mouseleave="onHoverLeave">
-            <shortcut-board :shortcut="hoveredShortcut"
-                            :primary="primary"
-                            :key-char="keyChar">
-            </shortcut-board>
-            <div class="popper-arrow" :class="{'cursor-pointer':highlightKey !== null}" x-arrow></div>
-        </div>
     </section>
 </template>
 <style lang="less">
@@ -52,34 +49,6 @@
     .bind-view {
         display: flex;
         flex-direction: column;
-    }
-
-    .popper {
-        border-radius: 3px;
-        background-color: #ffffff;
-        width: 50%;
-        box-shadow: @box-shadow-base;
-        padding: 5px;
-        margin-bottom: 5px;
-        z-index: 999;
-    }
-
-    .popper-arrow {
-        position: absolute;
-        display: block;
-        width: 0;
-        height: 0;
-        border-width: 10px;
-        border-style: solid dashed dashed dashed;
-        border-color: @header-bgcolor transparent transparent transparent;
-        bottom: -20px;
-        left: calc(50% - 5px);
-        margin-top: 0;
-        margin-bottom: 0;
-    }
-
-    .cursor-pointer {
-        cursor: pointer;
     }
 
     .domain-primary-bound {
@@ -114,8 +83,8 @@
 
 </style>
 <script type="es6">
-    import Popper from "popper";
     import Keyboard from "../component/Keyboard.vue";
+    import Popover from "../component/Popover.vue";
     import ShortcutBoard from "../component/ShortcutBoard.vue";
     import prefs from "../js/prefs.js";
 
@@ -124,7 +93,7 @@
         data() {
             return {
                 keyChar: null,
-                showPopper: false,
+                isPopoverShowing: false,
                 showDomainBoard: true,
                 prefs: prefs,
             };
@@ -156,7 +125,7 @@
                 return Object.keys(this.shortcuts);
             },
             highlightKey: function() {
-                if (this.showPopper && this.boundKeys.indexOf(this.keyChar) === -1) {
+                if (this.isPopoverShowing && this.boundKeys.indexOf(this.keyChar) === -1) {
                     return this.keyChar;
                 } else {
                     return null;
@@ -164,26 +133,21 @@
             },
         },
         components: {
+            Popover,
             Keyboard,
             ShortcutBoard,
         },
         methods: {
-            onKeyHoverOver: function(target) {
-                this.onHoverOver();
+            onHoverOver: function(target) {
                 this.keyChar = target.innerText;
-                new Popper(target, document.querySelector("#popover"), {
-                    placement: "top"
-                });
+                this.$refs.popover.render(target);
             },
             onHoverLeave: function() {
-                this._timeoutId = setTimeout(() => {
-                    this.showPopper = false;
-                }, 200);
+                this.$refs.popover.hidden();
             },
-            onHoverOver: function() {
-                this.showPopper = true;
-                clearTimeout(this._timeoutId);
-            },
+            onPopoverShowChange: function(showing) {
+                this.isPopoverShowing = showing;
+            }
         }
     }
 </script>

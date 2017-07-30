@@ -1,5 +1,5 @@
 <template>
-    <div class="popper-bound" v-if="shortcut">
+    <div class="shortcut-bound" v-if="shortcut">
         <div class="shortcut-domain">
             <img class="shortcut-favicon"
                  :src="shortcut.favicon"
@@ -13,7 +13,7 @@
             Delete
         </div>
     </div>
-    <div class="popper-bind" v-else>
+    <div class="shortcut-bind" v-else>
         <label for="comment">Input comment for the shortcut</label>
         <input id="comment"
                class="shortcut-comment-input"
@@ -30,7 +30,7 @@
 <style lang="less">
     @import "../less/_common.less";
 
-    .popper-bound, .popper-bind {
+    .shortcut-bound, .shortcut-bind {
         display: flex;
         flex-direction: column;
         align-items: center;

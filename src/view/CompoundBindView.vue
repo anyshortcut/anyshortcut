@@ -9,22 +9,18 @@
         <compound-keyboard
                 :bound-keys="boundKeys"
                 :highlight-key="highlightKey"
-                @on-table-scroll="showPopper=false"
-                @key-hover-over="onKeyHoverOver"
+                @on-table-scroll="$refs.popover.dismiss()"
+                @key-hover-over="onHoverOver"
                 @key-hover-leave="onHoverLeave">
         </compound-keyboard>
 
-        <div id="popover"
-             class="popper"
-             v-show="showPopper"
-             @mouseover="onHoverOver"
-             @mouseleave="onHoverLeave">
+        <popover ref="popover"
+                 @on-show-change="onPopoverShowChange">
             <shortcut-board :shortcut="hoveredShortcut"
                             :primary="true"
                             :key-char="keyChar">
             </shortcut-board>
-            <div class="popper-arrow" :class="{'cursor-pointer':highlightKey !== null}" x-arrow></div>
-        </div>
+        </popover>
     </div>
 </template>
 <style lang="less">
@@ -44,7 +40,7 @@
 </style>
 <script type="es6">
     import _ from "lodash";
-    import Popper from "popper";
+    import Popover from "../component/Popover.vue";
     import CompoundKeyboard from "../component/CompoundKeyboard.vue";
     import ShortcutBoard from "../component/ShortcutBoard.vue";
 
@@ -54,12 +50,13 @@
             return {
                 keyChar: null,
                 shortcuts: [],
-                showPopper: false,
+                isPopoverShowing: false,
             }
         },
         components: {
             CompoundKeyboard,
             ShortcutBoard,
+            Popover,
         },
         computed: {
             // A mouse hovered shortcut computed object
@@ -70,7 +67,7 @@
                 return Object.keys(this.shortcuts);
             },
             highlightKey: function() {
-                if (this.showPopper && this.boundKeys.indexOf(this.keyChar) === -1) {
+                if (this.isPopoverShowing && this.boundKeys.indexOf(this.keyChar) === -1) {
                     return this.keyChar;
                 } else {
                     return null;
@@ -78,21 +75,15 @@
             },
         },
         methods: {
-            onKeyHoverOver: function(target) {
-                this.onHoverOver();
+            onHoverOver: function(target) {
                 this.keyChar = target.innerText;
-                new Popper(target, document.querySelector("#popover"), {
-                    placement: "top"
-                });
+                this.$refs.popover.render(target);
             },
             onHoverLeave: function() {
-                this._timeoutId = setTimeout(() => {
-                    this.showPopper = false;
-                }, 200);
+                this.$refs.popover.hidden();
             },
-            onHoverOver: function() {
-                this.showPopper = true;
-                clearTimeout(this._timeoutId);
+            onPopoverShowChange: function(showing) {
+                this.isPopoverShowing = showing;
             },
             queryShortcuts: function() {
                 this.shortcuts = _.pickBy(this.$background.primaryShortcuts, (value, key) => {
