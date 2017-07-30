@@ -51,7 +51,7 @@
   ],
   "web_accessible_resources": [
     "dist/img/*",
-    "icon/*.png",
+    "icon/*",
     "fonts/*.ttf"
   ],
   "commands": {

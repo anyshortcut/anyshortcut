@@ -58,6 +58,7 @@
         color: @menu-color;
         font-size: 12.5px;
         letter-spacing: 0.6px;
+        margin: 0 5px;
 
         a:visited, a:active {
             color: @menu-color;

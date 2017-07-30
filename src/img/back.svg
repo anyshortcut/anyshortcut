@@ -1,1 +1,18 @@
-<?xml version="1.0" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg t="1500305037728" class="icon" style="" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="18938" xmlns:xlink="http://www.w3.org/1999/xlink" width="20" height="20"><defs><style type="text/css"></style></defs><path d="M960.41 512.802c0 248.084-201.113 449.197-449.196 449.197s-449.196-201.113-449.196-449.197c0-248.085 201.111-449.197 449.196-449.197 248.084 0 449.196 201.111 449.196 449.197zM383.583 458.959l149.898-187.973h-94.735l-187.973 233.842 186.173 235.639h94.436l-147.801-187.671h393.334v-93.836h-393.334z" p-id="18939" fill="#4F6EC8"></path></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 39.1 (31720) - http://www.bohemiancoding.com/sketch -->
+    <title>arrow</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="back-arrow" transform="translate(-291.000000, -51.000000)">
+            <g id="arrow" transform="translate(291.000000, 47.000000)">
+                <circle id="Oval-4" fill="#F1F4FF" cx="10" cy="14" r="10"></circle>
+                <text id="&lt;" transform="translate(8.500000, 13.500000) rotate(-180.000000) translate(-8.500000, -13.500000) " font-family="Beirut" font-size="26" font-weight="bold" fill="#526DC3">
+                    <tspan x="3" y="20">&lt;</tspan>
+                </text>
+                <path d="M7.5,13.75 L14.5,13.75" id="Line" stroke="#526DC3" stroke-width="1.5" stroke-linecap="square"></path>
+            </g>
+        </g>
+    </g>
+</svg>

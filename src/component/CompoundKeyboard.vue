@@ -27,11 +27,10 @@
     </div>
 </template>
 <style lang="less">
-    @max-width: 400px;
+    @max-width: 410px;
 
     .compound-keyboard {
         position: relative;
-        max-width: @max-width;
         margin: auto;
 
         .table-action {
@@ -82,7 +81,7 @@
         position: relative;
         display: block;
         max-width: @max-width;
-        height: 240px;
+        height: 250px;
         overflow: scroll;
     }
 
