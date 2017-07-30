@@ -56,6 +56,16 @@
             <input id="enable-compound-shortcut" type="checkbox"
                    v-model='preference.compound_shortcut_enable'>
         </div>
+
+        <popover :ref-id="'tooltip-quick-secondary-shortcut'">
+            <div style="font-size: 12px;">
+                Use SHIFT+ALT+PrimaryKey➯SecondaryKey open secondary shortcut in any page
+            </div>
+        </popover>
+
+        <popover :ref-id="'tooltip-compound-shortcut'">
+            <img src="../img/compound-tips.gif"/>
+        </popover>
     </div>
 </template>
 <style lang="less">
@@ -107,32 +117,9 @@
         height: 1px;
         margin: 0 10px;
     }
-
-    @tooltip-background-color: rgba(23, 23, 23, .7);
-    .tooltip {
-        padding: 5px 10px;
-        background-color: @tooltip-background-color;
-        color: white;
-        font-size: 12px;
-        border-radius: 3px;
-
-        .tooltip-arrow {
-            position: absolute;
-            display: block;
-            width: 0;
-            height: 0;
-            border-width: 5px;
-            border-style: solid dashed dashed dashed;
-            border-color: @tooltip-background-color transparent transparent transparent;
-            bottom: -10px;
-            left: calc(50% - 5px);
-            margin-top: 0;
-            margin-bottom: 0;
-        }
-    }
 </style>
 <script type="es6">
-    import Tooltip from "tooltip.js";
+    import Popover from "../component/Popover.vue";
     import prefs from "../js/prefs.js";
 
     export default {
@@ -151,16 +138,8 @@
                 }
             }
         },
-        mounted() {
-            new Tooltip(document.getElementById("tooltip-quick-secondary-shortcut"), {
-                placement: "top",
-                title: "Use SHIFT+ALT+PrimaryKey➯SecondaryKey open secondary shortcut in any page",
-            });
-
-            new Tooltip(document.getElementById("tooltip-compound-shortcut"), {
-                placement: "top",
-                title: "Compound shortcut mean two letter primary shortcut",
-            });
-        }
+        components: {
+            Popover,
+        },
     };
 </script>
