@@ -8,9 +8,11 @@
         <div class="introduction">
             Sign in to boost productivity and sync your shortcuts!
         </div>
-        <a class="attractive-button" :href="config.baseURL + '/sign_in'"
-           title="No email register required"
-           target="_blank">Sign In Now</a>
+        <div class="attractive-button"
+             @click="openAuthPopupWindow"
+             title="No email register required">
+            Sign in with Google
+        </div>
         <footer>
             <a :href="config.baseURL + '/terms'" target="_blank" class="grey-link">Terms Of Service</a>
             <a :href="config.baseURL + '/privacy'" target="_blank" class="grey-link">Privacy Policy</a>
@@ -61,6 +63,7 @@
         width: 60%;
         font-size: 15px;
         border-radius: 3px;
+        cursor: pointer;
     }
 
     footer {
@@ -84,5 +87,16 @@
                 config: config,
             }
         },
+        methods: {
+            openAuthPopupWindow() {
+                chrome.windows.create({
+                    'url': config.baseURL + '/oauth/google',
+                    'type': 'popup',
+                    "focused": true,
+                    "width": 500,
+                    "height": 800
+                });
+            },
+        }
     }
 </script>
