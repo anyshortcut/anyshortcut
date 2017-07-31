@@ -45,7 +45,7 @@
     "webpack": "^2.4.1"
   },
   "scripts": {
-    "build_dev": "nodemon build/build.js",
+    "build_dev": "node build/build.js",
     "build_production": "NODE_ENV=production node build/build.js"
   },
   "engines": {

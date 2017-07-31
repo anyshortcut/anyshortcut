@@ -104,7 +104,7 @@
             display: inline-block;
             vertical-align: middle;
             height: 100%;
-            /*content: '';*/
+            content: '';
         }
 
         &:hover {
