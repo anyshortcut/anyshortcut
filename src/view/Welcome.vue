@@ -9,8 +9,7 @@
             Sign in to boost productivity and sync your shortcuts!
         </div>
         <div class="attractive-button"
-             @click="openAuthPopupWindow"
-             title="No email register required">
+             @click="openAuthPopupWindow">
             Sign in with Google
         </div>
         <footer>
