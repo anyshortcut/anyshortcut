@@ -71,6 +71,11 @@ function buildModal(content) {
 }
 
 export default {
+    showShortcutBindSuccess(shortcut) {
+        openModal(template.compile(template.shortcutBindSuccess, {
+            key: 'SHIFT+ALT+' + shortcut.key,
+        }))
+    },
     showPrimaryShortcutUnbound(pressedKey) {
         openModal(template.compile(template.shortcutNotFound, {
             shortcutType: "primary",

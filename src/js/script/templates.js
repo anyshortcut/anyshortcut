@@ -7,6 +7,7 @@ const modalHeader = `<a class="brand" href="https://anyshortcut.com" target="_bl
 </a>
 <div class="anyshortcut-modal-close" id="anyshortcut-modal-close">X</div>`;
 
+const shortcutBindSuccess = '<div>Congratulation, shortcut bind success! You can quickly open the website with <span class="anyshortcut-shortcut"><%- key %></span></div>';
 const shortcutNotFound = '<p>The <%- shortcutType %> shortcut key <span class="anyshortcut-shortcut"><%- key %></span>not bound for this domain yet!</p>';
 
 const queryShortcutFailed = '<p>Neither <span class="anyshortcut-shortcut">SHIFT+ALT+<%- firstKey %><%- secondKey %></span> nor <span class="anyshortcut-shortcut">SHIFT+ALT+<%- firstKey %>➯<%- secondKey %></span> bound yet!</p>';
@@ -40,6 +41,7 @@ const shortcutListEmpty = `<img class="grey-balloons" alt="">
 
 export default {
     modalHeader,
+    shortcutBindSuccess,
     shortcutNotFound,
     queryShortcutFailed,
     queryShortcutChooser,

@@ -218,6 +218,14 @@ function resolveEventListener(authenticated) {
 }
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    console.log('on message in tab: authenticated=' + message.authenticated);
-    resolveEventListener(message.authenticated);
+    switch (true) {
+        case message.authenticated: {
+            resolveEventListener(true);
+            console.log('on message in tab: authenticated=' + message.authenticated);
+            break;
+        }
+        case message.bindSuccess: {
+            modal.showShortcutBindSuccess(message.shortcut);
+        }
+    }
 });

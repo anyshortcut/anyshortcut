@@ -52,7 +52,8 @@ window.bindPrimaryShortcut = function(key, comment, callback) {
         primary: true,
     }).then(response => {
         Object.assign(primaryShortcuts, response);
-        callback(true);
+
+        callback(true, response[key]);
     }).catch(error => {
         console.log(error);
         callback(false);
@@ -86,7 +87,7 @@ window.bindSecondaryShortcut = function(key, comment, callback) {
         }
         Object.assign(secondaryShortcuts[domain], response);
 
-        callback(true);
+        callback(true, response[key]);
     }).catch(error => {
         console.log(error);
         callback(false);

@@ -88,5 +88,11 @@ function onMessageExternal(message, sender, sendResponse) {
     return true;
 }
 
+window.notifyActiveTabShortcutBindSuccess = function(shortcut) {
+    chrome.tabs.sendMessage(window.activeTab.id,
+        {bindSuccess: true, shortcut: shortcut}
+    );
+};
+
 chrome.runtime.onMessage.addListener(onMessageReceiver);
 chrome.runtime.onMessageExternal.addListener(onMessageExternal);
