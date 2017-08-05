@@ -1,5 +1,5 @@
 import Vue from "vue";
-import auth from "./background/auth.js";
+import auth from "./auth.js";
 import WelcomeView from "../view/Welcome.vue";
 import MainView from "../view/Main.vue";
 import CompoundBindView from "../view/CompoundBindView.vue";

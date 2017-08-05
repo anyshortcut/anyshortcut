@@ -1,6 +1,5 @@
 import Vue from "vue";
-import auth from "./background/auth.js";
-import config from "../js/config.js";
+import auth from "./auth.js";
 import helper from './script/helper.js';
 
 const app = new Vue({
@@ -10,13 +9,7 @@ const app = new Vue({
     },
     methods: {
         openAuthPopupWindow() {
-            chrome.windows.create({
-                'url': config.baseURL + '/oauth/google',
-                'type': 'popup',
-                "focused": true,
-                "width": 500,
-                "height": 800
-            });
+            auth.openAuthPopupWindow();
         },
         openShortcut(url) {
             window.open(url);

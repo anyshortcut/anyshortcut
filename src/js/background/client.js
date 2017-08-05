@@ -1,5 +1,5 @@
 import axios from "axios";
-import auth from "./auth.js";
+import auth from "../auth.js";
 import config from "../config.js";
 
 let request = axios.create({

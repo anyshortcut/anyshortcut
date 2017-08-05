@@ -1,4 +1,4 @@
-import auth from './auth.js';
+import auth from '../auth.js';
 import client from './client.js';
 import common from '../common.js';
 import pref from '../prefs.js';

@@ -78,6 +78,7 @@
 </style>
 <script type="es6">
     import config from "../js/config.js";
+    import auth from "../js/auth.js";
 
     export default {
         name: 'welcome-view',
@@ -88,13 +89,7 @@
         },
         methods: {
             openAuthPopupWindow() {
-                chrome.windows.create({
-                    'url': config.baseURL + '/oauth/google',
-                    'type': 'popup',
-                    "focused": true,
-                    "width": 500,
-                    "height": 800
-                });
+                auth.openAuthPopupWindow();
             },
         }
     }
