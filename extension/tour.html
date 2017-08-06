@@ -3,83 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <title>Tour</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        p {
-            margin: 0 auto;
-        }
-
-        a {
-            text-decoration: none;
-            outline: none;
-        }
-
-        body {
-            margin: 0;
-            font-size: 14px;
-            line-height: 1.42857;
-            color: #333;
-            background-color: #fff;
-            font-family: Karla, Helvetica, "Helvetica Neue", sans-serif;
-            font-weight: 300;
-        }
-
-        header {
-            text-align: center;
-            padding: 20px 0;
-            font-size: 30px;
-            font-weight: 600;
-        }
-
-        .title {
-            text-align: center;
-            margin: 15px auto;
-        }
-
-        section {
-            margin: auto;
-            margin-bottom: 20px;
-            padding: 20px 30px 15px;
-            background-color: #fff;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, .1);
-
-            min-width: 800px;
-            max-width: 80px;
-            text-align: center;
-        }
-
-        .btn-google-sign-in {
-            padding: 10px 25px;
-            font-size: 16px;
-            letter-spacing: .1em;
-            background: #fff;
-            border: none;
-            border-radius: 4px;
-            color: #777;
-            text-transform: none;
-            text-shadow: none;
-            box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
-            padding-left: 50px;
-            background-image: url("../src/img/google-g.png");
-            background-repeat: no-repeat;
-            background-size: 18px;
-            background-position: 8% 50%;
-            /* transition: all .2s ease-out; */
-        }
-    </style>
+    <link rel="stylesheet" href="dist/css/tour.css">
 </head>
 <body>
 
-<header>
-    anyshortcut
-</header>
-
 <div id="app">
-    <section v-if="currentStep==0">
+    <ul class="step-indicator">
+        <li v-for="index in 4">
+            <div class="step-indicator-item"
+                 :class="{'step-indicator-passed':currentStep>index,'step-indicator-current':currentStep===index}">
+            </div>
+        </li>
+    </ul>
+    <section v-if="currentStep==1">
+        <h2 class="title">
+            Welcome join Anyshortcut!
+            Let's get started!
+        </h2>
+
         <h3>Sign with google account.</h3>
 
         <div href="/oauth/google"
@@ -90,12 +31,7 @@
         </div>
     </section>
     <template v-else>
-        <section v-if="currentStep==1">
-            <h2 class="title">
-                Welcome join Anyshortcut!
-                Let's get started!
-            </h2>
-
+        <section v-if="currentStep==2">
             <h3>Bind primary shortcut for Google.</h3>
             <div>
                 Assume you have opened google, then you can hover mouse on keyboard G in extension popup, input 'Google'
@@ -111,7 +47,7 @@
         </section>
 
 
-        <section v-else-if="currentStep==2">
+        <section v-else-if="currentStep==3">
             <h3>Let's bind a secondary shortcut for Google Inbox.</h3>
 
             <div>Just like the step above. You can bind the secondary shortcut I for Google Inbox.</div>
@@ -125,7 +61,7 @@
 
         </section>
 
-        <section v-else-if="currentStep==3">
+        <section v-else-if="currentStep==4">
             <h3>Congratulation! You are almost done!</h3>
         </section>
     </template>

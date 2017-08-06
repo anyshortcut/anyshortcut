@@ -2,10 +2,12 @@ import Vue from "vue";
 import auth from "./auth.js";
 import helper from './script/helper.js';
 
+require('../less/tour.less');
+
 const app = new Vue({
     el: "#app",
     data: {
-        currentStep: 0,
+        currentStep: 1,
     },
     methods: {
         openAuthPopupWindow() {
@@ -17,14 +19,13 @@ const app = new Vue({
         },
     },
     created() {
-        this.currentStep = auth.isAuthenticated() ? 1 : 0;
+        this.currentStep = auth.isAuthenticated() ? 2 : 1;
     },
 });
 
 
 chrome.runtime.onMessageExternal.addListener(function(message, sender, sendResponse) {
-    console.log(message);
-    app.currentStep = 1;
+    app.currentStep = 2;
 });
 
 const EMPTY_KEY = {
@@ -105,13 +106,13 @@ function triggerShortcut() {
     if (firstKey.pressedAt && firstKey.releasedAt) {
         if (helper.isValidFullModifier(firstKey)) {
             if (secondKey.pressedAt && secondKey.releasedAt) {
-                if (app.currentStep === 2 && firstKey.keyCodeChar === 'G' && secondKey.keyCodeChar === 'I') {
+                if (app.currentStep === 3 && firstKey.keyCodeChar === 'G' && secondKey.keyCodeChar === 'I') {
                     app.openShortcut('https://inbox.google.com');
                 }
                 cleanUp();
             } else {
                 triggerTimeoutId = window.setTimeout(function() {
-                    if (app.currentStep === 1 && firstKey.keyCodeChar === 'G') {
+                    if (app.currentStep === 2 && firstKey.keyCodeChar === 'G') {
                         app.openShortcut('https://www.google.com');
                     }
                     cleanUp();
