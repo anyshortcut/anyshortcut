@@ -7,7 +7,7 @@ chrome.runtime.onInstalled.addListener((installReason, previousVersion) => {
         common.iterateAllWindowTabs(tabId => {
             injector.injectTabContentScriptManually(tabId);
         });
-        // chrome.tabs.create({url: config.baseURL + '/welcome'});
+        chrome.tabs.create({url: chrome.runtime.getURL('tour.html')});
     } else if (installReason.reason === 'update') {
         common.iterateAllWindowTabs(tabId => {
             injector.injectTabContentScriptManually(tabId);
