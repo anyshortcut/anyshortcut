@@ -2,12 +2,16 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Tour</title>
+    <title>Welcome</title>
     <link rel="stylesheet" href="dist/css/tour.css">
 </head>
 <body>
 
 <div id="app">
+    <img v-if="currentStep==1"
+         class="step-cover"
+         src="dist/img/computer-and-balloons.svg" alt="">
+
     <ul class="step-indicator">
         <li v-for="index in 4">
             <div class="step-indicator-item"
@@ -18,10 +22,11 @@
     <section v-if="currentStep==1">
         <h2 class="title">
             Welcome join Anyshortcut!
-            Let's get started!
         </h2>
 
-        <h3>Sign with google account.</h3>
+        <p>
+            Sign in with google to create an account so we can safely store your shortcuts and sync everywhere.
+        </p>
 
         <div href="/oauth/google"
              alt="Sign in with Google"

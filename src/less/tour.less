@@ -13,7 +13,7 @@ a {
   outline: none;
 }
 
-body {
+div#app {
   margin: 0;
   font-size: 14px;
   line-height: 1.42857;
@@ -21,27 +21,36 @@ body {
   background-color: #fff;
   font-family: "Poppins", sans-serif;
   font-weight: 300;
-}
-
-header {
-  text-align: center;
-  padding: 20px 0;
-  font-size: 30px;
-  font-weight: 600;
+  display: flex;
+  flex-direction: column;
 }
 
 .title {
   text-align: center;
   margin: 15px auto;
+  color: #666666;
+  font-size: 30px;
 }
 
 section {
   margin: auto;
   margin-bottom: 20px;
   padding: 20px 30px 15px;
-  min-width: 800px;
-  max-width: 80px;
+  min-width: 650px;
+  max-width: 650px;
   text-align: center;
+
+  p {
+    color: #8E8E8E;
+    font-size: 16px;
+    line-height: 1.8;
+    margin: 10px 0;
+  }
+}
+
+.step-cover {
+  height: 280px;
+  margin: 30px;
 }
 
 .step-indicator {
@@ -65,7 +74,6 @@ section {
 
 .step-indicator-current {
   border-color: @primary-color;
-  border-width: 7px;
 }
 
 ul li {
@@ -76,11 +84,12 @@ ul li {
 
 .btn-google-sign-in {
   padding: 10px 25px;
-  font-size: 16px;
   letter-spacing: .1em;
   background: #fff;
   border: none;
+  width: 320px;
   border-radius: 4px;
+  margin: 30px auto;
   color: #777;
   text-transform: none;
   text-shadow: none;
@@ -90,4 +99,5 @@ ul li {
   background-repeat: no-repeat;
   background-size: 18px;
   background-position: 8% 50%;
+  cursor: pointer;
 }
