@@ -57,6 +57,15 @@
                    v-model='preference.compound_shortcut_enable'>
         </div>
 
+        <div class="preference-divider"></div>
+
+        <a href="tour.html" target="_blank"
+           class="preference-item-link">
+            <div class="preference-item flex-horizontal">
+                Tour
+            </div>
+        </a>
+
         <popover :ref-id="'tooltip-quick-secondary-shortcut'">
             <div style="font-size: 12px;">
                 Use SHIFT+ALT+PrimaryKey➯SecondaryKey open secondary shortcut in any page
@@ -72,7 +81,7 @@
     @import "../less/_common.less";
 
     .preference-view {
-        width: 350px;
+        width: 300px;
         background: @content-bgcolor;
     }
 
@@ -87,7 +96,7 @@
     }
 
     .preference-item {
-        padding: 8px 20px;
+        padding: 10px 20px;
         font-size: 14px;
 
         &:hover {
@@ -116,6 +125,10 @@
         background-color: #ececec;
         height: 1px;
         margin: 0 10px;
+    }
+
+    .preference-item-link {
+        color: initial;
     }
 </style>
 <script type="es6">
