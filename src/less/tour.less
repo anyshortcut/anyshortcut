@@ -25,26 +25,37 @@ div#app {
   flex-direction: column;
 }
 
-.title {
-  text-align: center;
-  margin: 15px auto;
-  color: #666666;
-  font-size: 30px;
-}
-
 section {
   margin: auto;
-  margin-bottom: 20px;
-  padding: 20px 30px 15px;
+  padding: 20px 0;
   min-width: 650px;
-  max-width: 650px;
+  max-width: 700px;
   text-align: center;
+
+  .title {
+    text-align: center;
+    margin: 15px auto;
+    color: #666666;
+    font-size: 36px;
+    font-weight: 600;
+  }
 
   p {
     color: #8E8E8E;
     font-size: 16px;
     line-height: 1.8;
     margin: 10px 0;
+  }
+
+  .mark {
+    background-color: #fbfbfb;
+    border-radius: 3px;
+    border-left: #dddddd 3px solid;
+    padding: 10px;
+    text-align: start;
+    margin: 20px 0;
+    color: #898989;
+    font-size: 14px;
   }
 }
 
@@ -55,8 +66,15 @@ section {
 
 .step-indicator {
   margin: auto;
+  padding: 0;
   text-align: center;
   vertical-align: middle;
+
+  li {
+    display: inline-block;
+    margin: 6px;
+    vertical-align: middle;
+  }
 }
 
 .step-indicator-item {
@@ -64,22 +82,12 @@ section {
   width: 0;
   height: 0;
   border-width: 5px;
-  border-color: #dddddd;
-  border-style: solid;
-}
-
-.step-indicator-passed {
   border-color: #E9EDFB;
+  border-style: solid;
 }
 
 .step-indicator-current {
   border-color: @primary-color;
-}
-
-ul li {
-  display: inline-block;
-  margin: 18px;
-  vertical-align: middle;
 }
 
 .btn-google-sign-in {
@@ -100,4 +108,30 @@ ul li {
   background-size: 18px;
   background-position: 8% 50%;
   cursor: pointer;
+}
+
+.tour-shortcut {
+  color: #525252;
+  background-color: white;
+  padding: 0 10px;
+  margin: 0 5px;
+  border-radius: 3px;
+  font-size: 14px;
+  text-align: center;
+  box-shadow: @box-shadow-base;
+}
+
+.secondary-shortcut-list {
+  display: block;
+  margin: 10px auto;
+  text-align: start;
+  width: 450px;
+
+  li {
+    text-decoration-style: dotted;
+  }
+
+  p {
+    margin: 0;
+  }
 }

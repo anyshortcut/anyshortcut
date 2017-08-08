@@ -11,18 +11,27 @@
     <img v-if="currentStep==1"
          class="step-cover"
          src="dist/img/computer-and-balloons.svg" alt="">
+    <img v-if="currentStep==2"
+         class="step-cover"
+         src="dist/img/2.svg" alt="">
+    <img v-if="currentStep==3"
+         class="step-cover"
+         src="dist/img/3.svg" alt="">
+    <img v-if="currentStep==4"
+         class="step-cover"
+         src="dist/img/4.svg" alt="">
 
     <ul class="step-indicator">
         <li v-for="index in 4">
             <div class="step-indicator-item"
-                 :class="{'step-indicator-passed':currentStep>index,'step-indicator-current':currentStep===index}">
+                 :class="{'step-indicator-current':currentStep===index}">
             </div>
         </li>
     </ul>
     <section v-if="currentStep==1">
-        <h2 class="title">
+        <div class="title">
             Welcome join Anyshortcut!
-        </h2>
+        </div>
 
         <p>
             Sign in with google to create an account so we can safely store your shortcuts and sync everywhere.
@@ -37,37 +46,58 @@
     </section>
     <template v-else>
         <section v-if="currentStep==2">
-            <h3>Bind primary shortcut for Google.</h3>
-            <div>
-                Assume you have opened google, then you can hover mouse on keyboard G in extension popup, input 'Google'
-                as
-                comment for
-                the shortcut, click Bind button.
-                All done.
-            </div>
-
-            <div>
-                Now you can use SHIFT+ALT+G open google.com in instantly. It is so easy, isn't it?
+            <div class="title">Bind a primary shortcut</div>
+            <p>
+                Assuming you have opened google, you can hover the mouse on keyboard <span
+                    class="tour-shortcut">G</span> in
+                extension popup, input
+                'Google' as a comment for the shortcut, click Bind button.
+            </p>
+            <p>
+                Now you can use <span class="tour-shortcut">SHIFT+ALT+G</span> to open Google instantly.
+            </p>
+            <div class="mark">
+                <span><img src="dist/img/info-grey.svg" alt="info"></span>
+                SHIFT+ALT is the combination key for all primary shortcut
             </div>
         </section>
 
 
         <section v-else-if="currentStep==3">
-            <h3>Let's bind a secondary shortcut for Google Inbox.</h3>
+            <div class="title">Let's bind a secondary shortcut</div>
 
-            <div>Just like the step above. You can bind the secondary shortcut I for Google Inbox.</div>
+            <p>Just like the step above. You can bind the secondary shortcut <span class="tour-shortcut">I</span>
+                for Google Inbox.
+            </p>
 
-            <div>There are two way to open Google Inbox you just bound</div>
+            <p>There are two way to open Google Inbox you just bound</p>
 
-            <div>* Click ALT+I in any google.com page.</div>
-            <div>* Click SHIFT+ALT+G+I in any website page.</div>
+            <ul class="secondary-shortcut-list">
+                <li><p>Click <span class="tour-shortcut">ALT+I</span> in any google.com page.</p></li>
+                <li><p>Click <span class="tour-shortcut">SHIFT+ALT+G+I</span> in any website page.</p></li>
+            </ul>
 
-            Now you can try use SHIFT+ALT+G+I to open inbox.google.com instantly. :)
+            <p>
+                Now you can use <span class="tour-shortcut">SHIFT+ALT+G+I</span> to open Google Inbox instantly.
+            </p>
+
+            <div class="mark">
+                <span><img src="dist/img/info-grey.svg" alt="info"></span>
+                ALT is the combination key for all secondary shortcut
+            </div>
 
         </section>
 
         <section v-else-if="currentStep==4">
-            <h3>Congratulation! You are almost done!</h3>
+            <div class="title">Congratulations!</div>
+            <p>Now you can bind any shortcut to any website! Only one important thing you should remember is:</p>
+
+            <p style="font-weight: 500">Shortcut key should keep easy-memorized and name related.</p>
+
+            <p>For example, G for Google instead of other else, F for Facebook instead of other else, Y for Youtube
+                instead of other else, etc... </p>
+
+            <p>Just go ahead to shortcut and enjoy it!</p>
         </section>
     </template>
 
