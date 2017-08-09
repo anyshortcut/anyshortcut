@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Welcome</title>
     <link rel="stylesheet" href="dist/css/tour.css">
+    <link rel="stylesheet" href="vendor/balloon.min.css">
 </head>
 <body>
 
@@ -55,11 +56,12 @@
             </p>
             <p>
                 Now you can use <span class="tour-shortcut">SHIFT+ALT+G</span> to open Google instantly.
+                <span data-balloon="SHIFT+ALT is the combination key for all primary shortcut"
+                      data-balloon-pos="up">
+                    <img src="dist/img/info-grey.svg" alt="info">
+                </span>
             </p>
-            <div class="mark">
-                <span><img src="dist/img/info-grey.svg" alt="info"></span>
-                SHIFT+ALT is the combination key for all primary shortcut
-            </div>
+            </popover>
         </section>
 
 
@@ -73,7 +75,11 @@
             <p>There are two way to open Google Inbox you just bound</p>
 
             <ul class="secondary-shortcut-list">
-                <li><p>Click <span class="tour-shortcut">ALT+I</span> in any google.com page.</p></li>
+                <li><p>Click <span class="tour-shortcut">ALT+I</span> in any google.com page.
+                    <span data-balloon="ALT is the combination key for all secondary shortcut"
+                          data-balloon-pos="up">
+                    <img src="dist/img/info-grey.svg" alt="info">
+                </span></p></li>
                 <li><p>Click <span class="tour-shortcut">SHIFT+ALT+G+I</span> in any website page.</p></li>
             </ul>
 
@@ -81,23 +87,21 @@
                 Now you can use <span class="tour-shortcut">SHIFT+ALT+G+I</span> to open Google Inbox instantly.
             </p>
 
-            <div class="mark">
-                <span><img src="dist/img/info-grey.svg" alt="info"></span>
-                ALT is the combination key for all secondary shortcut
-            </div>
-
         </section>
 
         <section v-else-if="currentStep==4">
             <div class="title">Congratulations!</div>
-            <p>Now you can bind any shortcut to any website! Only one important thing you should remember is:</p>
+            <p>Only one important thing you should keep in mind:</p>
 
-            <p style="font-weight: 500">Shortcut key should keep easy-memorized and name related.</p>
+            <p style="font-weight: 500">Always keep shortcut key easy-memorized and name related.</p>
 
-            <p>For example, G for Google instead of other else, F for Facebook instead of other else, Y for Youtube
-                instead of other else, etc... </p>
+            <p>For example, <span class="tour-shortcut">G</span> for Google, <span class="tour-shortcut">F</span> for
+                Facebook, <span class="tour-shortcut">Y</span> for Youtube
+                instead of other else...
+            </p>
 
-            <p>Just go ahead to shortcut and enjoy it!</p>
+            <br>
+            <p>Now go ahead to bind any shortcut for any website!</p>
         </section>
     </template>
 
