@@ -16,7 +16,7 @@
     </ul>
     <div class="shortcut-empty-list" v-else>
         <img class="grey-balloons" alt="">
-        <p>No secondary shortcut bound yet, go ahead to bound!</p>
+        <p>No secondary shortcut bound yet</p>
     </div>
 </template>
 <style lang="less">

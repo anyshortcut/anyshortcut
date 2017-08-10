@@ -5,7 +5,7 @@
             Go back
         </header>
 
-        <div class="primary-text" style="margin-top: 18px">Specify primary compound key:</div>
+        <div class="primary-text primary-title">Specify primary compound key</div>
         <compound-keyboard
                 :bound-keys="boundKeys"
                 :highlight-key="highlightKey"
@@ -37,6 +37,13 @@
     .compound-bind-header {
         .header;
         justify-content: flex-start;
+    }
+
+    .primary-title {
+        line-height: 45px;
+        // Margin bottom -10 px to reduce
+        // margin with compound keyboard
+        margin-bottom: -10px;
     }
 </style>
 <script type="es6">

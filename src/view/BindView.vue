@@ -1,7 +1,7 @@
 <template>
     <section class="bind-view">
-        <div v-if="primary" class="primary-text margin-top-28">
-            Specify primary shortcut:
+        <div v-if="primary" class="primary-text primary-title">
+            Specify primary shortcut
         </div>
         <template v-else>
             <div v-if="domainPrimaryShortcut && showDomainBoard" class="domain-primary-bound">
@@ -16,8 +16,7 @@
 
                 <span class="close" @click="showDomainBoard=false">X</span>
             </div>
-            <div class="margin-top-28" v-else></div>
-            <div class="primary-text">Specify the secondary shortcut:</div>
+            <div class="primary-text primary-title">Specify the secondary shortcut</div>
         </template>
 
         <keyboard :bound-keys="boundKeys"
@@ -50,6 +49,7 @@
     .bind-view {
         display: flex;
         flex-direction: column;
+        padding: 10px 0;
     }
 
     .domain-primary-bound {
@@ -67,8 +67,8 @@
         }
     }
 
-    .margin-top-28 {
-        margin-top: 28px;
+    .primary-title {
+        line-height: 45px;
     }
 
     .bind-compound-link {
