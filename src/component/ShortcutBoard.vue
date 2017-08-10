@@ -19,7 +19,7 @@
                class="shortcut-comment-input"
                v-model="comment"
                placeholder="Comment for this url"
-               maxlength="50"
+               maxlength="30"
                autofocus @focus.native="$event.target.select()" required/>
         <div class="shortcut-bind-button"
              @click="$bus.emit('bind-shortcut',primary,keyChar,comment)">
@@ -58,7 +58,7 @@
         name: 'ShortcutBoard',
         data() {
             return {
-                comment: this.$background.activeTab.title,
+                comment: this.$background.activeTab.title.slice(0, 30),
             };
         },
         props: {
