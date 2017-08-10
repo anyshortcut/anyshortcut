@@ -5,7 +5,10 @@
             Go back
         </header>
 
-        <div class="primary-text primary-title">Specify primary compound key</div>
+        <div class="primary-title"
+             style="margin-bottom: -10px;">
+            Specify primary compound key
+        </div>
         <compound-keyboard
                 :bound-keys="boundKeys"
                 :highlight-key="highlightKey"
@@ -39,12 +42,6 @@
         justify-content: flex-start;
     }
 
-    .primary-title {
-        line-height: 45px;
-        // Margin bottom -10 px to reduce
-        // margin with compound keyboard
-        margin-bottom: -10px;
-    }
 </style>
 <script type="es6">
     import _ from "lodash";

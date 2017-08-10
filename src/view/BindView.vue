@@ -1,6 +1,6 @@
 <template>
     <section class="bind-view">
-        <div v-if="primary" class="primary-text primary-title">
+        <div v-if="primary" class="primary-title">
             Specify primary shortcut
         </div>
         <template v-else>
@@ -16,7 +16,7 @@
 
                 <span class="close" @click="showDomainBoard=false">X</span>
             </div>
-            <div class="primary-text primary-title">Specify the secondary shortcut</div>
+            <div class="primary-title">Specify the secondary shortcut</div>
         </template>
 
         <keyboard :bound-keys="boundKeys"
@@ -65,10 +65,6 @@
             right: 0;
             top: 0;
         }
-    }
-
-    .primary-title {
-        line-height: 45px;
     }
 
     .bind-compound-link {
