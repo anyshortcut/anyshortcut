@@ -23,9 +23,10 @@
          src="dist/img/4.svg" alt="">
 
     <ul class="step-indicator">
-        <li v-for="index in 4">
+        <li v-for="step in 4">
             <div class="step-indicator-item"
-                 :class="{'step-indicator-current':currentStep===index}">
+                 :class="{'step-indicator-current':currentStep===step}"
+                 @click="onStepItemClick(step)">
             </div>
         </li>
     </ul>

@@ -8,6 +8,12 @@ const app = new Vue({
     el: "#app",
     data: {
         currentStep: 1,
+        currentMaxStep: 1,
+    },
+    watch: {
+        currentStep: function(newValue) {
+            this.currentMaxStep = Math.max(this.currentMaxStep, newValue);
+        }
     },
     methods: {
         openAuthPopupWindow() {
@@ -17,6 +23,11 @@ const app = new Vue({
             window.open(url);
             this.currentStep += 1;
         },
+        onStepItemClick(step) {
+            if (1 < step && step <= this.currentMaxStep) {
+                this.currentStep = step;
+            }
+        }
     },
     created() {
         this.currentStep = auth.isAuthenticated() ? 2 : 1;
