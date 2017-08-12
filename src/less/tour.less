@@ -9,8 +9,12 @@ p {
 }
 
 a {
-  text-decoration: none;
+  text-decoration: underline;
   outline: none;
+
+  &:focus, &:active, &:visited, &:hover {
+    color: inherit;
+  }
 }
 
 div#app {
@@ -31,6 +35,7 @@ section {
   min-width: 650px;
   max-width: 700px;
   text-align: center;
+  color: #8E8E8E;
 
   .title {
     text-align: center;
@@ -41,7 +46,6 @@ section {
   }
 
   p {
-    color: #8E8E8E;
     font-size: 16px;
     line-height: 1.8;
     margin: 10px 0;
