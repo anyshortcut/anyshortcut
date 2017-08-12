@@ -59,21 +59,40 @@ function checkUrlBound(url) {
     return queryShortcutKeyByUrl(url) !== null;
 }
 
+window.isActiveTabUrlSupported = function() {
+    if (window.activeTab && window.activeTab.url) {
+        let a = document.createElement('a');
+        a.href = window.activeTab.url;
+        return ['http:', "https:", "file:"].indexOf(a.protocol) !== -1;
+    }
+    return false;
+};
+
 /**
  * Set a different popup icon according to current tab url whether bound or not.
  *@param bound whether the current tab url was bound with a shortcut
  */
 window.setPopupIcon = function(bound) {
-    const icon = bound ? {
-        path: {
-            '16': 'icon/icon32.png'
-        }
-    } : {
-        path: {
-            '16': 'icon/icon32-gray.png'
-        }
-    };
-    chrome.browserAction.setIcon(icon);
+    if (isActiveTabUrlSupported()) {
+        const icon = bound ? {
+            path: {
+                '16': 'icon/icon32.png'
+            }
+        } : {
+            path: {
+                '16': 'icon/icon32-gray.png'
+            }
+        };
+        chrome.browserAction.setIcon(icon);
+    }
+    else {
+        // Set a gray unsupported icon
+        chrome.browserAction.setIcon({
+            path: {
+                '16': 'icon/icon32-gray-unsupported.png'
+            }
+        });
+    }
 };
 
 function handleOnTabInfoUpdate(url) {

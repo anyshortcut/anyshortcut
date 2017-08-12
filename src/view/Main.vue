@@ -1,5 +1,6 @@
 <template>
-    <div class="main-view">
+    <div v-if="$background.isActiveTabUrlSupported()"
+         class="main-view">
         <header class="main-header">
             <a class="brand" href="https://anyshortcut.com" target="_blank">
                 <img class="brand-logo" alt="">
@@ -28,6 +29,17 @@
             </div>
             <shortcut-list :shortcuts="shortcuts"></shortcut-list>
         </section>
+    </div>
+    <div class="unsupported-view" v-else>
+        <header class="main-header">
+            <a class="brand" href="https://anyshortcut.com" target="_blank">
+                <img class="brand-logo" alt="">
+                <span>anyshortcut</span>
+            </a>
+        </header>
+        <p>
+            For technical reasons, we currently do not support bind shortcut or click shortcut in this page.
+        </p>
     </div>
 </template>
 <style lang="less">
@@ -71,6 +83,22 @@
         align-items: center;
         margin-top: -10px;
         font-size: 16px;
+    }
+
+    .unsupported-view {
+        width: 450px;
+        height: 150px;
+        display: flex;
+        flex-direction: column;
+        align-content: center;
+        background: @content-bgcolor;
+
+        p {
+            font-size: 16px;
+            color: #515151;
+            margin: auto 20px;
+        }
+
     }
 
 </style>
