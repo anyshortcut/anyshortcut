@@ -7,14 +7,14 @@
                     <span class="shortcut" :title="shortcut.title">ALT+SHIFT+{{ shortcut.key }}</span>
                     <span>
                             <img class="delete-button"
-                                 @click="showDeleteModal=true"/>
+                                 @click="onShortcutDeleteButtonClick"/>
                     </span>
                 </p>
                 <p class="primary-text" v-else>Secondary shortcut:
                     <span class="shortcut" :title="shortcut.title">ALT+{{ shortcut.key }}</span>
                     <span>
                             <img class="delete-button"
-                                 @click="$bus.emit('unbind-shortcut',shortcut)"/>
+                                 @click="onShortcutDeleteButtonClick"/>
                     </span>
                 </p>
             </div>
@@ -130,5 +130,19 @@
                 return timeago().format(time);
             }
         },
+        methods: {
+            onShortcutDeleteButtonClick: function() {
+                if (this.shortcut.primary) {
+                    if (Object.keys(this.$background.getSecondaryShortcutsByPrimaryKey(this.shortcut.key)).length) {
+                        this.showDeleteModal = true;
+                    } else {
+                        this.$bus.emit('unbind-shortcut', this.shortcut);
+                        this.showDeleteModal = false;
+                    }
+                } else {
+                    this.$bus.emit('unbind-shortcut', this.shortcut);
+                }
+            }
+        }
     }
 </script>
