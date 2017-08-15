@@ -71,10 +71,15 @@ function buildModal(content) {
 }
 
 export default {
-    showShortcutBindSuccess(shortcut) {
-        openModal(template.compile(template.shortcutBindSuccess, {
+    showPrimaryShortcutBindSuccess(shortcut) {
+        openModal(template.compile(template.primaryShortcutBindSuccess, {
             key: 'SHIFT+ALT+' + shortcut.key,
-        }))
+        }));
+    },
+    showSecondaryShortcutBindSuccess(shortcut) {
+        openModal(template.compile(template.primaryShortcutBindSuccess, {
+            key: 'ALT+' + shortcut.key,
+        }));
     },
     showPrimaryShortcutUnbound(pressedKey) {
         openModal(template.compile(template.shortcutNotFound, {

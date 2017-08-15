@@ -89,9 +89,16 @@ function onMessageExternal(message, sender, sendResponse) {
 }
 
 window.notifyActiveTabShortcutBindSuccess = function(shortcut) {
-    chrome.tabs.sendMessage(window.activeTab.id,
-        {bindSuccess: true, shortcut: shortcut}
-    );
+    let key = shortcut.primary ? 'success-bind-times-primary' : 'success-bind-times-secondary';
+    let showTimes = parseInt(localStorage.getItem(key) || 0);
+    //  Only notify active tab three for each type shortcut.
+    if (showTimes < 3) {
+        localStorage.setItem(key, showTimes + 1);
+        chrome.tabs.sendMessage(window.activeTab.id, {
+            bindSuccess: true,
+            shortcut: shortcut
+        });
+    }
 };
 
 chrome.runtime.onMessage.addListener(onMessageReceiver);
