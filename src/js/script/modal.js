@@ -76,9 +76,10 @@ export default {
             key: 'SHIFT+ALT+' + shortcut.key,
         }));
     },
-    showSecondaryShortcutBindSuccess(shortcut) {
-        openModal(template.compile(template.primaryShortcutBindSuccess, {
-            key: 'ALT+' + shortcut.key,
+    showSecondaryShortcutBindSuccess(shortcut, primaryShortcut) {
+        openModal(template.compile(template.secondaryShortcutBindSuccess, {
+            key: shortcut.key,
+            primaryShortcut: primaryShortcut,
         }));
     },
     showPrimaryShortcutUnbound(pressedKey) {

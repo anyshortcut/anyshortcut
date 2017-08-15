@@ -118,6 +118,16 @@ window.getPrimaryShortcut = function(key) {
     }
 };
 
+window.getPrimaryShortcutByDomain = function(domain) {
+    for (let key of Object.keys(primaryShortcuts)) {
+        if (primaryShortcuts.hasOwnProperty(key)
+            && primaryShortcuts[key].domain === domain) {
+            return primaryShortcuts[key];
+        }
+    }
+    return null;
+};
+
 window.getSecondaryShortcut = function(hostname, key) {
     // Access options shortcut key for correct domain.
     let domain = getBoundDomainByHostname(hostname);

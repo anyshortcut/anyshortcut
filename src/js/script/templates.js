@@ -8,7 +8,14 @@ const modalHeader = `<a class="brand" href="https://anyshortcut.com" target="_bl
 <div class="anyshortcut-modal-close" id="anyshortcut-modal-close">X</div>`;
 
 const primaryShortcutBindSuccess = '<div>Congratulation, primary shortcut bind success! You can quickly open the website with <span class="anyshortcut-shortcut"><%- key %></span></div>';
-const secondaryShortcutBindSuccess = '<div>Congratulation, secondary                                                                   shortcut bind success! You can quickly open the website with <span class="anyshortcut-shortcut"><%- key %></span></div>';
+const secondaryShortcutBindSuccess = `<div>
+                                            <p>Congratulation, secondary shortcut bind success!</p>
+                                            <p>There are two way to open secondary shortcut</p>
+                                            <ul>
+                                                <li>Click <span class="anyshortcut-shortcut">ALT+<%- key %></span> in any <%- primaryShortcut.domain %> page</li>
+                                                <li>Click <span class="anyshortcut-shortcut">SHIFT+ALT+<%- primaryShortcut.key %>+<%- key %></span> in any website page</li>
+                                            </ul>
+                                      </div>`;
 const shortcutNotFound = '<p>The <%- shortcutType %> shortcut key <span class="anyshortcut-shortcut"><%- key %></span>not bound for this domain yet!</p>';
 
 const queryShortcutFailed = '<p>Neither <span class="anyshortcut-shortcut">SHIFT+ALT+<%- firstKey %><%- secondKey %></span> nor <span class="anyshortcut-shortcut">SHIFT+ALT+<%- firstKey %>➯<%- secondKey %></span> bound yet!</p>';

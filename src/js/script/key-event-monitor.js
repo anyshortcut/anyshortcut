@@ -2,7 +2,6 @@ import helper from './helper.js';
 import modal from './modal.js';
 
 chrome.runtime.sendMessage({resolve: true}, authenticated => {
-    console.log('resolve authenticated:', authenticated);
     resolveEventListener(authenticated);
 });
 
@@ -228,7 +227,7 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             if (shortcut.primary) {
                 modal.showPrimaryShortcutBindSuccess(shortcut);
             } else {
-                modal.showSecondaryShortcutBindSuccess(shortcut);
+                modal.showSecondaryShortcutBindSuccess(shortcut, message.primaryShortcut);
             }
             break;
         }

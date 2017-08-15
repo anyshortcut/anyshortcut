@@ -94,10 +94,18 @@ window.notifyActiveTabShortcutBindSuccess = function(shortcut) {
     //  Only notify active tab three for each type shortcut.
     if (showTimes < 3) {
         localStorage.setItem(key, showTimes + 1);
-        chrome.tabs.sendMessage(window.activeTab.id, {
-            bindSuccess: true,
-            shortcut: shortcut
-        });
+        if (shortcut.primary) {
+            chrome.tabs.sendMessage(window.activeTab.id, {
+                bindSuccess: true,
+                shortcut: shortcut,
+            });
+        } else {
+            chrome.tabs.sendMessage(window.activeTab.id, {
+                bindSuccess: true,
+                shortcut: shortcut,
+                primaryShortcut: window.getPrimaryShortcutByDomain(shortcut.domain),
+            });
+        }
     }
 };
 
