@@ -1,6 +1,6 @@
 require("../../less/content-script.less");
+import _ from "lodash";
 import helper from "./helper.js";
-import template from "./templates.js";
 
 let timeoutId = undefined;
 
@@ -63,45 +63,49 @@ function buildModal(content) {
     });
 
     let header = createDiv('anyshortcut-modal-header');
-    header.innerHTML = template.compile(template.modalHeader);
+    header.innerHTML = compile(require('%/modal-header.html'));
     container.appendChild(header);
     container.appendChild(content);
     modal.appendChild(container);
     return modal;
 }
 
+function compile(template, data) {
+    return _.template(template)(data);
+}
+
 export default {
     showPrimaryShortcutBindSuccess(shortcut) {
-        openModal(template.compile(template.primaryShortcutBindSuccess, {
+        openModal(compile(require('%/primary-bind-success.html'), {
             key: shortcut.key,
         }));
     },
     showSecondaryShortcutBindSuccess(shortcut, primaryShortcut) {
-        openModal(template.compile(template.secondaryShortcutBindSuccess, {
+        openModal(compile(require('%/secondary-bind-success.html'), {
             key: shortcut.key,
             primaryShortcut: primaryShortcut,
         }));
     },
     showPrimaryShortcutUnbound(pressedKey) {
-        openModal(template.compile(template.shortcutNotFound, {
+        openModal(compile(require('%/shortcut-not-found.html'), {
             shortcutType: "primary",
             key: "ALT+SHIFT+" + pressedKey
         }));
     },
     showSecondaryShortcutUnbound(pressedKey) {
-        openModal(template.compile(template.shortcutNotFound, {
+        openModal(compile(require('%/shortcut-not-found.html'), {
             shortcutType: "secondary",
             key: "ALT+" + pressedKey,
         }));
     },
     showQueryShortcutFailed(firstKey, secondKey) {
-        openModal(template.compile(template.queryShortcutFailed, {
+        openModal(compile(require('%/query-shortcut-failed.html'), {
             firstKey: firstKey,
             secondKey: secondKey,
         }));
     },
     showQueryShortcutChooser(primaryShortcut, secondaryShortcut, byBlank) {
-        let modal = openModal(template.compile(template.queryShortcutChooser, {
+        let modal = openModal(compile(require('%/query-shortcut-chooser.html'), {
             shortcuts: [primaryShortcut, secondaryShortcut]
         }));
 
@@ -131,9 +135,9 @@ export default {
         let innerHtml;
 
         if (Object.keys(shortcuts).length === 0) {
-            innerHtml = template.compile(template.shortcutListEmpty, {key: pressedKey});
+            innerHtml = compile(require('%/shortcut-list-empty.html'), {key: pressedKey});
         } else {
-            innerHtml = template.compile(template.shortcutList, {
+            innerHtml = compile(require('%/shortcut-list.html'), {
                 key: pressedKey,
                 shortcuts: shortcuts
             });

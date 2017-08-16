@@ -72,6 +72,8 @@ module.exports = {
     },
     resolve: {
         alias: {
+            '@': path.join(__dirname, '..', 'src'),
+            '%': path.join(__dirname, '..', 'src/templates'),
             'vue$': 'vue/dist/vue.common.js',
             'popper$': 'popper.js',
         }
