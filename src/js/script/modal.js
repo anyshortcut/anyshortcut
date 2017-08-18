@@ -28,7 +28,7 @@ function openModal(content) {
     div.innerHTML = content;
 
     let modal = buildModal(div);
-    document.body.insertAdjacentElement('beforeEnd', modal);
+    document.body.insertAdjacentElement('beforeBegin', modal);
 
     let closeButton = document.getElementById('anyshortcut-modal-close');
     closeButton.onclick = function() {
