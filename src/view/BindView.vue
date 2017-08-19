@@ -4,18 +4,15 @@
             Specify primary shortcut
         </div>
         <template v-else>
-            <div class="domain-primary-shortcut">
-                <span class="shortcut"
-                      :title="domainPrimaryShortcut.title">
-                    ALT+SHIFT+{{domainPrimaryShortcut.key}}
-                </span>
-                <div class="linker">⟺</div>
-                <div class="domain-shortcut-comment">
+            <div class="domain-primary-bound">
+                <span class="shortcut-domain">
                     <img class="shortcut-favicon"
                          :src="domainPrimaryShortcut.favicon"
                          alt="favicon"/>
-                    {{domainPrimaryShortcut.comment}}
-                </div>
+                    {{domainPrimaryShortcut.domain}}
+                </span>
+                already bound primary shortcut
+                <span class="shortcut" :title="domainPrimaryShortcut.title">{{domainPrimaryShortcut.key}}</span>
             </div>
             <div class="primary-title">Specify the secondary shortcut</div>
         </template>
@@ -53,22 +50,18 @@
         padding: 10px 0;
     }
 
-    .domain-primary-shortcut {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        color: #666;
+    .domain-primary-bound {
+        position: relative;
+        padding: 8px;
+        color: #888888;
+        margin: 5px;
+        box-shadow: @box-shadow-base;
 
-        .linker {
-            margin: 0 15px;
-            font-size: 18px;
-        }
-
-        .domain-shortcut-comment {
-            font-weight: 500;
-            color: #333333;
-            font-size: 16px;
-            margin: 5px;
+        .close {
+            .close-button;
+            position: absolute;
+            right: 0;
+            top: 0;
         }
     }
 
@@ -96,7 +89,6 @@
             return {
                 keyChar: null,
                 isPopoverShowing: false,
-                showDomainBoard: true,
                 prefs: prefs,
             };
         },
