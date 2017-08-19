@@ -1,27 +1,35 @@
 <template>
     <div>
         <section class="bound-section">
-            <div class="bound-info">
-                <img src="../img/check.svg" alt="" class="bound-icon">
-                <p v-if="shortcut.primary" class="primary-text">Primary shortcut:
-                    <span class="shortcut" :title="shortcut.title">ALT+SHIFT+{{ shortcut.key }}</span>
-                    <span>
-                            <img class="delete-button"
-                                 @click="onShortcutDeleteButtonClick"/>
-                    </span>
-                </p>
-                <p class="primary-text" v-else>Secondary shortcut:
-                    <span class="shortcut" :title="shortcut.title">ALT+{{ shortcut.key }}</span>
-                    <span>
-                            <img class="delete-button"
-                                 @click="onShortcutDeleteButtonClick"/>
-                    </span>
-                </p>
+            <div class="shortcut-info-header">
+                <div class="shortcut-info-comment shortcut-info-item">
+                    <span><img class="shortcut-favicon" :src="shortcut.favicon"/></span>
+                    {{shortcut.comment}}
+                </div>
+                <div class="shortcut-info-item shortcut-info-title">
+                    {{ shortcut.title }}
+                </div>
             </div>
-            <div class="bound-stats">
-                You have open the shortcut <span class="shortcut-property">{{shortcut.open_times}}</span>
-                times since <span class="shortcut-property">{{shortcut.created_time | fromNow}}</span>
+
+            <div class="shortcut-info-content">
+                <div class="shortcut-info-item">
+                    <label>Shortcut:</label>
+                    <span v-if="shortcut.primary" class="shortcut">ALT + SHIFT + {{ shortcut.key }}</span>
+                    <template v-else>
+                        <span class="shortcut">ALT + SHIFT + {{ shortcut.key }}</span> or
+                        <span class="shortcut">ALT + {{ shortcut.key }}</span>
+                    </template>
+                </div>
+                <div class="shortcut-info-item">
+                    <label>Stats:</label>
+                    used {{ shortcut.open_times | times}}, saved time {{ saveTimes(shortcut.open_times) }}
+                </div>
+                <div class="shortcut-info-item">
+                    <label>Date:</label> {{ shortcut.created_time | date }}, {{shortcut.created_time | fromNow}}
+                </div>
             </div>
+
+
         </section>
 
         <div class="shortcut-delete-modal" v-show="showDeleteModal">
@@ -40,40 +48,44 @@
     @import "../less/_common.less";
 
     .bound-section {
-        display: flex;
-        margin: 20px;
+        width: 380px;
+        margin: auto;
+        margin-bottom: 20px;
 
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        .bound-info {
-            display: flex;
+        .shortcut-info-header {
             align-items: center;
+            margin: 10px 0 25px;
         }
 
-        .bound-icon {
-            background-color: #67D500;
-            width: 30px;
-            height: 30px;
-            margin: 0 10px;
-            border-radius: 50%;
-            padding: 5px;
-        }
-
-        .bound-stats {
-            padding: 10px;
-            margin-top: 5px;
-            text-align: center;
-            width: 320px;
-            color: #666666;
+        .shortcut-info-item {
+            margin: 10px 0;
+            color: #515151;
+            white-space: nowrap;
             font-size: 15px;
+
+            label {
+                font-weight: 500;
+            }
         }
 
-        .shortcut-property {
+        .shortcut-info-comment {
             font-weight: 500;
-            color: #333333;
+            color: #333;
+            font-size: 18px;
+            margin: 5px;
         }
+
+        .shortcut-info-title {
+            font-size: 14px;
+            color: #8e8e8e;
+            white-space: normal;
+        }
+
+        .shortcut-info-content {
+            margin: 0 40px;
+            text-align: left;
+        }
+
     }
 
     .shortcut-delete-modal {
@@ -126,9 +138,15 @@
             }
         },
         filters: {
+            times: function(times) {
+                return times + (times > 1 ? ' times' : ' time');
+            },
             fromNow: function(time) {
                 return timeago().format(time);
-            }
+            },
+            date: function(timestamp) {
+                return new Date(timestamp).toLocaleDateString();
+            },
         },
         methods: {
             onShortcutDeleteButtonClick: function() {
@@ -142,6 +160,19 @@
                 } else {
                     this.$bus.emit('unbind-shortcut', this.shortcut);
                 }
+            },
+            saveTimes: function(openTimes) {
+                let saveSecond = openTimes * 3;
+
+                if (saveSecond === 0) {
+                    return '0 second';
+                }
+
+                if (saveSecond < 60 * 5) {
+                    return saveSecond + ' seconds';
+                }
+
+                return saveSecond / 60.0 + ' minutes';
             }
         }
     }
