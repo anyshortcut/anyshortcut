@@ -6,8 +6,8 @@ let timeoutId = undefined;
 
 function removeElementDelay(element, delay) {
     timeoutId = window.setTimeout(() => {
-        if (document.body.contains(element)) {
-            document.body.removeChild(element);
+        if (element) {
+            element.remove();
         }
         window.clearTimeout(timeoutId);
         timeoutId = undefined;
