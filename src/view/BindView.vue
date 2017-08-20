@@ -57,7 +57,7 @@
         padding: 8px;
         font-weight: 600;
         color: #333;
-        margin: 5px 10px;
+        margin: 5px 15px;
 
         .close {
             .close-button;
