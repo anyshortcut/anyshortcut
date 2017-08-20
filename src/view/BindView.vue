@@ -53,9 +53,9 @@
     .domain-primary-bound {
         position: relative;
         padding: 8px;
-        color: #888888;
+        font-weight: 600;
+        color: #333;
         margin: 5px;
-        box-shadow: @box-shadow-base;
 
         .close {
             .close-button;

@@ -2,11 +2,11 @@
     <div>
         <section class="bound-section">
             <div class="shortcut-info-header">
-                <div class="shortcut-info-comment shortcut-info-item">
+                <div class="shortcut-info-comment">
                     <span><img class="shortcut-favicon" :src="shortcut.favicon"/></span>
                     {{shortcut.comment}}
                 </div>
-                <div class="shortcut-info-item shortcut-info-title">
+                <div class="shortcut-info-title">
                     {{ shortcut.title }}
                 </div>
             </div>
@@ -14,22 +14,33 @@
             <div class="shortcut-info-content">
                 <div class="shortcut-info-item">
                     <label>Shortcut:</label>
-                    <span v-if="shortcut.primary" class="shortcut">ALT + SHIFT + {{ shortcut.key }}</span>
+                    <span v-if="shortcut.primary" class="shortcut">
+                        ALT + SHIFT + {{ shortcut.key }}
+                    </span>
                     <template v-else>
-                        <span class="shortcut">ALT + SHIFT + {{ shortcut.key }}</span> or
+                        <span class="shortcut">
+                            ALT + SHIFT + {{ domainPrimaryShortcut.key }} + {{ shortcut.key }}
+                        </span>
+                        /
                         <span class="shortcut">ALT + {{ shortcut.key }}</span>
                     </template>
                 </div>
                 <div class="shortcut-info-item">
                     <label>Stats:</label>
-                    used {{ shortcut.open_times | times}}, saved time {{ saveTimes(shortcut.open_times) }}
+                    used {{ shortcut.open_times | times }}, saved time {{ shortcut.open_times | savedTimes }}
                 </div>
                 <div class="shortcut-info-item">
-                    <label>Date:</label> {{ shortcut.created_time | date }}, {{shortcut.created_time | fromNow}}
+                    <label>Date:</label> {{ shortcut.created_time | date }}, {{shortcut.created_time | fromNow }}
+                </div>
+                <div class="shortcut-info-item">
+                    <label>Secondary shortcuts:</label> {{ Object.keys(secondaryShortcuts).length }}
                 </div>
             </div>
-
-
+            <shortcut-list v-if="true" :shortcuts="secondaryShortcuts"></shortcut-list>
+            <div class="shortcut-delete-button"
+                 @click="onShortcutDeleteButtonClick">
+                Delete the shortcut
+            </div>
         </section>
 
         <div class="shortcut-delete-modal" v-show="showDeleteModal">
@@ -82,7 +93,7 @@
         }
 
         .shortcut-info-content {
-            margin: 0 40px;
+            margin: 0 20px;
             text-align: left;
         }
 
@@ -121,6 +132,7 @@
 </style>
 <script type="es6">
     import timeago from "timeago.js";
+    import ShortcutList from "../component/ShortcutList.vue";
 
     export default {
         name: 'bound-view',
@@ -135,7 +147,19 @@
                 default: function() {
                     return {};
                 },
+            },
+            domainPrimaryShortcut: {
+                type: Object,
+                default: function() {
+                    return {};
+                }
+            },
+            secondaryShortcuts: {
+                type: Object,
             }
+        },
+        components: {
+            ShortcutList,
         },
         filters: {
             times: function(times) {
@@ -147,11 +171,24 @@
             date: function(timestamp) {
                 return new Date(timestamp).toLocaleDateString();
             },
+            savedTimes: function(openTimes) {
+                let savedSecond = openTimes * 3;
+
+                if (savedSecond === 0) {
+                    return '0 second';
+                }
+
+                if (savedSecond < 60 * 5) {
+                    return savedSecond + ' seconds';
+                }
+
+                return savedSecond / 60.0 + ' minutes';
+            }
         },
         methods: {
             onShortcutDeleteButtonClick: function() {
                 if (this.shortcut.primary) {
-                    if (Object.keys(this.$background.getSecondaryShortcutsByPrimaryKey(this.shortcut.key)).length) {
+                    if (Object.keys(this.secondaryShortcuts).length) {
                         this.showDeleteModal = true;
                     } else {
                         this.$bus.emit('unbind-shortcut', this.shortcut);
@@ -161,19 +198,6 @@
                     this.$bus.emit('unbind-shortcut', this.shortcut);
                 }
             },
-            saveTimes: function(openTimes) {
-                let saveSecond = openTimes * 3;
-
-                if (saveSecond === 0) {
-                    return '0 second';
-                }
-
-                if (saveSecond < 60 * 5) {
-                    return saveSecond + ' seconds';
-                }
-
-                return saveSecond / 60.0 + ' minutes';
-            }
         }
     }
 </script>

@@ -10,7 +10,9 @@
         </header>
 
         <bound-view v-if="shortcut"
-                    :shortcut="shortcut">
+                    :shortcut="shortcut"
+                    :secondary-shortcuts="shortcuts"
+                    :domain-primary-shortcut="domainPrimaryShortcut">
         </bound-view>
 
         <bind-view v-else
@@ -18,17 +20,6 @@
                    :primary="primary"
                    :domain-primary-shortcut="domainPrimaryShortcut">
         </bind-view>
-        <section v-if="domainPrimaryShortcut" class="secondary-shortcut-list">
-            <div>
-                <span class="shortcut-domain">
-                    <img class="shortcut-favicon"
-                         :src="domainPrimaryShortcut.favicon"
-                         alt="favicon"/>
-                    {{domainPrimaryShortcut.domain}}
-                </span>'s secondary shortcuts:
-            </div>
-            <shortcut-list :shortcuts="shortcuts"></shortcut-list>
-        </section>
     </div>
     <div class="unsupported-view" v-else>
         <header class="main-header">
@@ -77,14 +68,6 @@
         }
     }
 
-    .secondary-shortcut-list {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-top: -10px;
-        font-size: 16px;
-    }
-
     .unsupported-view {
         width: 450px;
         height: 150px;
@@ -98,7 +81,6 @@
             color: #515151;
             margin: auto 20px;
         }
-
     }
 
 </style>
@@ -107,7 +89,6 @@
     import _ from "lodash";
     import BoundView from "./BoundView.vue";
     import BindView from "./BindView.vue";
-    import ShortcutList from "../component/ShortcutList.vue";
 
     export default {
         name: 'main-view',
@@ -123,7 +104,6 @@
         components: {
             BoundView,
             BindView,
-            ShortcutList,
         },
         methods: {
             queryShortcuts() {
