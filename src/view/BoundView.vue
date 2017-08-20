@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bound-view">
         <section class="bound-section">
             <div class="shortcut-info-header">
                 <div class="shortcut-info-comment">
@@ -29,18 +29,17 @@
                     <label>Stats:</label>
                     used {{ shortcut.open_times | times }}, saved time {{ shortcut.open_times | savedTimes }}
                 </div>
-                <div class="shortcut-info-item">
-                    <label>Date:</label> {{ shortcut.created_time | date }}, {{shortcut.created_time | fromNow }}
-                </div>
+                <!--<div class="shortcut-info-item">-->
+                <!--<label>Date:</label> {{ shortcut.created_time | date }}, {{shortcut.created_time | fromNow }}-->
+                <!--</div>-->
                 <div class="shortcut-info-item">
                     <label>Secondary shortcuts:</label> {{ Object.keys(secondaryShortcuts).length }}
                 </div>
             </div>
             <shortcut-list v-if="true" :shortcuts="secondaryShortcuts"></shortcut-list>
-            <div class="shortcut-delete-button"
+            <div class="right-corner triangle"></div>
+            <img class="right-corner trash-can" src="../img/delete-light.svg" alt=""
                  @click="onShortcutDeleteButtonClick">
-                Delete the shortcut
-            </div>
         </section>
 
         <div class="shortcut-delete-modal" v-show="showDeleteModal">
@@ -50,6 +49,7 @@
             </p>
             <div class="shortcut-delete-button"
                  @click="$bus.emit('unbind-shortcut',shortcut);showDeleteModal=false;">
+                <span><img style="vertical-align: middle;" src="../img/delete-white.svg" alt=""></span>
                 Sure, delete it!
             </div>
         </div>
@@ -57,6 +57,10 @@
 </template>
 <style lang="less">
     @import "../less/_common.less";
+
+    .bound-view {
+        position: relative;
+    }
 
     .bound-section {
         width: 380px;
@@ -97,6 +101,26 @@
             text-align: left;
         }
 
+    }
+
+    .right-corner {
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin: 0;
+    }
+
+    .triangle {
+        width: 80px;
+        height: 80px;
+        background-color: #f4f4f4;
+        transform: translate(50%, -50%) rotate(135deg);
+        z-index: 0;
+    }
+
+    .trash-can {
+        .delete-button;
+        padding: 8px;
     }
 
     .shortcut-delete-modal {

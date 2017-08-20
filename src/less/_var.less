@@ -30,6 +30,7 @@
   align-items: center;
   padding: 5px;
   border-bottom: #eeeeee solid 1.3px;
+  z-index: 1;
 }
 
 .primary-text {
@@ -49,7 +50,12 @@
 
 .delete-button {
   vertical-align: middle;
+  cursor: pointer;
   content: url("../img/delete-light.svg");
+
+  &:hover {
+    content: url("../img/delete-red.svg");
+  }
 }
 
 .shortcut-delete-button {

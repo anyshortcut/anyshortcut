@@ -25,8 +25,7 @@
     ul {
         list-style: none outside;
         margin: 0 auto;
-        padding: 5px;
-        width: 420px;
+        padding: 0 10px 10px;
     }
 
     .shortcut-list-item {
@@ -37,8 +36,8 @@
         border-width: 0;
         border-bottom-width: 1px;
         border-style: solid;
-        padding: 3px 8px;
-        font-size: 15px;
+        padding: 5px 10px;
+        font-size: 14px;
 
         &:hover {
             background: #f8f8f8;
@@ -52,13 +51,12 @@
     .shortcut-secondary {
         .shortcut;
         display: inline-block;
-        width: 38px;
-        height: 28px;
         letter-spacing: 0.6px;
-        font-size: 15px;
+        font-size: 14px;
+        width: 42px;
     }
 
-    @shortcut-comment-color: #333333;
+    @shortcut-comment-color: #555555;
     .shortcut-comment {
         .overflow-ellipsis;
         position: relative;
@@ -71,11 +69,6 @@
         &:visited, &:active {
             color: @shortcut-comment-color;
         }
-    }
-
-    .delete-button:hover {
-        cursor: pointer;
-        content: url("../img/delete.svg");
     }
 
     .shortcut-empty-list {
