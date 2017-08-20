@@ -12,7 +12,9 @@
                     {{domainPrimaryShortcut.domain}}
                 </span>
                 already bound primary shortcut
-                <span class="shortcut" :title="domainPrimaryShortcut.title">{{domainPrimaryShortcut.key}}</span>
+                <span class="shortcut" :title="domainPrimaryShortcut.title">
+                    SHIFT + ALT + {{domainPrimaryShortcut.key}}
+                </span>
             </div>
             <div class="primary-title">Specify the secondary shortcut</div>
         </template>
@@ -55,7 +57,7 @@
         padding: 8px;
         font-weight: 600;
         color: #333;
-        margin: 5px;
+        margin: 5px 10px;
 
         .close {
             .close-button;
