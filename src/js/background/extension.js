@@ -1,4 +1,5 @@
 import common from '../common.js';
+import auth from '../auth.js';
 
 /**
  * Current active tab in current window.
@@ -73,26 +74,27 @@ window.isActiveTabUrlSupported = function() {
  *@param bound whether the current tab url was bound with a shortcut
  */
 window.setPopupIcon = function(bound) {
-    if (isActiveTabUrlSupported()) {
-        const icon = bound ? {
-            path: {
-                '16': 'icon/icon32.png'
-            }
-        } : {
-            path: {
-                '16': 'icon/icon32-gray.png'
-            }
-        };
-        chrome.browserAction.setIcon(icon);
-    }
-    else {
+    // Only in authenticated stage, then to check the tab url whether supported
+    if (auth.isAuthenticated() && !isActiveTabUrlSupported()) {
         // Set a gray unsupported icon
         chrome.browserAction.setIcon({
             path: {
                 '16': 'icon/icon32-gray-unsupported.png'
             }
         });
+        return;
     }
+
+    const icon = bound ? {
+        path: {
+            '16': 'icon/icon32.png'
+        }
+    } : {
+        path: {
+            '16': 'icon/icon32-gray.png'
+        }
+    };
+    chrome.browserAction.setIcon(icon);
 };
 
 function handleOnTabInfoUpdate(url) {
