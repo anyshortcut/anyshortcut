@@ -89,13 +89,13 @@ export default {
     showPrimaryShortcutUnbound(pressedKey) {
         openModal(compile(require('%/shortcut-not-found.html'), {
             shortcutType: "primary",
-            key: "ALT+SHIFT+" + pressedKey
+            key: "ALT + SHIFT + " + pressedKey
         }));
     },
     showSecondaryShortcutUnbound(pressedKey) {
         openModal(compile(require('%/shortcut-not-found.html'), {
             shortcutType: "secondary",
-            key: "ALT+" + pressedKey,
+            key: "ALT + " + pressedKey,
         }));
     },
     showQueryShortcutFailed(firstKey, secondKey) {

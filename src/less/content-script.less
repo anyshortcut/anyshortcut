@@ -16,6 +16,8 @@
 
   ul {
     list-style: none outside;
+    margin: auto;
+    padding: 0;
   }
 }
 
@@ -51,23 +53,24 @@
   text-align: center;
 }
 
-.anyshortcut-shortcut {
-  color: #333333;
-  background-color: white;
-  padding: 0 10px;
+.anyshortcut-favicon {
+  .shortcut-favicon;
   margin: 0 5px;
-  border-radius: 3px;
-  font-size: 16px;
-  text-align: center;
-  box-shadow: @box-shadow-base;
+}
+
+.anyshortcut-shortcut {
+  .shortcut;
+  font-size: 15px;
 }
 
 .anyshortcut-secondary-shortcut {
   .anyshortcut-shortcut;
-  width: 38px;
-  height: 28px;
+  width: 32px;
   letter-spacing: 0.6px;
-  //display: inline-block;
+}
+
+.anyshortcut-shortcut-list {
+  padding: 5px 40px !important;
 }
 
 .anyshortcut-shortcut-item {
@@ -77,8 +80,8 @@
   border-width: 0;
   border-bottom-width: 1px;
   border-style: solid;
-  padding: 3px 10px;
-  font-size: 15px;
+  font-size: 14px;
+  padding: 8px 10px;
 
   &:hover {
     background: #f8f8f8;
@@ -92,8 +95,11 @@
     .overflow-ellipsis;
     position: relative;
     text-align: left;
+    width: 100%;
+    margin: 0 10px;
     text-decoration: none;
     outline: none;
+    color: @secondary-color;
 
     &:focus, &:active, &:visited, &:hover {
       color: @secondary-color;
@@ -104,4 +110,14 @@
 .anyshortcut-text-description {
   color: #8E8E8E;
   font-size: 14px;
+
+  ul li {
+    margin: 5px 0;
+  }
+}
+
+.anyshortcut-small-description {
+  color: #8E8E8E;
+  margin: auto;
+  font-size: 12px;
 }

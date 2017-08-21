@@ -13,7 +13,7 @@
 
             <div class="shortcut-info-content">
                 <div class="shortcut-info-item">
-                    <label>Shortcut:</label>
+                    <label>Shortcut: </label>
                     <span v-if="shortcut.primary" class="shortcut">
                         ALT + SHIFT + {{ shortcut.key }}
                     </span>
@@ -26,14 +26,16 @@
                     </template>
                 </div>
                 <div class="shortcut-info-item">
-                    <label>Stats:</label>
-                    used {{ shortcut.open_times | times }}, saved time {{ shortcut.open_times | savedTimes }}
+                    <label>Stats: </label>
+                    used <span class="shortcut-info-property">{{ shortcut.open_times | times }}</span>,
+                    saved time <span class="shortcut-info-property">{{ shortcut.open_times | savedTimes }}</span>
                 </div>
                 <!--<div class="shortcut-info-item">-->
                 <!--<label>Date:</label> {{ shortcut.created_time | date }}, {{shortcut.created_time | fromNow }}-->
                 <!--</div>-->
                 <div class="shortcut-info-item">
-                    <label>Secondary shortcuts:</label> {{ Object.keys(secondaryShortcuts).length }}
+                    <label>Secondary shortcuts: </label>
+                    <span class="shortcut-info-property">{{ Object.keys(secondaryShortcuts).length }}</span>
                 </div>
             </div>
             <shortcut-list v-if="true" :shortcuts="secondaryShortcuts"></shortcut-list>
@@ -99,6 +101,10 @@
         .shortcut-info-content {
             margin: 0 20px;
             text-align: left;
+        }
+
+        .shortcut-info-property {
+            color: @primary-color;
         }
 
     }

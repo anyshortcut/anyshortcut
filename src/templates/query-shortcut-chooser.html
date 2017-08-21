@@ -1,9 +1,11 @@
-<ul>
+<p>Which shortcut did you mean?</p>
+<ul class="anyshortcut-shortcut-list">
     <% _.forEach(shortcuts, function(shortcut, key) { %>
     <li class="anyshortcut-shortcut-item">
         <span class="anyshortcut-secondary-shortcut" title="<%- shortcut.title %>"><%- key + 1 %></span>
-        <img class="shortcut-favicon" src="<%- shortcut.favicon %>" alt="favicon">
+        <img class="anyshortcut-favicon" src="<%- shortcut.favicon %>" alt="favicon">
         <a href="<%- shortcut.url %>" title="<%- shortcut.url %>" target="_blank"><%- shortcut.comment %></a>
     </li>
     <% }); %>
 </ul>
+<small class="anyshortcut-small-description">Click the number key (1 or 2) to open the website page</small>
