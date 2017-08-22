@@ -66,7 +66,7 @@ window.isActiveTabUrlSupported = function() {
         a.href = window.activeTab.url;
         return ['http:', "https:", "file:"].indexOf(a.protocol) !== -1;
     }
-    return false;
+    return true;
 };
 
 /**

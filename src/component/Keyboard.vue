@@ -91,7 +91,7 @@
         background: #ffffff;
         flex: 1;
         border-style: solid;
-        border-width: 0.3px;
+        border-width: 1px;
         border-color: #E5E5E5;
         border-radius: 3px;
         text-transform: uppercase;
