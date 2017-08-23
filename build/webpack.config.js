@@ -35,7 +35,7 @@ module.exports = {
                 options: {
                     loaders: utils.cssLoaders({
                         sourceMap: config.isProduction,
-                        extract: config.isProduction
+                        extract: true
                     }),
                 }
             },

@@ -1,4 +1,3 @@
-let path = require('path');
 let ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 exports.cssLoaders = function(options) {

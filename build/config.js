@@ -1,19 +1,26 @@
 const isProduction = process.env.NODE_ENV === 'production';
 
-const productionEnv = {
-    debug: false,
-    schema: 'http://',
-    domain: 'anyshortcut.com',
-};
 
-const developmentEnv = {
-    debug: true,
-    schema: 'http://',
-    domain: 'dev.anyshortcut.com',
+const env = {
+    production: {
+        debug: false,
+        schema: 'http://',
+        domain: 'anyshortcut.com',
+    },
+    stage: {
+        debug: false,
+        schema: 'http://',
+        domain: 'stage.anyshortcut.com',
+    },
+    development: {
+        debug: true,
+        schema: 'http://',
+        domain: 'dev.anyshortcut.com',
+    }
 };
 
 module.exports = {
     productionSourceMap: isProduction,
     isProduction: isProduction,
-    env: isProduction ? productionEnv : developmentEnv,
+    env: env[process.env.NODE_ENV],
 };
