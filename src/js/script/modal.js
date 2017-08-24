@@ -81,10 +81,13 @@ export default {
         }));
     },
     showSecondaryShortcutBindSuccess(shortcut, primaryShortcut) {
-        openModal(compile(require('%/secondary-bind-success.html'), {
-            key: shortcut.key,
-            primaryShortcut: primaryShortcut,
-        }));
+        // Only show secondary shortcut bind modal for one key primary shortcut.
+        if (primaryShortcut.key.length === 1) {
+            openModal(compile(require('%/secondary-bind-success.html'), {
+                key: shortcut.key,
+                primaryShortcut: primaryShortcut,
+            }));
+        }
     },
     showPrimaryShortcutUnbound(pressedKey) {
         openModal(compile(require('%/shortcut-not-found.html'), {

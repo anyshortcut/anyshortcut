@@ -18,10 +18,10 @@
                         ALT + SHIFT + {{ shortcut.key }}
                     </span>
                     <template v-else>
-                        <span class="shortcut">
+                        <span class="shortcut" v-if="domainPrimaryShortcut.key.length===1">
                             ALT + SHIFT + {{ domainPrimaryShortcut.key }} + {{ shortcut.key }}
                         </span>
-                        /
+                        <span v-if="domainPrimaryShortcut.key.length===1"> / </span>
                         <span class="shortcut">ALT + {{ shortcut.key }}</span>
                     </template>
                 </div>
