@@ -1,5 +1,6 @@
 import Vue from "vue";
 import auth from "./auth.js";
+import ga from "./mixin-ga.js";
 import WelcomeView from "../view/Welcome.vue";
 import MainView from "../view/Main.vue";
 import CompoundBindView from "../view/CompoundBindView.vue";
@@ -100,6 +101,7 @@ let app = new Vue({
             }
         },
     },
+    mixins: [ga],
     mounted() {
         this.$bus.on('bind-shortcut', this.bindShortcut);
         this.$bus.on('unbind-shortcut', this.unbindShortcut);

@@ -1,5 +1,6 @@
 import Vue from "vue";
 import auth from "./auth.js";
+import ga from "./mixin-ga.js";
 import helper from './script/helper.js';
 
 require('../less/tour.less');
@@ -29,6 +30,7 @@ const app = new Vue({
             }
         }
     },
+    mixins: [ga],
     created() {
         this.currentStep = auth.isAuthenticated() ? 2 : 1;
     },
