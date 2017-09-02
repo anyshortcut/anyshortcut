@@ -90,7 +90,7 @@
 </style>
 <script type="es6">
     import config from "../js/config.js";
-    import auth from "../js/auth.js";
+    import common from "../js/common.js";
 
     export default {
         name: 'welcome-view',
@@ -101,7 +101,7 @@
         },
         methods: {
             openAuthPopupWindow() {
-                auth.openAuthPopupWindow();
+                common.openPopupWindow(config.googleAuthURL);
             },
         }
     }

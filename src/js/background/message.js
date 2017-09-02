@@ -1,25 +1,31 @@
-import auth from '../auth.js';
 import client from './client.js';
 import common from '../common.js';
 import pref from '../prefs.js';
 
-if (auth.isAuthenticated()) {
-    doAfterAuthenticated();
-}
+window.authenticated = false;
 
-function doAfterAuthenticated() {
-    window.syncAllShortcuts();
-    pref.sync();
+syncUserInfo();
 
-    common.iterateAllWindowTabs(tabId => {
-        chrome.tabs.sendMessage(tabId, {authenticated: true});
+function syncUserInfo() {
+    client.getUserInfo().then(response => {
+        if (response) {
+            window.authenticated = true;
+
+            window.syncAllShortcuts();
+            pref.sync();
+
+            common.iterateAllWindowTabs(tabId => {
+                chrome.tabs.sendMessage(tabId, {authenticated: true});
+            });
+            localStorage.setItem('user', response);
+        }
     });
 }
 
 function onMessageReceiver(message, sender, sendResponse) {
     switch (true) {
         case message.resolve: {
-            sendResponse(auth.isAuthenticated());
+            sendResponse(window.authenticated);
             break;
         }
         case message.query: {
@@ -82,8 +88,7 @@ function onMessageReceiver(message, sender, sendResponse) {
  */
 function onMessageExternal(message, sender, sendResponse) {
     console.log(message);
-    auth.signin(message.token);
-    doAfterAuthenticated();
+    syncUserInfo();
     sendResponse(true);
     return true;
 }

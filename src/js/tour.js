@@ -1,5 +1,6 @@
 import Vue from "vue";
-import auth from "./auth.js";
+import common from "./common.js";
+import config from "./config.js";
 import ga from "./mixin-ga.js";
 import helper from './script/helper.js';
 
@@ -18,7 +19,7 @@ const app = new Vue({
     },
     methods: {
         openAuthPopupWindow() {
-            auth.openAuthPopupWindow();
+            common.openPopupWindow(config.googleAuthURL);
         },
         openShortcut(url) {
             window.open(url);
@@ -32,7 +33,7 @@ const app = new Vue({
     },
     mixins: [ga],
     created() {
-        this.currentStep = auth.isAuthenticated() ? 2 : 1;
+        this.currentStep = this.$background.authenticated ? 2 : 1;
     },
 });
 

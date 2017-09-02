@@ -1,5 +1,4 @@
 import Vue from "vue";
-import auth from "./auth.js";
 import ga from "./mixin-ga.js";
 import WelcomeView from "../view/Welcome.vue";
 import MainView from "../view/Main.vue";
@@ -33,7 +32,7 @@ let app = new Vue({
     },
     computed: {
         authenticated: function() {
-            return auth.isAuthenticated();
+            return this.$background.authenticated;
         }
     },
     methods: {

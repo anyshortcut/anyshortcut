@@ -1,5 +1,4 @@
 import axios from "axios";
-import auth from "../auth.js";
 import config from "../config.js";
 
 let request = axios.create({
@@ -7,22 +6,10 @@ let request = axios.create({
     contentType: "application/json; charset=utf-8",
 });
 
-// Add custom axios interceptor for custom request authenticated check.
-request.interceptors.request.use(config => {
-    config.headers.common['Authorization'] = localStorage.getItem('token');
-    // return Promise.resolve(config.data);
-    return config;
-}, error => {
-    return Promise.reject(error);
-});
 // Add custom axios interceptor for custom error handle.
 request.interceptors.response.use(response => {
     let code = response.data.code;
     if (code !== 200) {
-        if (code === 1000 || code === 1001) {
-            // Miss token or invalid token
-            auth.logout();
-        }
         return Promise.reject(response.data);
     }
     return response.data.data;
@@ -31,8 +18,11 @@ request.interceptors.response.use(response => {
 });
 
 export default {
+    getUserInfo() {
+        return request.get('/user/info');
+    },
     bindShortcut(shortcut) {
-        return request.post(`/shortcut/key`, shortcut);
+        return request.post('/shortcut/key', shortcut);
     },
     unbindShortcut(id) {
         return request.put(`/shortcut/${id}/unbind`);

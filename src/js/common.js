@@ -63,6 +63,12 @@ export default {
         // because Object.keys(new Date()).length === 0;
         // we have to do some additional check
         return Object.keys(obj).length === 0 && obj.constructor === Object
+    },
+    openPopupWindow(url) {
+        let width = 700, height = 600;
+        let windowFeatures = `width=${width},height=${height},resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no`;
+        let authWindow = window.open(url, 'AnyShortcut', windowFeatures);
+        authWindow.focus && authWindow.focus();
     }
 }
 

@@ -1,5 +1,4 @@
 import common from '../common.js';
-import auth from '../auth.js';
 
 /**
  * Current active tab in current window.
@@ -75,7 +74,7 @@ window.isActiveTabUrlSupported = function() {
  */
 window.setPopupIcon = function(bound) {
     // Only in authenticated stage, then to check the tab url whether supported
-    if (auth.isAuthenticated() && !isActiveTabUrlSupported()) {
+    if (window.authenticated && !isActiveTabUrlSupported()) {
         // Set a gray unsupported icon
         chrome.browserAction.setIcon({
             path: {
