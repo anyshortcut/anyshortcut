@@ -41,6 +41,11 @@
             Bind compound shortcut<span><img src="../img/right-arrow.svg"></span>
         </a>
 
+        <template v-if="!primary && Object.keys(shortcuts).length">
+            <div>Secondary shortcuts</div>
+            <shortcut-list style="width:380px;" :shortcuts="shortcuts"></shortcut-list>
+        </template>
+
     </section>
 </template>
 <style lang="less">
@@ -83,6 +88,7 @@
     import Keyboard from "../component/Keyboard.vue";
     import Popover from "../component/Popover.vue";
     import ShortcutBoard from "../component/ShortcutBoard.vue";
+    import ShortcutList from "../component/ShortcutList.vue";
     import prefs from "../js/prefs.js";
 
     export default {
@@ -132,6 +138,7 @@
             Popover,
             Keyboard,
             ShortcutBoard,
+            ShortcutList,
         },
         methods: {
             onHoverOver: function(target) {

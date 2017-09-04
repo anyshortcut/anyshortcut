@@ -17,7 +17,7 @@ function syncUserInfo() {
             common.iterateAllWindowTabs(tabId => {
                 chrome.tabs.sendMessage(tabId, {authenticated: true});
             });
-            localStorage.setItem('user', response);
+            localStorage.setItem('user', JSON.stringify(response));
         }
     });
 }

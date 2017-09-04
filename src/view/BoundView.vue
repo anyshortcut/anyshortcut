@@ -38,7 +38,7 @@
                     <span class="shortcut-info-property">{{ Object.keys(secondaryShortcuts).length }}</span>
                 </div>
             </div>
-            <shortcut-list v-if="true" :shortcuts="secondaryShortcuts"></shortcut-list>
+            <shortcut-list :shortcuts="secondaryShortcuts"></shortcut-list>
             <div class="right-corner triangle"></div>
             <img class="right-corner trash-can" src="../img/delete-light.svg" alt=""
                  @click="onShortcutDeleteButtonClick">
