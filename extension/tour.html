@@ -9,16 +9,16 @@
 <body>
 
 <div id="app">
-    <img v-if="currentStep==1"
+    <img v-if="currentStep===1"
          class="step-cover"
          src="dist/img/computer-and-balloons.svg" alt="">
-    <img v-if="currentStep==2"
+    <img v-else-if="currentStep===2"
          class="step-cover"
          src="dist/img/2.svg" alt="">
-    <img v-if="currentStep==3"
+    <img v-else-if="currentStep===3"
          class="step-cover"
          src="dist/img/3.svg" alt="">
-    <img v-if="currentStep==4"
+    <img v-else-if="currentStep===4"
          class="step-cover"
          src="dist/img/4.svg" alt="">
 
@@ -30,7 +30,7 @@
             </div>
         </li>
     </ul>
-    <section v-if="currentStep==1">
+    <section v-if="currentStep===1">
         <div class="title">
             Welcome join Anyshortcut!
         </div>
@@ -49,7 +49,7 @@
         </small>
     </section>
     <template v-else>
-        <section v-if="currentStep==2">
+        <section v-if="currentStep===2">
             <div class="title">Bind a primary shortcut</div>
             <p>
                 Assuming you have opened google, you can hover the mouse on keyboard <span
@@ -68,7 +68,7 @@
         </section>
 
 
-        <section v-else-if="currentStep==3">
+        <section v-else-if="currentStep===3">
             <div class="title">Let's bind a secondary shortcut</div>
 
             <p>Just like the step ahead. You can bind the secondary shortcut <span class="tour-shortcut">I</span>
@@ -92,7 +92,7 @@
 
         </section>
 
-        <section v-else-if="currentStep==4">
+        <section v-else-if="currentStep===4">
             <div class="title">Congratulations!</div>
             <p>Only one important thing you should keep in mind:</p>
 

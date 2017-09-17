@@ -6,11 +6,13 @@ import helper from './script/helper.js';
 
 require('../less/tour.less');
 
+let authenticated = chrome.extension.getBackgroundPage().authenticated;
+
 const app = new Vue({
     el: "#app",
     data: {
-        currentStep: 1,
-        currentMaxStep: 1,
+        currentStep: authenticated ? 2 : 1,
+        currentMaxStep: this.currentStep,
     },
     watch: {
         currentStep: function(newValue) {
@@ -32,9 +34,6 @@ const app = new Vue({
         }
     },
     mixins: [ga],
-    created() {
-        this.currentStep = this.$background.authenticated ? 2 : 1;
-    },
 });
 
 
