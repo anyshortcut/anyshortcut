@@ -161,5 +161,8 @@ export default {
         };
 
         modal.addEventListener('keyup', listEventListener);
+    },
+    showSubscriptionExpired() {
+        openModal(compile(require('%/subscription-expired.html')));
     }
 }

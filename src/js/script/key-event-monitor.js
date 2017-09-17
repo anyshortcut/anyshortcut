@@ -2,7 +2,7 @@ import helper from './helper.js';
 import modal from './modal.js';
 
 chrome.runtime.sendMessage({resolve: true}, authenticated => {
-    resolveEventListener(authenticated);
+    resolveAuthentication(authenticated);
 });
 
 const EMPTY_KEY = {
@@ -27,6 +27,11 @@ function triggerPrimaryShortcut(keyCodeChar) {
         request: true,
         key: keyCodeChar
     }, response => {
+        if (response.expired) {
+            modal.showSubscriptionExpired();
+            return;
+        }
+
         if (response.shortcut) {
             helper.openShortcut(response.shortcut, response.byBlank);
         } else {
@@ -43,6 +48,11 @@ function triggerSecondaryShortcut(keyCodeChar) {
         hostname: location.hostname,
         key: keyCodeChar,
     }, response => {
+        if (response.expired) {
+            modal.showSubscriptionExpired();
+            return;
+        }
+
         if (response.shortcut) {
             helper.openShortcut(response.shortcut, response.byBlank);
         } else {
@@ -57,6 +67,11 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
     chrome.runtime.sendMessage({
         query: true, firstKey: firstKeyCodeChar, secondKey: secondKeyCodeChar
     }, response => {
+        if (response.expired) {
+            modal.showSubscriptionExpired();
+            return;
+        }
+
         let primaryShortcut = response.primaryShortcut;
         let secondaryShortcut = response.secondaryShortcut;
 
@@ -85,6 +100,11 @@ function triggerSecondaryShortcutList(key) {
         chrome.runtime.sendMessage({
             listSecondary: true, key: key
         }, response => {
+            if (response.expired) {
+                modal.showSubscriptionExpired();
+                return;
+            }
+
             modal.showSecondaryShortcutList(key, response.shortcuts, response.byBlank);
             cleanUp();
         });
@@ -192,7 +212,7 @@ function cleanUp() {
     listTimeoutId = null;
 }
 
-function resolveEventListener(authenticated) {
+function resolveAuthentication(authenticated) {
     if (authenticated) {
         document.addEventListener('keyup', monitorKeyUp, false);
         document.addEventListener('keydown', monitorKeyDown, false);
@@ -205,7 +225,7 @@ function resolveEventListener(authenticated) {
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     switch (true) {
         case message.authenticated: {
-            resolveEventListener(true);
+            resolveAuthentication(true);
             break;
         }
         case message.bindSuccess: {

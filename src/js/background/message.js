@@ -2,7 +2,14 @@ import client from './client.js';
 import common from '../common.js';
 import pref from '../prefs.js';
 
+const subscription = {
+    status: null,
+    endAt: null,
+};
+
 window.authenticated = false;
+window.subscriptionStatus = subscription.status;
+window.subscriptionEndAt = subscription.endAt;
 
 syncUserInfo();
 
@@ -10,6 +17,8 @@ function syncUserInfo() {
     client.getUserInfo().then(response => {
         if (response) {
             window.authenticated = true;
+            subscription.status = response.subscription_status;
+            subscription.endAt = response.subscription_end_at;
 
             window.syncAllShortcuts();
             pref.sync();
@@ -22,12 +31,28 @@ function syncUserInfo() {
     });
 }
 
+/**
+ * Check the subscription end datetime whether expired.
+ * @returns {boolean} true expired, otherwise false
+ */
+function checkSubscriptionExpired() {
+    let now = new Date().getTime() / 1000;
+    return subscription.endAt <= now;
+}
+
 function onMessageReceiver(message, sender, sendResponse) {
+    if (message.resolve) {
+        sendResponse(window.authenticated);
+        return true;
+    }
+
+    if (checkSubscriptionExpired()) {
+        // The subscription was expired.
+        sendResponse({expired: true, status: subscription.status});
+        return true;
+    }
+
     switch (true) {
-        case message.resolve: {
-            sendResponse(window.authenticated);
-            break;
-        }
         case message.query: {
             sendResponse({
                 byBlank: {
