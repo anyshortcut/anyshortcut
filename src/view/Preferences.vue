@@ -66,6 +66,16 @@
             </div>
         </a>
 
+        <div class="preference-divider"></div>
+
+        <a href="https://chrome.google.com/webstore/detail/anyshortcut/ginilcdjefkbpeelgekodpmmabppcfao/reviews"
+           target="_blank"
+           class="preference-item-link">
+            <div class="preference-item flex-horizontal">
+                Rate us!
+            </div>
+        </a>
+
         <popover :ref-id="'tooltip-quick-secondary-shortcut'">
             <div style="font-size: 12px;">
                 Use SHIFT+ALT+PrimaryKey➯SecondaryKey open secondary shortcut in any page

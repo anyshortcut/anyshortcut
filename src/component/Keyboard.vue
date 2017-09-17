@@ -1,5 +1,5 @@
 <template>
-    <div class="keyboard" id="keyboard">
+    <div class="keyboard">
         <div class="keyboard-row">
             <div class="key weak" v-visible="weakVisibility"></div>
             <div v-for="key in '1234567890'"
@@ -213,7 +213,7 @@
         },
         mounted: function() {
             // Query key elements exclude weak element, then add mouse event listener.
-            document.getElementById('keyboard').querySelectorAll('.key:not(.weak)').forEach(element => {
+            this.$el.querySelectorAll('.key:not(.weak)').forEach(element => {
                 element.addEventListener('mouseover', () => {
                     this.$emit('key-hover-over', element);
                 });

@@ -44,6 +44,7 @@
     "webpack": "^2.4.1"
   },
   "scripts": {
+    "build_dev": "NODE_ENV=development node build/build.js",
     "build_stage": "NODE_ENV=stage node build/build.js",
     "build_production": "NODE_ENV=production node build/build.js"
   },
