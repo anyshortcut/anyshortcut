@@ -76,6 +76,23 @@
             </div>
         </a>
 
+        <div class="preference-divider"></div>
+        <div class="preference-item flex-horizontal">
+            Follow us:
+            <div>
+            <span class="social-icon">
+                <a href="https://twitter.com/anyshortcut" target="_blank" title="@anyshortcut">
+                        <img src="../img/twitter.svg" alt="">
+                </a>
+            </span>
+                <span class="social-icon">
+                <a href="https://telegram.me/anyshortcut" target="_blank" title="https://t.me/anyshortcut">
+                    <img src="../img/telegram.svg" alt="">
+                </a>
+            </span>
+            </div>
+        </div>
+
         <popover :ref-id="'tooltip-quick-secondary-shortcut'">
             <div style="font-size: 12px;">
                 Use SHIFT+ALT+PrimaryKey➯SecondaryKey open secondary shortcut in any page
@@ -111,6 +128,10 @@
 
         &:hover {
             background: #f8f8f8;
+        }
+
+        .social-icon {
+            margin: 0 5px;
         }
     }
 
