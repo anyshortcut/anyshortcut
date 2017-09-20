@@ -7,7 +7,9 @@
                  alt="favicon"/>
             {{ shortcutDomain }}
         </div>
-        <p class="primary-subtitle">{{shortcut.comment || shortcut.title}}</p>
+        <a class="primary-subtitle" :href="shortcut.url" target="_blank">
+            {{ shortcut.comment || shortcut.title }}
+        </a>
         <div class="shortcut-delete-button"
              @click="$bus.emit('unbind-shortcut',shortcut)">
             Delete
