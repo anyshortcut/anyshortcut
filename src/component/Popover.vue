@@ -1,6 +1,5 @@
 <template>
-    <div ref="popper"
-         class="popper"
+    <div class="popper"
          v-show="showing"
          @mouseover="show"
          @mouseleave="hidden">
@@ -69,7 +68,7 @@
             render: function(target) {
                 this.show();
 
-                new Popper(target, this.$refs.popper, {
+                new Popper(target, this.$el, {
                     placement: "top"
                 });
             },
