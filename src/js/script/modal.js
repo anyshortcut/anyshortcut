@@ -116,19 +116,16 @@ export default {
             if (helper.isValidKeyCodeWithoutModifiers(e)) {
                 let keyCode = e.keyCode;
                 let shortcut = null;
-                let openByBlank = null;
                 if (keyCode === 49) {
                     shortcut = primaryShortcut;
-                    openByBlank = byBlank.primary;
                 } else if (keyCode === 50) {
                     shortcut = secondaryShortcut;
-                    openByBlank = byBlank.secondary;
                 }
 
                 if (shortcut) {
                     removeElementDelay(modal, 50);
                     modal.removeEventListener('keyup', chooserEventListener);
-                    helper.openShortcut(shortcut, openByBlank);
+                    helper.openShortcut(shortcut, byBlank);
                 }
             }
         };

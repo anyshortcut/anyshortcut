@@ -80,9 +80,9 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
             // show a chooser let user choose one.
             modal.showQueryShortcutChooser(primaryShortcut, secondaryShortcut, response.byBlank);
         } else if (primaryShortcut) {
-            helper.openShortcut(primaryShortcut, response.byBlank.primary);
+            helper.openShortcut(primaryShortcut, response.byBlank);
         } else if (secondaryShortcut) {
-            helper.openShortcut(secondaryShortcut, response.byBlank.secondary);
+            helper.openShortcut(secondaryShortcut, response.byBlank);
         } else {
             // Neither shortcut bound.
             modal.showQueryShortcutFailed(firstKeyCodeChar, secondKeyCodeChar);

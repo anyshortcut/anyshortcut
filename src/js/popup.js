@@ -47,7 +47,9 @@ let app = new Vue({
             this.loading = true;
             bindFunction(keyChar, comment, (result, shortcut) => {
                 this.onPostBind(result);
-                this.$background.notifyActiveTabShortcutBindSuccess(shortcut);
+                if (result) {
+                    this.$background.notifyActiveTabShortcutBindSuccess(shortcut);
+                }
             });
         },
         unbindShortcut: function(shortcut) {
