@@ -39,10 +39,4 @@ export default {
     getSecondaryShortcuts() {
         return request.get('/shortcuts?type=secondary');
     },
-    getPreferences() {
-        return request.get('/user/preference');
-    },
-    updatePreference(preference) {
-        return request.put('/user/preference', preference);
-    },
 };

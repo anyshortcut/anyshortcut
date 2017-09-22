@@ -6,42 +6,14 @@
         </header>
 
         <div class="preference-item flex-vertical">
-            Open primary shortcut:
+            How to open shortcut:
             <div>
-                <input type="radio" id="p-blank" v-model='preference.primary_blank' :value="true">
-                <label for="p-blank" class="preference-subtitle">in new tab</label>
+                <input type="radio" id="blank" v-model='openByBlank' :value="true">
+                <label for="blank" class="preference-subtitle">in new tab</label>
             </div>
             <div>
-                <input type="radio" id="p-self" v-model="preference.primary_blank" :value="false">
-                <label for="p-self" class="preference-subtitle">in same tab</label>
-            </div>
-        </div>
-        <div class="preference-divider"></div>
-        <div class="preference-item flex-vertical">
-            Open secondary shortcut:
-            <div>
-                <input type="radio" id="s-blank" v-model="preference.secondary_blank" :value="true">
-                <label for="s-blank" class="preference-subtitle">in new tab</label>
-            </div>
-            <div>
-                <input type="radio" id="s-self" v-model="preference.secondary_blank" :value="false">
-                <label for="s-self" class="preference-subtitle">in same tab</label>
-            </div>
-        </div>
-
-        <div class="preference-divider"></div>
-
-        <div class="preference-item flex-vertical">
-            <span>Quick open secondary shortcut:
-                <img id="tooltip-quick-secondary-shortcut" class="info-img" src="../img/info-grey.svg" alt="info">
-            </span>
-            <div>
-                <input type="radio" id="qs-blank" v-model="preference.quick_secondary_blank" :value="true">
-                <label for="qs-blank" class="preference-subtitle">in new tab</label>
-            </div>
-            <div>
-                <input type="radio" id="qs-self" v-model="preference.quick_secondary_blank" :value="false">
-                <label for="qs-self" class="preference-subtitle">in same tab</label>
+                <input type="radio" id="self" v-model="openByBlank" :value="false">
+                <label for="self" class="preference-subtitle">in same tab</label>
             </div>
         </div>
 
@@ -54,7 +26,7 @@
                     </span>
             </label>
             <input id="enable-compound-shortcut" type="checkbox"
-                   v-model='preference.compound_shortcut_enable'>
+                   v-model='compoundEnable'>
         </div>
 
         <div class="preference-divider"></div>
@@ -92,12 +64,6 @@
             </span>
             </div>
         </div>
-
-        <popover :ref-id="'tooltip-quick-secondary-shortcut'">
-            <div style="font-size: 12px;">
-                Use ALT+PrimaryKey➯SecondaryKey open secondary shortcut in any page
-            </div>
-        </popover>
 
         <popover :ref-id="'tooltip-compound-shortcut'">
             <img src="../img/compound-tips.gif"/>
@@ -170,17 +136,17 @@
         name: 'preference-view',
         data() {
             return {
-                preference: prefs.localPreference()
+                openByBlank: prefs.isShortcutOpenByBlank(),
+                compoundEnable: prefs.isCompoundShortcutEnable(),
             }
         },
         watch: {
-            preference: {
-                // use deep property to watch nested property changed.
-                deep: true,
-                handler: function(newValue) {
-                    prefs.update(newValue);
-                }
-            }
+            openByBlank: function(newValue) {
+                prefs.setShortcutOpenByBlank(newValue);
+            },
+            compoundEnable: function(newValue) {
+                prefs.setCompoundShortcutEnable(newValue);
+            },
         },
         components: {
             Popover,

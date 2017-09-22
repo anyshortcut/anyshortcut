@@ -21,7 +21,6 @@ function syncUserInfo() {
             subscription.endAt = response.subscription_end_at;
 
             window.syncAllShortcuts();
-            pref.sync();
 
             common.iterateAllWindowTabs(tabId => {
                 chrome.tabs.sendMessage(tabId, {authenticated: true});
@@ -55,10 +54,7 @@ function onMessageReceiver(message, sender, sendResponse) {
     switch (true) {
         case message.query: {
             sendResponse({
-                byBlank: {
-                    primary: pref.isQuickSecondaryBlank(),
-                    secondary: pref.isQuickSecondaryBlank(),
-                },
+                byBlank: pref.isShortcutOpenByBlank(),
                 primaryShortcut: window.getPrimaryShortcut(message.firstKey + message.secondKey),
                 secondaryShortcut: window.getSecondaryShortcutQuickly(message.firstKey, message.secondKey),
             });
@@ -66,21 +62,21 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
         case message.request: {
             sendResponse({
-                byBlank: pref.isPrimaryBlank(),
+                byBlank: pref.isShortcutOpenByBlank(),
                 shortcut: window.getPrimaryShortcut(message.key)
             });
             break;
         }
         case message.secondaryRequest: {
             sendResponse({
-                byBlank: pref.isSecondaryBlank(),
+                byBlank: pref.isShortcutOpenByBlank(),
                 shortcut: window.getSecondaryShortcut(message.hostname, message.key)
             });
             break;
         }
         case message.listSecondary: {
             sendResponse({
-                byBlank: pref.isQuickSecondaryBlank(),
+                byBlank: pref.isShortcutOpenByBlank(),
                 shortcuts: window.getSecondaryShortcutsByPrimaryKey(message.key)
             });
             break
