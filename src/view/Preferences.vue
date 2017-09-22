@@ -95,7 +95,7 @@
 
         <popover :ref-id="'tooltip-quick-secondary-shortcut'">
             <div style="font-size: 12px;">
-                Use SHIFT+ALT+PrimaryKey➯SecondaryKey open secondary shortcut in any page
+                Use ALT+PrimaryKey➯SecondaryKey open secondary shortcut in any page
             </div>
         </popover>
 

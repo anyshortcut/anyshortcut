@@ -92,7 +92,7 @@ export default {
     showPrimaryShortcutUnbound(pressedKey) {
         openModal(compile(require('%/shortcut-not-found.html'), {
             shortcutType: "primary",
-            key: "ALT + SHIFT + " + pressedKey
+            key: "ALT + " + pressedKey
         }));
     },
     showSecondaryShortcutUnbound(pressedKey) {

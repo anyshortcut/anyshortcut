@@ -52,16 +52,16 @@ export default {
         return e && this.isValidKeyCode(e.keyCode) && !e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey;
     },
     isValidModifierKey(e) {
-        return this.isValidFullModifier(e) || this.isValidOptionModifier(e);
+        return this.isValidAltModifier(e) || this.isValidAltShiftModifier(e);
     },
     /*
      * Check the event key modifier is full valid or not.
      */
-    isValidFullModifier(e) {
-        return e && e.shiftKey && e.altKey && !e.ctrlKey && !e.metaKey;
-    },
-    isValidOptionModifier(e) {
+    isValidAltModifier(e) {
         return e && e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey;
+    },
+    isValidAltShiftModifier(e) {
+        return e && e.shiftKey && e.altKey && !e.ctrlKey && !e.metaKey;
     },
     openShortcut(shortcut, byBlank) {
         let url = shortcut.url;

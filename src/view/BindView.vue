@@ -13,7 +13,7 @@
                 </span>
                 already bound primary shortcut
                 <span class="shortcut" :title="domainPrimaryShortcut.title">
-                    SHIFT + ALT + {{domainPrimaryShortcut.key}}
+                    ALT + {{domainPrimaryShortcut.key}}
                 </span>
             </div>
             <div class="primary-title">Specify the secondary shortcut</div>

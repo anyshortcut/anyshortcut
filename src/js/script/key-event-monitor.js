@@ -127,9 +127,9 @@ function triggerShortcut() {
     }
 
     if (firstKey.pressedAt && firstKey.releasedAt) {
-        if (helper.isValidOptionModifier(firstKey)) {
+        if (helper.isValidAltShiftModifier(firstKey)) {
             triggerSecondaryShortcut(firstKey.keyCodeChar);
-        } else if (helper.isValidFullModifier(firstKey)) {
+        } else if (helper.isValidAltModifier(firstKey)) {
             if (secondKey.pressedAt && secondKey.releasedAt) {
                 triggerQueryShortcut(firstKey.keyCodeChar, secondKey.keyCodeChar);
             } else {
@@ -155,7 +155,7 @@ function monitorKeyUp(e) {
             secondKey.releasedAt = Date.now();
         }
 
-        triggerShortcut()
+        triggerShortcut();
     } else {
         // Do nothing...
     }
@@ -193,13 +193,13 @@ function monitorKeyDown(e) {
     if (!firstKey.pressedAt) {
         firstKey = pressedKey;
 
-        if (helper.isValidFullModifier(e)) {
+        if (helper.isValidAltModifier(e)) {
             triggerSecondaryShortcutList(firstKey.keyCodeChar);
         }
     } else if (!secondKey.pressedAt) {
         secondKey = pressedKey;
 
-        if (helper.isValidFullModifier(e)) {
+        if (helper.isValidAltModifier(e)) {
             triggerSecondaryShortcutList(firstKey.keyCodeChar + secondKey.keyCodeChar);
         }
     }

@@ -58,7 +58,7 @@ let triggerTimeoutId = null;
 
 
 function monitorKeyUp(e) {
-    if (!helper.isValidFullModifier(e)) {
+    if (!helper.isValidAltModifier(e)) {
         // Ignore invalid modifier key
         return;
     }
@@ -75,7 +75,7 @@ function monitorKeyUp(e) {
 }
 
 function monitorKeyDown(e) {
-    if (!helper.isValidFullModifier(e)) {
+    if (!helper.isValidAltModifier(e)) {
         // Ignore invalid full modifier key
         return;
     }
@@ -117,7 +117,7 @@ function triggerShortcut() {
     }
 
     if (firstKey.pressedAt && firstKey.releasedAt) {
-        if (helper.isValidFullModifier(firstKey)) {
+        if (helper.isValidAltModifier(firstKey)) {
             if (secondKey.pressedAt && secondKey.releasedAt) {
                 if (app.currentStep === 3 && firstKey.keyCodeChar === 'G' && secondKey.keyCodeChar === 'I') {
                     app.openShortcut('https://inbox.google.com');

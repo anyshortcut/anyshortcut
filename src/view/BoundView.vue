@@ -15,14 +15,12 @@
                 <div class="shortcut-info-item">
                     <label>Shortcut: </label>
                     <span v-if="shortcut.primary" class="shortcut">
-                        ALT + SHIFT + {{ shortcut.key }}
+                        ALT + {{ shortcut.key }}
                     </span>
                     <template v-else>
                         <span class="shortcut" v-if="domainPrimaryShortcut.key.length===1">
-                            ALT + SHIFT + {{ domainPrimaryShortcut.key }} + {{ shortcut.key }}
+                            ALT + {{ domainPrimaryShortcut.key }} + {{ shortcut.key }}
                         </span>
-                        <span v-if="domainPrimaryShortcut.key.length===1"> / </span>
-                        <span class="shortcut">ALT + {{ shortcut.key }}</span>
                     </template>
                 </div>
                 <div class="shortcut-info-item">
