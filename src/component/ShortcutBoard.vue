@@ -1,31 +1,30 @@
 <template>
-    <div class="shortcut-bound" v-if="shortcut">
-        <div class="shortcut-domain">
-            <img class="shortcut-favicon"
-                 :src="shortcut.favicon"
-                 @loadstart="$event.target.src=null"
-                 alt="favicon"/>
-            {{ shortcutDomain }}
+    <div>
+        <label for="comment" class="shortcut" v-if="primary">ALT + {{ keyChar }}</label>
+        <label for="comment" class="shortcut" v-else>ALT + {{ parentKeyChar }} + {{ keyChar }}</label>
+
+        <div class="shortcut-bound" v-if="shortcut">
+            <a class="shortcut-comment-link" :href="shortcut.url" target="_blank" style="margin: 4px;">
+                <span><img class="shortcut-favicon" :src="shortcut.favicon"/></span>
+                {{ shortcut.comment }}
+            </a>
+            <div class="shortcut-delete-button"
+                 @click="$bus.emit('unbind-shortcut',shortcut)">
+                Delete
+            </div>
         </div>
-        <a class="primary-subtitle" :href="shortcut.url" target="_blank">
-            {{ shortcut.comment || shortcut.title }}
-        </a>
-        <div class="shortcut-delete-button"
-             @click="$bus.emit('unbind-shortcut',shortcut)">
-            Delete
-        </div>
-    </div>
-    <div class="shortcut-bind" v-else>
-        <label for="comment">Input comment for the shortcut</label>
-        <input id="comment"
-               class="shortcut-comment-input"
-               v-model="comment"
-               placeholder="Comment for this url"
-               maxlength="30"
-               autofocus @focus.native="$event.target.select()" required/>
-        <div class="shortcut-bind-button"
-             @click="$bus.emit('bind-shortcut',primary,keyChar,comment)">
-            Bind
+
+        <div class="shortcut-bind" v-else>
+            <input id="comment"
+                   class="shortcut-comment-input"
+                   v-model="comment"
+                   placeholder="Comment for this url"
+                   maxlength="30"
+                   autofocus @focus.native="$event.target.select()" required/>
+            <div class="shortcut-bind-button"
+                 @click="$bus.emit('bind-shortcut',primary,keyChar,comment)">
+                Bind
+            </div>
         </div>
     </div>
 </template>
@@ -39,13 +38,20 @@
         justify-content: center;
     }
 
+    .shortcut-comment-link {
+        color: @content-font-color;
+
+        &:visited, &:active {
+            color: @content-font-color;
+        }
+    }
+
     .shortcut-comment-input {
         width: 220px;
         height: 25px;
-        margin: 3px;
+        margin: 5px;
         padding: 3px;
         font-size: 14px;
-        color: @secondary-color;
         border: solid #cecece 1px;
 
         &:focus {
@@ -76,14 +82,18 @@
                     return null;
                 }
             },
-            primary: {
-                type: Boolean,
+            parentKeyChar: {
+                type: String,
                 default: function() {
-                    return true;
+                    return null;
                 }
             },
         },
         computed: {
+            // Whether is the primary shortcut
+            primary: function() {
+                return this.parentKeyChar === null;
+            },
             shortcutDomain: function() {
                 if (this.shortcut.primary) {
                     return this.shortcut.domain;

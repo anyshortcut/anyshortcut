@@ -21,7 +21,6 @@
                  style="width: 50%"
                  @on-show-change="onPopoverShowChange">
             <shortcut-board :shortcut="hoveredShortcut"
-                            :primary="true"
                             :key-char="keyChar">
             </shortcut-board>
         </popover>

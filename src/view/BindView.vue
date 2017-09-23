@@ -8,7 +8,7 @@
                 <span class="shortcut-domain">
                     <img class="shortcut-favicon"
                          :src="domainPrimaryShortcut.favicon"
-                         alt="favicon"/>
+                         alt=""/>
                     {{domainPrimaryShortcut.domain}}
                 </span>
                 already bound primary shortcut
@@ -29,7 +29,7 @@
                  style="width: 50%"
                  @on-show-change="onPopoverShowChange">
             <shortcut-board :shortcut="hoveredShortcut"
-                            :primary="primary"
+                            :parent-key-char="primary?null:domainPrimaryShortcut.key"
                             :key-char="keyChar">
             </shortcut-board>
         </popover>
