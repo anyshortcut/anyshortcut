@@ -1,6 +1,18 @@
 import helper from './helper.js';
 import modal from './modal.js';
 
+
+/**
+ * A function return whether current active element is a input element.
+ * Mainly usage to prevent trigger shortcut when input focus.
+ *
+ * @see triggerShortcut()
+ * @see triggerSecondaryShortcutList()
+ */
+function hasInputFocused() {
+    return document.activeElement.tagName === 'INPUT';
+}
+
 chrome.runtime.sendMessage({resolve: true}, authenticated => {
     resolveAuthentication(authenticated);
 });
@@ -92,6 +104,11 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
 }
 
 function triggerSecondaryShortcutList(key) {
+    if (hasInputFocused()) {
+        cleanUp();
+        return;
+    }
+
     if (listTimeoutId) {
         window.clearTimeout(listTimeoutId);
     }
@@ -115,6 +132,11 @@ function triggerSecondaryShortcutList(key) {
  * Trigger shortcut.
  */
 function triggerShortcut() {
+    if (hasInputFocused()) {
+        cleanUp();
+        return;
+    }
+
     if (listTimeoutId) {
         window.clearTimeout(listTimeoutId);
         listTimeoutId = null;
