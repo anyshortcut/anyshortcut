@@ -21,7 +21,6 @@
 
         <keyboard :bound-keys="boundKeys"
                   :highlight-key="highlightKey"
-                  :primary="primary"
                   @key-hover-over="onHoverOver"
                   @key-hover-leave="onHoverLeave">
         </keyboard>

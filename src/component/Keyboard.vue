@@ -28,16 +28,14 @@
         </div>
         <div class="keyboard-row">
             <div class="key weak double-size lowercase"
-                 v-visible="weakVisibility"
-                 :class="{highlight:primary,shift:primary}">
+                 v-visible="weakVisibility">
             </div>
             <div v-for="key in 'ZXCVBNM'"
                  :class="keyClass(key)"
                  class="key">{{ key }}
             </div>
             <div class="key weak double-size lowercase invisible"
-                 v-visible="weakVisibility"
-                 :class="{highlight:primary,shift:primary}">
+                 v-visible="weakVisibility">
             </div>
         </div>
         <div class="keyboard-row">
@@ -144,10 +142,6 @@
             cursor: text;
         }
 
-        &.shift::after {
-            content: 'shift';
-        }
-
         &.highlight {
             background: #E9EDFB;
             color: #4F6EC8;
@@ -183,12 +177,6 @@
                 type: String,
                 default: function() {
                     return null;
-                }
-            },
-            primary: {
-                type: Boolean,
-                default: function() {
-                    return true;
                 }
             },
         },
