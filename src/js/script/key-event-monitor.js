@@ -1,7 +1,6 @@
 import helper from './helper.js';
 import modal from './modal.js';
 
-
 /**
  * A function return whether current active element is a input element.
  * Mainly usage to prevent trigger shortcut when input focus.
@@ -12,10 +11,6 @@ import modal from './modal.js';
 function hasInputFocused() {
     return document.activeElement.tagName === 'INPUT';
 }
-
-chrome.runtime.sendMessage({resolve: true}, authenticated => {
-    resolveAuthentication(authenticated);
-});
 
 const EMPTY_KEY = {
     keyCode: 0,
@@ -163,61 +158,6 @@ function triggerShortcut() {
     }
 }
 
-function monitorKeyUp(e) {
-    e = helper.ensureWindowEvent(e);
-    if (!helper.isValidKeyEvent(e)) {
-        // Ignore invalid key event
-        return;
-    }
-
-    if (!firstKey.releasedAt) {
-        firstKey.releasedAt = Date.now();
-    } else if (!secondKey.releasedAt) {
-        secondKey.releasedAt = Date.now();
-    }
-
-    triggerShortcut();
-}
-
-function monitorKeyDown(e) {
-    e = helper.ensureWindowEvent(e);
-    if (!helper.isValidKeyEvent(e)) {
-        // Ignore invalid key event
-        return;
-    }
-
-    // Prevent repeat trigger down event.
-    if (e.repeat) {
-        return;
-    }
-
-    let keyCode = e.keyCode;
-    let pressedKey = {
-        keyCode: keyCode,
-        keyCodeChar: String.fromCharCode(keyCode),
-        shiftKey: e.shiftKey,
-        altKey: e.altKey,
-        ctrlKey: e.ctrlKey,
-        metaKey: e.metaKey,
-        pressedAt: Date.now(),
-        releasedAt: null,
-    };
-
-    if (!firstKey.pressedAt) {
-        firstKey = pressedKey;
-
-        if (helper.withAltModifier(e)) {
-            triggerSecondaryShortcutList(firstKey.keyCodeChar);
-        }
-    } else if (!secondKey.pressedAt) {
-        secondKey = pressedKey;
-
-        if (helper.withAltModifier(e)) {
-            triggerSecondaryShortcutList(firstKey.keyCodeChar + secondKey.keyCodeChar);
-        }
-    }
-}
-
 function cleanUp() {
     firstKey = EMPTY_KEY;
     secondKey = EMPTY_KEY;
@@ -225,30 +165,58 @@ function cleanUp() {
     listTimeoutId = null;
 }
 
-function resolveAuthentication(authenticated) {
-    if (authenticated) {
-        document.addEventListener('keyup', monitorKeyUp, false);
-        document.addEventListener('keydown', monitorKeyDown, false);
-    } else {
-        document.removeEventListener('keyup', monitorKeyUp, false);
-        document.removeEventListener('keydown', monitorKeyDown, false);
+export default {
+    onKeyUp(event) {
+        event = helper.ensureWindowEvent(event);
+        if (!helper.isValidKeyEvent(event)) {
+            // Ignore invalid key event
+            return;
+        }
+
+        if (!firstKey.releasedAt) {
+            firstKey.releasedAt = Date.now();
+        } else if (!secondKey.releasedAt) {
+            secondKey.releasedAt = Date.now();
+        }
+
+        triggerShortcut();
+    },
+    onKeyDown(event) {
+        event = helper.ensureWindowEvent(event);
+        if (!helper.isValidKeyEvent(event)) {
+            // Ignore invalid key event
+            return;
+        }
+
+        // Prevent repeat trigger down event.
+        if (event.repeat) {
+            return;
+        }
+
+        let keyCode = event.keyCode;
+        let pressedKey = {
+            keyCode: keyCode,
+            keyCodeChar: String.fromCharCode(keyCode),
+            shiftKey: event.shiftKey,
+            altKey: event.altKey,
+            ctrlKey: event.ctrlKey,
+            metaKey: event.metaKey,
+            pressedAt: Date.now(),
+            releasedAt: null,
+        };
+
+        if (!firstKey.pressedAt) {
+            firstKey = pressedKey;
+
+            if (helper.withAltModifier(event)) {
+                triggerSecondaryShortcutList(firstKey.keyCodeChar);
+            }
+        } else if (!secondKey.pressedAt) {
+            secondKey = pressedKey;
+
+            if (helper.withAltModifier(event)) {
+                triggerSecondaryShortcutList(firstKey.keyCodeChar + secondKey.keyCodeChar);
+            }
+        }
     }
 }
-
-chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-    switch (true) {
-        case message.authenticated: {
-            resolveAuthentication(true);
-            break;
-        }
-        case message.bindSuccess: {
-            let shortcut = message.shortcut;
-            if (shortcut.primary) {
-                modal.showPrimaryShortcutBindSuccess(shortcut);
-            } else {
-                modal.showSecondaryShortcutBindSuccess(shortcut, message.primaryShortcut);
-            }
-            break;
-        }
-    }
-});

@@ -10,7 +10,7 @@ const extractLess = new ExtractTextPlugin({
 module.exports = {
     context: path.resolve('./src'),
     entry: {
-        content_script: './js/script/key-event-monitor.js',
+        content_script: './js/script/content-script.js',
         background: [
             './js/background/extension.js',
             './js/background/shortcut.js',
