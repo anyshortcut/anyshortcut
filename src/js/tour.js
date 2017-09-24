@@ -7,12 +7,13 @@ import helper from './script/helper.js';
 require('../less/tour.less');
 
 let authenticated = chrome.extension.getBackgroundPage().authenticated;
+let initStep = authenticated ? 2 : 1;
 
 const app = new Vue({
     el: "#app",
     data: {
-        currentStep: authenticated ? 2 : 1,
-        currentMaxStep: this.currentStep,
+        currentStep: initStep,
+        currentMaxStep: initStep,
     },
     watch: {
         currentStep: function(newValue) {
@@ -58,12 +59,7 @@ let triggerTimeoutId = null;
 
 
 function monitorKeyUp(e) {
-    if (!helper.isValidAltModifier(e)) {
-        // Ignore invalid modifier key
-        return;
-    }
-
-    if (helper.isValidKeyCode(e.keyCode)) {
+    if (helper.withAltModifier(e) && helper.isValidKeyCode(e.keyCode)) {
         if (!firstKey.releasedAt) {
             firstKey.releasedAt = Date.now();
         } else if (!secondKey.releasedAt) {
@@ -75,37 +71,29 @@ function monitorKeyUp(e) {
 }
 
 function monitorKeyDown(e) {
-    if (!helper.isValidAltModifier(e)) {
-        // Ignore invalid full modifier key
-        return;
-    }
+    if (helper.withAltModifier(e) && helper.isValidKeyCode(e.keyCode)) {
+        // Prevent repeat trigger down event.
+        if (e.repeat) {
+            return;
+        }
 
-    let keyCode = e.keyCode;
-    if (!helper.isValidKeyCode(keyCode)) {
-        // Ignore invalid key code.
-        return;
-    }
+        let keyCode = e.keyCode;
+        let pressedKey = {
+            keyCode: keyCode,
+            keyCodeChar: String.fromCharCode(keyCode),
+            shiftKey: e.shiftKey,
+            altKey: e.altKey,
+            ctrlKey: e.ctrlKey,
+            metaKey: e.metaKey,
+            pressedAt: Date.now(),
+            releasedAt: null,
+        };
 
-    // Prevent repeat trigger down event.
-    if (e.repeat) {
-        return;
-    }
-
-    let pressedKey = {
-        keyCode: keyCode,
-        keyCodeChar: String.fromCharCode(keyCode),
-        shiftKey: e.shiftKey,
-        altKey: e.altKey,
-        ctrlKey: e.ctrlKey,
-        metaKey: e.metaKey,
-        pressedAt: Date.now(),
-        releasedAt: null,
-    };
-
-    if (!firstKey.pressedAt) {
-        firstKey = pressedKey;
-    } else if (!secondKey.pressedAt) {
-        secondKey = pressedKey;
+        if (!firstKey.pressedAt) {
+            firstKey = pressedKey;
+        } else if (!secondKey.pressedAt) {
+            secondKey = pressedKey;
+        }
     }
 }
 
@@ -117,7 +105,7 @@ function triggerShortcut() {
     }
 
     if (firstKey.pressedAt && firstKey.releasedAt) {
-        if (helper.isValidAltModifier(firstKey)) {
+        if (helper.withAltModifier(firstKey)) {
             if (secondKey.pressedAt && secondKey.releasedAt) {
                 if (app.currentStep === 3 && firstKey.keyCodeChar === 'G' && secondKey.keyCodeChar === 'I') {
                     app.openShortcut('https://inbox.google.com');
