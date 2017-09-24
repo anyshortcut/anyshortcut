@@ -1,8 +1,14 @@
 import modal from './modal.js';
 import monitor from './key-event-monitor.js';
+import circle from './circle.js';
+
 
 chrome.runtime.sendMessage({resolve: true}, authenticated => {
     resolveAuthentication(authenticated);
+
+    document.addEventListener("DOMContentLoaded", () => {
+        circle.injectCircle();
+    });
 });
 
 function resolveAuthentication(authenticated) {
