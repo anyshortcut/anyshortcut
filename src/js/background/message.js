@@ -40,18 +40,17 @@ function checkSubscriptionExpired() {
 }
 
 function onMessageReceiver(message, sender, sendResponse) {
-    if (message.resolve) {
-        sendResponse(window.authenticated);
-        return true;
-    }
-
-    if (checkSubscriptionExpired()) {
-        // The subscription was expired.
-        sendResponse({expired: true, status: subscription.status});
-        return true;
-    }
-
     switch (true) {
+        case message.info: {
+            let showCircle = true;
+            sendResponse({
+                authenticated: window.authenticated,
+                expired: checkSubscriptionExpired(),
+                status: subscription.status,
+                showCircle: showCircle,
+            });
+            break;
+        }
         case message.query: {
             sendResponse({
                 byBlank: pref.isShortcutOpenByBlank(),
