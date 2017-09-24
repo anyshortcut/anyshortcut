@@ -121,33 +121,6 @@ export default {
         };
         modal.addEventListener('keyup', chooserEventListener);
     },
-    showSecondaryShortcutList(pressedKey, shortcuts, byBlank) {
-        let innerHtml;
-
-        if (Object.keys(shortcuts).length === 0) {
-            innerHtml = utils.compile(require('%/shortcut-list-empty.html'), {key: pressedKey});
-        } else {
-            innerHtml = utils.compile(require('%/shortcut-list.html'), {
-                key: pressedKey,
-                shortcuts: shortcuts
-            });
-        }
-
-        let modal = openModal(innerHtml);
-
-        let listEventListener = function(e) {
-            if (helper.isValidKeyCode(e) && helper.withoutAnyModifier(e)) {
-                let keyCodeChar = String.fromCharCode(e.keyCode);
-                if (shortcuts.hasOwnProperty(keyCodeChar)) {
-                    removeElementDelay(modal, 50);
-                    modal.removeEventListener('keyup', listEventListener);
-                    helper.openShortcut(shortcuts[keyCodeChar], byBlank);
-                }
-            }
-        };
-
-        modal.addEventListener('keyup', listEventListener);
-    },
     showSubscriptionExpired() {
         openModal(utils.compile(require('%/subscription-expired.html')));
     }

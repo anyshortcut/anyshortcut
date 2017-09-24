@@ -6,7 +6,6 @@ import modal from './modal.js';
  * Mainly usage to prevent trigger shortcut when input focus.
  *
  * @see triggerShortcut()
- * @see triggerSecondaryShortcutList()
  */
 function hasInputFocused() {
     return document.activeElement.tagName === 'INPUT';
@@ -26,8 +25,6 @@ const EMPTY_KEY = {
 let firstKey = EMPTY_KEY;
 let secondKey = EMPTY_KEY;
 let triggerTimeoutId = null;
-let listTimeoutId = null;
-
 
 function triggerPrimaryShortcut(keyCodeChar) {
     chrome.runtime.sendMessage({
@@ -98,31 +95,6 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
     cleanUp();
 }
 
-function triggerSecondaryShortcutList(key) {
-    if (hasInputFocused()) {
-        cleanUp();
-        return;
-    }
-
-    if (listTimeoutId) {
-        window.clearTimeout(listTimeoutId);
-    }
-
-    listTimeoutId = window.setTimeout(function() {
-        chrome.runtime.sendMessage({
-            listSecondary: true, key: key
-        }, response => {
-            if (response.expired) {
-                modal.showSubscriptionExpired();
-                return;
-            }
-
-            modal.showSecondaryShortcutList(key, response.shortcuts, response.byBlank);
-            cleanUp();
-        });
-    }, 800);
-}
-
 /**
  * Trigger shortcut.
  */
@@ -130,11 +102,6 @@ function triggerShortcut() {
     if (hasInputFocused()) {
         cleanUp();
         return;
-    }
-
-    if (listTimeoutId) {
-        window.clearTimeout(listTimeoutId);
-        listTimeoutId = null;
     }
 
     if (triggerTimeoutId) {
@@ -162,7 +129,6 @@ function cleanUp() {
     firstKey = EMPTY_KEY;
     secondKey = EMPTY_KEY;
     triggerTimeoutId = null;
-    listTimeoutId = null;
 }
 
 export default {
@@ -207,16 +173,8 @@ export default {
 
         if (!firstKey.pressedAt) {
             firstKey = pressedKey;
-
-            if (helper.withAltModifier(event)) {
-                triggerSecondaryShortcutList(firstKey.keyCodeChar);
-            }
         } else if (!secondKey.pressedAt) {
             secondKey = pressedKey;
-
-            if (helper.withAltModifier(event)) {
-                triggerSecondaryShortcutList(firstKey.keyCodeChar + secondKey.keyCodeChar);
-            }
         }
     }
 }
