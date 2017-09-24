@@ -149,9 +149,9 @@ function triggerShortcut() {
     }
 
     if (firstKey.pressedAt && firstKey.releasedAt) {
-        if (helper.isValidAltShiftModifier(firstKey)) {
+        if (helper.withoutAnyModifier(firstKey)) {
             triggerSecondaryShortcut(firstKey.keyCodeChar);
-        } else if (helper.isValidAltModifier(firstKey)) {
+        } else if (helper.withAltModifier(firstKey)) {
             if (secondKey.pressedAt && secondKey.releasedAt) {
                 triggerQueryShortcut(firstKey.keyCodeChar, secondKey.keyCodeChar);
             } else {
@@ -165,34 +165,24 @@ function triggerShortcut() {
 
 function monitorKeyUp(e) {
     e = helper.ensureWindowEvent(e);
-    if (!helper.isValidModifierKey(e)) {
-        // Ignore invalid modifier key
+    if (!helper.isValidKeyEvent(e)) {
+        // Ignore invalid key event
         return;
     }
 
-    if (helper.isValidKeyCode(e.keyCode)) {
-        if (!firstKey.releasedAt) {
-            firstKey.releasedAt = Date.now();
-        } else if (!secondKey.releasedAt) {
-            secondKey.releasedAt = Date.now();
-        }
-
-        triggerShortcut();
-    } else {
-        // Do nothing...
+    if (!firstKey.releasedAt) {
+        firstKey.releasedAt = Date.now();
+    } else if (!secondKey.releasedAt) {
+        secondKey.releasedAt = Date.now();
     }
+
+    triggerShortcut();
 }
 
 function monitorKeyDown(e) {
     e = helper.ensureWindowEvent(e);
-    if (!helper.isValidModifierKey(e)) {
-        // Ignore invalid modifier key
-        return;
-    }
-
-    let keyCode = e.keyCode;
-    if (!helper.isValidKeyCode(keyCode)) {
-        // Ignore invalid key code.
+    if (!helper.isValidKeyEvent(e)) {
+        // Ignore invalid key event
         return;
     }
 
@@ -201,6 +191,7 @@ function monitorKeyDown(e) {
         return;
     }
 
+    let keyCode = e.keyCode;
     let pressedKey = {
         keyCode: keyCode,
         keyCodeChar: String.fromCharCode(keyCode),
@@ -215,13 +206,13 @@ function monitorKeyDown(e) {
     if (!firstKey.pressedAt) {
         firstKey = pressedKey;
 
-        if (helper.isValidAltModifier(e)) {
+        if (helper.withAltModifier(e)) {
             triggerSecondaryShortcutList(firstKey.keyCodeChar);
         }
     } else if (!secondKey.pressedAt) {
         secondKey = pressedKey;
 
-        if (helper.isValidAltModifier(e)) {
+        if (helper.withAltModifier(e)) {
             triggerSecondaryShortcutList(firstKey.keyCodeChar + secondKey.keyCodeChar);
         }
     }

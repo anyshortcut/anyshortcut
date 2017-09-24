@@ -113,7 +113,7 @@ export default {
         }));
 
         let chooserEventListener = function(e) {
-            if (helper.isValidKeyCodeWithoutModifiers(e)) {
+            if (helper.isValidKeyCode(e) && helper.withoutAnyModifier(e)) {
                 let keyCode = e.keyCode;
                 let shortcut = null;
                 if (keyCode === 49) {
@@ -146,8 +146,7 @@ export default {
         let modal = openModal(innerHtml);
 
         let listEventListener = function(e) {
-            if (helper.isValidKeyCodeWithoutModifiers(e)) {
-
+            if (helper.isValidKeyCode(e) && helper.withoutAnyModifier(e)) {
                 let keyCodeChar = String.fromCharCode(e.keyCode);
                 if (shortcuts.hasOwnProperty(keyCodeChar)) {
                     removeElementDelay(modal, 50);

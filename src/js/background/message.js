@@ -69,7 +69,7 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
         case message.secondaryRequest: {
             sendResponse({
-                byBlank: pref.isShortcutOpenByBlank(),
+                byBlank: false, // By self is default for secondary request in domain page
                 shortcut: window.getSecondaryShortcut(message.hostname, message.key)
             });
             break;

@@ -42,26 +42,26 @@ export default {
     ensureWindowEvent(e) {
         return e ? e : window.event;
     },
+    isValidKeyEvent(e) {
+        if (this.isValidKeyCode(e.keyCode)) {
+            return this.withAltModifier(e) || this.withoutAnyModifier(e);
+        }
+        return false;
+    },
     /**
      * Check the keyCode whether is valid.
      */
     isValidKeyCode(keyCode) {
         return dictionaries[keyCode];
     },
-    isValidKeyCodeWithoutModifiers(e) {
-        return e && this.isValidKeyCode(e.keyCode) && !e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey;
-    },
-    isValidModifierKey(e) {
-        return this.isValidAltModifier(e) || this.isValidAltShiftModifier(e);
+    withoutAnyModifier(e) {
+        return e && !e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey;
     },
     /*
      * Check the event key modifier is full valid or not.
      */
-    isValidAltModifier(e) {
+    withAltModifier(e) {
         return e && e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey;
-    },
-    isValidAltShiftModifier(e) {
-        return e && e.shiftKey && e.altKey && !e.ctrlKey && !e.metaKey;
     },
     openShortcut(shortcut, byBlank) {
         let url = shortcut.url;
