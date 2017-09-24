@@ -6,13 +6,19 @@ export default {
     isShortcutOpenByBlank() {
         return nullOrDefault(JSON.parse(localStorage.getItem('openByBlank')), true);
     },
-    isCompoundShortcutEnable() {
-        return nullOrDefault(JSON.parse(localStorage.getItem('compoundEnable')), false);
-    },
     setShortcutOpenByBlank(value) {
         return localStorage.setItem('openByBlank', value);
+    },
+    isCompoundShortcutEnable() {
+        return nullOrDefault(JSON.parse(localStorage.getItem('compoundEnable')), false);
     },
     setCompoundShortcutEnable(value) {
         return localStorage.setItem('compoundEnable', value);
     },
+    getShowCircleConfig() {
+        return nullOrDefault(localStorage.getItem('showCircle'), 'always');
+    },
+    setShowCircleConfig(value) {
+        return localStorage.setItem('showCircle', value);
+    }
 }

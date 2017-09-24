@@ -19,6 +19,19 @@
 
         <div class="preference-divider"></div>
 
+        <div class="preference-item flex-vertical">
+            Show shortcut circle?
+            <div>
+                <select v-model="showCircle">
+                    <option disabled value="">Please select one</option>
+                    <option>always</option>
+                    <option>never</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="preference-divider"></div>
+
         <div class="preference-item flex-horizontal">
             <label for="enable-compound-shortcut"> Enable compound shortcut
                 <span>
@@ -138,6 +151,7 @@
             return {
                 openByBlank: prefs.isShortcutOpenByBlank(),
                 compoundEnable: prefs.isCompoundShortcutEnable(),
+                showCircle: prefs.getShowCircleConfig(),
             }
         },
         watch: {
@@ -147,6 +161,9 @@
             compoundEnable: function(newValue) {
                 prefs.setCompoundShortcutEnable(newValue);
             },
+            showCircle: function(newValue) {
+                prefs.setShowCircleConfig(newValue);
+            }
         },
         components: {
             Popover,

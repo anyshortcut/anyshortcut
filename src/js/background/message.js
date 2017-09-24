@@ -42,7 +42,7 @@ function checkSubscriptionExpired() {
 function onMessageReceiver(message, sender, sendResponse) {
     switch (true) {
         case message.info: {
-            let showCircle = true;
+            let showCircle = pref.getShowCircleConfig() === 'always';
             sendResponse({
                 authenticated: window.authenticated,
                 expired: checkSubscriptionExpired(),
