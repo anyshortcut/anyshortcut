@@ -1,6 +1,6 @@
 require("../../less/content-script.less");
-import _ from "lodash";
 import helper from "./helper.js";
+import utils from "./utils.js";
 
 let timeoutId = undefined;
 
@@ -14,17 +14,11 @@ function removeElementDelay(element, delay) {
     }, delay || 3000);
 }
 
-function createDiv(className) {
-    let div = document.createElement('div');
-    div.className = className;
-    return div;
-}
-
 /**
  * @param content the message to show in modal, text or html
  */
 function openModal(content) {
-    let div = createDiv('anyshortcut-modal-content');
+    let div = utils.createDiv('anyshortcut-modal-content');
     div.innerHTML = content;
 
     let modal = buildModal(div);
@@ -41,10 +35,10 @@ function openModal(content) {
 }
 
 function buildModal(content) {
-    let modal = createDiv('anyshortcut-modal');
+    let modal = utils.createDiv('anyshortcut-modal');
     modal.tabIndex = 0;
 
-    let container = createDiv('anyshortcut-modal-container');
+    let container = utils.createDiv('anyshortcut-modal-container');
 
     removeElementDelay(modal);
     container.onmouseover = function(e) {
@@ -62,53 +56,49 @@ function buildModal(content) {
         }
     });
 
-    let header = createDiv('anyshortcut-modal-header');
-    header.innerHTML = compile(require('%/modal-header.html'));
+    let header = utils.createDiv('anyshortcut-modal-header');
+    header.innerHTML = utils.compile(require('%/modal-header.html'));
     container.appendChild(header);
     container.appendChild(content);
     modal.appendChild(container);
     return modal;
 }
 
-function compile(template, data) {
-    return _.template(template)(data);
-}
-
 export default {
     showPrimaryShortcutBindSuccess(shortcut) {
-        openModal(compile(require('%/primary-bind-success.html'), {
+        openModal(utils.compile(require('%/primary-bind-success.html'), {
             key: shortcut.key,
         }));
     },
     showSecondaryShortcutBindSuccess(shortcut, primaryShortcut) {
         // Only show secondary shortcut bind modal for one key primary shortcut.
         if (primaryShortcut.key.length === 1) {
-            openModal(compile(require('%/secondary-bind-success.html'), {
+            openModal(utils.compile(require('%/secondary-bind-success.html'), {
                 key: shortcut.key,
                 primaryShortcut: primaryShortcut,
             }));
         }
     },
     showPrimaryShortcutUnbound(pressedKey) {
-        openModal(compile(require('%/shortcut-not-found.html'), {
+        openModal(utils.compile(require('%/shortcut-not-found.html'), {
             shortcutType: "primary",
             key: "ALT + " + pressedKey
         }));
     },
     showSecondaryShortcutUnbound(pressedKey) {
-        openModal(compile(require('%/shortcut-not-found.html'), {
+        openModal(utils.compile(require('%/shortcut-not-found.html'), {
             shortcutType: "secondary",
             key: pressedKey,
         }));
     },
     showQueryShortcutFailed(firstKey, secondKey) {
-        openModal(compile(require('%/query-shortcut-failed.html'), {
+        openModal(utils.compile(require('%/query-shortcut-failed.html'), {
             firstKey: firstKey,
             secondKey: secondKey,
         }));
     },
     showQueryShortcutChooser(primaryShortcut, secondaryShortcut, byBlank) {
-        let modal = openModal(compile(require('%/query-shortcut-chooser.html'), {
+        let modal = openModal(utils.compile(require('%/query-shortcut-chooser.html'), {
             shortcuts: [primaryShortcut, secondaryShortcut]
         }));
 
@@ -135,9 +125,9 @@ export default {
         let innerHtml;
 
         if (Object.keys(shortcuts).length === 0) {
-            innerHtml = compile(require('%/shortcut-list-empty.html'), {key: pressedKey});
+            innerHtml = utils.compile(require('%/shortcut-list-empty.html'), {key: pressedKey});
         } else {
-            innerHtml = compile(require('%/shortcut-list.html'), {
+            innerHtml = utils.compile(require('%/shortcut-list.html'), {
                 key: pressedKey,
                 shortcuts: shortcuts
             });
@@ -159,6 +149,6 @@ export default {
         modal.addEventListener('keyup', listEventListener);
     },
     showSubscriptionExpired() {
-        openModal(compile(require('%/subscription-expired.html')));
+        openModal(utils.compile(require('%/subscription-expired.html')));
     }
 }
