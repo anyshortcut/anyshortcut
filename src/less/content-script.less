@@ -141,19 +141,24 @@
   bottom: 15px;
   width: 40px;
   height: 40px;
-  background-color: #FFFFFF;
+  background-color: @primary-color;
   box-shadow: @box-shadow-dark;
   border-radius: 50% 50%;
   cursor: pointer;
   z-index: (@modal-z-index - 1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
   .anyshortcut-circle-icon {
-    margin: 4px;
+    width: 30px;
+    height: 30px;
     content: url("chrome-extension://__MSG_@@extension_id__/icon/icon32.png");
   }
   .anyshortcut-circle-close {
-    margin: 4px;
-    content: url("chrome-extension://__MSG_@@extension_id__/icon/icon32.png");
+    width: 15px;
+    height: 15px;
+    content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAIVBMVEUAAAD///////////////////////////////////8AAADPn83rAAAACXRSTlMACq47u/I8r7wWzHxoAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAJJJREFUGNNdzzEKhDAQBdAvwtYWW9hbbSdCDrBnWBDS2Sx7A8HSKwgic1tNxj/jmirDC5P/UTSw01V4ri2nMr7xkg/HIAu+Qi6j9HhEcpB1gHFGGCuSTyQTlQ2Vg3ic4x49TVpzwcQXvI+3x/+r0p9eLAfyYhrIWNOSmfZkVlH2Kpm9Z+bJeh68oSYmnlGMnv1X7RZ2SET5id+LAAAAAElFTkSuQmCC");
   }
 }
 

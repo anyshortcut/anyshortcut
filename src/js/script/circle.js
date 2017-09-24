@@ -40,10 +40,13 @@ export default {
     injectCircle() {
         let circle = buildCircle();
         circle.onclick = (event) => {
-            // TODO Toggle circle icon
             if (popup) {
+                circle.firstChild.classList.add('anyshortcut-circle-icon');
+                circle.firstChild.classList.remove('anyshortcut-circle-close');
                 hideShortcutPopup();
             } else {
+                circle.firstChild.classList.remove('anyshortcut-circle-icon');
+                circle.firstChild.classList.add('anyshortcut-circle-close');
                 showShortcutPopup();
             }
         };
