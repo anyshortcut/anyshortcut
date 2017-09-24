@@ -21,6 +21,8 @@
                         <span class="shortcut" v-if="domainPrimaryShortcut.key.length===1">
                             ALT + {{ domainPrimaryShortcut.key }} + {{ shortcut.key }}
                         </span>
+                        <span v-if="domainPrimaryShortcut.key.length===1"> / </span>
+                        <span class="shortcut">{{ shortcut.key }}</span> in domain pages
                     </template>
                 </div>
                 <div class="shortcut-info-item">
