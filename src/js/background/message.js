@@ -75,9 +75,16 @@ function onMessageReceiver(message, sender, sendResponse) {
             break;
         }
         case message.listSecondary: {
+            let shortcuts = null;
+            if (message.key) {
+                shortcuts = window.getSecondaryShortcutsByPrimaryKey(message.key);
+            } else if (message.url) {
+                shortcuts = window.getSecondaryShortcutsByUrl(message.url);
+            }
+
             sendResponse({
                 byBlank: pref.isShortcutOpenByBlank(),
-                shortcuts: window.getSecondaryShortcutsByPrimaryKey(message.key)
+                shortcuts: shortcuts
             });
             break
         }
