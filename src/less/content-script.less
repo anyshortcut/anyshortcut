@@ -134,3 +134,39 @@
     color: #FFFFFF;
   }
 }
+
+.anyshortcut-circle {
+  position: fixed;
+  left: 15px;
+  bottom: 15px;
+  width: 40px;
+  height: 40px;
+  background-color: #FFFFFF;
+  box-shadow: @box-shadow-dark;
+  border-radius: 50% 50%;
+  cursor: pointer;
+  z-index: (@modal-z-index - 1);
+
+  .anyshortcut-circle-icon {
+    margin: 4px;
+    content: url("chrome-extension://__MSG_@@extension_id__/icon/icon32.png");
+  }
+  .anyshortcut-circle-close {
+    margin: 4px;
+    content: url("chrome-extension://__MSG_@@extension_id__/icon/icon32.png");
+  }
+}
+
+.anyshortcut-popup {
+  position: fixed;
+  left: 15px;
+  bottom: 65px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background-color: #FFFFFF;
+  box-shadow: @box-shadow-dark;
+  border-radius: 5px;
+  z-index: (@modal-z-index - 1);
+}

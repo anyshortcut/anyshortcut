@@ -1,0 +1,12 @@
+<ul>
+    <% _.forOwn(shortcuts, function(shortcut) { %>
+    <li class="anyshortcut-shortcut-item">
+        <span class="anyshortcut-secondary-shortcut" title="<%- shortcut.title %>"><%- shortcut.key %></span>
+        <a href="<%- shortcut.url %>" title="<%- shortcut.url %>" target="_blank">
+            <img class="anyshortcut-favicon" src="<%- shortcut.favicon %>" alt="">
+            <%- shortcut.comment %>
+        </a>
+    </li>
+    <% }); %>
+</ul>
+<small class="anyshortcut-small-description">Click specific key to open the website page</small>
