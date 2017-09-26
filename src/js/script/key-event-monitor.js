@@ -7,8 +7,8 @@ import modal from './modal.js';
  *
  * @see triggerShortcut()
  */
-function hasInputFocused() {
-    return document.activeElement.tagName === 'INPUT';
+function hasInputElementFocused() {
+    return ['INPUT', 'TEXTAREA', 'SELECT'].lastIndexOf(document.activeElement.tagName) !== -1;
 }
 
 const EMPTY_KEY = {
@@ -99,7 +99,7 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
  * Trigger shortcut.
  */
 function triggerShortcut() {
-    if (hasInputFocused()) {
+    if (hasInputElementFocused()) {
         cleanUp();
         return;
     }
