@@ -1,11 +1,11 @@
 {
-    "extension_name":{
-        "message":"AnyShortcut"
-    },
-    "extension_description":{
-        "message":"This extension help you quickly launch url by any keyboard shortcuts!"
-    },
-    "popup_default_title":{
-        "message":"Go to website use shortcut"
-    }
+  "extension_name": {
+    "message": "AnyShortcut"
+  },
+  "extension_description": {
+    "message": "Shortcuts for your most visited websites!"
+  },
+  "popup_default_title": {
+    "message": "Shortcuts for your most visited websites!"
+  }
 }
