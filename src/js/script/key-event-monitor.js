@@ -2,13 +2,14 @@ import helper from './helper.js';
 import modal from './modal.js';
 
 /**
- * A function return whether current active element is a input element.
- * Mainly usage to prevent trigger shortcut when input focus.
+ * A function return whether current active element is a input element or a editable element.
+ * Mainly usage to prevent trigger shortcut when in these cases.
  *
  * @see triggerShortcut()
  */
-function hasInputElementFocused() {
-    return ['INPUT', 'TEXTAREA', 'SELECT'].lastIndexOf(document.activeElement.tagName) !== -1;
+function isActiveElementEditable() {
+    return document.activeElement.isContentEditable
+        || ['INPUT', 'TEXTAREA', 'SELECT'].lastIndexOf(document.activeElement.tagName) !== -1;
 }
 
 const EMPTY_KEY = {
@@ -99,7 +100,7 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
  * Trigger shortcut.
  */
 function triggerShortcut() {
-    if (hasInputElementFocused()) {
+    if (isActiveElementEditable()) {
         cleanUp();
         return;
     }
