@@ -5,6 +5,34 @@
             Setting
         </header>
 
+        <a href="http://anyshortcut.com/subscribe"
+           target="_blank"
+           class="preference-item-link">
+            <div class="preference-item flex-vertical" v-if="$background.subscriptionStatus==='active'">
+                <div class="flex-horizontal">
+                    Account <span class="subscription-status status-active">subscribing</span>
+                </div>
+                <div class="preference-subtitle">
+                    <span>
+                        Your next bill on {{ new Date($background.subscriptionEndAt * 1000).toLocaleDateString() }}
+                    </span>
+                </div>
+            </div>
+            <div class="preference-item flex-vertical" v-else>
+                <div class="flex-horizontal">
+                    Account <span class="subscription-status status-trailing">trialing</span>
+                </div>
+                <div class="preference-subtitle">
+                    <span>
+                        Your trialing will expired on
+                        {{ new Date($background.subscriptionEndAt * 1000).toLocaleDateString() }}
+                    </span>
+                </div>
+            </div>
+        </a>
+
+        <div class="preference-divider"></div>
+
         <div class="preference-item flex-vertical">
             How to open shortcut:
             <div>
@@ -15,6 +43,17 @@
                 <input type="radio" id="self" v-model="openByBlank" :value="false">
                 <label for="self" class="preference-subtitle">in same tab</label>
             </div>
+        </div>
+        <div class="preference-divider"></div>
+
+        <div class="preference-item flex-horizontal">
+            <label for="enable-compound-shortcut"> Enable compound shortcut
+                <span>
+                        <img id="tooltip-compound-shortcut" class="info-img" src="../img/info-grey.svg" alt="info">
+                    </span>
+            </label>
+            <input id="enable-compound-shortcut" type="checkbox"
+                   v-model='compoundEnable'>
         </div>
 
         <div class="preference-divider"></div>
@@ -28,18 +67,6 @@
                     <option>never</option>
                 </select>
             </div>
-        </div>
-
-        <div class="preference-divider"></div>
-
-        <div class="preference-item flex-horizontal">
-            <label for="enable-compound-shortcut"> Enable compound shortcut
-                <span>
-                        <img id="tooltip-compound-shortcut" class="info-img" src="../img/info-grey.svg" alt="info">
-                    </span>
-            </label>
-            <input id="enable-compound-shortcut" type="checkbox"
-                   v-model='compoundEnable'>
         </div>
 
         <div class="preference-divider"></div>
@@ -118,6 +145,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        width: 100%;
     }
 
     .flex-vertical {
@@ -129,6 +157,7 @@
     .preference-subtitle {
         font-size: 13px;
         color: #797979;
+        margin: 3px 0;
     }
 
     .preference-divider {
@@ -139,6 +168,21 @@
 
     .preference-item-link {
         color: initial;
+    }
+
+    .subscription-status {
+        font-size: 12px;
+        color: #FFFFFF;
+        border-radius: 4px;
+        padding: 0 6px;
+    }
+
+    .status-trailing {
+        background-color: #FAC64B;
+    }
+
+    .status-active {
+        background-color: #26A85E;
     }
 </style>
 <script type="es6">

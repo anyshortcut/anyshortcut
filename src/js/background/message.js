@@ -8,8 +8,6 @@ const subscription = {
 };
 
 window.authenticated = false;
-window.subscriptionStatus = subscription.status;
-window.subscriptionEndAt = subscription.endAt;
 
 syncUserInfo();
 
@@ -17,8 +15,8 @@ function syncUserInfo() {
     client.getUserInfo().then(response => {
         if (response) {
             window.authenticated = true;
-            subscription.status = response.subscription_status;
-            subscription.endAt = response.subscription_end_at;
+            window.subscriptionStatus = subscription.status = response.subscription_status;
+            window.subscriptionEndAt = subscription.endAt = response.subscription_end_at;
 
             window.syncAllShortcuts();
 
@@ -34,10 +32,10 @@ function syncUserInfo() {
  * Check the subscription end datetime whether expired.
  * @returns {boolean} true expired, otherwise false
  */
-function checkSubscriptionExpired() {
+window.checkSubscriptionExpired = function() {
     let now = new Date().getTime() / 1000;
     return subscription.endAt <= now;
-}
+};
 
 function onMessageReceiver(message, sender, sendResponse) {
     switch (true) {
