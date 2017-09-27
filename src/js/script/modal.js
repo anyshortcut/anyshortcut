@@ -9,9 +9,8 @@ function removeElementDelay(element, delay) {
         if (element) {
             element.remove();
         }
-        window.clearTimeout(timeoutId);
         timeoutId = undefined;
-    }, delay || 3000);
+    }, delay || 2000);
 }
 
 /**
