@@ -4,12 +4,12 @@ const isProduction = process.env.NODE_ENV === 'production';
 const env = {
     production: {
         debug: false,
-        schema: 'http://',
+        schema: 'https://',
         domain: 'anyshortcut.com',
     },
     stage: {
         debug: false,
-        schema: 'http://',
+        schema: 'https://',
         domain: 'stage.anyshortcut.com',
     },
     development: {

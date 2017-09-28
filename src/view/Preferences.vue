@@ -5,7 +5,7 @@
             Setting
         </header>
 
-        <a href="http://anyshortcut.com/subscribe"
+        <a href="https://anyshortcut.com/subscribe"
            target="_blank"
            class="preference-item-link">
             <div class="preference-item flex-vertical" v-if="$background.subscriptionStatus==='active'">
