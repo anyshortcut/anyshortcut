@@ -1,4 +1,5 @@
 import utils from "./utils.js";
+import helper from "./helper.js";
 
 let popup = null;
 
@@ -11,7 +12,7 @@ function buildCircle() {
     return circle;
 }
 
-function showShortcutPopup() {
+function showShortcutPopup(shortcuts) {
     chrome.runtime.sendMessage({
         listSecondary: true, url: location.href
     }, response => {
@@ -38,18 +39,38 @@ function hideShortcutPopup() {
 
 export default {
     injectCircle() {
-        let circle = buildCircle();
-        circle.onclick = (event) => {
-            if (popup) {
-                circle.firstChild.classList.add('anyshortcut-circle-icon');
-                circle.firstChild.classList.remove('anyshortcut-circle-close');
-                hideShortcutPopup();
-            } else {
-                circle.firstChild.classList.remove('anyshortcut-circle-icon');
-                circle.firstChild.classList.add('anyshortcut-circle-close');
-                showShortcutPopup();
-            }
-        };
-        document.body.insertAdjacentElement('beforeBegin', circle);
+        chrome.runtime.sendMessage({
+            listSecondary: true, url: location.href
+        }, response => {
+            let shortcuts = response.shortcuts;
+
+            document.addEventListener('keyup', e => {
+                if (helper.isActiveElementEditable()) {
+                    return;
+                }
+
+                if (helper.isValidKeyCode(e.keyCode) && helper.withoutAnyModifier(e)) {
+                    let keyCodeChar = String.fromCharCode(e.keyCode);
+                    if (shortcuts.hasOwnProperty(keyCodeChar)) {
+                        helper.openShortcut(shortcuts[keyCodeChar], false);
+                    }
+                }
+            });
+
+            let circle = buildCircle();
+            circle.onclick = (event) => {
+                if (popup) {
+                    circle.firstChild.classList.add('anyshortcut-circle-icon');
+                    circle.firstChild.classList.remove('anyshortcut-circle-close');
+                    hideShortcutPopup();
+                } else {
+                    circle.firstChild.classList.remove('anyshortcut-circle-icon');
+                    circle.firstChild.classList.add('anyshortcut-circle-close');
+                    showShortcutPopup(shortcuts);
+                }
+            };
+
+            document.body.insertAdjacentElement('beforeBegin', circle);
+        });
     },
 };
