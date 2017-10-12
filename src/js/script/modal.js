@@ -102,12 +102,12 @@ export default {
         }));
 
         let chooserEventListener = function(e) {
-            if (helper.isValidKeyCode(e) && helper.withoutAnyModifier(e)) {
-                let keyCode = e.keyCode;
+            if (helper.isValidKeyCode(e.keyCode) && helper.withoutAnyModifier(e)) {
+                let keyCodeChar = String.fromCharCode(e.keyCode);
                 let shortcut = null;
-                if (keyCode === 49) {
+                if (keyCodeChar === '1') {
                     shortcut = primaryShortcut;
-                } else if (keyCode === 50) {
+                } else if (keyCodeChar === '2') {
                     shortcut = secondaryShortcut;
                 }
 
