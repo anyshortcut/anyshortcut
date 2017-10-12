@@ -2,9 +2,19 @@
 <ul class="anyshortcut-shortcut-list">
     <% _.forEach(shortcuts, function(shortcut, key) { %>
     <li class="anyshortcut-shortcut-item">
-        <span class="anyshortcut-secondary-shortcut" title="<%- shortcut.title %>"><%- key + 1 %></span>
-        <img class="anyshortcut-favicon" src="<%- shortcut.favicon %>" alt="">
-        <a href="<%- shortcut.url %>" title="<%- shortcut.url %>" target="_blank"><%- shortcut.comment %></a>
+        <a href="<%- shortcut.url %>" target="_blank">
+            <span class="anyshortcut-secondary-shortcut" title="<%- shortcut.title %>"><%- key + 1 %></span>
+            <div>
+                <div>
+                    <img class="anyshortcut-favicon" src="<%- shortcut.favicon %>" alt="">
+                    <span class="anyshortcut-comment"><%- shortcut.comment %></span>
+                </div>
+
+                <div class="anyshortcut-url">
+                    <%- shortcut.url %>
+                </div>
+            </div>
+        </a>
     </li>
     <% }); %>
 </ul>

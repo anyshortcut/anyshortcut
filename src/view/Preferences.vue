@@ -5,7 +5,7 @@
             Setting
         </header>
 
-        <a href="https://anyshortcut.com/subscribe"
+        <a href="https://anyshortcut.com/account"
            target="_blank"
            class="preference-item-link">
             <div class="preference-item flex-vertical" v-if="$background.subscriptionStatus==='active'">
@@ -84,7 +84,7 @@
            target="_blank"
            class="preference-item-link">
             <div class="preference-item flex-horizontal">
-                Rate us!
+                Rate us 5 stars!
             </div>
         </a>
 

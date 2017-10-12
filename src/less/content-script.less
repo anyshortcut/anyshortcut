@@ -3,6 +3,7 @@
 @modal-z-index: 999999999;
 
 .anyshortcut-modal {
+  box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: start;
@@ -65,6 +66,7 @@
 
 .anyshortcut-secondary-shortcut {
   .anyshortcut-shortcut;
+  margin-right: 15px;
   width: 32px;
   letter-spacing: 0.6px;
 }
@@ -93,11 +95,14 @@
 
   a {
     .overflow-ellipsis;
+    display: flex;
+    align-items: center;
+
     position: relative;
     text-align: left;
     width: 100%;
-    margin: 0 10px;
-    text-decoration: none;
+    margin: 0;
+    text-decoration: none !important;
     outline: none;
     color: @secondary-color;
 
@@ -163,10 +168,11 @@
 }
 
 .anyshortcut-popup {
+  box-sizing: border-box;
   position: fixed;
   left: 15px;
   bottom: 65px;
-  width: 300px;
+  width: 350px;
   display: flex;
   flex-direction: column;
   font-family: "Poppins", sans-serif;
@@ -182,4 +188,14 @@
     margin: 0;
     padding: 0;
   }
+}
+
+.anyshortcut-comment {
+  font-size: 15px;
+  color: #515151;
+}
+
+.anyshortcut-url {
+  font-size: 12px;
+  color: #bbbbbb;
 }

@@ -1,10 +1,18 @@
 <ul>
     <% _.forOwn(shortcuts, function(shortcut) { %>
     <li class="anyshortcut-shortcut-item">
-        <span class="anyshortcut-secondary-shortcut" title="<%- shortcut.title %>"><%- shortcut.key %></span>
-        <a href="<%- shortcut.url %>" title="<%- shortcut.url %>" target="_blank">
-            <img class="anyshortcut-favicon" src="<%- shortcut.favicon %>" alt="">
-            <%- shortcut.comment %>
+        <a href="<%- shortcut.url %>">
+            <span class="anyshortcut-secondary-shortcut" title="<%- shortcut.title %>"><%- shortcut.key %></span>
+            <div>
+                <div>
+                    <img class="anyshortcut-favicon" src="<%- shortcut.favicon %>" alt="">
+                    <span class="anyshortcut-comment"><%- shortcut.comment %></span>
+                </div>
+
+                <div class="anyshortcut-url">
+                    <%- shortcut.url %>
+                </div>
+            </div>
         </a>
     </li>
     <% }); %>

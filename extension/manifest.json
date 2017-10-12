@@ -57,7 +57,7 @@
   "commands": {
     "toggle_recent_tab": {
       "suggested_key": {
-        "default": "Alt+ Period"
+        "default": "Alt+Period"
       },
       "description": "Toggle Recent Tabs"
     },
