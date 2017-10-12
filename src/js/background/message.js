@@ -37,10 +37,26 @@ window.checkSubscriptionExpired = function() {
     return subscription.endAt <= now;
 };
 
+
+function isSecondaryShortcutActivatedUrl(url) {
+    let hostname = common.getHostnameFromUrl(url);
+    let domain = window.getBoundDomainByHostname(hostname);
+    return domain && Object.keys(window.secondaryShortcuts[domain]).length > 0;
+}
+
 function onMessageReceiver(message, sender, sendResponse) {
     switch (true) {
         case message.info: {
-            let showCircle = pref.getShowCircleConfig() === 'always';
+            let showCircle = false;
+            let config = pref.getShowCircleConfig();
+            if (config === 'always') {
+                showCircle = true;
+            } else if (config === 'never') {
+                showCircle = false;
+            } else if (config === 'only') {
+                showCircle = isSecondaryShortcutActivatedUrl(message.url);
+            }
+
             sendResponse({
                 authenticated: window.authenticated,
                 expired: checkSubscriptionExpired(),

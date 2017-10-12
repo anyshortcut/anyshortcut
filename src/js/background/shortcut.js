@@ -9,7 +9,7 @@ window.secondaryShortcuts = {};
  * @param hostname
  * @returns {*}
  */
-function getBoundDomainByHostname(hostname) {
+window.getBoundDomainByHostname = function(hostname) {
     for (let domain of Object.keys(secondaryShortcuts)) {
         if (secondaryShortcuts.hasOwnProperty(domain)
             && common.isHostnameEndsWithDomain(hostname, domain)) {
@@ -17,7 +17,7 @@ function getBoundDomainByHostname(hostname) {
         }
     }
     return null;
-}
+};
 
 /**
  * Sync all shortcuts from server.

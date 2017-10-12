@@ -63,8 +63,9 @@
             <div>
                 <select v-model="showCircle">
                     <option disabled value="">Please select one</option>
-                    <option>always</option>
-                    <option>never</option>
+                    <option value="always">always</option>
+                    <option value="only">only in secondary shortcut activated pages</option>
+                    <option value="never">never</option>
                 </select>
             </div>
         </div>

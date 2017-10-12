@@ -16,7 +16,7 @@ export default {
         return localStorage.setItem('compoundEnable', value);
     },
     getShowCircleConfig() {
-        return nullOrDefault(localStorage.getItem('showCircle'), 'never');
+        return nullOrDefault(localStorage.getItem('showCircle'), 'only');
     },
     setShowCircleConfig(value) {
         return localStorage.setItem('showCircle', value);
