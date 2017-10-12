@@ -64,13 +64,6 @@ function onMessageReceiver(message, sender, sendResponse) {
             });
             break;
         }
-        case message.secondaryRequest: {
-            sendResponse({
-                byBlank: false, // By self is default for secondary request in domain page
-                shortcut: window.getSecondaryShortcut(message.hostname, message.key)
-            });
-            break;
-        }
         case message.listSecondary: {
             let shortcuts = null;
             if (message.key) {

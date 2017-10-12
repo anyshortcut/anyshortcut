@@ -1,17 +1,6 @@
 import helper from './helper.js';
 import modal from './modal.js';
 
-/**
- * A function return whether current active element is a input element or a editable element.
- * Mainly usage to prevent trigger shortcut when in these cases.
- *
- * @see triggerShortcut()
- */
-function isActiveElementEditable() {
-    return document.activeElement.isContentEditable
-        || ['INPUT', 'TEXTAREA', 'SELECT'].lastIndexOf(document.activeElement.tagName) !== -1;
-}
-
 const EMPTY_KEY = {
     keyCode: 0,
     keyCodeChar: null,
@@ -41,27 +30,6 @@ function triggerPrimaryShortcut(keyCodeChar) {
             helper.openShortcut(response.shortcut, response.byBlank);
         } else {
             modal.showPrimaryShortcutUnbound(keyCodeChar);
-        }
-    });
-    cleanUp();
-}
-
-
-function triggerSecondaryShortcut(keyCodeChar) {
-    chrome.runtime.sendMessage({
-        secondaryRequest: true,
-        hostname: location.hostname,
-        key: keyCodeChar,
-    }, response => {
-        if (response.expired) {
-            modal.showSubscriptionExpired();
-            return;
-        }
-
-        if (response.shortcut) {
-            helper.openShortcut(response.shortcut, response.byBlank);
-        } else {
-            modal.showSecondaryShortcutUnbound(keyCodeChar)
         }
     });
     cleanUp();
@@ -100,11 +68,6 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
  * Trigger shortcut.
  */
 function triggerShortcut() {
-    if (isActiveElementEditable()) {
-        cleanUp();
-        return;
-    }
-
     if (triggerTimeoutId) {
         // Clear previous session timeout if existed
         window.clearTimeout(triggerTimeoutId);
@@ -112,9 +75,7 @@ function triggerShortcut() {
     }
 
     if (firstKey.pressedAt && firstKey.releasedAt) {
-        if (helper.withoutAnyModifier(firstKey)) {
-            triggerSecondaryShortcut(firstKey.keyCodeChar);
-        } else if (helper.withAltModifier(firstKey)) {
+        if (helper.withAltModifier(firstKey)) {
             if (secondKey.pressedAt && secondKey.releasedAt) {
                 triggerQueryShortcut(firstKey.keyCodeChar, secondKey.keyCodeChar);
             } else {
@@ -134,6 +95,11 @@ function cleanUp() {
 
 export default {
     onKeyUp(event) {
+        if (helper.isActiveElementEditable()) {
+            cleanUp();
+            return;
+        }
+
         event = helper.ensureWindowEvent(event);
         if (!helper.isValidKeyEvent(event)) {
             // Ignore invalid key event
@@ -149,6 +115,11 @@ export default {
         triggerShortcut();
     },
     onKeyDown(event) {
+        if (helper.isActiveElementEditable()) {
+            cleanUp();
+            return;
+        }
+
         event = helper.ensureWindowEvent(event);
         if (!helper.isValidKeyEvent(event)) {
             // Ignore invalid key event

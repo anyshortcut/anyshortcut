@@ -84,12 +84,6 @@ export default {
             key: "ALT + " + pressedKey
         }));
     },
-    showSecondaryShortcutUnbound(pressedKey) {
-        openModal(utils.compile(require('%/shortcut-not-found.html'), {
-            shortcutType: "secondary",
-            key: pressedKey,
-        }));
-    },
     showQueryShortcutFailed(firstKey, secondKey) {
         openModal(utils.compile(require('%/query-shortcut-failed.html'), {
             firstKey: firstKey,

@@ -43,10 +43,7 @@ export default {
         return e ? e : window.event;
     },
     isValidKeyEvent(e) {
-        if (this.isValidKeyCode(e.keyCode)) {
-            return this.withAltModifier(e) || this.withoutAnyModifier(e);
-        }
-        return false;
+        return this.isValidKeyCode(e.keyCode) && this.withAltModifier(e);
     },
     /**
      * Check the keyCode whether is valid.
@@ -62,6 +59,14 @@ export default {
      */
     withAltModifier(e) {
         return e && e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey;
+    },
+    /**
+     * A function return whether current active element is a input element or a editable element.
+     * Mainly usage to prevent trigger shortcut when in these cases.
+     */
+    isActiveElementEditable() {
+        return document.activeElement.isContentEditable
+            || ['INPUT', 'TEXTAREA', 'SELECT'].lastIndexOf(document.activeElement.tagName) !== -1;
     },
     openShortcut(shortcut, byBlank) {
         let url = shortcut.url;
