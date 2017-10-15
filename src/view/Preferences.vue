@@ -18,7 +18,7 @@
                     </span>
                 </div>
             </div>
-            <div class="preference-item flex-vertical" v-else>
+            <div class="preference-item flex-vertical" v-else-if="$background.subscriptionStatus==='trialing'">
                 <div class="flex-horizontal">
                     Account <span class="subscription-status status-trailing">trialing</span>
                 </div>
@@ -26,6 +26,17 @@
                     <span>
                         Your trialing will expired on
                         {{ new Date($background.subscriptionEndAt * 1000).toLocaleDateString() }}
+                    </span>
+                </div>
+            </div>
+            <div class="preference-item flex-vertical" v-else>
+                <div class="flex-horizontal">
+                    Account <span class="subscription-status status-failed">
+                    {{ $background.subscriptionStatus.replace('_', ' ') }}</span>
+                </div>
+                <div class="preference-subtitle">
+                    <span>
+                        Your subscription was {{ $background.subscriptionStatus.replace('_', ' ') }}.
                     </span>
                 </div>
             </div>
@@ -184,6 +195,10 @@
 
     .status-active {
         background-color: #26A85E;
+    }
+
+    .status-failed {
+        background-color: #D93D2B;
     }
 </style>
 <script type="es6">

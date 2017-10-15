@@ -34,8 +34,7 @@ function syncUserInfo() {
  * @returns {boolean} true expired, otherwise false
  */
 window.checkSubscriptionExpired = function() {
-    let now = new Date().getTime() / 1000;
-    return subscription.endAt <= now;
+    return ['active', 'trialing'].lastIndexOf(subscription.status) === -1;
 };
 
 
@@ -46,26 +45,33 @@ function isSecondaryShortcutActivatedUrl(url) {
 }
 
 function onMessageReceiver(message, sender, sendResponse) {
-    switch (true) {
-        case message.info: {
-            let showCircle = false;
-            let config = pref.getShowCircleConfig();
-            if (config === 'always') {
-                showCircle = true;
-            } else if (config === 'never') {
-                showCircle = false;
-            } else if (config === 'only') {
-                showCircle = isSecondaryShortcutActivatedUrl(message.url);
-            }
-
-            sendResponse({
-                authenticated: window.authenticated,
-                expired: checkSubscriptionExpired(),
-                status: subscription.status,
-                showCircle: showCircle,
-            });
-            break;
+    if (message.info) {
+        let showCircle = false;
+        let config = pref.getShowCircleConfig();
+        if (config === 'always') {
+            showCircle = true;
+        } else if (config === 'never') {
+            showCircle = false;
+        } else if (config === 'only') {
+            showCircle = isSecondaryShortcutActivatedUrl(message.url);
         }
+
+        sendResponse({
+            authenticated: window.authenticated,
+            expired: checkSubscriptionExpired(),
+            status: subscription.status,
+            showCircle: showCircle,
+        });
+        return true;
+    }
+
+    if (checkSubscriptionExpired()) {
+        // The subscription was expired.
+        sendResponse({expired: true, status: subscription.status});
+        return true;
+    }
+
+    switch (true) {
         case message.query: {
             sendResponse({
                 byBlank: pref.isShortcutOpenByBlank(),
