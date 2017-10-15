@@ -155,3 +155,35 @@ section {
     margin: 0;
   }
 }
+
+.line-divider {
+  color: #cecece;
+  margin: 25px auto;
+  overflow: hidden;
+
+  &:before, &:after {
+    content: "";
+    vertical-align: middle;
+    display: inline-block;
+    width: 50%;
+    border-bottom: 2px dotted #cecece;
+    margin: 0 2% 0 -55%;
+  }
+
+  &:after {
+    margin: 0 -55% 0 2%;
+  }
+}
+
+.skip-button {
+  display: inline-flex;
+  border-radius: 5px;
+  padding: 8px 30px;
+  background-color: #2b72dc;
+  color: white;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #3c83ec;
+  }
+}
