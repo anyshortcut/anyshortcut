@@ -2,17 +2,19 @@ import modal from './modal.js';
 import monitor from './key-event-monitor.js';
 import circle from './circle.js';
 
+// Register key events as early as possible.
+registerKeyEvents();
 
-chrome.runtime.sendMessage({info: true, url: location.href}, response => {
-    if (response.authenticated && !response.expired) {
-        registerKeyEvents();
-
-        if (response.showCircle) {
-            document.addEventListener("DOMContentLoaded", circle.injectCircle);
+document.addEventListener("DOMContentLoaded", event => {
+    chrome.runtime.sendMessage({info: true, url: location.href}, response => {
+        if (response.authenticated) {
+            if (response.showCircle) {
+                circle.injectCircle()
+            }
+        } else {
+            unregisterKeyEvents();
         }
-    } else {
-        unregisterKeyEvents();
-    }
+    });
 });
 
 function registerKeyEvents() {

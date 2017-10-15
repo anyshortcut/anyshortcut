@@ -20,6 +20,7 @@ function syncUserInfo() {
 
             window.syncAllShortcuts();
 
+            // Tell all opened tabs that user has authenticated
             common.iterateAllWindowTabs(tabId => {
                 chrome.tabs.sendMessage(tabId, {authenticated: true});
             });
