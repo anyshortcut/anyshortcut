@@ -154,6 +154,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 0.3;
 
   .anyshortcut-circle-icon {
     width: 30px;
@@ -164,6 +165,10 @@
     width: 15px;
     height: 15px;
     content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAIVBMVEUAAAD///////////////////////////////////8AAADPn83rAAAACXRSTlMACq47u/I8r7wWzHxoAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAJJJREFUGNNdzzEKhDAQBdAvwtYWW9hbbSdCDrBnWBDS2Sx7A8HSKwgic1tNxj/jmirDC5P/UTSw01V4ri2nMr7xkg/HIAu+Qi6j9HhEcpB1gHFGGCuSTyQTlQ2Vg3ic4x49TVpzwcQXvI+3x/+r0p9eLAfyYhrIWNOSmfZkVlH2Kpm9Z+bJeh68oSYmnlGMnv1X7RZ2SET5id+LAAAAAElFTkSuQmCC");
+  }
+
+  &:hover {
+    opacity: 1;
   }
 }
 
@@ -191,11 +196,13 @@
 }
 
 .anyshortcut-comment {
-  font-size: 15px;
-  color: #515151;
+  font-size: 15px !important;
+  color: #515151 !important;
 }
 
 .anyshortcut-url {
-  font-size: 12px;
-  color: #bbbbbb;
+  padding: 5px !important;
+  font-family: "Roboto", sans-serif !important;
+  font-size: 12px !important;
+  color: #bbbbbb !important;
 }
