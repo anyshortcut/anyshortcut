@@ -8,6 +8,11 @@ p {
   margin: 0 auto;
 }
 
+body {
+  margin: 0;
+  padding: 0;
+}
+
 a {
   text-decoration: underline;
   outline: none;
@@ -26,21 +31,37 @@ div#app {
   font-family: "Poppins", sans-serif;
   font-weight: 300;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  height: 100vh;
+}
+
+.tour-illustration {
+  width: 60%;
+  margin-right: 10px;
+  text-align: center;
+}
+
+.step-cover {
+  &.half-width {
+    width: 60%;
+  }
+
+  &.full-width {
+    width: 100%;
+  }
 }
 
 section {
-  margin: auto;
-  padding: 20px 0;
-  min-width: 650px;
-  max-width: 720px;
+  margin: 0 15px;
+  max-width: 650px;
   text-align: center;
   color: #8E8E8E;
   letter-spacing: 0.5px;
 
   .title {
     text-align: center;
-    margin: 15px auto;
+    margin: 35px auto;
     color: #666666;
     font-size: 36px;
     font-weight: 600;
@@ -60,16 +81,13 @@ section {
 
 }
 
-.step-cover {
-  height: 280px;
-  margin: 30px;
-}
-
 .step-indicator {
-  margin: auto;
+  margin: 10px;
   padding: 0;
   text-align: center;
   vertical-align: middle;
+  display: flex;
+  flex-direction: column;
 
   li {
     display: inline-block;
