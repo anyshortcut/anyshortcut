@@ -104,10 +104,11 @@ function onMessageReceiver(message, sender, sendResponse) {
         case message.increase:
             client.increaseShortcutOpenTimes(message.shortcutId)
                 .then(response => {
-                    if (message.primary) {
+                    let shortcut = response[message.shortcutKey];
+                    if (shortcut.primary) {
                         Object.assign(window.primaryShortcuts, response);
                     } else {
-                        // TODO secondary shortcut case...
+                        Object.assign(window.secondaryShortcuts[shortcut.domain], response);
                     }
                 }).catch(error => {
                 console.log(error);

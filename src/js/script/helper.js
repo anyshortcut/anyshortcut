@@ -79,7 +79,7 @@ export default {
         chrome.runtime.sendMessage({
             increase: true,
             shortcutId: shortcut.id,
-            primary: shortcut.primary,
+            shortcutKey: shortcut.key,
         });
     },
 };

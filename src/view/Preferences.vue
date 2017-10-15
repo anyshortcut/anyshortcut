@@ -198,7 +198,7 @@
     }
 
     .status-failed {
-        background-color: #D93D2B;
+        background-color: #FC0D1B;
     }
 </style>
 <script type="es6">
