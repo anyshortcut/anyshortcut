@@ -20,6 +20,7 @@
         </template>
 
         <keyboard :bound-keys="boundKeys"
+                  :show-slide-keys="primary"
                   :highlight-key="highlightKey"
                   @key-hover-over="onHoverOver"
                   @key-hover-leave="onHoverLeave">

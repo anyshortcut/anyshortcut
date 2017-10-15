@@ -1,63 +1,63 @@
 <template>
     <div class="keyboard">
         <div class="keyboard-row">
-            <div class="key weak" v-visible="weakVisibility"></div>
+            <div class="key slide-key" v-visible="slideKeyVisibility"></div>
             <div v-for="key in '1234567890'"
                  :class="keyClass(key)"
                  class="key">{{ key }}
             </div>
-            <div class="key weak invisible" v-visible="weakVisibility"></div>
+            <div class="key slide-key invisible" v-visible="slideKeyVisibility"></div>
         </div>
         <div class="keyboard-row">
-            <div class="key weak" v-visible="weakVisibility"></div>
+            <div class="key slide-key" v-visible="slideKeyVisibility"></div>
             <div v-for="key in 'QWERTYUIOP'"
                  :class="keyClass(key)"
                  class="key">{{ key }}
             </div>
-            <div class="key weak invisible" v-visible="weakVisibility"></div>
+            <div class="key slide-key invisible" v-visible="slideKeyVisibility"></div>
         </div>
         <div class="keyboard-row">
-            <div class="key weak extra-size-two" v-visible="weakVisibility"></div>
+            <div class="key slide-key extra-size-two" v-visible="slideKeyVisibility"></div>
             <div v-for="key in 'ASDFGHJKL'"
                  :class="keyClass(key)"
                  class="key">{{ key }}
             </div>
-            <div class="key weak extra-size-two invisible"
-                 v-visible="weakVisibility">
+            <div class="key slide-key extra-size-two invisible"
+                 v-visible="slideKeyVisibility">
             </div>
         </div>
         <div class="keyboard-row">
-            <div class="key weak double-size lowercase"
-                 v-visible="weakVisibility">
+            <div class="key slide-key double-size lowercase"
+                 v-visible="slideKeyVisibility">
             </div>
             <div v-for="key in 'ZXCVBNM'"
                  :class="keyClass(key)"
                  class="key">{{ key }}
             </div>
-            <div class="key weak double-size lowercase invisible"
-                 v-visible="weakVisibility">
+            <div class="key slide-key double-size lowercase invisible"
+                 v-visible="slideKeyVisibility">
             </div>
         </div>
         <div class="keyboard-row">
-            <div class="key weak lowercase" v-visible="weakVisibility">
+            <div class="key slide-key lowercase" v-visible="slideKeyVisibility">
             </div>
-            <div class="key weak lower-center lowercase highlight"
-                 v-visible="weakVisibility">alt
+            <div class="key slide-key lower-center lowercase highlight"
+                 v-visible="slideKeyVisibility">alt
             </div>
-            <div class="key weak lower-center lowercase extra-size-two invisible"
-                 v-visible="weakVisibility">
+            <div class="key slide-key lower-center lowercase extra-size-two invisible"
+                 v-visible="slideKeyVisibility">
             </div>
-            <div class="key weak space-bar invisible"
-                 v-visible="weakVisibility">
+            <div class="key slide-key space-bar invisible"
+                 v-visible="slideKeyVisibility">
             </div>
-            <div class="key weak lower-center lowercase extra-size-two"
-                 v-visible="weakVisibility">
+            <div class="key slide-key lower-center lowercase extra-size-two"
+                 v-visible="slideKeyVisibility">
             </div>
-            <div class="key weak lower-center lowercase highlight invisible"
-                 v-visible="weakVisibility">alt
+            <div class="key slide-key lower-center lowercase highlight invisible"
+                 v-visible="slideKeyVisibility">alt
             </div>
-            <div class="key weak lowercase invisible"
-                 v-visible="weakVisibility">
+            <div class="key slide-key lowercase invisible"
+                 v-visible="slideKeyVisibility">
             </div>
         </div>
     </div>
@@ -134,7 +134,7 @@
             flex: 5.0;
         }
 
-        &.weak {
+        &.slide-key {
             visibility: hidden;
             background-color: #f7f7f7;
             border: none;
@@ -173,6 +173,12 @@
                     return [];
                 }
             },
+            showSlideKeys: {
+                type: Boolean,
+                default: function() {
+                    return true;
+                }
+            },
             highlightKey: {
                 type: String,
                 default: function() {
@@ -181,8 +187,8 @@
             },
         },
         computed: {
-            weakVisibility: function() {
-                return this.highlightKey !== null;
+            slideKeyVisibility: function() {
+                return this.showSlideKeys && this.highlightKey !== null;
             }
         },
         methods: {
@@ -200,8 +206,8 @@
             }
         },
         mounted: function() {
-            // Query key elements exclude weak element, then add mouse event listener.
-            this.$el.querySelectorAll('.key:not(.weak)').forEach(element => {
+            // Query key elements exclude slide key element, then add mouse event listener.
+            this.$el.querySelectorAll('.key:not(.slide-key)').forEach(element => {
                 element.addEventListener('mouseover', () => {
                     this.$emit('key-hover-over', element);
                 });
