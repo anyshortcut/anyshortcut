@@ -1,9 +1,9 @@
 {
   "extension_name": {
-    "message": "AnyShortcut"
+    "message": "Anyshortcut"
   },
   "extension_description": {
-    "message": "Shortcuts for your most visited websites!"
+    "message": "A productive browser plugin to help you open your frequently visited websites instantly."
   },
   "popup_default_title": {
     "message": "Shortcuts for your most visited websites!"
