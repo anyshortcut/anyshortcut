@@ -68,7 +68,7 @@
 
             <div>
                 <div class="line-divider">or</div>
-                <div class="skip-button" @click="currentStep=3">Skip to next step directly</div>
+                <div class="tour-button" @click="currentStep=3">Skip to next step directly ></div>
             </div>
         </section>
 
@@ -93,14 +93,48 @@
 
             <div>
                 <div class="line-divider">or</div>
-                <div class="skip-button" @click="currentStep=4">Skip to next step directly</div>
+                <div class="tour-button" @click="currentStep=4">Skip to next step directly ></div>
             </div>
 
         </section>
 
         <section v-else-if="currentStep===4">
             <div class="title">Congratulations!</div>
-            <p>You are almost done! We believe Anyshortcut can boost your productivity, and you will enjoy it! </p>
+            <p>
+                Here are some most frequently visited websites in the world which are worth linking with the
+                shortcut!
+            </p>
+            <ul :class="{disable:done}" class="default-shortcut-list">
+                <li v-for="shortcut in defaultShortcuts">
+                    <div class="default-shortcut-list-item">
+                        <div style="max-width: 40%;min-width: 40%;">
+                            <div style="display: flex;align-items: center;">
+                                <img class="default-shortcut-favicon" :src="shortcut.favicon" alt="">
+                                <span class="default-shortcut-name">{{ shortcut.comment }}</span>
+                            </div>
+
+                            <div class="default-shortcut-url">
+                                {{ shortcut.url }}
+                            </div>
+                        </div>
+                        link to
+                        <div class="default-shortcut-key">
+                            ALT + {{ shortcut.key }}
+                        </div>
+                        <input type="checkbox" v-model="shortcut.active">
+                    </div>
+                </li>
+            </ul>
+
+            <p v-if="done" style="margin: 30px 0;">
+                You were linked those websites! We believe Anyshortcut can boost your productivity, and you will
+                enjoy
+                it!
+            </p>
+            <div class="tour-button" style="margin: 30px 0;"
+                 @click="bindDefaultShortcuts" v-else>
+                Link these shortcuts!
+            </div>
         </section>
     </template>
     <ul class="step-indicator">

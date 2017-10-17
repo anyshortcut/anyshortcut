@@ -141,21 +141,6 @@ section {
   box-shadow: @box-shadow-base;
 }
 
-.secondary-shortcut-list {
-  display: block;
-  margin: 10px auto;
-  text-align: start;
-  width: 450px;
-
-  li {
-    text-decoration-style: dotted;
-  }
-
-  p {
-    margin: 0;
-  }
-}
-
 .line-divider {
   color: #cecece;
   margin: 25px auto;
@@ -175,7 +160,7 @@ section {
   }
 }
 
-.skip-button {
+.tour-button {
   display: inline-flex;
   border-radius: 5px;
   padding: 8px 30px;
@@ -186,4 +171,63 @@ section {
   &:hover {
     background-color: #3c83ec;
   }
+}
+
+.default-shortcut-list {
+  padding: 0;
+  margin: 15px;
+  box-shadow: @box-shadow-base;
+  list-style: none;
+  max-height: 800px;
+  overflow: scroll;
+  border-radius: 5px;
+
+  .default-shortcut-list-item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border-color: #f4f4f4;
+    border-width: 0;
+    border-bottom-width: 1px;
+    border-style: solid;
+    font-size: 14px;
+    padding: 5px 15px;
+
+    &:hover {
+      background-color: #f8f8f8;
+    }
+  }
+
+  .default-shortcut-favicon {
+    width: 30px;
+    height: 30px;
+    margin: 3px 10px;
+  }
+
+  .default-shortcut-name {
+    font-size: 16px;
+    color: #515151;
+  }
+
+  .default-shortcut-url {
+    padding: 0 5px;
+    font-family: "Roboto", sans-serif !important;
+    font-size: 12px;
+    color: #bbbbbb;
+    max-width: 200px;
+    overflow: hidden;
+    word-break: normal;
+    text-align: left;
+  }
+
+  .default-shortcut-key {
+    .tour-shortcut;
+    padding: 3px 12px;
+  }
+}
+
+.disable {
+  pointer-events: none;
+  opacity: 0.5;
 }

@@ -1,12 +1,14 @@
 import Vue from "vue";
 import common from "./common.js";
+import client from "./client.js";
 import config from "./config.js";
 import ga from "./mixin-ga.js";
 import helper from './script/helper.js';
 
 require('../less/tour.less');
 
-let authenticated = chrome.extension.getBackgroundPage().authenticated;
+let $background = chrome.extension.getBackgroundPage();
+let authenticated = $background.authenticated;
 let initStep = authenticated ? 2 : 1;
 
 const app = new Vue({
@@ -14,6 +16,8 @@ const app = new Vue({
     data: {
         currentStep: initStep,
         currentMaxStep: initStep,
+        defaultShortcuts: [],
+        done: false,
     },
     watch: {
         currentStep: function(newValue) {
@@ -32,9 +36,28 @@ const app = new Vue({
             if (1 < step && step <= this.currentMaxStep) {
                 this.currentStep = step;
             }
-        }
+        },
+        bindDefaultShortcuts() {
+            let keys = "";
+            this.defaultShortcuts.forEach(shortcut => {
+                if (shortcut.active) {
+                    keys += shortcut.key;
+                }
+            });
+
+            client.bindDefaultShortcuts(keys).then(data => {
+                $background.syncAllShortcuts();
+                // Disable default shortcut list
+                this.done = true;
+            });
+        },
     },
     mixins: [ga],
+    created() {
+        client.getDefaultShortcuts().then(data => {
+            this.defaultShortcuts = data;
+        });
+    },
 });
 
 
