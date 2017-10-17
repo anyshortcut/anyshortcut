@@ -1,5 +1,5 @@
 import axios from "axios";
-import config from "../config.js";
+import config from "./config.js";
 
 let request = axios.create({
     baseURL: config.apiURL,
@@ -39,4 +39,12 @@ export default {
     getSecondaryShortcuts() {
         return request.get('/shortcuts?type=secondary');
     },
+    getDefaultShortcuts() {
+        return request.get('/shortcuts/default');
+    },
+    bindDefaultShortcuts(keys) {
+        return request.post('/shortcut/default', {
+            keys: keys
+        });
+    }
 };

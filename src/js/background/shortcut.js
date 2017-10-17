@@ -1,4 +1,4 @@
-import client from './client.js';
+import client from '../client.js';
 import common from '../common.js';
 
 window.primaryShortcuts = {};
