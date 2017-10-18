@@ -58,11 +58,12 @@
             </p>
 
             <p class="subtitle">
-                Now you can use <span class="tour-shortcut">ALT + G</span> to open Google instantly.
+                Now you can use <span class="tour-shortcut">ALT + G</span>
                 <span data-balloon="ALT is the combination key for all shortcut"
                       data-balloon-pos="up">
                     <img src="dist/img/info-grey.svg" alt="info">
                 </span>
+                to open Google instantly.
             </p>
             <!--<div>(You'll forward to next step automatically after you trigger the shortcut)</div>-->
 
@@ -84,11 +85,11 @@
             </p>
 
             <p class="subtitle">
-                Now you can use <span class="tour-shortcut">ALT + G + I</span> to open Google Inbox instantly.
+                Now you can use <span class="tour-shortcut">ALT + G + I</span>
                 <span data-balloon="ALT is the combination key, 'G' stands for primary shortcut 'G' which linked to Google."
                       data-balloon-pos="up">
                     <img src="dist/img/info-grey.svg" alt="info">
-                </span>
+                </span> to open Google Inbox instantly.
             </p>
 
             <div>
@@ -104,32 +105,36 @@
                 Here are some most frequently visited websites in the world which are worth linking with the
                 shortcut!
             </p>
-            <ul :class="{disable:done}" class="default-shortcut-list">
-                <li v-for="shortcut in defaultShortcuts">
-                    <div class="default-shortcut-list-item" @click="shortcut.active=!shortcut.active">
-                        <div style="max-width: 40%;min-width: 40%;">
-                            <div style="display: flex;align-items: center;">
-                                <img class="default-shortcut-favicon" :src="shortcut.favicon" alt="">
-                                <span class="default-shortcut-name">{{ shortcut.comment }}</span>
-                            </div>
+            <div style="position: relative;">
+                <ul :class="{disable:done}" class="default-shortcut-list">
+                    <li v-for="shortcut in defaultShortcuts">
+                        <div class="default-shortcut-list-item" @click="shortcut.active=!shortcut.active">
+                            <div style="max-width: 40%;min-width: 40%;">
+                                <div style="display: flex;align-items: center;">
+                                    <img class="default-shortcut-favicon" :src="shortcut.favicon" alt="">
+                                    <span class="default-shortcut-name">{{ shortcut.comment }}</span>
+                                </div>
 
-                            <div class="default-shortcut-url">
-                                {{ shortcut.url }}
+                                <div class="default-shortcut-url">
+                                    {{ shortcut.url }}
+                                </div>
                             </div>
+                            link to
+                            <div class="default-shortcut-key">
+                                ALT + {{ shortcut.key }}
+                            </div>
+                            <input type="checkbox" v-model="shortcut.active">
                         </div>
-                        link to
-                        <div class="default-shortcut-key">
-                            ALT + {{ shortcut.key }}
-                        </div>
-                        <input type="checkbox" v-model="shortcut.active">
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+                <div v-if="done" class="default-shortcut-linked-success">
+                    <img src="dist/img/success-blue.svg" alt="">
+                    You were linked those websites!
+                </div>
+            </div>
 
             <p v-if="done" style="margin: 30px 0;">
-                You were linked those websites! We believe Anyshortcut can boost your productivity, and you will
-                enjoy
-                it!
+                We believe Anyshortcut can boost your productivity, you will enjoy it!
             </p>
             <div class="tour-button" style="margin: 30px 0;"
                  @click="bindDefaultShortcuts" v-else>

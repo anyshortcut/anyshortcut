@@ -48,12 +48,13 @@ div#app {
   }
 
   &.full-width {
+    box-shadow: 0 1px 60px rgba(0, 0, 0, 0.2);
     width: 100%;
   }
 }
 
 section {
-  margin: 0 15px;
+  margin: 0 35px;
   max-width: 650px;
   text-align: center;
   color: #8E8E8E;
@@ -77,17 +78,20 @@ section {
     font-size: 16px;
     line-height: 1.8;
     margin: 10px 0;
+    text-align: left;
   }
 
 }
 
 .step-indicator {
-  margin: 10px;
+  margin: 0;
   padding: 0;
   text-align: center;
   vertical-align: middle;
-  display: flex;
-  flex-direction: column;
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  margin-left: -44px;
 
   li {
     display: inline-block;
@@ -239,7 +243,28 @@ section {
   }
 }
 
+.default-shortcut-linked-success {
+  height: 100px;
+  width: 75%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 10;
+  text-align: center;
+  color: #2b72dc;
+  font-size: 20px;
+  background: #ffffff;
+
+  img {
+    display: block;
+    margin: 10px auto;
+  }
+}
+
 .disable {
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.3;
 }
