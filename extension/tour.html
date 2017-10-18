@@ -106,7 +106,7 @@
             </p>
             <ul :class="{disable:done}" class="default-shortcut-list">
                 <li v-for="shortcut in defaultShortcuts">
-                    <div class="default-shortcut-list-item">
+                    <div class="default-shortcut-list-item" @click="shortcut.active=!shortcut.active">
                         <div style="max-width: 40%;min-width: 40%;">
                             <div style="display: flex;align-items: center;">
                                 <img class="default-shortcut-favicon" :src="shortcut.favicon" alt="">

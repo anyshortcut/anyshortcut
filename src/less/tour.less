@@ -178,9 +178,21 @@ section {
   margin: 15px;
   box-shadow: @box-shadow-base;
   list-style: none;
-  max-height: 800px;
-  overflow: scroll;
+  min-height: 445px;
+  max-height: 445px;
+  overflow-y: scroll;
   border-radius: 5px;
+  position: relative;
+
+  //&:after {
+  //  content: "\21A1";
+  //  padding: 10px;
+  //  position: absolute;
+  //  bottom: 0;
+  //  left: 0;
+  //  right: 0;
+  //  background-image: linear-gradient(-180deg,hsla(0,0%,100%,.4),hsla(0,0%,100%,.8) 50%,#fff 100%,#fff 0);
+  //}
 
   .default-shortcut-list-item {
     display: flex;
