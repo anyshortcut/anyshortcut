@@ -95,11 +95,6 @@ function cleanUp() {
 
 export default {
     onKeyUp(event) {
-        if (helper.isActiveElementEditable()) {
-            cleanUp();
-            return;
-        }
-
         event = helper.ensureWindowEvent(event);
         if (!helper.isValidKeyEvent(event)) {
             // Ignore invalid key event
@@ -115,11 +110,6 @@ export default {
         triggerShortcut();
     },
     onKeyDown(event) {
-        if (helper.isActiveElementEditable()) {
-            cleanUp();
-            return;
-        }
-
         event = helper.ensureWindowEvent(event);
         if (!helper.isValidKeyEvent(event)) {
             // Ignore invalid key event
