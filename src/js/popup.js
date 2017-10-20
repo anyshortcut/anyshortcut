@@ -45,11 +45,17 @@ let app = new Vue({
             }
 
             this.loading = true;
-            bindFunction(keyChar, comment, (result, shortcut) => {
-                this.onPostBind(result);
-                if (result) {
-                    this.$background.notifyActiveTabShortcutBindSuccess(shortcut);
+            chrome.tabs.get(this.$background.activeTab.id, tab => {
+                if (tab) {
+                    this.$background.activeTab = tab;
                 }
+
+                bindFunction(keyChar, comment, (result, shortcut) => {
+                    this.onPostBind(result);
+                    if (result) {
+                        this.$background.notifyActiveTabShortcutBindSuccess(shortcut);
+                    }
+                });
             });
         },
         unbindShortcut: function(shortcut) {
