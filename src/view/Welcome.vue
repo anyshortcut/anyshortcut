@@ -2,7 +2,6 @@
     <main>
         <a class="anyshortcut" href="https://anyshortcut.com" target="_blank">
             <img class="brand-logo" alt="">
-            <span>anyshortcut</span>
         </a>
         <img class="balloon-image" src="../img/computer-and-balloons.svg" alt="">
         <div class="introduction">

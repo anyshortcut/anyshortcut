@@ -4,7 +4,6 @@
         <header class="main-header">
             <a class="brand" href="https://anyshortcut.com" target="_blank">
                 <img class="brand-logo" alt="">
-                <span>anyshortcut</span>
             </a>
             <a href="#/setting" class="menu">Settings</a>
         </header>
@@ -25,7 +24,6 @@
         <header class="main-header">
             <a class="brand" href="https://anyshortcut.com" target="_blank">
                 <img class="brand-logo" alt="">
-                <span>anyshortcut</span>
             </a>
         </header>
         <p>
