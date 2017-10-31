@@ -84,6 +84,8 @@ function triggerShortcut() {
                 }, helper.delayTime);
             }
         }
+    } else {
+        cleanUp();
     }
 }
 
@@ -113,6 +115,7 @@ export default {
         event = helper.ensureWindowEvent(event);
         if (!helper.isValidKeyEvent(event)) {
             // Ignore invalid key event
+            cleanUp();
             return;
         }
 
