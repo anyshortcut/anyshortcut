@@ -1,7 +1,7 @@
 {
   "name": "Spruce",
   "version": "1.0.0",
-  "description": "A chrome extesion which help you bind a shortcut for any url!",
+  "description": "A productive browser plugin to help you open your frequently visited websites instantly.",
   "main": "index.js",
   "repository": {
     "type": "git",
