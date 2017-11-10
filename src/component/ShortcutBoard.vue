@@ -5,7 +5,7 @@
 
         <div class="shortcut-bound" v-if="shortcut">
             <a class="shortcut-comment-link" :href="shortcut.url" target="_blank" style="margin: 4px;">
-                <span><img class="shortcut-favicon" :src="shortcut.favicon"/></span>
+                <img class="shortcut-favicon" :src="shortcut.favicon"/>
                 {{ shortcut.comment }}
             </a>
             <div class="shortcut-delete-button"

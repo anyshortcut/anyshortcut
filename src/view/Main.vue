@@ -27,7 +27,7 @@
             </a>
         </header>
         <p>
-            For technical reasons, we currently do not support bind shortcut or click shortcut on this page.
+            For technical reasons, we currently do not support set shortcut or trigger shortcut on this page.
         </p>
     </div>
 </template>

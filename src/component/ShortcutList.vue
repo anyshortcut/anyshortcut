@@ -36,7 +36,7 @@
         border-width: 0;
         border-bottom-width: 1px;
         border-style: solid;
-        padding: 5px 10px;
+        padding: 8px 10px;
         font-size: 14px;
 
         &:hover {
