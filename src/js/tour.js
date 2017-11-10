@@ -1,11 +1,15 @@
+require('../less/tour.less');
+
 import Vue from "vue";
 import common from "./common.js";
 import client from "./client.js";
 import config from "./config.js";
 import ga from "./mixin-ga.js";
 import helper from './script/helper.js';
+import Raven from "raven-js";
+import RavenVue from 'raven-js/plugins/vue';
 
-require('../less/tour.less');
+Raven.config('https://0aa6274679824a129c33c2cc4ae0d22b@sentry.io/144189').addPlugin(RavenVue, Vue).install();
 
 let $background = chrome.extension.getBackgroundPage();
 let authenticated = $background.authenticated;

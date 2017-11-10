@@ -7,6 +7,11 @@ import PreferenceView from "../view/Preferences.vue";
 import Toast from "../component/toast.js";
 import Bus from "./vue-bus.js";
 
+import Raven from "raven-js";
+import RavenVue from 'raven-js/plugins/vue';
+
+Raven.config('https://0aa6274679824a129c33c2cc4ae0d22b@sentry.io/144189').addPlugin(RavenVue, Vue).install();
+
 Vue.prototype.$toast = Toast;
 Vue.prototype.$background = chrome.extension.getBackgroundPage();
 
