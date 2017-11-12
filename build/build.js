@@ -32,6 +32,7 @@ fs.readFile('./build/manifest.json', (error, data) => {
     const manifest = JSON.parse(data);
 
     manifest['name'] = config.env.name;
+    manifest['version'] = config.env.version;
     manifest['key'] = config.env.manifestKey;
 
     fs.writeFile('./extension/manifest.json', JSON.stringify(manifest), error => {

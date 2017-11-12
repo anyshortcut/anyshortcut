@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Anyshortcut",
   "description": "__MSG_extension_description__",
-  "version": "1.6.0",
+  "version": "",
   "default_locale": "en",
   "browser_action": {
     "default_icon": {
