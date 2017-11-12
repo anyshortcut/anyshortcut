@@ -14,3 +14,5 @@ chrome.runtime.onInstalled.addListener((installReason, previousVersion) => {
         });
     }
 });
+
+chrome.runtime.setUninstallURL(config.baseURL + '/goodbye');
