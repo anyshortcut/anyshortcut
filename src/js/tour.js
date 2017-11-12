@@ -1,4 +1,7 @@
 require('../less/tour.less');
+// .jpg file cannot handle by file-loader, bug?
+require('../img/2.jpg');
+require('../img/3.jpg');
 
 import Vue from "vue";
 import common from "./common.js";
