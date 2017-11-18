@@ -1,6 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
+
 const utils = require('./utils');
 const config = require('./config');
 const extractLess = new ExtractTextPlugin({
@@ -27,6 +29,14 @@ module.exports = {
     },
     module: {
         rules: [
+            {
+                test: /\.js$/,
+                loader: 'babel-loader',
+                include: [path.resolve(__dirname, '../src')],
+                options: {
+                    presets: ['es2015']
+                }
+            },
             {
                 // use vue-loader for *.vue files
                 test: /\.vue$/,
@@ -83,6 +93,21 @@ module.exports = {
             'BUILD_DEBUG': JSON.stringify(config.env.debug),
             'BUILD_SCHEMA': JSON.stringify(config.env.schema),
             'BUILD_DOMAIN': JSON.stringify(config.env.domain),
+        }),
+        // new UglifyJSPlugin({
+        new webpack.optimize.UglifyJsPlugin({
+            ie8: false,
+            compress: {
+                warnings: true,
+            },
+            sourceMap: config.isProduction
+        }),
+        // Compress extracted CSS. We are using this plugin so that possible
+        // duplicated CSS from different components can be deduped.
+        new OptimizeCSSPlugin({
+            cssProcessorOptions: {
+                safe: true
+            }
         }),
         extractLess,
     ]
