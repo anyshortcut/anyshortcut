@@ -58,17 +58,20 @@ const app = new Vue({
                 this.done = true;
             });
         },
+        /**
+         * Initialize to determine which step current tour should be.
+         */
+        initialize() {
+            app.currentStep = 2;
+
+            client.getDefaultShortcuts().then(data => {
+                app.defaultShortcuts = data;
+            });
+        }
     },
     mixins: [ga],
 });
 
-
-chrome.runtime.onMessageExternal.addListener(function(message, sender, sendResponse) {
-    app.currentStep = 2;
-    client.getDefaultShortcuts().then(data => {
-        app.defaultShortcuts = data;
-    });
-});
 
 const EMPTY_KEY = {
     keyCode: 0,
@@ -158,3 +161,17 @@ function cleanUp() {
 
 document.addEventListener('keyup', monitorKeyUp, false);
 document.addEventListener('keydown', monitorKeyDown, false);
+
+window.addEventListener('storage', event => {
+    // A storage event fired because of localStorage value changed.
+    // Here we can detect user info has synced success.
+    if (event.storageArea['user']) {
+        app.initialize();
+    }
+});
+
+chrome.runtime.onMessageExternal.addListener(function(message, sender, sendResponse) {
+    if (message.authenticated) {
+        app.initialize();
+    }
+});

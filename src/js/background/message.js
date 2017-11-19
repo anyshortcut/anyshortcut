@@ -7,16 +7,19 @@ const subscription = {
     endAt: null,
 };
 
-window.authenticated = false;
-
 syncUserInfo();
 
 function syncUserInfo() {
+    // Clear previous user data
+    localStorage.removeItem('user');
+    window.authenticated = false;
+
     client.getUserInfo().then(response => {
         if (response) {
             window.authenticated = true;
             window.subscriptionStatus = subscription.status = response.subscription_status;
             window.subscriptionEndAt = subscription.endAt = response.subscription_end_at;
+            localStorage.setItem('user', JSON.stringify(response));
 
             window.syncAllShortcuts();
 
@@ -24,7 +27,6 @@ function syncUserInfo() {
             common.iterateAllWindowTabs(tabId => {
                 chrome.tabs.sendMessage(tabId, {authenticated: true});
             });
-            localStorage.setItem('user', JSON.stringify(response));
         }
     });
 }
