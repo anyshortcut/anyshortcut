@@ -60,16 +60,14 @@ const app = new Vue({
         },
     },
     mixins: [ga],
-    created() {
-        client.getDefaultShortcuts().then(data => {
-            this.defaultShortcuts = data;
-        });
-    },
 });
 
 
 chrome.runtime.onMessageExternal.addListener(function(message, sender, sendResponse) {
     app.currentStep = 2;
+    client.getDefaultShortcuts().then(data => {
+        app.defaultShortcuts = data;
+    });
 });
 
 const EMPTY_KEY = {
