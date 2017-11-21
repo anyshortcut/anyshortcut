@@ -11,6 +11,8 @@ document.addEventListener("DOMContentLoaded", event => {
             if (response.showCircle) {
                 circle.injectCircle()
             }
+            // Store current primary shortcut delay state.
+            window.delay = response.delay;
         } else {
             unregisterKeyEvents();
         }

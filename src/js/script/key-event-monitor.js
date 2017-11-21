@@ -79,9 +79,10 @@ function triggerShortcut() {
             if (secondKey.pressedAt && secondKey.releasedAt) {
                 triggerQueryShortcut(firstKey.keyCodeChar, secondKey.keyCodeChar);
             } else {
+                // Don't delay if there are no secondary shortcuts
                 triggerTimeoutId = window.setTimeout(function() {
                     triggerPrimaryShortcut(firstKey.keyCodeChar);
-                }, helper.delayTime);
+                }, window.delay ? helper.delayTime : 0);
             }
         }
     } else {

@@ -63,6 +63,8 @@ function onMessageReceiver(message, sender, sendResponse) {
             expired: checkSubscriptionExpired(),
             status: subscription.status,
             showCircle: showCircle,
+            // Whether trigger primary shortcut delay
+            delay: Object.keys(window.secondaryShortcuts).length > 0,
         });
         return true;
     }
