@@ -3,45 +3,45 @@
 @modal-z-index: 999999999;
 
 .anyshortcut-modal {
-  box-sizing: border-box;
-  display: flex;
-  justify-content: center;
-  align-items: start;
-  position: fixed;
-  margin: 0 auto;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  z-index: (@modal-z-index - 1);
+  box-sizing: border-box !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: start !important;
+  position: fixed !important;
+  margin: 0 auto !important;
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 0 !important;
+  z-index: (@modal-z-index - 1) !important;
 
   ul {
-    list-style: none outside;
-    margin: auto;
-    padding: 0;
+    list-style: none outside !important;
+    margin: auto !important;
+    padding: 0 !important;
   }
 }
 
 .anyshortcut-modal-container {
-  width: 480px;
-  font-family: "Poppins", sans-serif;
-  display: flex;
-  flex-direction: column;
-  color: #515151;
-  margin-top: 80px;
-  background: white;
-  border-radius: 5px;
-  z-index: @modal-z-index;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, .12), 0 4px 6px rgba(0, 0, 0, .12);
+  width: 480px !important;
+  font-family: "Poppins", sans-serif !important;
+  display: flex !important;
+  flex-direction: column !important;
+  color: #515151 !important;
+  margin-top: 80px !important;
+  background: white !important;
+  border-radius: 5px !important;
+  z-index: @modal-z-index !important;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, .12), 0 4px 6px rgba(0, 0, 0, .12) !important;
 }
 
 .anyshortcut-modal-header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px;
-  border-radius: 5px 5px 0 0;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 5px !important;
+  border-radius: 5px 5px 0 0 !important;
 }
 
 .anyshortcut-modal-close {
@@ -49,26 +49,26 @@
 }
 
 .anyshortcut-modal-content {
-  padding: 10px 20px 20px;
-  font-size: 18px;
-  text-align: center;
+  padding: 10px 20px 20px !important;
+  font-size: 18px !important;
+  text-align: center !important;
 }
 
 .anyshortcut-favicon {
   .shortcut-favicon;
-  margin: 0 5px;
+  margin: 0 5px !important;
 }
 
 .anyshortcut-shortcut {
   .shortcut;
-  font-size: 15px;
+  font-size: 15px !important;
 }
 
 .anyshortcut-secondary-shortcut {
   .anyshortcut-shortcut;
-  margin-right: 15px;
-  width: 32px;
-  letter-spacing: 0.6px;
+  margin-right: 15px !important;
+  width: 32px !important;
+  letter-spacing: 0.6px !important;
 }
 
 .anyshortcut-shortcut-list {
@@ -76,122 +76,122 @@
 }
 
 .anyshortcut-shortcut-item {
-  display: flex;
-  align-items: center;
-  border-color: #f4f4f4;
-  border-width: 0;
-  border-bottom-width: 1px;
-  border-style: solid;
-  font-size: 14px;
-  padding: 8px 10px;
+  display: flex !important;
+  align-items: center !important;
+  border-color: #f4f4f4 !important;
+  border-width: 0 !important;
+  border-bottom-width: 1px !important;
+  border-style: solid !important;
+  font-size: 14px !important;
+  padding: 8px 10px !important;
 
   &:hover {
-    background: #f8f8f8;
+    background: #f8f8f8 !important;
   }
 
   &:last-child {
-    border-width: 0;
+    border-width: 0 !important;
   }
 
   a {
     .overflow-ellipsis;
-    display: flex;
-    align-items: center;
+    display: flex !important;
+    align-items: center !important;
 
-    position: relative;
-    text-align: left;
-    width: 100%;
-    margin: 0;
+    position: relative !important;
+    text-align: left !important;
+    width: 100% !important;
+    margin: 0 !important;
     text-decoration: none !important;
-    outline: none;
-    color: @secondary-color;
+    outline: none !important;
+    color: @secondary-color !important;
 
     &:focus, &:active, &:visited, &:hover {
-      color: @secondary-color;
+      color: @secondary-color !important;
     }
   }
 }
 
 .anyshortcut-text-description {
-  color: #8E8E8E;
-  font-size: 14px;
+  color: #8E8E8E !important;
+  font-size: 14px !important;
 
   ul li {
-    margin: 5px 0;
+    margin: 5px 0 !important;
   }
 }
 
 .anyshortcut-small-description {
-  color: #8E8E8E;
-  margin: auto;
-  font-size: 12px;
+  color: #8E8E8E !important;
+  margin: auto !important;
+  font-size: 12px !important;
 }
 
 .anyshortcut-subscribe-button {
-  text-decoration: none;
-  background-color: #DD4814;
-  color: white;
-  border-radius: 4px;
-  padding: 5px 20px;
+  text-decoration: none !important;
+  background-color: #DD4814 !important;
+  color: white !important;
+  border-radius: 4px !important;
+  padding: 4px 25px !important;
 
   &:hover {
-    color: hsl(0, 0%, 92%);
-    background-color: hsl(12, 82%, 60%);
+    color: hsl(0, 0%, 92%) !important;
+    background-color: hsl(12, 82%, 60%) !important;
   }
 }
 
 .anyshortcut-circle {
   position: fixed;
-  left: 15px;
-  bottom: 15px;
-  width: 40px;
-  height: 40px;
-  background-color: @primary-color;
-  box-shadow: @box-shadow-dark;
-  border-radius: 50% 50%;
-  cursor: pointer;
-  z-index: (@modal-z-index - 1);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  opacity: 0.3;
+  left: 15px !important;
+  bottom: 15px !important;
+  width: 40px !important;
+  height: 40px !important;
+  background-color: @primary-color !important;
+  box-shadow: @box-shadow-dark !important;
+  border-radius: 50% 50% !important;
+  cursor: pointer !important;
+  z-index: (@modal-z-index - 1) !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  opacity: 0.3 !important;
 
   .anyshortcut-circle-icon {
-    width: 30px;
-    height: 30px;
-    content: url("chrome-extension://__MSG_@@extension_id__/icon/icon32.png");
+    width: 30px !important;
+    height: 30px !important;
+    content: url("chrome-extension://__MSG_@@extension_id__/icon/icon32.png") !important;
   }
   .anyshortcut-circle-close {
-    width: 15px;
-    height: 15px;
-    content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAIVBMVEUAAAD///////////////////////////////////8AAADPn83rAAAACXRSTlMACq47u/I8r7wWzHxoAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAJJJREFUGNNdzzEKhDAQBdAvwtYWW9hbbSdCDrBnWBDS2Sx7A8HSKwgic1tNxj/jmirDC5P/UTSw01V4ri2nMr7xkg/HIAu+Qi6j9HhEcpB1gHFGGCuSTyQTlQ2Vg3ic4x49TVpzwcQXvI+3x/+r0p9eLAfyYhrIWNOSmfZkVlH2Kpm9Z+bJeh68oSYmnlGMnv1X7RZ2SET5id+LAAAAAElFTkSuQmCC");
+    width: 15px !important;
+    height: 15px !important;
+    content: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABwAAAAcBAMAAACAI8KnAAAABGdBTUEAALGPC/xhBQAAACBjSFJNAAB6JgAAgIQAAPoAAACA6AAAdTAAAOpgAAA6mAAAF3CculE8AAAAIVBMVEUAAAD///////////////////////////////////8AAADPn83rAAAACXRSTlMACq47u/I8r7wWzHxoAAAAAWJLR0QAiAUdSAAAAAlwSFlzAAALEgAACxIB0t1+/AAAAJJJREFUGNNdzzEKhDAQBdAvwtYWW9hbbSdCDrBnWBDS2Sx7A8HSKwgic1tNxj/jmirDC5P/UTSw01V4ri2nMr7xkg/HIAu+Qi6j9HhEcpB1gHFGGCuSTyQTlQ2Vg3ic4x49TVpzwcQXvI+3x/+r0p9eLAfyYhrIWNOSmfZkVlH2Kpm9Z+bJeh68oSYmnlGMnv1X7RZ2SET5id+LAAAAAElFTkSuQmCC") !important;
   }
 
   &:hover {
-    opacity: 1;
+    opacity: 1 !important;
   }
 }
 
 .anyshortcut-popup {
-  box-sizing: border-box;
-  position: fixed;
-  left: 15px;
-  bottom: 65px;
-  width: 350px;
-  display: flex;
-  flex-direction: column;
-  font-family: "Poppins", sans-serif;
-  padding: 10px;
-  background-color: #FFFFFF;
-  box-shadow: @box-shadow-dark;
-  border-radius: 5px;
-  text-align: center;
-  z-index: (@modal-z-index - 1);
+  box-sizing: border-box !important;
+  position: fixed !important;
+  left: 15px !important;
+  bottom: 65px !important;
+  width: 350px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  font-family: "Poppins", sans-serif !important;
+  padding: 10px !important;
+  background-color: #FFFFFF !important;
+  box-shadow: @box-shadow-dark !important;
+  border-radius: 5px !important;
+  text-align: center !important;
+  z-index: (@modal-z-index - 1) !important;
 
   ul {
-    list-style: none outside;
-    margin: 0;
-    padding: 0;
+    list-style: none outside !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 }
 
