@@ -68,11 +68,9 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
  * Trigger shortcut.
  */
 function triggerShortcut() {
-    if (triggerTimeoutId) {
-        // Clear previous session timeout if existed
-        window.clearTimeout(triggerTimeoutId);
-        triggerTimeoutId = null;
-    }
+    // Clear trigger timeout here to fix this bug:
+    // ALT + G + I show ALT + G + I, then show ALT + null
+    clearTriggerTimeout();
 
     if (firstKey.pressedAt && firstKey.releasedAt) {
         if (helper.withAltModifier(firstKey)) {
@@ -87,6 +85,14 @@ function triggerShortcut() {
         }
     } else {
         cleanUp();
+    }
+}
+
+function clearTriggerTimeout() {
+    if (triggerTimeoutId) {
+        // Clear previous session timeout if existed
+        window.clearTimeout(triggerTimeoutId);
+        triggerTimeoutId = null;
     }
 }
 
@@ -124,6 +130,9 @@ export default {
         if (event.repeat) {
             return;
         }
+
+        // Clear trigger timeout here to reduce two keys shortcut and primary shortcut trigger delay time
+        clearTriggerTimeout();
 
         let keyCode = event.keyCode;
         let pressedKey = {
