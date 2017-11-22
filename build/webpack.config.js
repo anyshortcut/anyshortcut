@@ -94,13 +94,19 @@ module.exports = {
             'BUILD_SCHEMA': JSON.stringify(config.env.schema),
             'BUILD_DOMAIN': JSON.stringify(config.env.domain),
         }),
+        extractLess,
+    ]
+};
+
+if (!config.env.debug) {
+    const optimizePlugins = [
         // new UglifyJSPlugin({
         new webpack.optimize.UglifyJsPlugin({
             ie8: false,
             compress: {
                 warnings: true,
             },
-            sourceMap: config.isProduction
+            sourceMap: false,
         }),
         // Compress extracted CSS. We are using this plugin so that possible
         // duplicated CSS from different components can be deduped.
@@ -109,6 +115,6 @@ module.exports = {
                 safe: true
             }
         }),
-        extractLess,
-    ]
-};
+    ];
+    module.exports.plugins.push(...optimizePlugins);
+}
