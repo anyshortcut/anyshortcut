@@ -2,6 +2,7 @@ import utils from "./utils.js";
 import helper from "./helper.js";
 
 let popup = null;
+let circle = null;
 
 function buildCircle() {
     let circle = utils.createDiv('anyshortcut-circle');
@@ -12,7 +13,8 @@ function buildCircle() {
     return circle;
 }
 
-function showShortcutPopup(shortcuts) {
+function showShortcutPopup() {
+    // List latest secondary shortcut at each shortcut popup show time
     chrome.runtime.sendMessage({
         listSecondary: true, url: location.href
     }, response => {
@@ -26,7 +28,14 @@ function showShortcutPopup(shortcuts) {
                 {shortcuts: response.shortcuts}
             );
         }
+        // Stop popup click event propagation to document.
+        popup.addEventListener('click', event => {
+            event.stopPropagation();
+        });
         document.body.insertAdjacentElement('beforeBegin', popup);
+
+        circle.firstChild.classList.remove('anyshortcut-circle-icon');
+        circle.firstChild.classList.add('anyshortcut-circle-close');
     });
 }
 
@@ -34,6 +43,8 @@ function hideShortcutPopup() {
     if (popup) {
         popup.remove();
         popup = null;
+        circle.firstChild.classList.add('anyshortcut-circle-icon');
+        circle.firstChild.classList.remove('anyshortcut-circle-close');
     }
 }
 
@@ -57,20 +68,19 @@ export default {
                 }
             });
 
-            let circle = buildCircle();
+            circle = buildCircle();
             circle.onclick = (event) => {
                 if (popup) {
-                    circle.firstChild.classList.add('anyshortcut-circle-icon');
-                    circle.firstChild.classList.remove('anyshortcut-circle-close');
                     hideShortcutPopup();
                 } else {
-                    circle.firstChild.classList.remove('anyshortcut-circle-icon');
-                    circle.firstChild.classList.add('anyshortcut-circle-close');
-                    showShortcutPopup(shortcuts);
+                    showShortcutPopup();
                 }
             };
 
             document.body.insertAdjacentElement('beforeBegin', circle);
+
+            // Auto hide shortcut popup when user click outside of popup.
+            document.addEventListener('click', hideShortcutPopup);
         });
     },
 };
