@@ -65,8 +65,15 @@ export default {
         return Object.keys(obj).length === 0 && obj.constructor === Object
     },
     openPopupWindow(url) {
-        let width = 700, height = 600;
-        let windowFeatures = `width=${width},height=${height},resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no`;
+        let width = 450, height = 600;
+        let screenLeft = window.screenLeft ? window.screenLeft : screen.left,
+            screenTop = window.screenTop ? window.screenTop : screen.top,
+            innerWidth = window.innerWidth,
+            innerHeight = window.innerHeight,
+            left = parseInt(innerWidth / 2 - width / 2 + screenLeft),
+            top = parseInt(innerHeight / 2 - height / 2 + screenTop);
+        let windowFeatures = `width=${width},height=${height},top=${top},left=${left},
+        resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no`;
         let authWindow = window.open(url, 'AnyShortcut', windowFeatures);
         authWindow.focus && authWindow.focus();
     }
