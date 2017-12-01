@@ -34,6 +34,7 @@
                  :class="keyClass(key)"
                  class="key">{{ key }}
             </div>
+            <div class="key slide-key invisible" v-visible="slideKeyVisibility"></div>
             <div class="key slide-key double-size lowercase invisible"
                  v-visible="slideKeyVisibility">
             </div>

@@ -69,7 +69,13 @@
                 this.show();
 
                 new Popper(target, this.$el, {
-                    placement: "top"
+                    placement: "top",
+                    modifiers: {
+                        preventOverflow: {
+                            // The default boundaries element is 'scrollParent', we should change to 'window'.
+                            boundariesElement: 'window',
+                        }
+                    }
                 });
             },
         },
