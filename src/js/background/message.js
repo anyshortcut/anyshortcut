@@ -17,9 +17,9 @@ function syncUserInfo() {
     client.getUserInfo().then(response => {
         if (response) {
             window.authenticated = true;
-            window.subscriptionStatus = subscription.status = response.subscription_status;
-            window.subscriptionEndAt = subscription.endAt = response.subscription_end_at;
-            localStorage.setItem('user', JSON.stringify(response));
+            window.subscriptionStatus = subscription.status = response.subscription.status;
+            window.subscriptionEndAt = subscription.endAt = response.subscription.end_at;
+            localStorage.setItem('user', JSON.stringify(response.user));
 
             window.syncAllShortcuts();
 

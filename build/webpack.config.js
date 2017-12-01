@@ -105,8 +105,12 @@ if (!config.env.debug) {
             ie8: false,
             compress: {
                 warnings: true,
+                // Pure console.log statements
+                pure_funcs: ['console.log'],
             },
             sourceMap: false,
+            // Eliminate comments
+            comments: false,
         }),
         // Compress extracted CSS. We are using this plugin so that possible
         // duplicated CSS from different components can be deduped.
