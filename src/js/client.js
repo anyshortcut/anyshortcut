@@ -30,14 +30,14 @@ export default {
     increaseShortcutOpenTimes(id) {
         return request.put(`/shortcut/${id}/times`);
     },
-    /**
-     * Get all shortcut data from server
-     */
     getPrimaryShortcuts() {
         return request.get('/shortcuts?type=primary');
     },
     getSecondaryShortcuts() {
         return request.get('/shortcuts?type=secondary');
+    },
+    getCompoundShortcuts() {
+        return request.get('/shortcuts?type=compound');
     },
     getDefaultShortcuts() {
         return request.get('/shortcuts/default');

@@ -26,9 +26,18 @@ window.syncAllShortcuts = function() {
     client.getPrimaryShortcuts().then(shortcuts => {
         shortcuts = shortcuts || [];
         shortcuts.forEach(item => {
-            Object.assign(primaryShortcuts, item)
+            Object.assign(primaryShortcuts, item);
         });
         console.log('primary:', primaryShortcuts);
+    }).catch(error => {
+        console.log(error);
+    });
+
+    client.getCompoundShortcuts().then(shortcuts => {
+        shortcuts.forEach(item => {
+            Object.assign(primaryShortcuts, item);
+        });
+        console.log('compound:', shortcuts);
     }).catch(error => {
         console.log(error);
     });
