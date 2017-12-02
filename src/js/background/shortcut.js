@@ -20,6 +20,17 @@ window.getBoundDomainByHostname = function(hostname) {
 };
 
 /**
+ * Assign nested shortcut into shortcuts.
+ * @param shortcuts
+ * @param shortcut
+ */
+window.assignShortcut = function(shortcuts, shortcut) {
+    const nestedShortcut = {};
+    nestedShortcut[shortcut.key] = shortcut;
+    Object.assign(shortcuts, nestedShortcut);
+};
+
+/**
  * Sync all shortcuts from server.
  */
 window.syncAllShortcuts = function() {
@@ -28,7 +39,7 @@ window.syncAllShortcuts = function() {
         shortcuts.forEach(item => {
             Object.assign(primaryShortcuts, item);
         });
-        console.log('primary:', primaryShortcuts);
+        console.log('primary:', shortcuts);
     }).catch(error => {
         console.log(error);
     });
@@ -59,10 +70,9 @@ window.bindPrimaryShortcut = function(key, comment, callback) {
         favicon: tab.favIconUrl,
         comment: comment,
         primary: true,
-    }).then(response => {
-        Object.assign(primaryShortcuts, response);
-
-        callback(true, response[key]);
+    }).then(shortcut => {
+        assignShortcut(primaryShortcuts, shortcut);
+        callback(true, shortcut);
     }).catch(error => {
         console.log(error);
         callback(false);
@@ -89,14 +99,14 @@ window.bindSecondaryShortcut = function(key, comment, callback) {
         favicon: tab.favIconUrl,
         comment: comment,
         primary: false,
-    }).then(response => {
-        let domain = response[key]['domain'];
+    }).then(shortcut => {
+        let domain = shortcut['domain'];
         if (!secondaryShortcuts.hasOwnProperty(domain)) {
             secondaryShortcuts[domain] = {}
         }
-        Object.assign(secondaryShortcuts[domain], response);
+        assignShortcut(secondaryShortcuts[domain], shortcut);
 
-        callback(true, response[key]);
+        callback(true, shortcut);
     }).catch(error => {
         console.log(error);
         callback(false);
