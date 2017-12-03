@@ -5,18 +5,22 @@ import circle from './circle.js';
 // Register key events as early as possible.
 registerKeyEvents();
 
-document.addEventListener("DOMContentLoaded", event => {
-    chrome.runtime.sendMessage({info: true, url: location.href}, response => {
-        if (response.authenticated) {
-            if (response.showCircle) {
-                circle.injectCircle()
+chrome.runtime.sendMessage({info: true, url: location.href}, response => {
+    if (response.authenticated) {
+        if (response.showCircle) {
+            if (document.readyState !== "loading") {
+                circle.injectCircle();
+            } else {
+                document.addEventListener("DOMContentLoaded", event => {
+                    circle.injectCircle();
+                });
             }
-            // Store current primary shortcut delay state.
-            window.delay = response.delay;
-        } else {
-            unregisterKeyEvents();
         }
-    });
+        // Store current primary shortcut delay state.
+        window.delay = response.delay;
+    } else {
+        unregisterKeyEvents();
+    }
 });
 
 function registerKeyEvents() {
