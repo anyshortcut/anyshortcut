@@ -62,6 +62,11 @@ export default {
 
                 if (helper.isValidKeyCode(e.keyCode) && helper.withoutAnyModifier(e)) {
                     let keyCodeChar = String.fromCharCode(e.keyCode);
+
+                    if (window.isQueryShortcutChooserShowing && ['1', '2'].includes(keyCodeChar)) {
+                        return;
+                    }
+
                     if (shortcuts.hasOwnProperty(keyCodeChar)) {
                         helper.openShortcut(shortcuts[keyCodeChar], false);
                     }

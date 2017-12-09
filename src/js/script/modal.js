@@ -3,6 +3,9 @@ import helper from "./helper.js";
 import utils from "./utils.js";
 
 let timeoutId = undefined;
+// A global flag indicates whether the query chooser is showing,
+// to prevent query chooser key conflict with secondary shortcut.
+window.isQueryShortcutChooserShowing = false;
 
 function removeElementDelay(element, delay) {
     timeoutId = window.setTimeout(() => {
@@ -10,6 +13,7 @@ function removeElementDelay(element, delay) {
             element.remove();
         }
         timeoutId = undefined;
+        window.isQueryShortcutChooserShowing = false;
     }, delay || 2000);
 }
 
@@ -113,6 +117,7 @@ export default {
             }
         };
         modal.addEventListener('keyup', chooserEventListener);
+        window.isQueryShortcutChooserShowing = true;
     },
     showSubscriptionExpired() {
         openModal(utils.compile(require('%/subscription-expired.html')));
