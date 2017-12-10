@@ -15,14 +15,12 @@ import RavenVue from 'raven-js/plugins/vue';
 Raven.config('https://0aa6274679824a129c33c2cc4ae0d22b@sentry.io/144189').addPlugin(RavenVue, Vue).install();
 
 let $background = chrome.extension.getBackgroundPage();
-let authenticated = $background.authenticated;
-let initStep = authenticated ? 2 : 1;
 
 const app = new Vue({
     el: "#app",
     data: {
-        currentStep: initStep,
-        currentMaxStep: initStep,
+        currentStep: 1,
+        currentMaxStep: 1,
         defaultShortcuts: [],
         done: false,
     },
@@ -62,11 +60,16 @@ const app = new Vue({
          * Initialize to determine which step current tour should be.
          */
         initialize() {
-            app.currentStep = 2;
+            this.currentStep = 2;
 
             client.getDefaultShortcuts().then(data => {
-                app.defaultShortcuts = data;
+                this.defaultShortcuts = data;
             });
+        }
+    },
+    mounted() {
+        if ($background.authenticated) {
+            this.initialize();
         }
     },
     mixins: [ga],
