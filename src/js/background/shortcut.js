@@ -124,7 +124,7 @@ window.removeSecondaryShortcut = function(shortcut, callback) {
             let shortcuts = secondaryShortcuts[domain];
             delete shortcuts[shortcut.key];
 
-            if (Object.keys(shortcuts).length === 0) {
+            if (_.isEmpty(shortcuts)) {
                 // Remove empty secondary shortcut at domain level
                 // TODO However, all content script need reload again to work as latest delay result.
                 delete secondaryShortcuts[domain];

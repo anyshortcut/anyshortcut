@@ -55,15 +55,6 @@ export default {
     isHostnameEndsWithDomain(hostname, domain) {
         return hostname.endsWith(`.${domain}`) || hostname === domain;
     },
-    /**
-     * Check a javascript object empty or not.
-     * @param obj
-     */
-    isObjectEmpty(obj) {
-        // because Object.keys(new Date()).length === 0;
-        // we have to do some additional check
-        return Object.keys(obj).length === 0 && obj.constructor === Object
-    },
     openPopupWindow(url) {
         let width = 450, height = 600;
         let screenLeft = window.screenLeft ? window.screenLeft : screen.left,
