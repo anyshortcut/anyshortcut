@@ -73,15 +73,13 @@ function triggerShortcut() {
     clearTriggerTimeout();
 
     if (firstKey.pressedAt && firstKey.releasedAt) {
-        if (helper.withAltModifier(firstKey)) {
-            if (secondKey.pressedAt && secondKey.releasedAt) {
-                triggerQueryShortcut(firstKey.keyCodeChar, secondKey.keyCodeChar);
-            } else {
-                // Don't delay if there are no secondary shortcuts
-                triggerTimeoutId = window.setTimeout(function() {
-                    triggerPrimaryShortcut(firstKey.keyCodeChar);
-                }, window.delay ? helper.delayTime : 0);
-            }
+        if (secondKey.pressedAt && secondKey.releasedAt) {
+            triggerQueryShortcut(firstKey.keyCodeChar, secondKey.keyCodeChar);
+        } else {
+            // Don't delay if there are no secondary shortcuts
+            triggerTimeoutId = window.setTimeout(function() {
+                triggerPrimaryShortcut(firstKey.keyCodeChar);
+            }, window.delay ? helper.delayTime : 0);
         }
     } else {
         cleanUp();

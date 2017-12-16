@@ -1,6 +1,7 @@
 import client from '../client.js';
 import common from '../common.js';
 import pref from '../prefs.js';
+import _ from "lodash";
 
 const subscription = {
     status: null,
@@ -36,7 +37,7 @@ function syncUserInfo() {
  * @returns {boolean} true expired, otherwise false
  */
 window.checkSubscriptionExpired = function() {
-    return ['active', 'trialing'].lastIndexOf(subscription.status) === -1;
+    return !['active', 'trialing'].includes(subscription.status);
 };
 
 
@@ -44,6 +45,18 @@ function isSecondaryShortcutActivatedUrl(url) {
     let hostname = common.getHostnameFromUrl(url);
     let domain = window.getBoundDomainByHostname(hostname);
     return domain && Object.keys(window.secondaryShortcuts[domain]).length > 0;
+}
+
+/**
+ * Check whether have secondary shortcuts or primary shortcuts have compound shortcut.
+ *
+ * @returns {boolean} true if should delay, flase otherwise
+ */
+function determineDelay() {
+    return Object.keys(window.secondaryShortcuts).length > 0 ||
+        !_.isEmpty(_.pickBy(window.primaryShortcuts, (value, key) => {
+            return key.length === 2;
+        }));
 }
 
 function onMessageReceiver(message, sender, sendResponse) {
@@ -64,7 +77,7 @@ function onMessageReceiver(message, sender, sendResponse) {
             status: subscription.status,
             showCircle: showCircle,
             // Whether trigger primary shortcut delay
-            delay: Object.keys(window.secondaryShortcuts).length > 0,
+            delay: determineDelay(),
         });
         return true;
     }
