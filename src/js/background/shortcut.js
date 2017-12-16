@@ -83,6 +83,9 @@ window.removePrimaryShortcut = function(shortcut, callback) {
     client.unbindShortcut(shortcut.id)
         .then(response => {
             delete primaryShortcuts[shortcut.key];
+
+            // Remove all secondary shortcuts when delete primary shortcut
+            delete secondaryShortcuts[shortcut.domain];
             callback(true);
         }).catch(error => {
         console.log(error);
