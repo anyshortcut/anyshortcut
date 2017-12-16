@@ -161,12 +161,14 @@ window.notifyActiveTabShortcutBindSuccess = function(shortcut) {
             chrome.tabs.sendMessage(window.activeTab.id, {
                 bindSuccess: true,
                 shortcut: shortcut,
+                delay: determineDelay(),
             });
         } else {
             chrome.tabs.sendMessage(window.activeTab.id, {
                 bindSuccess: true,
                 shortcut: shortcut,
                 primaryShortcut: window.getPrimaryShortcutByDomain(shortcut.domain),
+                delay: determineDelay(),
             });
         }
     }

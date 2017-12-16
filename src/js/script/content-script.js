@@ -40,6 +40,8 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
             break;
         }
         case message.bindSuccess: {
+            window.delay = message.delay;
+
             let shortcut = message.shortcut;
             if (shortcut.primary) {
                 modal.showPrimaryShortcutBindSuccess(shortcut);
