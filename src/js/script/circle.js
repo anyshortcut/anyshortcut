@@ -113,6 +113,11 @@ export default {
 
             // Auto hide shortcut popup when user click outside of popup.
             document.addEventListener('click', hideShortcutPopup);
+
+            // Hide circle in iframe
+            if (!helper.isTopWindow()) {
+                circle.classList.add('anyshortcut-circle-hidden');
+            }
         });
     },
 };

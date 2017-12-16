@@ -68,12 +68,18 @@ export default {
         return document.activeElement.isContentEditable
             || ['INPUT', 'TEXTAREA', 'SELECT'].lastIndexOf(document.activeElement.tagName) !== -1;
     },
+    /**
+     * A function to check current window is top window. For example the window would be a iframe window.
+     */
+    isTopWindow() {
+        return window.top === window.self;
+    },
     openShortcut(shortcut, byBlank) {
         let url = shortcut.url;
         if (byBlank) {
             window.open(url);
         } else {
-            location.href = url;
+            window.top.location.href = url;
         }
 
         chrome.runtime.sendMessage({

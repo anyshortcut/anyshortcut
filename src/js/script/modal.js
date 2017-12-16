@@ -25,9 +25,9 @@ function openModal(content) {
     div.innerHTML = content;
 
     let modal = buildModal(div);
-    document.body.insertAdjacentElement('beforeBegin', modal);
+    window.top.document.body.insertAdjacentElement('beforeBegin', modal);
 
-    let closeButton = document.getElementById('anyshortcut-modal-close');
+    let closeButton = window.top.document.getElementById('anyshortcut-modal-close');
     closeButton.onclick = function() {
         window.clearTimeout(timeoutId);
         timeoutId = undefined;
