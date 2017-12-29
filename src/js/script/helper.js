@@ -58,7 +58,8 @@ export default {
      * Check the event key modifier is full valid or not.
      */
     withAltModifier(e) {
-        return e && e.altKey && !e.shiftKey && !e.ctrlKey && !e.metaKey;
+        // Ignore SHIFT key to compact key conflict
+        return e && e.altKey && !e.ctrlKey && !e.metaKey;
     },
     /**
      * A function return whether current active element is a input element or a editable element.
