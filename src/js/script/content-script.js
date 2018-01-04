@@ -36,7 +36,9 @@ function unregisterKeyEvents() {
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     switch (true) {
         case message.authenticated: {
+            window.delay = message.delay;
             registerKeyEvents();
+            console.log('tab message', message);
             break;
         }
         case message.bindSuccess: {

@@ -15,7 +15,6 @@ function syncUserInfo() {
     localStorage.removeItem('user');
     window.authenticated = false;
 
-    window.syncAllShortcuts();
     client.getUserInfo().then(response => {
         if (response) {
             window.authenticated = true;
@@ -23,9 +22,15 @@ function syncUserInfo() {
             window.subscriptionEndAt = subscription.endAt = response.subscription.end_at;
             localStorage.setItem('user', JSON.stringify(response.user));
 
-            // Tell all opened tabs that user has authenticated
-            common.iterateAllWindowTabs(tabId => {
-                chrome.tabs.sendMessage(tabId, {authenticated: true});
+            window.syncAllShortcuts(() => {
+                // Tell all opened tabs that user has authenticated
+                let delay = determineDelay();
+                common.iterateAllWindowTabs(tabId => {
+                    chrome.tabs.sendMessage(tabId, {
+                        authenticated: true,
+                        delay: delay,
+                    });
+                });
             });
         }
     });
@@ -59,6 +64,8 @@ function determineDelay() {
 }
 
 function onMessageReceiver(message, sender, sendResponse) {
+    console.log('message:', message);
+
     if (message.info) {
         let showCircle = false;
         let config = pref.getShowCircleConfig();
@@ -133,8 +140,6 @@ function onMessageReceiver(message, sender, sendResponse) {
             break;
         }
     }
-    console.log('primary:', window.primaryShortcuts);
-    console.log('secondary:', window.secondaryShortcuts);
     //Must return true otherwise sendResponse() not working.
     //More detail see official documentations [chrome.runtime.onMessage()].
     return true;

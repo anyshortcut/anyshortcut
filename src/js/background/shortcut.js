@@ -33,12 +33,15 @@ window.assignShortcut = function(shortcuts, shortcut) {
 /**
  * Sync all shortcuts from server.
  */
-window.syncAllShortcuts = function() {
+window.syncAllShortcuts = function(callback) {
     client.getAllShortcuts().then(data => {
         data.primary.forEach(item => {
             Object.assign(primaryShortcuts, item);
         });
         secondaryShortcuts = data.secondary || {};
+
+        // Callback if exist
+        callback && callback();
 
         console.log('primary:', primaryShortcuts);
         console.log('secondary:', secondaryShortcuts);
