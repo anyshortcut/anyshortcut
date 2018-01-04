@@ -30,14 +30,8 @@ export default {
     increaseShortcutOpenTimes(id) {
         return request.put(`/shortcut/${id}/times`);
     },
-    getPrimaryShortcuts() {
-        return request.get('/shortcuts?type=primary');
-    },
-    getSecondaryShortcuts() {
-        return request.get('/shortcuts?type=secondary');
-    },
-    getCompoundShortcuts() {
-        return request.get('/shortcuts?type=compound');
+    getAllShortcuts() {
+        return request.get('/shortcuts/all');
     },
     getDefaultShortcuts() {
         return request.get('/shortcuts/default');

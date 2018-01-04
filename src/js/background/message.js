@@ -15,14 +15,13 @@ function syncUserInfo() {
     localStorage.removeItem('user');
     window.authenticated = false;
 
+    window.syncAllShortcuts();
     client.getUserInfo().then(response => {
         if (response) {
             window.authenticated = true;
             window.subscriptionStatus = subscription.status = response.subscription.status;
             window.subscriptionEndAt = subscription.endAt = response.subscription.end_at;
             localStorage.setItem('user', JSON.stringify(response.user));
-
-            window.syncAllShortcuts();
 
             // Tell all opened tabs that user has authenticated
             common.iterateAllWindowTabs(tabId => {
