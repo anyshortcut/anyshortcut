@@ -1,30 +1,16 @@
 <template>
     <div>
-        <label for="comment" v-if="primary">
-            <span class="shortcut">
-                ALT + {{ keyChar }}
-            </span>
-            <span v-if="conflictKeys.includes(keyChar)"
-                  data-balloon="May conflict in Windows"
-                  data-balloon-pos="up">
-                    <img src="../img/exclamation.svg" alt="!" style="vertical-align: middle;margin: 0 3px;">
-            </span>
-        </label>
-        <label for="comment" v-else-if="parentKeyChar.length===1">
-            <span class="shortcut">
-            ALT + {{ parentKeyChar }} + {{ keyChar }}
-            </span>
-            <span v-if="conflictKeys.includes(parentKeyChar+keyChar)"
-                  data-balloon="May conflict in Windows"
-                  data-balloon-pos="up">
-                    <img src="../img/exclamation.svg" alt="!" style="vertical-align: middle;margin: 0 3px;">
-            </span>
-        </label>
-        <label for="comment" v-else>
+        <label for="comment" v-if="parentKeyChar && parentKeyChar.length===2">
             <span class="shortcut">
                 {{ keyChar }}
             </span>
             <small>in domain pages</small>
+        </label>
+        <label for="comment" v-else>
+            <shortcut-key
+                    :key-char="keyChar"
+                    :parent-key-char="parentKeyChar">
+            </shortcut-key>
         </label>
 
         <div class="shortcut-bound" v-if="shortcut">
@@ -85,13 +71,13 @@
 </style>
 <script type="es6">
     import common from "../js/common.js";
+    import ShortcutKey from "../component/ShortcutKey.vue";
 
     export default {
         name: 'ShortcutBoard',
         data() {
             return {
                 comment: this.$background.activeTab.title.slice(0, 30),
-                conflictKeys: ['D', 'WE']
             };
         },
         props: {
@@ -113,6 +99,9 @@
                     return null;
                 }
             },
+        },
+        components: {
+            ShortcutKey,
         },
         computed: {
             // Whether is the primary shortcut

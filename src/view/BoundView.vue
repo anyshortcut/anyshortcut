@@ -14,13 +14,14 @@
             <div class="shortcut-info-content">
                 <div class="shortcut-info-item">
                     <label>Shortcut: </label>
-                    <span v-if="shortcut.primary" class="shortcut">
-                        ALT + {{ shortcut.key }}
-                    </span>
+                    <shortcut-key v-if="shortcut.primary"
+                                  :key-char="shortcut.key">
+                    </shortcut-key>
                     <template v-else>
-                        <span class="shortcut" v-if="domainPrimaryShortcut.key.length===1">
-                            ALT + {{ domainPrimaryShortcut.key }} + {{ shortcut.key }}
-                        </span>
+                        <shortcut-key v-if="domainPrimaryShortcut.key.length===1"
+                                      :parent-key-char="domainPrimaryShortcut.key"
+                                      :key-char="shortcut.key">
+                        </shortcut-key>
                         <span v-if="domainPrimaryShortcut.key.length===1"> / </span>
                         <span class="shortcut">{{ shortcut.key }}</span> in domain pages
                     </template>
@@ -162,6 +163,7 @@
 <script type="es6">
     import timeago from "timeago.js";
     import ShortcutList from "../component/ShortcutList.vue";
+    import ShortcutKey from "../component/ShortcutKey.vue";
 
     export default {
         name: 'bound-view',
@@ -189,6 +191,7 @@
         },
         components: {
             ShortcutList,
+            ShortcutKey,
         },
         filters: {
             times: function(times) {
