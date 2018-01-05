@@ -18,7 +18,7 @@
         name: 'ShortcutKey',
         data() {
             return {
-                conflictKeys: ['D', 'WE'],
+                conflictKeys: ['D', 'F'],
             };
         },
         props: {
@@ -43,10 +43,17 @@
                 return this.parentKeyChar ? [this.parentKeyChar, this.keyChar].join(' + ') : this.keyChar;
             },
             isConflict: function() {
-                return this.conflictKeys.includes(this.shortcutKey);
+                if (this.$background.platformOs === 'mac') {
+                    return false;
+                }
+
+                for (let key of this.conflictKeys) {
+                    if (this.shortcutKey && this.shortcutKey.includes(key)) {
+                        return true;
+                    }
+                }
+                return false;
             }
         },
-        created() {
-        }
     }
 </script>

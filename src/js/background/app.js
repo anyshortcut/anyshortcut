@@ -16,3 +16,7 @@ chrome.runtime.onInstalled.addListener((installReason, previousVersion) => {
 });
 
 chrome.runtime.setUninstallURL(config.baseURL + '/goodbye');
+
+chrome.runtime.getPlatformInfo(platformInfo => {
+    window.platformOs = platformInfo.os;
+});
