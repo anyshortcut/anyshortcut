@@ -1,7 +1,31 @@
 <template>
     <div>
-        <label for="comment" class="shortcut" v-if="primary">ALT + {{ keyChar }}</label>
-        <label for="comment" class="shortcut" v-else>ALT + {{ parentKeyChar }} + {{ keyChar }}</label>
+        <label for="comment" v-if="primary">
+            <span class="shortcut">
+                ALT + {{ keyChar }}
+            </span>
+            <span v-if="conflictKeys.includes(keyChar)"
+                  data-balloon="May conflict in Windows"
+                  data-balloon-pos="up">
+                    <img src="../img/exclamation.svg" alt="!" style="vertical-align: middle;margin: 0 3px;">
+            </span>
+        </label>
+        <label for="comment" v-else-if="parentKeyChar.length===1">
+            <span class="shortcut">
+            ALT + {{ parentKeyChar }} + {{ keyChar }}
+            </span>
+            <span v-if="conflictKeys.includes(parentKeyChar+keyChar)"
+                  data-balloon="May conflict in Windows"
+                  data-balloon-pos="up">
+                    <img src="../img/exclamation.svg" alt="!" style="vertical-align: middle;margin: 0 3px;">
+            </span>
+        </label>
+        <label for="comment" v-else>
+            <span class="shortcut">
+                {{ keyChar }}
+            </span>
+            <small>in domain pages</small>
+        </label>
 
         <div class="shortcut-bound" v-if="shortcut">
             <a class="shortcut-comment-link" :href="shortcut.url" target="_blank" style="margin: 4px;">
@@ -67,6 +91,7 @@
         data() {
             return {
                 comment: this.$background.activeTab.title.slice(0, 30),
+                conflictKeys: ['D', 'WE']
             };
         },
         props: {

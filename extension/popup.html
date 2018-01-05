@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
-
+    <link rel="stylesheet" href="vendor/balloon.min.css">
     <link rel="stylesheet" href="dist/css/popup.css">
     <style>
         * {
@@ -37,9 +37,9 @@
 <body>
 <div id="vue">
     <template v-if="authenticated">
-        <main-view ref="main" v-if="currentView=='main'"></main-view>
-        <compound-bind-view ref="compoundBind" v-else-if="currentView=='compound-bind'"></compound-bind-view>
-        <preference-view v-else="currentView=='setting'"></preference-view>
+        <main-view ref="main" v-if="currentView==='main'"></main-view>
+        <compound-bind-view ref="compoundBind" v-else-if="currentView==='compound-bind'"></compound-bind-view>
+        <preference-view v-else="currentView==='setting'"></preference-view>
         <div v-show="loading" class="loading">
             <i class="fa fa-spinner fa-spin fa-2x fa-fw"></i>
         </div>
