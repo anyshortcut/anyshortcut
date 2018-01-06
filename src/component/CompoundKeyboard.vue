@@ -12,8 +12,7 @@
             </thead>
             <tbody @scroll="onScroll" id="compound-tbody">
             <tr v-for="rowKey in alphabet">
-                <td class="column-header"
-                    :style="columnHeaderStyle">
+                <td class="column-header" style="position:sticky; left:0;">
                     {{ rowKey }}
                 </td>
                 <td :class="rowClass(rowKey + columnKey)"
@@ -160,15 +159,6 @@
                     return null;
                 }
             },
-        },
-        computed: {
-            columnHeaderStyle: function() {
-                if (this.scrollLeft <= 10) return;
-
-                return {
-                    left: this.scrollLeft - 10 + 'px',
-                };
-            }
         },
         methods: {
             rowClass: function(key) {
