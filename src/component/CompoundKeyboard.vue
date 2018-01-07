@@ -15,7 +15,8 @@
                 <td class="column-header" style="position:sticky; left:0;">
                     {{ rowKey }}
                 </td>
-                <td :class="rowClass(rowKey + columnKey)"
+                <td :id="rowKey + columnKey"
+                    :class="rowClass(rowKey + columnKey)"
                     v-for="columnKey in alphabet">
                     {{rowKey + columnKey }}
                 </td>
@@ -144,6 +145,8 @@
                 numbers: '0123456789',
                 scrolling: false,
                 scrollLeft: 0,
+                firstFilterKey: null,
+                secondFilterKey: null,
             };
         },
         props: {
@@ -172,7 +175,8 @@
                         'disabled': true,
                     } : {
                         'raw-key': true,
-                        'highlight': key === this.highlightKey,
+                        'highlight': key === this.highlightKey ||
+                        (!this.highlightKey && key === this.firstFilterKey + this.secondFilterKey),
                     };
                 }
             },
@@ -201,6 +205,23 @@
                 element.addEventListener('mouseleave', () => {
                     this.$emit('key-hover-leave', element);
                 });
+            });
+
+            let filterTimes = 0;
+            document.addEventListener('keyup', event => {
+                let keyCode = String.fromCharCode(event.keyCode);
+                if (this.alphabet.includes(keyCode)) {
+                    if (filterTimes % 2 === 0) {
+                        this.firstFilterKey = keyCode;
+                    } else {
+                        this.secondFilterKey = keyCode;
+                    }
+
+                    let target = document.getElementById((this.firstFilterKey || 'A') + (this.secondFilterKey || 'A'));
+                    target.scrollIntoView({behavior: 'smooth'});
+
+                    filterTimes += 1;
+                }
             });
         },
     }
