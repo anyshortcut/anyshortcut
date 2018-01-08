@@ -1,21 +1,22 @@
 <template>
     <div class="compound-keyboard">
+        <div :style="{top:-scrollTop+'px'}" class="left-column">
+            <span class="column-header" v-for="rowKey in alphabet">
+                    {{ rowKey }}
+            </span>
+        </div>
+
         <table>
             <thead :style="{left:-scrollLeft+'px'}">
             <tr>
-                <th></th>
                 <th v-for="rowKey in alphabet"
                     class='row-header'>
                     {{ rowKey }}
                 </th>
             </tr>
             </thead>
-            <tbody @scroll="onScroll" id="compound-tbody">
+            <tbody ref="tbody" @scroll="onScroll" id="compound-tbody">
             <tr v-for="rowKey in alphabet">
-                <td class="column-header"
-                    :style="columnHeaderStyle">
-                    {{ rowKey }}
-                </td>
                 <td :id="rowKey + columnKey"
                     :class="rowClass(rowKey + columnKey)"
                     v-for="columnKey in alphabet">
@@ -32,17 +33,27 @@
 
     .compound-keyboard {
         position: relative;
+        display: flex;
         margin: auto;
+        overflow: hidden;
+        height: 280px;
 
         .table-action {
             position: absolute;
             left: 0;
-            top: 10px;
-            width: 35px;
-            height: 30px;
+            top: 0;
+            width: 30px;
+            height: 36px;
             background-color: white;
             z-index: 2;
         }
+    }
+
+    .left-column {
+        margin-top: 36px;
+        height: 250px;
+        position: relative;
+        overflow: visible;
     }
 
     table {
@@ -68,14 +79,9 @@
         margin: 0;
     }
 
-    thead th:not(:first-child) {
+    thead th {
         min-width: 35px;
         height: 24px;
-    }
-
-    thead th:nth-child(1) {
-        display: block;
-        width: 24px;
     }
 
     tbody {
@@ -84,12 +90,6 @@
         max-width: @max-width;
         height: 250px;
         overflow: scroll;
-    }
-
-    tbody tr td:nth-child(1) {
-        position: relative;
-        min-width: 24px;
-        cursor: text;
     }
 
     td {
@@ -122,6 +122,10 @@
 
     .column-header {
         width: 20px;
+        min-height: 35px;
+        line-height: 35px;
+        margin: 10px 0;
+        display: block;
     }
 
     .highlight {
@@ -146,6 +150,7 @@
                 numbers: '0123456789',
                 scrolling: false,
                 scrollLeft: 0,
+                scrollTop: 0,
                 firstFilterKey: null,
                 secondFilterKey: null,
             };
@@ -192,6 +197,7 @@
             },
             onScroll: function($event) {
                 this.scrollLeft = $event.target.scrollLeft;
+                this.scrollTop = $event.target.scrollTop;
                 this.scrolling = true;
                 this.$emit('on-table-scroll');
 
