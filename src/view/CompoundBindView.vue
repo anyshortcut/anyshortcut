@@ -5,10 +5,16 @@
             Go back
         </header>
 
-        <div class="primary-title"
-             style="margin-bottom: -10px;">
-            Specify primary compound key
+        <div style="margin-top: 10px;">
+            <span class="primary-title">
+                  Specify primary compound key
+            </span>
+            <span data-balloon="Press key to auto-navigate the data grid"
+                  data-balloon-pos="up">
+                <img id="tooltip-compound-shortcut-filter" class="info-img" src="../img/info-grey.svg" alt="info">
+            </span>
         </div>
+
         <compound-keyboard
                 :bound-keys="boundKeys"
                 :highlight-key="highlightKey"
