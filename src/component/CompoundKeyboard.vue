@@ -236,6 +236,14 @@
                     let target = document.getElementById((this.firstFilterKey || 'A') + (this.secondFilterKey || 'A'));
                     target.scrollIntoView({behavior: 'smooth'});
 
+                    if (this._navigateTimeoutId) {
+                        window.clearTimeout(this._navigateTimeoutId);
+                    }
+
+                    this._navigateTimeoutId = setTimeout(() => {
+                        this.$emit('key-hover-over', target);
+                    }, 800);
+
                     filterTimes += 1;
                 }
             });
