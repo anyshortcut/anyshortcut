@@ -1,11 +1,11 @@
 {
-    "extension_name":{
-        "message":"AnyShortcut"
-    },
-    "extension_description":{
-        "message":"一个可以通过快捷键启动网页的插件!"
-    },
-    "popup_default_title":{
-        "message":"用快捷键打开任何网页！"
-    }
+  "extension_name": {
+    "message": "AnyShortcut"
+  },
+  "extension_description": {
+    "message": "Anyshortcut是一款可以通过自定义快捷键来帮你快速打开最常用网页的浏览器插件！"
+  },
+  "popup_default_title": {
+    "message": "自定义快捷键帮你快速打开常用网页！"
+  }
 }
