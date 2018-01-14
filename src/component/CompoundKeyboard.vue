@@ -153,6 +153,7 @@
                 scrollTop: 0,
                 firstFilterKey: null,
                 secondFilterKey: null,
+                filterTimes: 0,
             };
         },
         props: {
@@ -209,25 +210,10 @@
                     this.scrolling = false;
                 }, 200);
             },
-        },
-        mounted: function() {
-            // Query key elements exclude weak element, then add mouse event listener.
-            document.getElementById('compound-tbody').querySelectorAll('.raw-key').forEach(element => {
-                element.addEventListener('mouseover', () => {
-                    if (this.scrolling) return;
-
-                    this.$emit('key-hover-over', element);
-                });
-                element.addEventListener('mouseleave', () => {
-                    this.$emit('key-hover-leave', element);
-                });
-            });
-
-            let filterTimes = 0;
-            document.addEventListener('keyup', event => {
+            onFilterKeyUp: function(event) {
                 let keyCode = String.fromCharCode(event.keyCode);
                 if (this.alphabet.includes(keyCode)) {
-                    if (filterTimes % 2 === 0) {
+                    if (this.filterTimes % 2 === 0) {
                         this.firstFilterKey = keyCode;
                     } else {
                         this.secondFilterKey = keyCode;
@@ -244,9 +230,27 @@
                         this.$emit('key-hover-over', target);
                     }, 800);
 
-                    filterTimes += 1;
+                    this.filterTimes += 1;
                 }
+            },
+        },
+        mounted: function() {
+            // Query key elements exclude weak element, then add mouse event listener.
+            document.getElementById('compound-tbody').querySelectorAll('.raw-key').forEach(element => {
+                element.addEventListener('mouseover', () => {
+                    if (this.scrolling) return;
+
+                    this.$emit('key-hover-over', element);
+                });
+                element.addEventListener('mouseleave', () => {
+                    this.$emit('key-hover-leave', element);
+                });
             });
+
+            document.addEventListener('keyup', this.onFilterKeyUp);
+        },
+        destroyed() {
+            document.removeEventListener('keyup', this.onFilterKeyUp);
         },
     }
 </script>
