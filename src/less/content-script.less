@@ -1,6 +1,36 @@
-@import "_common.less";
-
 @modal-z-index: 999999999;
+@primary-color: #517CE8;
+@secondary-color: #2b72dc;
+@box-shadow-base: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+@box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 400;
+  src: url("chrome-extension://__MSG_@@extension_id__/fonts/Poppins-Regular.ttf");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 500;
+  src: url("chrome-extension://__MSG_@@extension_id__/fonts/Poppins-Medium.ttf");
+}
+
+@font-face {
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 600;
+  src: url("chrome-extension://__MSG_@@extension_id__/fonts/Poppins-SemiBold.ttf");
+}
+
+@font-face {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: 400;
+  src: url("chrome-extension://__MSG_@@extension_id__/fonts/Roboto-Regular.ttf");
+}
 
 .anyshortcut-modal {
   box-sizing: border-box !important;
@@ -44,8 +74,38 @@
   border-radius: 5px 5px 0 0 !important;
 }
 
+.anyshortcut-brand {
+  color: @primary-color;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+  text-decoration: none;
+  outline: none;
+  letter-spacing: .03em;
+
+  .anyshortcut-brand-logo {
+    vertical-align: middle;
+    margin: 6px 10px;
+    height: 20px;
+    content: url("chrome-extension://__MSG_@@extension_id__/icon/logo.svg");
+  }
+}
+
+.anyshortcut-grey-balloons {
+  content: url("chrome-extension://__MSG_@@extension_id__/dist/img/grey-balloons.svg");
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
 .anyshortcut-modal-close {
-  .close-button;
+  color: #CECECE;
+  padding: 10px;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
 }
 
 .anyshortcut-modal-content {
@@ -55,12 +115,22 @@
 }
 
 .anyshortcut-favicon {
-  .shortcut-favicon;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
   margin: 0 5px !important;
 }
 
 .anyshortcut-shortcut {
-  .shortcut;
+  box-sizing: border-box;
+  color: @primary-color;
+  background-color: white;
+  padding: 0 10px;
+  margin: 0 5px;
+  border-radius: 3px;
+  text-align: center;
+  box-shadow: @box-shadow-base;
+  white-space: nowrap;
   font-size: 15px !important;
 }
 
@@ -94,7 +164,9 @@
   }
 
   a {
-    .overflow-ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     display: flex !important;
     align-items: center !important;
 
