@@ -25,12 +25,12 @@ function showShortcutPopup() {
         popup = utils.createDiv('anyshortcut-popup');
         let shortcuts = response.shortcuts;
 
-        if (Object.keys(shortcuts).length === 0) {
-            popup.innerHTML = utils.compile(require('%/shortcut-list-empty.html'));
-        } else {
+        if (shortcuts && Object.keys(shortcuts).length > 0) {
             popup.innerHTML = utils.compile(require('%/shortcut-popup.html'),
                 {shortcuts: response.shortcuts}
             );
+        } else {
+            popup.innerHTML = utils.compile(require('%/shortcut-list-empty.html'));
         }
         // Stop popup click event propagation to document.
         popup.addEventListener('click', event => {
