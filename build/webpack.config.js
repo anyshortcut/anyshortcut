@@ -93,6 +93,9 @@ module.exports = {
             'BUILD_DEBUG': JSON.stringify(config.env.debug),
             'BUILD_SCHEMA': JSON.stringify(config.env.schema),
             'BUILD_DOMAIN': JSON.stringify(config.env.domain),
+            'process.env': {
+                NODE_ENV: JSON.stringify(process.env.NODE_ENV),
+            }
         }),
         extractLess,
     ]
