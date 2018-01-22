@@ -211,6 +211,12 @@
                 }, 200);
             },
             onFilterKeyUp: function(event) {
+                // Ignore activeElement input event
+                if (document.activeElement.isContentEditable
+                    || ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
+                    return;
+                }
+
                 let keyCode = String.fromCharCode(event.keyCode);
                 if (this.alphabet.includes(keyCode)) {
                     if (this.filterTimes % 2 === 0) {
