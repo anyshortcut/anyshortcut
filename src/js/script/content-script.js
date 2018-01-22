@@ -3,44 +3,25 @@ import monitor from './key-event-monitor.js';
 import circle from './circle.js';
 
 // Register key events as early as possible.
-registerKeyEvents();
+document.addEventListener('keyup', monitor.onKeyUp, false);
+document.addEventListener('keydown', monitor.onKeyDown, false);
 
 chrome.runtime.sendMessage({info: true, url: location.href}, response => {
-    if (response.authenticated) {
-        if (response.showCircle) {
-            if (document.readyState !== "loading") {
+    if (response.showCircle) {
+        if (document.readyState !== "loading") {
+            circle.injectCircle();
+        } else {
+            document.addEventListener("DOMContentLoaded", event => {
                 circle.injectCircle();
-            } else {
-                document.addEventListener("DOMContentLoaded", event => {
-                    circle.injectCircle();
-                });
-            }
+            });
         }
-        // Store current primary shortcut delay state.
-        window.delay = response.delay;
-    } else {
-        unregisterKeyEvents();
     }
+    // Store current primary shortcut delay state.
+    window.delay = response.delay;
 });
-
-function registerKeyEvents() {
-    document.addEventListener('keyup', monitor.onKeyUp, false);
-    document.addEventListener('keydown', monitor.onKeyDown, false);
-}
-
-function unregisterKeyEvents() {
-    document.removeEventListener('keyup', monitor.onKeyUp, false);
-    document.removeEventListener('keydown', monitor.onKeyDown, false);
-}
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
     switch (true) {
-        case message.authenticated: {
-            window.delay = message.delay;
-            registerKeyEvents();
-            console.log('tab message', message);
-            break;
-        }
         case message.bindSuccess: {
             window.delay = message.delay;
 

@@ -21,6 +21,11 @@ function triggerPrimaryShortcut(keyCodeChar) {
         request: true,
         key: keyCodeChar
     }, response => {
+        if (response.authenticateRequired) {
+            modal.showAuthenticatedRequired();
+            return;
+        }
+
         if (response.expired) {
             modal.showSubscriptionExpired();
             return;
@@ -40,6 +45,11 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
     chrome.runtime.sendMessage({
         query: true, firstKey: firstKeyCodeChar, secondKey: secondKeyCodeChar
     }, response => {
+        if (response.authenticateRequired) {
+            modal.showAuthenticatedRequired();
+            return;
+        }
+
         if (response.expired) {
             modal.showSubscriptionExpired();
             return;

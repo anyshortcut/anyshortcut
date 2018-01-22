@@ -68,6 +68,9 @@ function buildModal(content) {
 }
 
 export default {
+    showAuthenticatedRequired() {
+        openModal(utils.compile(require('%/authenticate-required.html')));
+    },
     showPrimaryShortcutBindSuccess(shortcut) {
         openModal(utils.compile(require('%/primary-bind-success.html'), {
             key: shortcut.key,

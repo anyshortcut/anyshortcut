@@ -22,16 +22,7 @@ function syncUserInfo() {
             window.subscriptionEndAt = subscription.endAt = response.subscription.end_at;
             localStorage.setItem('user', JSON.stringify(response.user));
 
-            window.syncAllShortcuts(() => {
-                // Tell all opened tabs that user has authenticated
-                let delay = determineDelay();
-                common.iterateAllWindowTabs(tabId => {
-                    chrome.tabs.sendMessage(tabId, {
-                        authenticated: true,
-                        delay: delay,
-                    });
-                });
-            });
+            window.syncAllShortcuts();
         }
     });
 }
@@ -78,12 +69,16 @@ function onMessageReceiver(message, sender, sendResponse) {
         }
 
         sendResponse({
-            authenticated: window.authenticated,
-            expired: checkSubscriptionExpired(),
-            status: subscription.status,
             showCircle: showCircle,
             // Whether trigger primary shortcut delay
             delay: determineDelay(),
+        });
+        return true;
+    }
+
+    if (!window.authenticated) {
+        sendResponse({
+            authenticateRequired: true,
         });
         return true;
     }
