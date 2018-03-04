@@ -90,19 +90,37 @@ function onMessageReceiver(message, sender, sendResponse) {
     }
 
     switch (true) {
-        case message.query: {
-            sendResponse({
-                byBlank: pref.isShortcutOpenByBlank(),
-                primaryShortcut: window.getPrimaryShortcut(message.firstKey + message.secondKey),
-                secondaryShortcut: window.getSecondaryShortcutQuickly(message.firstKey, message.secondKey),
-            });
+        case message.request: {
+            let shortcut = window.getPrimaryShortcut(message.key);
+            if (shortcut) {
+                openShortcut(shortcut);
+            } else {
+                sendResponse({
+                    shortcut: null
+                });
+            }
             break;
         }
-        case message.request: {
-            sendResponse({
-                byBlank: pref.isShortcutOpenByBlank(),
-                shortcut: window.getPrimaryShortcut(message.key)
-            });
+        case message.query: {
+            let primaryShortcut = window.getPrimaryShortcut(message.firstKey + message.secondKey);
+            let secondaryShortcut = window.getSecondaryShortcutQuickly(message.firstKey, message.secondKey);
+            if (primaryShortcut && secondaryShortcut) {
+                sendResponse({
+                    primaryShortcut: primaryShortcut,
+                    secondaryShortcut: secondaryShortcut
+                });
+            } else if (!primaryShortcut && !secondaryShortcut) {
+                sendResponse({
+                    primaryShortcut: null,
+                    secondaryShortcut: null
+                });
+            } else {
+                openShortcut(primaryShortcut || secondaryShortcut);
+            }
+            break;
+        }
+        case message.open: {
+            openShortcut({url: message.url, id: message.shortcutId});
             break;
         }
         case message.listSecondary: {
@@ -114,23 +132,14 @@ function onMessageReceiver(message, sender, sendResponse) {
             }
 
             sendResponse({
-                byBlank: pref.isShortcutOpenByBlank(),
                 shortcuts: shortcuts
             });
-            break
-        }
-        case message.increase:
-            client.increaseShortcutOpenTimes(message.shortcutId)
-                .then(shortcut => {
-                    if (shortcut.primary) {
-                        window.assignShortcut(window.primaryShortcuts, shortcut);
-                    } else {
-                        window.assignShortcut(window.secondaryShortcuts[shortcut.domain], shortcut);
-                    }
-                }).catch(error => {
-                console.log(error);
-            });
             break;
+        }
+        case message.record: {
+            recordShortcutTriggerTimes(message.shortcutId);
+            break;
+        }
         default: {
             break;
         }
@@ -138,6 +147,30 @@ function onMessageReceiver(message, sender, sendResponse) {
     //Must return true otherwise sendResponse() not working.
     //More detail see official documentations [chrome.runtime.onMessage()].
     return true;
+}
+
+function openShortcut(shortcut) {
+    let url = shortcut.url;
+    if (pref.isShortcutOpenByBlank()) {
+        chrome.tabs.create({url: url});
+    } else {
+        chrome.tabs.update(window.activeTab.id, {url: url});
+    }
+
+    recordShortcutTriggerTimes(shortcut.id);
+}
+
+function recordShortcutTriggerTimes(shortcutId) {
+    client.increaseShortcutOpenTimes(shortcutId)
+        .then(shortcut => {
+            if (shortcut.primary) {
+                window.assignShortcut(window.primaryShortcuts, shortcut);
+            } else {
+                window.assignShortcut(window.secondaryShortcuts[shortcut.domain], shortcut);
+            }
+        }).catch(error => {
+        console.log(error);
+    });
 }
 
 /**

@@ -75,17 +75,4 @@ export default {
     isTopWindow() {
         return window.top === window.self;
     },
-    openShortcut(shortcut, byBlank) {
-        let url = shortcut.url;
-        if (byBlank) {
-            window.open(url);
-        } else {
-            window.top.location.href = url;
-        }
-
-        chrome.runtime.sendMessage({
-            increase: true,
-            shortcutId: shortcut.id,
-        });
-    },
 };

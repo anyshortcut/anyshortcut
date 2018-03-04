@@ -31,9 +31,7 @@ function triggerPrimaryShortcut(keyCodeChar) {
             return;
         }
 
-        if (response.shortcut) {
-            helper.openShortcut(response.shortcut, response.byBlank);
-        } else {
+        if (!response.shortcut) {
             modal.showPrimaryShortcutUnbound(keyCodeChar);
         }
     });
@@ -62,11 +60,7 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
             // Primary and secondary shortcut both exist,
             // show a chooser let user choose one.
             modal.showQueryShortcutChooser(primaryShortcut, secondaryShortcut, response.byBlank);
-        } else if (primaryShortcut) {
-            helper.openShortcut(primaryShortcut, response.byBlank);
-        } else if (secondaryShortcut) {
-            helper.openShortcut(secondaryShortcut, response.byBlank);
-        } else {
+        } else if (!primaryShortcut && !secondaryShortcut) {
             // Neither shortcut bound.
             modal.showQueryShortcutFailed(firstKeyCodeChar, secondKeyCodeChar);
         }

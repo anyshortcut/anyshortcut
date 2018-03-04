@@ -115,7 +115,9 @@ export default {
                 if (shortcut) {
                     removeElementDelay(modal, 50);
                     modal.removeEventListener('keyup', chooserEventListener);
-                    helper.openShortcut(shortcut, byBlank);
+                    chrome.runtime.sendMessage({
+                        open: true, url: shortcut.url, shortcutId: shortcut.id
+                    });
                 }
             }
         };

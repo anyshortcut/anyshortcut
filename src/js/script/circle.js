@@ -94,7 +94,13 @@ export default {
                     }
 
                     if (shortcuts.hasOwnProperty(keyCodeChar) && keyPressed) {
-                        helper.openShortcut(shortcuts[keyCodeChar], false);
+                        let shortcut = shortcuts[keyCodeChar];
+                        window.top.location.href = shortcut.url;
+                        chrome.runtime.sendMessage({
+                            record: true,
+                            shortcutId: shortcut.id,
+                        });
+
                         keyPressed = false;
                     }
                 }
