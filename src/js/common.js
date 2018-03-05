@@ -78,5 +78,9 @@ function trimTrailSlash(url) {
 }
 
 function stripUrlSchema(url) {
-    return url.split('://')[1]
+    if (url.includes('://')) {
+        return url.split('://')[1]
+    }
+
+    return url;
 }
