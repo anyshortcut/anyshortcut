@@ -96,7 +96,7 @@
                 this.isPopoverShowing = showing;
             },
             queryShortcuts: function() {
-                this.shortcuts = _.pickBy(this.$background.primaryShortcuts, (value, key) => {
+                this.shortcuts = _.pickBy(_.cloneDeep(this.$background.primaryShortcuts), (value, key) => {
                     return key.length === 2;
                 });
             }

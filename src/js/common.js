@@ -48,9 +48,7 @@ export default {
         return this.isHostnameEndsWithDomain(hostname, domain);
     },
     getHostnameFromUrl(url) {
-        let a = document.createElement('a');
-        a.href = url;
-        return a.hostname;
+        return new URL(url).hostname;
     },
     isHostnameEndsWithDomain(hostname, domain) {
         return hostname.endsWith(`.${domain}`) || hostname === domain;

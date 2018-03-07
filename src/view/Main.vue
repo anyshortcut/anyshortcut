@@ -83,6 +83,8 @@
 
 </style>
 <script>
+    'use strict';
+
     import common from "../js/common.js";
     import _ from "lodash";
     import BoundView from "./BoundView.vue";
@@ -108,9 +110,10 @@
                 this.shortcut = null;
                 this.domainPrimaryShortcut = null;
 
+                // FIXME activeTab may leak, cause bind shortcut let to requery shortcuts
                 let activeTab = this.$background.activeTab;
-                let primaryShortcuts = this.$background.primaryShortcuts;
-                let secondaryShortcuts = this.$background.getSecondaryShortcutsByUrl(activeTab.url);
+                let primaryShortcuts = _.cloneDeep(this.$background.primaryShortcuts);
+                let secondaryShortcuts = _.cloneDeep(this.$background.getSecondaryShortcutsByUrl(activeTab.url));
 
                 // Find current tab domain primary shortcut.
                 _.forOwn(primaryShortcuts, (shortcut) => {
