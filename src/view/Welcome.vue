@@ -1,7 +1,7 @@
 <template>
     <main>
         <a class="anyshortcut" href="https://anyshortcut.com" target="_blank">
-            <img class="brand-logo" alt="">
+            <img class="brand-logo" alt="logo" src="../../extension/icon/logo.svg">
         </a>
         <img class="balloon-image" src="../img/computer-and-balloons.svg" alt="">
         <div class="introduction">

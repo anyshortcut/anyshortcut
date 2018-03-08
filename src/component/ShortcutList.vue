@@ -11,11 +11,12 @@
                target="_blank">{{shortcut.comment || shortcut.title}}</a>
             <img class="delete-button"
                  v-visible="hoveredKey === key"
+                 src="../img/delete-light.svg"
                  @click="$bus.emit('unbind-shortcut',shortcut)"/>
         </li>
     </ul>
     <div class="shortcut-empty-list" v-else>
-        <img class="grey-balloons" alt="">
+        <img class="grey-balloons" alt="empty" src="../img/grey-balloons.svg">
         <p>No secondary shortcut bound yet</p>
     </div>
 </template>
@@ -69,6 +70,11 @@
         &:visited, &:active {
             color: @shortcut-comment-color;
         }
+    }
+
+    .grey-balloons {
+        margin-top: 20px;
+        margin-bottom: 10px;
     }
 
     .shortcut-empty-list {

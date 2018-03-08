@@ -3,7 +3,7 @@
          class="main-view">
         <header class="main-header">
             <a class="brand" href="https://anyshortcut.com" target="_blank">
-                <img class="brand-logo" alt="">
+                <img class="brand-logo" alt="logo" src="../../extension/icon/logo.svg">
             </a>
             <a href="#/setting" class="menu">Settings</a>
         </header>
@@ -23,7 +23,7 @@
     <div class="unsupported-view" v-else>
         <header class="main-header">
             <a class="brand" href="https://anyshortcut.com" target="_blank">
-                <img class="brand-logo" alt="">
+                <img class="brand-logo" alt="logo" src="../../extension/icon/logo.svg">
             </a>
         </header>
         <p>

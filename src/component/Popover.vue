@@ -4,7 +4,7 @@
          @mouseover="show"
          @mouseleave="hidden">
         <slot>Popover</slot>
-        <img class="popper-arrow" x-arrow/>
+        <img class="popper-arrow" src="../img/triangle.svg" x-arrow/>
     </div>
 </template>
 <style lang="less">
@@ -20,7 +20,6 @@
     }
 
     .popper-arrow {
-        content: url('../img/triangle.svg');
         position: absolute;
         display: block;
         bottom: -12px;
