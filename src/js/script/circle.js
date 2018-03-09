@@ -8,10 +8,14 @@ let circle = null;
  */
 let keyPressed = false;
 
+const circleIconUrl = chrome.runtime.getURL('icon/icon32.png');
+const circleCloseUrl = chrome.runtime.getURL('icon/close.png');
+
 function buildCircle() {
     let circle = utils.createDiv('anyshortcut-circle');
     let img = document.createElement('img');
     img.className = 'anyshortcut-circle-icon';
+    img.src = circleIconUrl;
 
     circle.appendChild(img);
     return circle;
@@ -30,7 +34,9 @@ function showShortcutPopup() {
                 {shortcuts: response.shortcuts}
             );
         } else {
-            popup.innerHTML = utils.compile(require('%/shortcut-list-empty.html'));
+            popup.innerHTML = utils.compile(require('%/shortcut-list-empty.html'), {
+                image: chrome.runtime.getURL('dist/img/grey-balloons.svg')
+            });
         }
         // Stop popup click event propagation to document.
         popup.addEventListener('click', event => {
@@ -40,6 +46,7 @@ function showShortcutPopup() {
 
         circle.firstChild.classList.remove('anyshortcut-circle-icon');
         circle.firstChild.classList.add('anyshortcut-circle-close');
+        circle.firstChild.src = circleCloseUrl;
     });
 }
 
@@ -49,6 +56,7 @@ function hideShortcutPopup() {
         popup = null;
         circle.firstChild.classList.add('anyshortcut-circle-icon');
         circle.firstChild.classList.remove('anyshortcut-circle-close');
+        circle.firstChild.src = circleIconUrl;
     }
 }
 

@@ -117,6 +117,9 @@ let app = new Vue({
     mounted() {
         this.$bus.on('bind-shortcut', this.bindShortcut);
         this.$bus.on('unbind-shortcut', this.unbindShortcut);
+    },
+    destroyed() {
+        Vue.prototype.$background = null;
     }
 });
 

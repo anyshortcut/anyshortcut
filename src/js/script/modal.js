@@ -60,9 +60,11 @@ function buildModal(content) {
     });
 
     let header = utils.createDiv('anyshortcut-modal-header');
-    header.innerHTML = utils.compile(require('%/modal-header.html'));
+    header.innerHTML = utils.compile(require('%/modal-header.html'),
+        {logo: chrome.runtime.getURL('icon/logo.svg')});
     container.appendChild(header);
     container.appendChild(content);
+
     modal.appendChild(container);
     return modal;
 }
