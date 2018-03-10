@@ -13,6 +13,7 @@ module.exports = {
     context: path.resolve('./src'),
     entry: {
         content_script: './js/script/content-script.js',
+        firefox_auth_helper: './js/script/firefox-auth-helper.js',
         background: [
             './js/background/extension.js',
             './js/background/shortcut.js',

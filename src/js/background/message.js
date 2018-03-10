@@ -74,6 +74,11 @@ function onMessageReceiver(message, sender, sendResponse) {
             delay: determineDelay(),
         });
         return true;
+    } else if (message.firefoxRefresh) {
+        // User logged in Firefox browser.
+        syncUserInfo();
+        sendResponse('ok');
+        return true;
     }
 
     if (!window.authenticated) {
@@ -178,8 +183,10 @@ function recordShortcutTriggerTimes(shortcutId) {
  */
 function onMessageExternal(message, sender, sendResponse) {
     console.log(message);
-    syncUserInfo();
-    sendResponse(true);
+    if (message.authenticated || message.refresh) {
+        syncUserInfo();
+        sendResponse(true);
+    }
     return true;
 }
 
