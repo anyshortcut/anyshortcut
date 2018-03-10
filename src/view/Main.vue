@@ -110,7 +110,6 @@
                 this.shortcut = null;
                 this.domainPrimaryShortcut = null;
 
-                // FIXME activeTab may leak, cause bind shortcut let to requery shortcuts
                 let activeTab = this.$background.activeTab;
                 let primaryShortcuts = _.cloneDeep(this.$background.primaryShortcuts);
                 let secondaryShortcuts = _.cloneDeep(this.$background.getSecondaryShortcutsByUrl(activeTab.url));
@@ -144,8 +143,9 @@
                 this.checkShortcutBound(primaryShortcuts) || this.checkShortcutBound(secondaryShortcuts);
             },
             checkShortcutBound(shortcuts) {
+                let url = this.$background.activeTab.url;
                 _.forOwn(shortcuts, shortcut => {
-                    if (common.isUrlEquivalent(shortcut.url, this.$background.activeTab.url)) {
+                    if (common.isUrlEquivalent(shortcut.url, url)) {
                         this.shortcut = shortcut;
                         return false;
                     }
