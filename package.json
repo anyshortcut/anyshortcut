@@ -44,12 +44,16 @@
     "vue-html-loader": "^1.2.4",
     "vue-loader": "^8.7.0",
     "vue-style-loader": "^1.0.0",
-    "webpack": "^2.7.0"
+    "webpack": "^2.7.0",
+    "webpack-merge": "^4.1.2"
   },
   "scripts": {
     "build_dev": "NODE_ENV=development node build/build.js",
     "build_stage": "NODE_ENV=stage node build/build.js",
-    "build_production": "NODE_ENV=production node build/build.js"
+    "build_production": "NODE_ENV=production node build/build.js",
+    "build_dev:firefox": "NODE_ENV=development PLATFORM=firefox node build/build.js",
+    "build_stage:firefox": "NODE_ENV=stage PLATFORM=firefox node build/build.js",
+    "build_production:firefox": "NODE_ENV=production PLATFORM=firefox node build/build.js"
   },
   "engines": {
     "node": ">= 4.0.0",

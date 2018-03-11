@@ -5,6 +5,7 @@ const ora = require('ora');
 const chalk = require('chalk');
 const webpack = require('webpack');
 const webpackConfig = require('./webpack.config');
+const merge = require('webpack-merge');
 const config = require('./config');
 const fs = require('fs');
 
@@ -27,16 +28,17 @@ webpack(webpackConfig, function(err, stats) {
 });
 
 // Generate manifest.json for different environment
-fs.readFile('./build/manifest.json', (error, data) => {
-    if (error) console.log(error);
-    const manifest = JSON.parse(data);
+const manifest = merge(
+    require('../manifest/common.json'),
+    require(process.env.PLATFORM === 'firefox' ? '../manifest/firefox.json' : '../manifest/chrome.json')
+);
 
-    manifest['name'] = config.env.name;
-    manifest['version'] = config.env.version;
+manifest['name'] = config.env.name;
+manifest['version'] = config.env.version;
+if (process.env.PLATFORM !== 'firefox') {
     manifest['key'] = config.env.manifestKey;
+}
 
-    fs.writeFile('./extension/manifest.json', JSON.stringify(manifest), error => {
-        if (error) console.log(error);
-    })
-
+fs.writeFile('./extension/manifest.json', JSON.stringify(manifest), error => {
+    if (error) console.log(error);
 });

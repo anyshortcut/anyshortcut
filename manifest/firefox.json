@@ -1,0 +1,20 @@
+{
+  "applications": {
+    "gecko": {
+      "strict_min_version": "48.0"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.anyshortcut.com/auth/success",
+        "*://*.anyshortcut.com/account*"
+      ],
+      "js": [
+        "dist/firefox_auth_helper.js"
+      ],
+      "all_frames": false,
+      "run_at": "document_idle"
+    }
+  ]
+}
