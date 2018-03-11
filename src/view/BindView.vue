@@ -12,9 +12,11 @@
                     {{domainPrimaryShortcut.domain}}
                 </span>
                 already bound primary shortcut
-                <span class="shortcut" :title="domainPrimaryShortcut.title">
+                <div class="shortcut"
+                     style="display: inline-block"
+                     :title="domainPrimaryShortcut.title">
                     ALT + {{domainPrimaryShortcut.key}}
-                </span>
+                </div>
             </div>
             <div class="primary-title">Specify the secondary shortcut</div>
         </template>
