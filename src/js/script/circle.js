@@ -62,6 +62,7 @@ function hideShortcutPopup() {
 
 export default {
     injectCircle() {
+        // Register key and click event in all iframe.
         chrome.runtime.sendMessage({
             listSecondary: true, url: location.href
         }, response => {
@@ -114,6 +115,13 @@ export default {
                 }
             });
 
+            // Auto hide shortcut popup when user click outside of popup.
+            document.addEventListener('click', hideShortcutPopup);
+        });
+
+
+        // Only inject circle in top window, ignore all iframe
+        if (helper.isTopWindow()) {
             circle = buildCircle();
             circle.onclick = (event) => {
                 if (popup) {
@@ -124,14 +132,6 @@ export default {
             };
 
             document.body.insertAdjacentElement('beforeBegin', circle);
-
-            // Auto hide shortcut popup when user click outside of popup.
-            document.addEventListener('click', hideShortcutPopup);
-
-            // Hide circle in iframe
-            if (!helper.isTopWindow()) {
-                circle.classList.add('anyshortcut-circle-hidden');
-            }
-        });
+        }
     },
 };

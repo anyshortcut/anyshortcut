@@ -51,8 +51,7 @@
   ],
   "web_accessible_resources": [
     "dist/img/*",
-    "icon/*",
-    "fonts/*.ttf"
+    "icon/*"
   ],
   "commands": {
     "toggle_recent_tab": {
