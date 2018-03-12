@@ -85,7 +85,7 @@ module.exports = {
         alias: {
             '@': path.join(__dirname, '..', 'src'),
             '%': path.join(__dirname, '..', 'src/templates'),
-            'vue$': 'vue/dist/vue.common.js',
+            'vue$': 'vue/dist/vue.esm.js',
             'popper$': 'popper.js',
         }
     },
