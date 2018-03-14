@@ -94,8 +94,14 @@ function onMessageReceiver(message, sender, sendResponse) {
         return true;
     }
 
+    let combinationKey = pref.getDefaultCombinationKey();
     switch (true) {
         case message.request: {
+            if (message.modifier !== combinationKey) {
+                sendResponse({wrongModifier: true});
+                break;
+            }
+
             let shortcut = window.getPrimaryShortcut(message.key);
             if (shortcut) {
                 openShortcut(shortcut);
@@ -107,6 +113,11 @@ function onMessageReceiver(message, sender, sendResponse) {
             break;
         }
         case message.query: {
+            if (message.modifier !== combinationKey) {
+                sendResponse({wrongModifier: true});
+                break;
+            }
+
             let primaryShortcut = window.getPrimaryShortcut(message.firstKey + message.secondKey);
             let secondaryShortcut = window.getSecondaryShortcutQuickly(message.firstKey, message.secondKey);
             if (primaryShortcut && secondaryShortcut) {

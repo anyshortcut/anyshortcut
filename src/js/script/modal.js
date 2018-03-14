@@ -73,6 +73,12 @@ export default {
     showAuthenticatedRequired() {
         openModal(utils.compile(require('%/authenticate-required.html')));
     },
+    showWrongCombinationKey(wrongKey) {
+        openModal(utils.compile(require('%/wrong-combination-key.html'), {
+            combinationKey: wrongKey === 'alt' ? 'SHIFT' : 'ALT',
+            wrongCombinationKey: wrongKey.toUpperCase(),
+        }));
+    },
     showPrimaryShortcutBindSuccess(shortcut) {
         openModal(utils.compile(require('%/primary-bind-success.html'), {
             key: shortcut.key,

@@ -16,13 +16,20 @@ let firstKey = EMPTY_KEY;
 let secondKey = EMPTY_KEY;
 let triggerTimeoutId = null;
 
-function triggerPrimaryShortcut(keyCodeChar) {
+function triggerPrimaryShortcut(modifier, keyCodeChar) {
     chrome.runtime.sendMessage({
         request: true,
+        modifier: modifier,
         key: keyCodeChar
     }, response => {
         if (response.authenticateRequired) {
             modal.showAuthenticatedRequired();
+            return;
+        }
+
+        // User trigger a wrong modifier key.
+        if (response.wrongModifier) {
+            modal.showWrongCombinationKey(modifier);
             return;
         }
 
@@ -39,12 +46,21 @@ function triggerPrimaryShortcut(keyCodeChar) {
 }
 
 
-function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
+function triggerQueryShortcut(modifier, firstKeyCodeChar, secondKeyCodeChar) {
     chrome.runtime.sendMessage({
-        query: true, firstKey: firstKeyCodeChar, secondKey: secondKeyCodeChar
+        query: true,
+        modifier: modifier,
+        firstKey: firstKeyCodeChar,
+        secondKey: secondKeyCodeChar
     }, response => {
         if (response.authenticateRequired) {
             modal.showAuthenticatedRequired();
+            return;
+        }
+
+        // User trigger a wrong modifier key.
+        if (response.wrongModifier) {
+            modal.showWrongCombinationKey(modifier);
             return;
         }
 
@@ -71,18 +87,19 @@ function triggerQueryShortcut(firstKeyCodeChar, secondKeyCodeChar) {
 /**
  * Trigger shortcut.
  */
-function triggerShortcut() {
+function triggerShortcut(event) {
     // Clear trigger timeout here to fix this bug:
     // ALT + G + I show ALT + G + I, then show ALT + null
     clearTriggerTimeout();
 
-    if (firstKey.pressedAt && firstKey.releasedAt) {
+    let modifier = helper.getEventModifier(event);
+    if (modifier && firstKey.pressedAt && firstKey.releasedAt) {
         if (secondKey.pressedAt && secondKey.releasedAt) {
-            triggerQueryShortcut(firstKey.keyCodeChar, secondKey.keyCodeChar);
+            triggerQueryShortcut(modifier, firstKey.keyCodeChar, secondKey.keyCodeChar);
         } else {
             // Don't delay if there are no secondary shortcuts
             triggerTimeoutId = window.setTimeout(function() {
-                triggerPrimaryShortcut(firstKey.keyCodeChar);
+                triggerPrimaryShortcut(modifier, firstKey.keyCodeChar);
             }, window.delay ? helper.delayTime : 0);
         }
     } else {
@@ -118,7 +135,7 @@ export default {
             secondKey.releasedAt = Date.now();
         }
 
-        triggerShortcut();
+        triggerShortcut(event);
     },
     onKeyDown(event) {
         event = helper.ensureWindowEvent(event);

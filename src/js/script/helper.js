@@ -43,7 +43,7 @@ export default {
         return e ? e : window.event;
     },
     isValidKeyEvent(e) {
-        return this.isValidKeyCode(e.keyCode) && this.withAltModifier(e);
+        return this.isValidKeyCode(e.keyCode) && (this.withAltModifier(e) || this.withShiftModifier(e));
     },
     /**
      * Check the keyCode whether is valid.
@@ -60,6 +60,18 @@ export default {
     withAltModifier(e) {
         // Ignore SHIFT key to compact key conflict
         return e && e.altKey && !e.ctrlKey && !e.metaKey;
+    },
+    withShiftModifier(e) {
+        return e && e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey;
+    },
+    getEventModifier(e) {
+        if (this.withAltModifier(e)) {
+            return 'alt';
+        } else if (this.withShiftModifier(e)) {
+            return 'shift';
+        }
+
+        return null;
     },
     /**
      * A function return whether current active element is a input element or a editable element.
