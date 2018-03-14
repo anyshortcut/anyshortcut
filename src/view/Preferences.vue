@@ -45,6 +45,32 @@
         <div class="preference-divider"></div>
 
         <div class="preference-item flex-vertical">
+            Customize the combination key:
+            <div>
+                <input type="radio" id="alt" v-model='combinationKey' :value="'alt'">
+                <label for="alt" class="preference-subtitle">
+                    <b>ALT</b> + KEY
+                    <span data-balloon="The default one"
+                          data-balloon-pos="up">
+                        <img class="info-img" src="../img/info-grey.svg" alt="info">
+                    </span>
+                </label>
+            </div>
+            <div>
+                <input type="radio" id="shift" v-model="combinationKey" :value="'shift'">
+                <label for="shift" class="preference-subtitle">
+                    <b>SHIFT</b> + KEY
+                    <span data-balloon="Prefer for Firefox of Windows"
+                          data-balloon-pos="up">
+                        <img class="info-img" src="../img/info-grey.svg" alt="info">
+                    </span>
+                </label>
+            </div>
+        </div>
+
+        <div class="preference-divider"></div>
+
+        <div class="preference-item flex-vertical">
             How to open shortcut:
             <div>
                 <input type="radio" id="blank" v-model='openByBlank' :value="true">
@@ -55,6 +81,7 @@
                 <label for="self" class="preference-subtitle">in same tab</label>
             </div>
         </div>
+
         <div class="preference-divider"></div>
 
         <div class="preference-item flex-horizontal">
@@ -209,12 +236,16 @@
         name: 'preference-view',
         data() {
             return {
+                combinationKey: prefs.getDefaultCombinationKey(),
                 openByBlank: prefs.isShortcutOpenByBlank(),
                 compoundEnable: prefs.isCompoundShortcutEnable(),
                 showCircle: prefs.getShowCircleConfig(),
             }
         },
         watch: {
+            combinationKey: function(newValue) {
+                prefs.setDefaultCombinationKey(newValue);
+            },
             openByBlank: function(newValue) {
                 prefs.setShortcutOpenByBlank(newValue);
             },

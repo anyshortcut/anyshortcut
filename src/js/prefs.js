@@ -3,6 +3,12 @@ function nullOrDefault(value, default_value) {
 }
 
 export default {
+    getDefaultCombinationKey() {
+        return nullOrDefault(localStorage.getItem('combinationKey'), 'alt');
+    },
+    setDefaultCombinationKey(value) {
+        return localStorage.setItem('combinationKey', value);
+    },
     isShortcutOpenByBlank() {
         return nullOrDefault(JSON.parse(localStorage.getItem('openByBlank')), true);
     },
