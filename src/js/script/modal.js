@@ -79,28 +79,32 @@ export default {
             wrongCombinationKey: wrongKey.toUpperCase(),
         }));
     },
-    showPrimaryShortcutBindSuccess(shortcut) {
+    showPrimaryShortcutBindSuccess(combinationKey, shortcut) {
         openModal(utils.compile(require('%/primary-bind-success.html'), {
+            combinationKey: combinationKey.toUpperCase(),
             key: shortcut.key,
         }));
     },
-    showSecondaryShortcutBindSuccess(shortcut, primaryShortcut) {
+    showSecondaryShortcutBindSuccess(combinationKey, shortcut, primaryShortcut) {
         // Only show secondary shortcut bind modal for one key primary shortcut.
         if (primaryShortcut.key.length === 1) {
             openModal(utils.compile(require('%/secondary-bind-success.html'), {
+                combinationKey: combinationKey.toUpperCase(),
                 key: shortcut.key,
                 primaryShortcut: primaryShortcut,
             }));
         }
     },
-    showPrimaryShortcutUnbound(pressedKey) {
+    showPrimaryShortcutUnbound(combinationKey, pressedKey) {
         openModal(utils.compile(require('%/shortcut-not-found.html'), {
             shortcutType: "primary",
-            key: "ALT + " + pressedKey
+            combinationKey: combinationKey.toUpperCase(),
+            key: pressedKey,
         }));
     },
-    showQueryShortcutFailed(firstKey, secondKey) {
+    showQueryShortcutFailed(combinationKey, firstKey, secondKey) {
         openModal(utils.compile(require('%/query-shortcut-failed.html'), {
+            combinationKey: combinationKey.toUpperCase(),
             firstKey: firstKey,
             secondKey: secondKey,
         }));

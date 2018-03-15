@@ -39,7 +39,7 @@ function triggerPrimaryShortcut(modifier, keyCodeChar) {
         }
 
         if (!response.shortcut) {
-            modal.showPrimaryShortcutUnbound(keyCodeChar);
+            modal.showPrimaryShortcutUnbound(modifier, keyCodeChar);
         }
     });
     cleanUp();
@@ -78,7 +78,7 @@ function triggerQueryShortcut(modifier, firstKeyCodeChar, secondKeyCodeChar) {
             modal.showQueryShortcutChooser(primaryShortcut, secondaryShortcut, response.byBlank);
         } else if (!primaryShortcut && !secondaryShortcut) {
             // Neither shortcut bound.
-            modal.showQueryShortcutFailed(firstKeyCodeChar, secondKeyCodeChar);
+            modal.showQueryShortcutFailed(modifier, firstKeyCodeChar, secondKeyCodeChar);
         }
     });
     cleanUp();

@@ -207,11 +207,13 @@ window.notifyActiveTabShortcutBindSuccess = function(shortcut) {
     //  Only notify active tab three for each type shortcut.
     if (showTimes < 3) {
         localStorage.setItem(key, showTimes + 1);
+        let combinationKey = pref.getDefaultCombinationKey();
         if (shortcut.primary) {
             chrome.tabs.sendMessage(window.activeTab.id, {
                 bindSuccess: true,
                 shortcut: shortcut,
                 delay: determineDelay(),
+                combinationKey: combinationKey,
             });
         } else {
             chrome.tabs.sendMessage(window.activeTab.id, {
@@ -219,6 +221,7 @@ window.notifyActiveTabShortcutBindSuccess = function(shortcut) {
                 shortcut: shortcut,
                 primaryShortcut: window.getPrimaryShortcutByDomain(shortcut.domain),
                 delay: determineDelay(),
+                combinationKey: combinationKey,
             });
         }
     }

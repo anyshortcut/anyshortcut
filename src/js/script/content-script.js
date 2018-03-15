@@ -27,9 +27,9 @@ chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
 
             let shortcut = message.shortcut;
             if (shortcut.primary) {
-                modal.showPrimaryShortcutBindSuccess(shortcut);
+                modal.showPrimaryShortcutBindSuccess(message.combinationKey, shortcut);
             } else {
-                modal.showSecondaryShortcutBindSuccess(shortcut, message.primaryShortcut);
+                modal.showSecondaryShortcutBindSuccess(message.combinationKey, shortcut, message.primaryShortcut);
             }
             break;
         }
