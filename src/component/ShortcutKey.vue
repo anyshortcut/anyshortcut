@@ -1,7 +1,7 @@
 <template>
     <span v-if="">
         <span class="shortcut">
-                ALT + {{ shortcutKeyChar }}
+                {{ combinationKey }} + {{ shortcutKeyChar }}
             </span>
         <span v-if="isConflict"
               data-balloon="May conflict in Windows"
@@ -13,11 +13,13 @@
 <style lang="less" scoped>
 </style>
 <script type="es6">
+    import prefs from "../js/prefs.js";
 
     export default {
         name: 'ShortcutKey',
         data() {
             return {
+                combinationKey: prefs.getDefaultCombinationKey().toUpperCase(),
                 conflictKeys: ['D', 'F'],
             };
         },
