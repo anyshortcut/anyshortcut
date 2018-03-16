@@ -21,7 +21,8 @@
             <div class="primary-title">Specify the secondary shortcut</div>
         </template>
 
-        <keyboard :bound-keys="boundKeys"
+        <keyboard :combination-key="prefs.getDefaultCombinationKey()"
+                  :bound-keys="boundKeys"
                   :show-slide-keys="primary"
                   :highlight-key="highlightKey"
                   @key-hover-over="onHoverOver"

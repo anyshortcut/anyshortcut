@@ -6,7 +6,7 @@
                  :class="keyClass(key)"
                  class="key">{{ key }}
             </div>
-            <div class="key slide-key invisible" v-visible="slideKeyVisibility"></div>
+            <div class="key slide-key" v-visible="slideKeyVisibility"></div>
         </div>
         <div class="keyboard-row">
             <div class="key slide-key" v-visible="slideKeyVisibility"></div>
@@ -14,50 +14,59 @@
                  :class="keyClass(key)"
                  class="key">{{ key }}
             </div>
-            <div class="key slide-key invisible" v-visible="slideKeyVisibility"></div>
+            <div class="key slide-key" v-visible="slideKeyVisibility"></div>
         </div>
         <div class="keyboard-row">
-            <div class="key slide-key extra-size-two" v-visible="slideKeyVisibility"></div>
+            <div class="key slide-key extra-size-two" v-visible="slideKeyVisibility">
+            </div>
             <div v-for="key in 'ASDFGHJKL'"
                  :class="keyClass(key)"
                  class="key">{{ key }}
             </div>
-            <div class="key slide-key extra-size-two invisible"
+            <div class="key slide-key extra-size-two"
                  v-visible="slideKeyVisibility">
             </div>
         </div>
         <div class="keyboard-row">
             <div class="key slide-key double-size lowercase"
+                 :class="{highlight:combinationKey==='shift'}"
                  v-visible="slideKeyVisibility">
+                {{ combinationKey==='shift'?'shift':'' }}
             </div>
             <div v-for="key in 'ZXCVBNM'"
                  :class="keyClass(key)"
                  class="key">{{ key }}
             </div>
-            <div class="key slide-key invisible" v-visible="slideKeyVisibility"></div>
-            <div class="key slide-key double-size lowercase invisible"
+            <div class="key slide-key" v-visible="slideKeyVisibility"></div>
+            <div class="key slide-key double-size lowercase"
+                 :class="{highlight:combinationKey==='shift'}"
                  v-visible="slideKeyVisibility">
+                {{ combinationKey==='shift'?'shift':'' }}
             </div>
         </div>
         <div class="keyboard-row">
             <div class="key slide-key lowercase" v-visible="slideKeyVisibility">
             </div>
-            <div class="key slide-key lower-center lowercase highlight"
-                 v-visible="slideKeyVisibility">alt
+            <div class="key slide-key lower-center lowercase"
+                 :class="{highlight:combinationKey==='alt'}"
+                 v-visible="slideKeyVisibility">
+                {{ combinationKey==='alt'?'alt':'' }}
             </div>
-            <div class="key slide-key lower-center lowercase extra-size-two invisible"
+            <div class="key slide-key lower-center lowercase extra-size-two"
                  v-visible="slideKeyVisibility">
             </div>
-            <div class="key slide-key space-bar invisible"
+            <div class="key slide-key space-bar"
                  v-visible="slideKeyVisibility">
             </div>
             <div class="key slide-key lower-center lowercase extra-size-two"
                  v-visible="slideKeyVisibility">
             </div>
-            <div class="key slide-key lower-center lowercase highlight invisible"
-                 v-visible="slideKeyVisibility">alt
+            <div class="key slide-key lower-center lowercase"
+                 :class="{highlight:combinationKey==='alt'}"
+                 v-visible="slideKeyVisibility">
+                {{ combinationKey==='alt'?'alt':'' }}
             </div>
-            <div class="key slide-key lowercase invisible"
+            <div class="key slide-key lowercase"
                  v-visible="slideKeyVisibility">
             </div>
         </div>
@@ -150,10 +159,6 @@
             box-shadow: none;
         }
 
-        &.invisible {
-            visibility: hidden;
-        }
-
         &.disabled {
             background: #ececec;
             cursor: text;
@@ -168,6 +173,12 @@
             return {}
         },
         props: {
+            combinationKey: {
+                type: String,
+                default() {
+                    return 'alt';
+                }
+            },
             boundKeys: {
                 type: Array,
                 default: function() {
