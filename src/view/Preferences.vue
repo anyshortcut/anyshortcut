@@ -119,11 +119,11 @@
 
         <div class="preference-divider"></div>
 
-        <a href="https://chrome.google.com/webstore/detail/anyshortcut/ginilcdjefkbpeelgekodpmmabppcfao/reviews"
+        <a :href="reviewUrl"
            target="_blank"
            class="preference-item-link">
             <div class="preference-item flex-horizontal">
-                Rate us 5 stars!
+                Rate us!
             </div>
         </a>
 
@@ -240,6 +240,8 @@
                 openByBlank: prefs.isShortcutOpenByBlank(),
                 compoundEnable: prefs.isCompoundShortcutEnable(),
                 showCircle: prefs.getShowCircleConfig(),
+                reviewUrl: window.browser ? 'https://addons.mozilla.org/addon/anyshortcut-firefox/'
+                    : 'https://chrome.google.com/webstore/detail/anyshortcut/ginilcdjefkbpeelgekodpmmabppcfao/reviews',
             }
         },
         watch: {
