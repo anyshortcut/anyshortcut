@@ -22,24 +22,26 @@ function triggerPrimaryShortcut(modifier, keyCodeChar) {
         modifier: modifier,
         key: keyCodeChar
     }, response => {
-        if (response.authenticateRequired) {
-            modal.showAuthenticatedRequired();
-            return;
-        }
+        if (response) {
+            if (response.authenticateRequired) {
+                modal.showAuthenticatedRequired();
+                return;
+            }
 
-        // User trigger a wrong modifier key.
-        if (response.wrongModifier) {
-            modal.showWrongCombinationKey(modifier);
-            return;
-        }
+            // User trigger a wrong modifier key.
+            if (response.wrongModifier) {
+                modal.showWrongCombinationKey(modifier);
+                return;
+            }
 
-        if (response.expired) {
-            modal.showSubscriptionExpired();
-            return;
-        }
+            if (response.expired) {
+                modal.showSubscriptionExpired();
+                return;
+            }
 
-        if (!response.shortcut) {
-            modal.showPrimaryShortcutUnbound(modifier, keyCodeChar);
+            if (!response.shortcut) {
+                modal.showPrimaryShortcutUnbound(modifier, keyCodeChar);
+            }
         }
     });
     cleanUp();
@@ -53,32 +55,34 @@ function triggerQueryShortcut(modifier, firstKeyCodeChar, secondKeyCodeChar) {
         firstKey: firstKeyCodeChar,
         secondKey: secondKeyCodeChar
     }, response => {
-        if (response.authenticateRequired) {
-            modal.showAuthenticatedRequired();
-            return;
-        }
+        if (response) {
+            if (response.authenticateRequired) {
+                modal.showAuthenticatedRequired();
+                return;
+            }
 
-        // User trigger a wrong modifier key.
-        if (response.wrongModifier) {
-            modal.showWrongCombinationKey(modifier);
-            return;
-        }
+            // User trigger a wrong modifier key.
+            if (response.wrongModifier) {
+                modal.showWrongCombinationKey(modifier);
+                return;
+            }
 
-        if (response.expired) {
-            modal.showSubscriptionExpired();
-            return;
-        }
+            if (response.expired) {
+                modal.showSubscriptionExpired();
+                return;
+            }
 
-        let primaryShortcut = response.primaryShortcut;
-        let secondaryShortcut = response.secondaryShortcut;
+            let primaryShortcut = response.primaryShortcut;
+            let secondaryShortcut = response.secondaryShortcut;
 
-        if (primaryShortcut && secondaryShortcut) {
-            // Primary and secondary shortcut both exist,
-            // show a chooser let user choose one.
-            modal.showQueryShortcutChooser(primaryShortcut, secondaryShortcut, response.byBlank);
-        } else if (!primaryShortcut && !secondaryShortcut) {
-            // Neither shortcut bound.
-            modal.showQueryShortcutFailed(modifier, firstKeyCodeChar, secondKeyCodeChar);
+            if (primaryShortcut && secondaryShortcut) {
+                // Primary and secondary shortcut both exist,
+                // show a chooser let user choose one.
+                modal.showQueryShortcutChooser(primaryShortcut, secondaryShortcut);
+            } else if (!primaryShortcut && !secondaryShortcut) {
+                // Neither shortcut bound.
+                modal.showQueryShortcutFailed(modifier, firstKeyCodeChar, secondKeyCodeChar);
+            }
         }
     });
     cleanUp();

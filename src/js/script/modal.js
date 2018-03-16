@@ -109,7 +109,7 @@ export default {
             secondKey: secondKey,
         }));
     },
-    showQueryShortcutChooser(primaryShortcut, secondaryShortcut, byBlank) {
+    showQueryShortcutChooser(primaryShortcut, secondaryShortcut) {
         let modal = openModal(utils.compile(require('%/query-shortcut-chooser.html'), {
             shortcuts: [primaryShortcut, secondaryShortcut]
         }));
