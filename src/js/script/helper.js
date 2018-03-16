@@ -62,6 +62,10 @@ export default {
         return e && e.altKey && !e.ctrlKey && !e.metaKey;
     },
     withShiftModifier(e) {
+        // Ignore active element editable case.
+        if (this.isActiveElementEditable()) {
+            return false;
+        }
         return e && e.shiftKey && !e.altKey && !e.ctrlKey && !e.metaKey;
     },
     getEventModifier(e) {
@@ -74,7 +78,7 @@ export default {
         return null;
     },
     /**
-     * A function return whether current active element is a input element or a editable element.
+     * A function return whether current active element is a input element or an editable element.
      * Mainly usage to prevent trigger shortcut when in these cases.
      */
     isActiveElementEditable() {
