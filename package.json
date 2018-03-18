@@ -17,10 +17,10 @@
   "dependencies": {
     "axios": "^0.15.3",
     "lodash": "^4.17.5",
-    "popper.js": "^1.12.9",
-    "raven-js": "^3.23.1",
+    "popper.js": "^1.14.1",
+    "raven-js": "^3.23.3",
     "timeago.js": "^3.0.2",
-    "vue": "^2.5.15"
+    "vue": "^2.5.16"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
