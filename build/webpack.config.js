@@ -12,7 +12,7 @@ const extractLess = new ExtractTextPlugin({
 module.exports = {
     context: path.resolve('./src'),
     entry: {
-        content_script: './js/script/content-script.js',
+        content_script: ['./js/script/content-script.js', './scss/content-script.scss'],
         firefox_auth_helper: './js/script/firefox-auth-helper.js',
         background: [
             './js/background/extension.js',
@@ -20,8 +20,8 @@ module.exports = {
             './js/background/message.js',
             './js/background/app.js',
         ],
-        popup: './js/popup.js',
-        tour: './js/tour.js',
+        popup: ['./js/popup.js'],
+        tour: ['./js/tour.js', './scss/tour.scss'],
     },
     output: {
         path: path.resolve(__dirname, '../extension/dist'),
@@ -51,13 +51,13 @@ module.exports = {
                 }
             },
             {
-                // use less-loader for *.less files
+                // use scss-loader for *.scss files
                 test: /\.less$/,
                 use: extractLess.extract({
                     use: [{
                         loader: 'css-loader'
                     }, {
-                        loader: 'less-loader',
+                        loader: 'scss-loader',
                         options: {
                             strictMath: true,
                             noIeCompat: true
@@ -79,13 +79,29 @@ module.exports = {
                     name: 'img/[name].[ext]',
                 }
             },
+            {
+                test: /\.scss$/,
+                use: [{
+                    loader: "style-loader"
+                }, {
+                    loader: "css-loader",
+                    options: {
+                        sourceMap: true
+                    }
+                }, {
+                    loader: "sass-loader",
+                    options: {
+                        sourceMap: true
+                    }
+                }]
+            }
         ],
     },
     resolve: {
         alias: {
             '@': path.join(__dirname, '..', 'src'),
             '%': path.join(__dirname, '..', 'src/templates'),
-            'vue$': 'vue/dist/vue.esm.js',
+            'vue$': 'vue/dist/vue.runtime.esm.js',
             'popper$': 'popper.js',
         }
     },

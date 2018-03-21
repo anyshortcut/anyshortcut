@@ -1,10 +1,10 @@
-@modal-z-index: 999999999;
-@primary-color: #517CE8;
-@secondary-color: #2b72dc;
-@box-shadow-base: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-@box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
+$modal-z-index: 999999999;
+$primary-color: #517CE8;
+$secondary-color: #2b72dc;
+$box-shadow-base: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+$box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
 
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500i,600i|Roboto');
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,500i,600i|Roboto");
 
 .anyshortcut-modal {
   box-sizing: border-box !important;
@@ -17,7 +17,7 @@
   top: 0 !important;
   bottom: 0 !important;
   left: 0 !important;
-  z-index: (@modal-z-index - 1) !important;
+  z-index: ($modal-z-index - 1) !important;
 
   ul {
     list-style: none outside !important;
@@ -35,7 +35,7 @@
   margin-top: 80px !important;
   background: white !important;
   border-radius: 5px !important;
-  z-index: @modal-z-index !important;
+  z-index: $modal-z-index !important;
   box-shadow: 0 -2px 4px rgba(0, 0, 0, .12), 0 4px 6px rgba(0, 0, 0, .12) !important;
 }
 
@@ -49,7 +49,7 @@
 }
 
 .anyshortcut-brand {
-  color: @primary-color;
+  color: $primary-color;
   font-size: 16px;
   cursor: pointer;
   display: flex;
@@ -95,19 +95,19 @@
 
 .anyshortcut-shortcut {
   box-sizing: border-box;
-  color: @primary-color;
+  color: $primary-color;
   background-color: white;
   padding: 0 10px;
   margin: 0 5px;
   border-radius: 3px;
   text-align: center;
-  box-shadow: @box-shadow-base;
+  box-shadow: $box-shadow-base;
   white-space: nowrap;
   font-size: 15px !important;
 }
 
 .anyshortcut-secondary-shortcut {
-  .anyshortcut-shortcut;
+  @extend .anyshortcut-shortcut;
   margin-right: 15px !important;
   width: 32px !important;
   letter-spacing: 0.6px !important;
@@ -148,10 +148,10 @@
     margin: 0 !important;
     text-decoration: none !important;
     outline: none !important;
-    color: @secondary-color !important;
+    color: $secondary-color !important;
 
     &:focus, &:active, &:visited, &:hover {
-      color: @secondary-color !important;
+      color: $secondary-color !important;
     }
   }
 }
@@ -191,11 +191,11 @@
   bottom: 15px !important;
   width: 40px !important;
   height: 40px !important;
-  background-color: @primary-color !important;
-  box-shadow: @box-shadow-dark !important;
+  background-color: $primary-color !important;
+  box-shadow: $box-shadow-dark !important;
   border-radius: 50% 50% !important;
   cursor: pointer !important;
-  z-index: (@modal-z-index - 1) !important;
+  z-index: ($modal-z-index - 1) !important;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
@@ -230,10 +230,10 @@
   font-family: "Poppins", sans-serif !important;
   padding: 10px !important;
   background-color: #FFFFFF !important;
-  box-shadow: @box-shadow-dark !important;
+  box-shadow: $box-shadow-dark !important;
   border-radius: 5px !important;
   text-align: center !important;
-  z-index: (@modal-z-index - 1) !important;
+  z-index: ($modal-z-index - 1) !important;
 
   ul {
     list-style: none outside !important;
@@ -261,7 +261,7 @@
   letter-spacing: 0.5px;
   margin-bottom: 10px;
   //text-decoration: none !important;
-  color: @primary-color !important;
+  color: $primary-color !important;
 
   &:hover {
     opacity: 0.8 !important;

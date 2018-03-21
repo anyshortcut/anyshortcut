@@ -72,7 +72,7 @@
         </div>
     </div>
 </template>
-<style lang="less">
+<style lang="scss">
     * {
         box-sizing: border-box;
     }

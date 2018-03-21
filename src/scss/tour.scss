@@ -1,4 +1,4 @@
-@import "_common.less";
+@import "_common.scss";
 
 * {
   box-sizing: border-box;
@@ -22,7 +22,7 @@ a {
   }
 }
 
-div#app {
+.tour-page {
   margin: 0;
   font-size: 14px;
   line-height: 1.42857;
@@ -111,7 +111,7 @@ section {
 }
 
 .step-indicator-current {
-  border-color: @primary-color;
+  border-color: $primary-color;
 }
 
 .btn-google-sign-in {
@@ -142,7 +142,7 @@ section {
   border-radius: 3px;
   font-size: 14px;
   text-align: center;
-  box-shadow: @box-shadow-base;
+  box-shadow: $box-shadow-base;
 }
 
 .line-divider {
@@ -180,7 +180,7 @@ section {
 .default-shortcut-list {
   padding: 0;
   margin: 15px;
-  box-shadow: @box-shadow-base;
+  box-shadow: $box-shadow-base;
   list-style: none;
   min-height: 445px;
   max-height: 445px;
@@ -238,7 +238,7 @@ section {
   }
 
   .default-shortcut-key {
-    .tour-shortcut;
+    @extend .tour-shortcut;
     padding: 3px 12px;
   }
 }

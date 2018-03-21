@@ -51,8 +51,8 @@
 
     </section>
 </template>
-<style lang="less">
-    @import "../less/_common.less";
+<style lang="scss">
+    @import "../scss/_common.scss";
 
     .bind-view {
         display: flex;
@@ -68,7 +68,12 @@
         margin: 5px 15px;
 
         .close {
-            .close-button;
+            color: #CECECE;
+            padding: 10px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            outline: none;
             position: absolute;
             right: 0;
             top: 0;

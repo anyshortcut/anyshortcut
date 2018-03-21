@@ -17,8 +17,8 @@
         </footer>
     </main>
 </template>
-<style lang="less">
-    @import "../less/_common.less";
+<style lang="scss">
+    @import "../scss/_common.scss";
 
     main {
         line-height: 2em;
@@ -30,7 +30,7 @@
     }
 
     .anyshortcut {
-        .brand;
+        @extend .brand;
         font-size: 18px;
         position: relative;
         top: 0;

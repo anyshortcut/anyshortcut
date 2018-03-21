@@ -10,7 +10,7 @@
         </span>
     </span>
 </template>
-<style lang="less" scoped>
+<style lang="scss" scoped>
 </style>
 <script type="es6">
     import prefs from "../js/prefs.js";

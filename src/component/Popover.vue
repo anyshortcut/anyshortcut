@@ -7,13 +7,13 @@
         <img class="popper-arrow" src="../img/triangle.svg" x-arrow/>
     </div>
 </template>
-<style lang="less">
-    @import "../less/_common.less";
+<style lang="scss">
+    @import "../scss/_common.scss";
 
     .popper {
         border-radius: 3px;
         background-color: #ffffff;
-        box-shadow: @box-shadow-base;
+        box-shadow: $box-shadow-base;
         padding: 5px;
         margin-bottom: 5px;
         z-index: 999;

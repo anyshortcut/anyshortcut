@@ -20,8 +20,8 @@
         <p>No secondary shortcut bound yet</p>
     </div>
 </template>
-<style lang="less">
-    @import "../less/_common.less";
+<style lang="scss">
+    @import "../scss/_common.scss";
 
     ul {
         list-style: none outside;
@@ -50,25 +50,27 @@
     }
 
     .shortcut-secondary {
-        .shortcut;
+        @extend .shortcut;
         display: inline-block;
         letter-spacing: 0.6px;
         font-size: 14px;
         width: 42px;
     }
 
-    @shortcut-comment-color: #555555;
+    $shortcut-comment-color: #555555;
     .shortcut-comment {
-        .overflow-ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         position: relative;
         width: 80%;
         margin: 0 10px;
         text-transform: capitalize;
         text-align: left;
-        color: @shortcut-comment-color;
+        color: $shortcut-comment-color;
 
         &:visited, &:active {
-            color: @shortcut-comment-color;
+            color: $shortcut-comment-color;
         }
     }
 

@@ -28,8 +28,8 @@
         <div class="table-action"></div>
     </div>
 </template>
-<style lang="less">
-    @max-width: 410px;
+<style lang="scss">
+    $max-width: 410px;
 
     .compound-keyboard {
         position: relative;
@@ -67,7 +67,7 @@
     thead {
         position: relative;
         display: block;
-        max-width: @max-width;
+        max-width: $max-width;
         overflow: visible;
         border-spacing: 10px 0;
         padding: 2px 0;
@@ -87,7 +87,7 @@
     tbody {
         position: relative;
         display: block;
-        max-width: @max-width;
+        max-width: $max-width;
         height: 250px;
         overflow: scroll;
     }

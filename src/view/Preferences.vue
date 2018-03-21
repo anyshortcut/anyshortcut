@@ -149,16 +149,16 @@
         </popover>
     </div>
 </template>
-<style lang="less">
-    @import "../less/_common.less";
+<style lang="scss">
+    @import "../scss/_common.scss";
 
     .preference-view {
         width: 300px;
-        background: @content-bgcolor;
+        background: $content-bgcolor;
     }
 
     .preference-header {
-        .header;
+        @include header;
         justify-content: flex-start;
     }
 

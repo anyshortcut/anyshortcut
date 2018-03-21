@@ -38,8 +38,8 @@
         </div>
     </div>
 </template>
-<style lang="less">
-    @import "../less/_common.less";
+<style lang="scss">
+    @import "../scss/_common.scss";
 
     .shortcut-bound, .shortcut-bind {
         display: flex;
@@ -49,10 +49,10 @@
     }
 
     .shortcut-comment-link {
-        color: @content-font-color;
+        color: $content-font-color;
 
         &:visited, &:active {
-            color: @content-font-color;
+            color: $content-font-color;
         }
     }
 
@@ -65,7 +65,7 @@
         border: solid #cecece 1px;
 
         &:focus {
-            border: solid @primary-color 1px;
+            border: solid $primary-color 1px;
         }
     }
 </style>

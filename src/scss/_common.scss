@@ -1,9 +1,8 @@
-@import "_var.less";
-// Keep _common code as less as possible.
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500i,600i|Roboto');
+@import "var.scss";
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,500i,600i|Roboto");
 
 .brand {
-  color: @primary-color;
+  color: $primary-color;
   font-size: 16px;
   cursor: pointer;
   display: flex;
@@ -22,14 +21,14 @@
 
 .shortcut {
   box-sizing: border-box;
-  color: @primary-color;
+  color: $primary-color;
   background-color: white;
   padding: 0 10px;
   margin: 0 5px;
   border-radius: 3px;
   font-size: 14px;
   text-align: center;
-  box-shadow: @box-shadow-base;
+  box-shadow: $box-shadow-base;
   white-space: nowrap;
 }
 
@@ -42,19 +41,4 @@
   width: 20px;
   height: 20px;
   vertical-align: middle;
-}
-
-.close-button() {
-  color: #CECECE;
-  padding: 10px;
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  outline: none;
-}
-
-.overflow-ellipsis() {
-  overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
 }

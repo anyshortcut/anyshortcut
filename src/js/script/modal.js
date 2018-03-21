@@ -1,4 +1,3 @@
-require("../../less/content-script.less");
 import helper from "./helper.js";
 import utils from "./utils.js";
 

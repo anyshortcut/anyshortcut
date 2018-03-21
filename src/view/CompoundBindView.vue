@@ -32,18 +32,18 @@
         </popover>
     </div>
 </template>
-<style lang="less">
-    @import "../less/_common.less";
+<style lang="scss">
+    @import "../scss/_common.scss";
 
     .compound-bind-view {
         width: 560px;
         display: flex;
         flex-direction: column;
-        background: @content-bgcolor;
+        background: $content-bgcolor;
     }
 
     .compound-bind-header {
-        .header;
+        @include header;
         justify-content: flex-start;
     }
 

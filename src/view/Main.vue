@@ -32,38 +32,38 @@
         </p>
     </div>
 </template>
-<style lang="less">
-    @import "../less/_common.less";
+<style lang="scss">
+    @import "../scss/_common.scss";
 
     body {
         font-family: "Poppins", sans-serif;
         font-weight: 400;
         font-size: 100%;
-        color: @content-font-color;
+        color: $content-font-color;
         text-align: center;
         margin: 0 auto;
     }
 
     .main-view {
-        width: @normal-width;
+        width: $normal-width;
         display: flex;
         flex-direction: column;
         align-content: center;
-        background: @content-bgcolor;
+        background: $content-bgcolor;
     }
 
     .main-header {
-        .header;
+        @include header;
     }
 
     .menu {
-        color: @menu-color;
+        color: $menu-color;
         font-size: 12.5px;
         letter-spacing: 0.6px;
         margin: 0 5px;
 
         a:visited, a:active {
-            color: @menu-color;
+            color: $menu-color;
         }
     }
 
@@ -73,7 +73,7 @@
         display: flex;
         flex-direction: column;
         align-content: center;
-        background: @content-bgcolor;
+        background: $content-bgcolor;
 
         p {
             font-size: 16px;

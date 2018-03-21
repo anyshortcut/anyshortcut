@@ -57,8 +57,8 @@
         </div>
     </div>
 </template>
-<style lang="less">
-    @import "../less/_common.less";
+<style lang="scss">
+    @import "../scss/_common.scss";
 
     .bound-view {
         position: relative;
@@ -104,7 +104,7 @@
         }
 
         .shortcut-info-property {
-            color: @primary-color;
+            color: $primary-color;
         }
 
     }
@@ -125,7 +125,7 @@
     }
 
     .trash-can {
-        .delete-button;
+        @extend .delete-button;
         padding: 8px;
     }
 
@@ -145,7 +145,7 @@
         align-items: center;
         border-radius: 3px;
         background-color: #ffffff;
-        box-shadow: @box-shadow-base;
+        box-shadow: $box-shadow-base;
         font-size: 15px;
 
         p {
@@ -153,7 +153,12 @@
         }
 
         .close {
-            .close-button;
+            color: #CECECE;
+            padding: 10px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            outline: none;
             display: flex;
             align-self: flex-end;
         }

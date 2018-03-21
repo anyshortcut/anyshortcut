@@ -12,11 +12,11 @@
         </div>
     </transition>
 </template>
-<style lang="less">
-    @import "../less/_var.less";
+<style lang="scss">
+    @import "../scss/_var.scss";
 
     .toast {
-        box-shadow: @box-shadow-base;
+        box-shadow: $box-shadow-base;
         min-width: 300px;
         padding: 10px 12px;
         box-sizing: border-box;
