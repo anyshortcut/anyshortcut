@@ -20,7 +20,8 @@
     "popper.js": "^1.14.1",
     "raven-js": "^3.23.3",
     "timeago.js": "^3.0.2",
-    "vue": "^2.5.16"
+    "vue": "^2.5.16",
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",

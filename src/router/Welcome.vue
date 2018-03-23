@@ -18,7 +18,7 @@
     </main>
 </template>
 <style lang="scss">
-    @import "../scss/_common.scss";
+    @import "../scss/common";
 
     main {
         line-height: 2em;

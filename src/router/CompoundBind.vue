@@ -1,7 +1,9 @@
 <template>
     <div class="compound-bind-view">
         <header class="compound-bind-header">
-            <a href="#/main"><img src="../img/back.svg" class="back-icon"/></a>
+            <router-link :to="{name:'main'}">
+                <img src="../img/back.svg" class="back-icon"/>
+            </router-link>
             Go back
         </header>
 
@@ -33,7 +35,7 @@
     </div>
 </template>
 <style lang="scss">
-    @import "../scss/_common.scss";
+    @import "../scss/common";
 
     .compound-bind-view {
         width: 560px;

@@ -1,9 +1,7 @@
 import Vue from "vue";
+import VueRouter from 'vue-router';
 import ga from "./mixin-ga.js";
-import WelcomeView from "../view/Welcome.vue";
-import MainView from "../view/Main.vue";
-import CompoundBindView from "../view/CompoundBindView.vue";
-import PreferenceView from "../view/Preferences.vue";
+import router from "@/router";
 import Toast from "../component/toast.js";
 import Bus from "./vue-bus.js";
 
@@ -13,7 +11,8 @@ import RavenVue from 'raven-js/plugins/vue';
 Raven.config('https://0aa6274679824a129c33c2cc4ae0d22b@sentry.io/144189').addPlugin(RavenVue, Vue).install();
 
 Vue.prototype.$toast = Toast;
-Vue.prototype.$background = chrome.extension.getBackgroundPage();
+let $background = chrome.extension.getBackgroundPage();
+Vue.prototype.$background = $background;
 
 Vue.directive('visible', function(el, binding) {
     if (binding.value) {
@@ -22,24 +21,33 @@ Vue.directive('visible', function(el, binding) {
         el.style.visibility = 'hidden';
     }
 });
+Vue.use(VueRouter);
 Vue.use(Bus);
+
+
+router.beforeEach((to, from, next) => {
+    if (to.matched.some(record => record.meta.auth)) {
+        if ($background.authenticated) {
+            next();
+        } else {
+            next({
+                path: '/welcome',
+                query: {
+                    redirect: to.fullPath,
+                }
+            });
+        }
+    } else {
+        next();
+    }
+});
 
 let app = new Vue({
     data: {
-        currentView: null,
         loading: false,
     },
-    components: {
-        WelcomeView,
-        MainView,
-        CompoundBindView,
-        PreferenceView,
-    },
-    computed: {
-        authenticated: function() {
-            return this.$background.authenticated;
-        }
-    },
+    router,
+    render: createElement => createElement('router-view'),
     methods: {
         bindShortcut: function(primary, keyChar, comment) {
             let bindFunction;
@@ -51,9 +59,22 @@ let app = new Vue({
 
             this.loading = true;
             bindFunction(keyChar, comment, (result, shortcut) => {
-                this.onPostBind(result);
+                this.loading = false;
+
                 if (result) {
+                    if (this.$router.currentRoute.name === 'main') {
+                        document.location.reload();
+                    } else if (this.$router.currentRoute.name === 'compound') {
+                        this.$router.replace({name: 'main'});
+                    }
+
+                    this.$background.setPopupIcon(true);
+                    // this.$toast.success('Great job! you have bound a shortcut for this url!');
+
                     this.$background.notifyActiveTabShortcutBindSuccess(shortcut);
+                }
+                else {
+                    // this.$toast.error('Ooops!');
                 }
             });
         },
@@ -68,42 +89,22 @@ let app = new Vue({
 
                 this.loading = true;
                 removeFunction(shortcut, result => {
-                    this.onPostUnbind(result);
+                    this.loading = false;
+
+                    if (result) {
+                        if (this.$router.currentRoute.name === 'main') {
+                            // this.$router.go();
+                            document.location.reload();
+                        } else if (this.$router.currentRoute.name === 'compound') {
+                            document.location.reload();
+                        }
+
+                        this.$background.setPopupIcon(false);
+                        // this.$toast.success('Delete Success!');
+                    } else {
+                        // this.$toast.error('Ooops!');
+                    }
                 });
-            }
-        },
-        onPostBind: function(result) {
-            this.loading = false;
-
-            if (result) {
-                if (this.currentView === 'main') {
-                    this.$refs.main.queryShortcuts();
-                } else if (this.currentView === 'compound-bind') {
-                    window.location.hash = '#/main';
-                    this.currentView === 'main';
-                }
-
-                this.$background.setPopupIcon(true);
-                this.$toast.success('Great job! you have bound a shortcut for this url!');
-            }
-            else {
-                this.$toast.error('Ooops!');
-            }
-        },
-        onPostUnbind: function(result) {
-            this.loading = false;
-
-            if (result) {
-                if (this.currentView === 'main') {
-                    this.$refs.main.queryShortcuts();
-                } else if (this.currentView === 'compound-bind') {
-                    this.$refs.compoundBind.queryShortcuts();
-                }
-
-                this.$background.setPopupIcon(false);
-                this.$toast.success('Delete Success!');
-            } else {
-                this.$toast.error('Ooops!');
             }
         },
     },
@@ -116,18 +117,4 @@ let app = new Vue({
         Vue.prototype.$background = null;
     }
 });
-
-function onHashChange() {
-    let view = window.location.hash.replace(/#\/?/, '');
-    if (view) {
-        app.currentView = view;
-    } else {
-        window.location.hash = '#/main';
-        app.currentView = 'main';
-    }
-}
-
-window.addEventListener('hashchange', onHashChange);
-onHashChange();
-
 app.$mount('#vue');

@@ -5,7 +5,7 @@
             <a class="brand" href="https://anyshortcut.com" target="_blank">
                 <img class="brand-logo" alt="logo" src="../../extension/icon/logo.svg">
             </a>
-            <a href="#/setting" class="menu">Settings</a>
+            <router-link :to="{name:'preference'}" class="menu">Settings</router-link>
         </header>
 
         <bound-view v-if="shortcut"
@@ -33,7 +33,7 @@
     </div>
 </template>
 <style lang="scss">
-    @import "../scss/_common.scss";
+    @import "../scss/common.scss";
 
     body {
         font-family: "Poppins", sans-serif;
@@ -88,8 +88,8 @@
 
     import common from "../js/common.js";
     import _ from "lodash";
-    import BoundView from "./BoundView.vue";
-    import BindView from "./BindView.vue";
+    import BoundView from "../view/BoundView.vue";
+    import BindView from "../view/BindView.vue";
 
     export default {
         name: 'main-view',

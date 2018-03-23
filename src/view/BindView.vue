@@ -38,11 +38,11 @@
             </shortcut-board>
         </popover>
 
-        <a v-if="primary && prefs.isCompoundShortcutEnable()"
-           class="bind-compound-link"
-           href="#/compound-bind">
+        <router-link v-if="primary && prefs.isCompoundShortcutEnable()"
+                     :to="{name:'compound'}"
+                     class="bind-compound-link">
             Bind compound shortcut<span><img src="../img/right-arrow.svg"></span>
-        </a>
+        </router-link>
 
         <template v-if="!primary && Object.keys(shortcuts).length">
             <div>Secondary shortcuts</div>

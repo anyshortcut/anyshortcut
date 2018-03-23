@@ -1,7 +1,9 @@
 <template>
     <div class="preference-view">
         <header class="preference-header">
-            <a href="#/main"><img src="../img/back.svg" class="back-icon"/></a>
+            <router-link :to="{name:'main'}">
+                <img src="../img/back.svg" class="back-icon"/>
+            </router-link>
             Setting
         </header>
 
@@ -150,7 +152,7 @@
     </div>
 </template>
 <style lang="scss">
-    @import "../scss/_common.scss";
+    @import "../scss/common.scss";
 
     .preference-view {
         width: 300px;
