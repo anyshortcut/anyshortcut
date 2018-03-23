@@ -5,7 +5,7 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 
 const utils = require('./utils');
 const config = require('./config');
-const extractLess = new ExtractTextPlugin({
+const extractCss = new ExtractTextPlugin({
     filename: "css/[name].css",
 });
 
@@ -51,21 +51,6 @@ module.exports = {
                 }
             },
             {
-                // use scss-loader for *.scss files
-                test: /\.less$/,
-                use: extractLess.extract({
-                    use: [{
-                        loader: 'css-loader'
-                    }, {
-                        loader: 'scss-loader',
-                        options: {
-                            strictMath: true,
-                            noIeCompat: true
-                        }
-                    }],
-                })
-            },
-            {
                 test: /\.html$/,
                 loader: 'html-loader',
                 options: {
@@ -81,17 +66,20 @@ module.exports = {
             },
             {
                 test: /\.scss$/,
-                use: [{
-                    loader: "css-loader",
-                    options: {
-                        sourceMap: true
-                    }
-                }, {
-                    loader: "sass-loader",
-                    options: {
-                        sourceMap: true
-                    }
-                }]
+                use: extractCss.extract({
+                    use: [{
+                        loader: "css-loader",
+                        options: {
+                            sourceMap: true
+                        }
+                    }, {
+                        loader: 'sass-loader',
+                        options: {
+                            strictMath: true,
+                            noIeCompat: true
+                        }
+                    }],
+                })
             }
         ],
     },
@@ -112,7 +100,7 @@ module.exports = {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV),
             }
         }),
-        extractLess,
+        extractCss,
     ]
 };
 
