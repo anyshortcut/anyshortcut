@@ -87,6 +87,7 @@ module.exports = {
         alias: {
             '@': path.join(__dirname, '..', 'src'),
             '%': path.join(__dirname, '..', 'src/templates'),
+            'lodash$': path.join(__dirname, '..', 'src/js/vendor/lodash.includes.min.js'),
             'vue$': 'vue/dist/vue.runtime.esm.js',
             'popper$': 'popper.js',
         }

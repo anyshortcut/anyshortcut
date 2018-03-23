@@ -21,3 +21,20 @@ v9.3.0
 the **extension\\** directory is the destination directory of extension.
 
 That's it!
+
+
+### Custom build lodash
+Reference: [https://lodash.com/custom-builds](https://lodash.com/custom-builds)
+
+```shell
+npm i -g  lodash
+lodash include=isEmpty,pickBy,template,cloneDeep,forOwn,forEach
+```
+
+rename the destination file to *lodash.includes.min.js*, then configure in webpack config file,
+
+    resolve: {
+        alias: {
+            'lodash$': path.join(__dirname, '..', 'src/js/vendor/lodash.includes.min.js'),
+        }
+    }
