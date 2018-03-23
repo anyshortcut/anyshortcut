@@ -25,7 +25,7 @@
             <a class="brand" href="https://anyshortcut.com" target="_blank">
                 <img class="brand-logo" alt="logo" src="../../extension/icon/logo.svg">
             </a>
-            <a href="#/setting" class="menu">Settings</a>
+            <router-link :to="{name:'preference'}" class="menu">Settings</router-link>
         </header>
         <p>
             For technical reasons, we currently do not support set shortcut or trigger shortcut on this page.
