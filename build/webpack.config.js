@@ -34,6 +34,7 @@ module.exports = {
                 test: /\.js$/,
                 loader: 'babel-loader',
                 include: [path.resolve(__dirname, '../src')],
+                exclude: /node_modules/,
                 options: {
                     presets: ['es2015']
                 }
@@ -101,13 +102,19 @@ module.exports = {
                 NODE_ENV: JSON.stringify(process.env.NODE_ENV),
             }
         }),
+        // Compress extracted CSS. We are using this plugin so that possible
+        // duplicated CSS from different components can be deduped.
+        new OptimizeCSSPlugin({
+            cssProcessorOptions: {
+                safe: true
+            }
+        }),
         extractCss,
     ]
 };
 
 if (!config.env.debug) {
     const optimizePlugins = [
-        // new UglifyJSPlugin({
         new webpack.optimize.UglifyJsPlugin({
             ie8: false,
             compress: {
@@ -115,16 +122,9 @@ if (!config.env.debug) {
                 // Pure console.log statements
                 pure_funcs: ['console.log'],
             },
-            sourceMap: false,
+            sourceMap: true,
             // Eliminate comments
             comments: false,
-        }),
-        // Compress extracted CSS. We are using this plugin so that possible
-        // duplicated CSS from different components can be deduped.
-        new OptimizeCSSPlugin({
-            cssProcessorOptions: {
-                safe: true
-            }
         }),
     ];
     module.exports.plugins.push(...optimizePlugins);

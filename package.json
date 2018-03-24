@@ -16,7 +16,6 @@
   "homepage": "https://gitlab.com/Folyd/Spruce#README",
   "dependencies": {
     "axios": "^0.18.0",
-    "lodash": "^4.17.5",
     "popper.js": "^1.14.1",
     "raven-js": "^3.23.3",
     "timeago.js": "^3.0.2",
@@ -35,7 +34,7 @@
     "file-loader": "^1.1.11",
     "html-loader": "^0.5.5",
     "node-sass": "^4.8.3",
-    "optimize-css-assets-webpack-plugin": "^4.0.0",
+    "optimize-css-assets-webpack-plugin": "^3.2.0",
     "ora": "^2.0.0",
     "sass-loader": "^6.0.6",
     "semver": "^5.5.0",
