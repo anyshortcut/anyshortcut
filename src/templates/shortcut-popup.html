@@ -1,5 +1,5 @@
 <ul>
-    <% _.forOwn(shortcuts, function(shortcut) { %>
+    <% _.forOwn(data.shortcuts, function(shortcut) { %>
     <li class="anyshortcut-shortcut-item">
         <a href="<%- shortcut.url %>">
             <span class="anyshortcut-secondary-shortcut" title="<%- shortcut.title %>"><%- shortcut.key %></span>

@@ -30,11 +30,11 @@ function showShortcutPopup() {
         let shortcuts = response.shortcuts;
 
         if (shortcuts && Object.keys(shortcuts).length > 0) {
-            popup.innerHTML = utils.compile(require('%/shortcut-popup.html'),
+            popup.innerHTML = utils.compile('shortcut-popup',
                 {shortcuts: response.shortcuts}
             );
         } else {
-            popup.innerHTML = utils.compile(require('%/shortcut-list-empty.html'), {
+            popup.innerHTML = utils.compile('shortcut-list-empty', {
                 image: chrome.runtime.getURL('dist/img/grey-balloons.svg')
             });
         }
@@ -84,7 +84,7 @@ export default {
                         return;
                     }
 
-                    if (shortcuts.hasOwnProperty(keyCodeChar)) {
+                    if (shortcuts && shortcuts.hasOwnProperty(keyCodeChar)) {
                         keyPressed = true;
                     }
                 }
@@ -102,7 +102,7 @@ export default {
                         return;
                     }
 
-                    if (shortcuts.hasOwnProperty(keyCodeChar) && keyPressed) {
+                    if (shortcuts && shortcuts.hasOwnProperty(keyCodeChar) && keyPressed) {
                         let shortcut = shortcuts[keyCodeChar];
                         window.top.location.href = shortcut.url;
                         chrome.runtime.sendMessage({

@@ -1,6 +1,6 @@
 <p>Which shortcut did you mean?</p>
 <ul class="anyshortcut-shortcut-list">
-    <% _.forEach(shortcuts, function(shortcut, key) { %>
+    <% _.forEach(data.shortcuts, function(shortcut, key) { %>
     <li class="anyshortcut-shortcut-item">
         <a href="<%- shortcut.url %>" target="_blank">
             <span class="anyshortcut-secondary-shortcut" title="<%- shortcut.title %>"><%- key + 1 %></span>

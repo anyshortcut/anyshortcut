@@ -1,3 +1,4 @@
+require('./templates.js');
 import _ from "lodash";
 
 export default {
@@ -7,9 +8,6 @@ export default {
         return div;
     },
     compile(template, data) {
-        return _.template(template)(data);
+        return _.templates[template](data);
     },
-    parseHtml(string) {
-        return new DOMParser().parseFromString(string, 'text/xml').firstChild;
-    }
 }

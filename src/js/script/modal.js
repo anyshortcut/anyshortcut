@@ -59,7 +59,7 @@ function buildModal(content) {
     });
 
     let header = utils.createDiv('anyshortcut-modal-header');
-    header.innerHTML = utils.compile(require('%/modal-header.html'),
+    header.innerHTML = utils.compile('modal-header',
         {logo: chrome.runtime.getURL('icon/logo.svg')});
     container.appendChild(header);
     container.appendChild(content);
@@ -70,16 +70,16 @@ function buildModal(content) {
 
 export default {
     showAuthenticatedRequired() {
-        openModal(utils.compile(require('%/authenticate-required.html')));
+        openModal(utils.compile('authenticate-required'));
     },
     showWrongCombinationKey(wrongKey) {
-        openModal(utils.compile(require('%/wrong-combination-key.html'), {
+        openModal(utils.compile('wrong-combination-key', {
             combinationKey: wrongKey === 'alt' ? 'SHIFT' : 'ALT',
             wrongCombinationKey: wrongKey.toUpperCase(),
         }));
     },
     showPrimaryShortcutBindSuccess(combinationKey, shortcut) {
-        openModal(utils.compile(require('%/primary-bind-success.html'), {
+        openModal(utils.compile('primary-bind-success', {
             combinationKey: combinationKey.toUpperCase(),
             key: shortcut.key,
         }));
@@ -87,7 +87,7 @@ export default {
     showSecondaryShortcutBindSuccess(combinationKey, shortcut, primaryShortcut) {
         // Only show secondary shortcut bind modal for one key primary shortcut.
         if (primaryShortcut.key.length === 1) {
-            openModal(utils.compile(require('%/secondary-bind-success.html'), {
+            openModal(utils.compile('secondary-bind-success', {
                 combinationKey: combinationKey.toUpperCase(),
                 key: shortcut.key,
                 primaryShortcut: primaryShortcut,
@@ -95,21 +95,21 @@ export default {
         }
     },
     showPrimaryShortcutUnbound(combinationKey, pressedKey) {
-        openModal(utils.compile(require('%/shortcut-not-found.html'), {
+        openModal(utils.compile('shortcut-not-found', {
             shortcutType: "primary",
             combinationKey: combinationKey.toUpperCase(),
             key: pressedKey,
         }));
     },
     showQueryShortcutFailed(combinationKey, firstKey, secondKey) {
-        openModal(utils.compile(require('%/query-shortcut-failed.html'), {
+        openModal(utils.compile('query-shortcut-failed', {
             combinationKey: combinationKey.toUpperCase(),
             firstKey: firstKey,
             secondKey: secondKey,
         }));
     },
     showQueryShortcutChooser(primaryShortcut, secondaryShortcut) {
-        let modal = openModal(utils.compile(require('%/query-shortcut-chooser.html'), {
+        let modal = openModal(utils.compile('query-shortcut-chooser', {
             shortcuts: [primaryShortcut, secondaryShortcut]
         }));
 
@@ -136,6 +136,6 @@ export default {
         window.isQueryShortcutChooserShowing = true;
     },
     showSubscriptionExpired() {
-        openModal(utils.compile(require('%/subscription-expired.html')));
+        openModal(utils.compile('subscription-expired'));
     }
 }
