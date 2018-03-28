@@ -4,11 +4,14 @@ import ga from "./mixin-ga.js";
 import router from "@/router";
 import Toast from "../component/toast.js";
 import Bus from "./vue-bus.js";
+import config from "./config.js";
 
 import Raven from "raven-js";
 import RavenVue from 'raven-js/plugins/vue';
 
-Raven.config('https://0aa6274679824a129c33c2cc4ae0d22b@sentry.io/144189').addPlugin(RavenVue, Vue).install();
+if (!config.debug) {
+    Raven.config('https://0aa6274679824a129c33c2cc4ae0d22b@sentry.io/144189').addPlugin(RavenVue, Vue).install();
+}
 
 Vue.prototype.$toast = Toast;
 let $background = chrome.extension.getBackgroundPage();
@@ -47,7 +50,18 @@ let app = new Vue({
         loading: false,
     },
     router,
-    render: createElement => createElement('router-view'),
+    render: createElement => createElement('div', [
+        createElement('router-view'),
+        createElement('div', {
+                class: 'loading',
+                directives: [{
+                    name: 'show',
+                    value: app.loading,
+                }]
+            },
+            [createElement('i', {class: 'fa fa-spinner fa-spin fa-2x fa-fw'})]
+        ),
+    ]),
     methods: {
         bindShortcut: function(primary, keyChar, comment) {
             let bindFunction;
