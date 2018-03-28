@@ -39,7 +39,7 @@
         </popover>
 
         <router-link v-if="primary && prefs.isCompoundShortcutEnable()"
-                     :to="{name:'compound'}"
+                     :to="{name:'compound',params:{from:'main'}}"
                      class="bind-compound-link">
             Bind compound shortcut<span><img src="../img/right-arrow.svg"></span>
         </router-link>

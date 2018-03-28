@@ -254,7 +254,7 @@
             },
             compoundEnable: function(newValue) {
                 if (newValue) {
-                    this.$router.push({name: 'compound'});
+                    this.$router.replace({name: 'compound', params: {from: 'preference'}});
                 }
 
                 prefs.setCompoundShortcutEnable(newValue);
