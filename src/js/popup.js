@@ -50,18 +50,20 @@ let app = new Vue({
         loading: false,
     },
     router,
-    render: createElement => createElement('div', [
-        createElement('router-view'),
-        createElement('div', {
-                class: 'loading',
-                directives: [{
-                    name: 'show',
-                    value: app.loading,
-                }]
-            },
-            [createElement('i', {class: 'fa fa-spinner fa-spin fa-2x fa-fw'})]
-        ),
-    ]),
+    render(createElement) {
+        return createElement('div', [
+            createElement('router-view'),
+            createElement('div', {
+                    class: 'loading',
+                    directives: [{
+                        name: 'show',
+                        value: this.loading,
+                    }]
+                },
+                [createElement('i', {class: 'fa fa-spinner fa-spin fa-2x fa-fw'})]
+            ),
+        ]);
+    },
     methods: {
         bindShortcut: function(primary, keyChar, comment) {
             let bindFunction;
@@ -83,12 +85,12 @@ let app = new Vue({
                     }
 
                     this.$background.setPopupIcon(true);
-                    // this.$toast.success('Great job! you have bound a shortcut for this url!');
+                    this.$toast.success('Great job! you have bound a shortcut for this url!');
 
                     this.$background.notifyActiveTabShortcutBindSuccess(shortcut);
                 }
                 else {
-                    // this.$toast.error('Ooops!');
+                    this.$toast.error('Ooops!');
                 }
             });
         },
@@ -113,9 +115,9 @@ let app = new Vue({
                         }
 
                         this.$background.setPopupIcon(false);
-                        // this.$toast.success('Delete Success!');
+                        this.$toast.success('Delete Success!');
                     } else {
-                        // this.$toast.error('Ooops!');
+                        this.$toast.error('Ooops!');
                     }
                 });
             }

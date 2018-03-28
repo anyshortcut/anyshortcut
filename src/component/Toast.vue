@@ -1,17 +1,3 @@
-<template>
-    <transition name="toast-fade">
-        <div class="toast"
-             v-show="visible"
-             @mouseenter="clearTimer"
-             @mouseleave="startTimer">
-            <img class="toast-img" :src="typeImg" alt="">
-            <div class="toast-group">
-                <p>{{ message }}</p>
-                <div class="toast-close-button" @click="close">x</div>
-            </div>
-        </div>
-    </transition>
-</template>
 <style lang="scss">
     @import "../scss/_var.scss";
 
@@ -82,6 +68,55 @@
                 timer: null,
                 closed: false,
             }
+        },
+        /*
+        <transition name="toast-fade">
+        <div class="toast"
+             v-show="visible"
+             @mouseenter="clearTimer"
+             @mouseleave="startTimer">
+            <img class="toast-img" :src="typeImg" alt="">
+            <div class="toast-group">
+                <p>{{ message }}</p>
+                <div class="toast-close-button" @click="close">x</div>
+            </div>
+        </div>
+        </transition>
+         */
+        render(createElement) {
+            return createElement('transition', {
+                attrs: {
+                    name: 'toast-fade',
+                }
+            }, [
+                createElement('div', {
+                    class: 'toast',
+                    directives: [{
+                        name: 'show',
+                        value: this.visible,
+                    },],
+                    on: {
+                        mouseenter: this.clearTimer,
+                        mouseleave: this.startTimer,
+                    },
+                }, [
+                    createElement('img', {
+                        class: 'toast-img',
+                        domProps: {
+                            src: this.typeImg,
+                        }
+                    }),
+                    createElement('div', {class: 'toast-group'}, [
+                        createElement('p', this.message),
+                        createElement('div', {
+                            class: 'toast-close-button',
+                            on: {
+                                click: this.close,
+                            }
+                        }, ['X']),
+                    ]),
+                ]),
+            ]);
         },
         computed: {
             typeImg() {

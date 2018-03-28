@@ -1,6 +1,7 @@
 import Vue from "vue";
+import ToastComponent from "./Toast.vue";
 
-let ToastComponent = Vue.extend(require("./Toast.vue"));
+let ToastConstructor = Vue.extend(ToastComponent);
 
 let instances = [];
 let seed = 1;
@@ -19,7 +20,7 @@ let Toast = function(options) {
         Toast.close(id, userOnClose);
     };
 
-    let instance = new ToastComponent({
+    let instance = new ToastConstructor({
         data: options
     });
     instance.id = id;
