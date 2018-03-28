@@ -156,5 +156,10 @@
         created: function() {
             this.queryShortcuts();
         },
+        mounted() {
+            this.$bus.on('refresh-main-view', () => {
+                this.queryShortcuts();
+            });
+        },
     }
 </script>

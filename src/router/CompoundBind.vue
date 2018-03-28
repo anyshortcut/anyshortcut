@@ -106,5 +106,10 @@
         created: function() {
             this.queryShortcuts();
         },
+        mounted() {
+            this.$bus.on('refresh-compound-view', () => {
+                this.queryShortcuts();
+            });
+        },
     }
 </script>

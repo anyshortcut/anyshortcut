@@ -63,7 +63,7 @@ let app = new Vue({
 
                 if (result) {
                     if (this.$router.currentRoute.name === 'main') {
-                        document.location.reload();
+                        this.$bus.emit('refresh-main-view');
                     } else if (this.$router.currentRoute.name === 'compound') {
                         this.$router.replace({name: 'main'});
                     }
@@ -93,10 +93,9 @@ let app = new Vue({
 
                     if (result) {
                         if (this.$router.currentRoute.name === 'main') {
-                            // this.$router.go();
-                            document.location.reload();
+                            this.$bus.emit('refresh-main-view');
                         } else if (this.$router.currentRoute.name === 'compound') {
-                            document.location.reload();
+                            this.$bus.emit('refresh-compound-view');
                         }
 
                         this.$background.setPopupIcon(false);
