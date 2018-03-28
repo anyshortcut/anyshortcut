@@ -1,9 +1,7 @@
 <template>
     <div class="compound-bind-view">
         <header class="compound-bind-header">
-            <router-link :to="{name:'main'}">
-                <img src="../img/back.svg" class="back-icon"/>
-            </router-link>
+            <img @click="$router.go(-1)" style="cursor: pointer" src="../img/back.svg" class="back-icon"/>
             Go back
         </header>
 

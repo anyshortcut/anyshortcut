@@ -86,14 +86,17 @@
 
         <div class="preference-divider"></div>
 
-        <div class="preference-item flex-horizontal">
-            <label for="enable-compound-shortcut"> Enable compound shortcut
-                <span>
-                        <img id="tooltip-compound-shortcut" class="info-img" src="../img/info-grey.svg" alt="info">
-                    </span>
-            </label>
-            <input id="enable-compound-shortcut" type="checkbox"
-                   v-model='compoundEnable'>
+        <div class="preference-item flex-vertical">
+            <div>
+                <label for="enable-compound-shortcut">
+                    Enable compound shortcut
+                </label>
+                <input id="enable-compound-shortcut" type="checkbox"
+                       v-model='compoundEnable'>
+            </div>
+            <div class="preference-subtitle">
+                A type of primary shortcut but with two letters key.
+            </div>
         </div>
 
         <div class="preference-divider"></div>
@@ -145,10 +148,6 @@
             </span>
             </div>
         </div>
-
-        <popover :ref-id="'tooltip-compound-shortcut'">
-            <img src="../img/compound-tips.gif"/>
-        </popover>
     </div>
 </template>
 <style lang="scss">
@@ -199,6 +198,7 @@
         font-size: 13px;
         color: #797979;
         margin: 3px 0;
+        text-align: left;
     }
 
     .preference-divider {
@@ -231,7 +231,6 @@
     }
 </style>
 <script type="es6">
-    import Popover from "../component/Popover.vue";
     import prefs from "../js/prefs.js";
 
     export default {
@@ -254,14 +253,15 @@
                 prefs.setShortcutOpenByBlank(newValue);
             },
             compoundEnable: function(newValue) {
+                if (newValue) {
+                    this.$router.push({name: 'compound'});
+                }
+
                 prefs.setCompoundShortcutEnable(newValue);
             },
             showCircle: function(newValue) {
                 prefs.setShowCircleConfig(newValue);
             }
-        },
-        components: {
-            Popover,
         },
     };
 </script>
