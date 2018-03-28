@@ -17,7 +17,7 @@
 
         <section v-if="currentStep===1">
             <div class="title">
-                Welcome join Anyshortcut!
+                Welcome to Anyshortcut!
             </div>
 
             <p>
@@ -38,21 +38,17 @@
             <section v-if="currentStep===2">
                 <div class="title">Set a primary shortcut</div>
                 <p>
-                    Assuming you have opened Google, you can hover the mouse on keyboard
-                    <span class="tour-shortcut">G</span> in extension popup, input
-                    "Google" as a comment for the shortcut, then click <b>Bind</b> button.
+                    Open the page you'd like to set a shortcut to and activate the extension popup. Hover your mouse
+                    over any key on the on-screen keyboard, add a comment if you wish and click the <b>Bind</b> button.
+                    There can only be one primary shortcut per domain.
                 </p>
-
                 <p>
-                    You can set any alphanumeric key as a primary shortcut link to any website.
-                    For example <span class="tour-shortcut">F</span> for Facebook, <span class="tour-shortcut">Y</span>
-                    for
-                    Youtube, <span class="tour-shortcut">N</span> for Netflix, etc.
+                    In this example, we bound <span class="tour-shortcut">G</span> to Google
+                    <small>(https://www.google.com)</small>.
                 </p>
-
                 <p class="subtitle">
                     Now you can use <span class="tour-shortcut">ALT + G</span>
-                    <span data-balloon="ALT is the combination key for all shortcut"
+                    <span data-balloon="ALT is the default combination key for all shortcut. You can customize in Settings!"
                           data-balloon-pos="up">
                     <img src="./img/info-grey.svg" alt="info">
                 </span>
@@ -68,16 +64,16 @@
             <section v-else-if="currentStep===3">
                 <div class="title">Let's active a secondary shortcut</div>
                 <p>
-                    For instance, you can set the secondary shortcut
-                    <span class="tour-shortcut">I</span> for Google Inbox just like the step ahead.
-                    Here are other good examples: <span class="tour-shortcut">D</span> for Google Driver,
-                    <span class="tour-shortcut">P</span> for Google Photos,
+                    You can set up a secondary shortcut to jump to a sub-section of a website.
+                </p>
+                <p>
+                    For example, <span class="tour-shortcut">I</span> for Google Inbox,
+                    <span class="tour-shortcut">D</span> for Google Driver,
                     <span class="tour-shortcut">T</span> for Google Translate, etc.
                 </p>
-
                 <p class="subtitle">
-                    Now you can use <span class="tour-shortcut">ALT + G + I</span>
-                    <span data-balloon="ALT is the combination key, 'G' stands for primary shortcut 'G' which linked to Google."
+                    Try use <span class="tour-shortcut">ALT + G + I</span>
+                    <span data-balloon="Here, 'G' represents the primary shortcut linked to Google"
                           data-balloon-pos="up">
                     <img src="./img/info-grey.svg" alt="info">
                 </span> to open Google Inbox instantly.
@@ -93,8 +89,7 @@
             <section v-else-if="currentStep===4">
                 <div class="title">Congratulations!</div>
                 <p>
-                    Here are some most frequently visited websites in the world which are worth linking with the
-                    shortcut!
+                    Here are some frequently visited websites that you can use Anyshortcut on!
                 </p>
                 <div style="position: relative;">
                     <ul :class="{disable:done}" class="default-shortcut-list">
@@ -120,7 +115,7 @@
                     </ul>
                     <div v-if="done" class="default-shortcut-linked-success">
                         <img src="./img/success-blue.svg" alt="">
-                        You were linked those websites!
+                        You have linked those websites!
                     </div>
                 </div>
 

@@ -26,7 +26,7 @@
                 </div>
                 <div class="preference-subtitle">
                     <span>
-                        Your trialing will expired on
+                        Your trial will expire on
                         {{ new Date($background.subscriptionEndAt * 1000).toLocaleDateString() }}
                     </span>
                 </div>
