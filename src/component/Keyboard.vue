@@ -79,7 +79,7 @@
 
     .keyboard {
         max-width: 500px;
-        margin: 5px auto;
+        margin: 5px auto 0;
     }
 
     .keyboard-row {

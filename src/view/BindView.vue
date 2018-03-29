@@ -52,7 +52,7 @@
     .bind-view {
         display: flex;
         flex-direction: column;
-        padding: 10px 0;
+        padding-top: 10px;
     }
 
     .domain-primary-bound {
