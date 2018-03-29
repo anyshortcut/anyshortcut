@@ -215,7 +215,7 @@
             window.addEventListener('storage', event => {
                 // A storage event fired because of localStorage value changed.
                 // Here we can detect user info has synced success.
-                if (event.storageArea['user']) {
+                if (this.currentStep === 1 && event.storageArea['user']) {
                     this.initialize();
                 }
             });
