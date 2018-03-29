@@ -253,10 +253,6 @@
                 prefs.setShortcutOpenByBlank(newValue);
             },
             compoundEnable: function(newValue) {
-                if (newValue) {
-                    this.$router.replace({name: 'compound', params: {from: 'preference'}});
-                }
-
                 prefs.setCompoundShortcutEnable(newValue);
             },
             showCircle: function(newValue) {

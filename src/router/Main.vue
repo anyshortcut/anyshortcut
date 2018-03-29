@@ -14,11 +14,16 @@
                     :domain-primary-shortcut="domainPrimaryShortcut">
         </bound-view>
 
-        <bind-view v-else
-                   :shortcuts="shortcuts"
-                   :primary="primary"
-                   :domain-primary-shortcut="domainPrimaryShortcut">
-        </bind-view>
+        <template v-else>
+            <bind-view :shortcuts="shortcuts"
+                       :primary="primary"
+                       :domain-primary-shortcut="domainPrimaryShortcut">
+            </bind-view>
+
+            <compound-bind v-if="primary && prefs.isCompoundShortcutEnable()"
+                           :shortcuts="compoundShortcuts">
+            </compound-bind>
+        </template>
     </div>
     <div class="unsupported-view" v-else>
         <header class="main-header">
@@ -84,12 +89,12 @@
 
 </style>
 <script>
-    'use strict';
-
     import common from "../js/common.js";
     import _ from "lodash";
     import BoundView from "../view/BoundView.vue";
     import BindView from "../view/BindView.vue";
+    import CompoundBind from "../view/CompoundBind.vue";
+    import prefs from "../js/prefs.js";
 
     export default {
         name: 'main-view',
@@ -100,11 +105,14 @@
                 primary: true,
                 shortcuts: null,
                 loading: false,
+                compoundShortcuts: null,
+                prefs: prefs,
             }
         },
         components: {
             BoundView,
             BindView,
+            CompoundBind,
         },
         methods: {
             queryShortcuts() {
@@ -124,18 +132,23 @@
                     }
                 });
 
-                // Due to Javascript object reference, we need to pick by a new shortcuts Object,
-                // otherwise can't trigger BindView shortcuts value change.
-                let pickByFunction = (value, key) => {
-                    return key.length === 1;
-                };
+
                 if (this.domainPrimaryShortcut) {
                     // If current tab domain bound primary shortcut,
                     // then only permit to bound secondary shortcuts.
-                    this.shortcuts = _.pickBy(secondaryShortcuts, pickByFunction);
+                    this.shortcuts = _.pickBy(secondaryShortcuts, (value, key) => {
+                        return key.length === 1;
+                    });
                     this.primary = false;
                 } else {
-                    this.shortcuts = _.pickBy(primaryShortcuts, pickByFunction);
+                    // Due to Javascript object reference, we need to pick by a new shortcuts Object,
+                    // otherwise can't trigger BindView shortcuts value change.
+                    this.shortcuts = _.pickBy(primaryShortcuts, (value, key) => {
+                        return key.length === 1;
+                    });
+                    this.compoundShortcuts = _.pickBy(primaryShortcuts, (value, key) => {
+                        return key.length === 2;
+                    });
                     this.primary = true;
                 }
 

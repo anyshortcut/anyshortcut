@@ -1,13 +1,6 @@
 <template>
     <div class="compound-bind-view">
-        <header class="compound-bind-header">
-            <router-link :to="{name:$route.params.from}">
-                <img src="../img/back.svg" class="back-icon"/>
-            </router-link>
-            Go back
-        </header>
-
-        <div style="margin-top: 10px;">
+        <div>
             <span class="primary-title">
                   Specify primary compound key
             </span>
@@ -44,11 +37,6 @@
         background: $content-bgcolor;
     }
 
-    .compound-bind-header {
-        @include header;
-        justify-content: flex-start;
-    }
-
 </style>
 <script type="es6">
     import _ from "lodash";
@@ -61,9 +49,16 @@
         data() {
             return {
                 keyChar: null,
-                shortcuts: [],
                 isPopoverShowing: false,
             }
+        },
+        props: {
+            shortcuts: {
+                type: Object,
+                default: function() {
+                    return null;
+                }
+            },
         },
         components: {
             CompoundKeyboard,
@@ -97,19 +92,6 @@
             onPopoverShowChange: function(showing) {
                 this.isPopoverShowing = showing;
             },
-            queryShortcuts: function() {
-                this.shortcuts = _.pickBy(_.cloneDeep(this.$background.primaryShortcuts), (value, key) => {
-                    return key.length === 2;
-                });
-            }
-        },
-        created: function() {
-            this.queryShortcuts();
-        },
-        mounted() {
-            this.$bus.on('refresh-compound-view', () => {
-                this.queryShortcuts();
-            });
         },
     }
 </script>

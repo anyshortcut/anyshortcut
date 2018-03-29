@@ -78,12 +78,7 @@ let app = new Vue({
                 this.loading = false;
 
                 if (result) {
-                    if (this.$router.currentRoute.name === 'main') {
-                        this.$bus.emit('refresh-main-view');
-                    } else if (this.$router.currentRoute.name === 'compound') {
-                        this.$router.replace({name: 'main'});
-                    }
-
+                    this.$bus.emit('refresh-main-view');
                     this.$background.setPopupIcon(true);
                     this.$toast.success('Great job! you have bound a shortcut for this url!');
 
@@ -108,12 +103,7 @@ let app = new Vue({
                     this.loading = false;
 
                     if (result) {
-                        if (this.$router.currentRoute.name === 'main') {
-                            this.$bus.emit('refresh-main-view');
-                        } else if (this.$router.currentRoute.name === 'compound') {
-                            this.$bus.emit('refresh-compound-view');
-                        }
-
+                        this.$bus.emit('refresh-main-view');
                         this.$background.setPopupIcon(false);
                         this.$toast.success('Delete Success!');
                     } else {
