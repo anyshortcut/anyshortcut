@@ -142,6 +142,8 @@
 
 </style>
 <script type="es6">
+    import scrollIntoView from "scroll-into-view";
+
     export default {
         name: 'CompoundKeyboard',
         data() {
@@ -226,15 +228,14 @@
                     }
 
                     let target = document.getElementById((this.firstFilterKey || 'A') + (this.secondFilterKey || 'A'));
-                    target.scrollIntoView({behavior: 'smooth'});
-
-                    if (this._navigateTimeoutId) {
-                        window.clearTimeout(this._navigateTimeoutId);
-                    }
-
-                    this._navigateTimeoutId = setTimeout(() => {
-                        this.$emit('key-hover-over', target);
-                    }, 800);
+                    scrollIntoView(target, (type) => {
+                        if (type === 'complete') {
+                            // Delay 100 ms to emit the 'key-hover-over'.
+                            window.setTimeout(() => {
+                                this.$emit('key-hover-over', target);
+                            }, 100);
+                        }
+                    });
 
                     this.filterTimes += 1;
                 }
