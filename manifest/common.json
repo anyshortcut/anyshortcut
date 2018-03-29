@@ -17,6 +17,10 @@
     "48": "icon/icon48.png",
     "128": "icon/icon128.png"
   },
+  "options_ui": {
+    "page": "popup.html#/preference",
+    "chrome_style": false
+  },
   "background": {
     "scripts": [
       "dist/background.js"
