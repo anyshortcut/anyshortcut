@@ -1,55 +1,96 @@
 <template>
-    <ul v-if="Object.keys(shortcuts).length">
-        <li class="shortcut-list-item"
+    <ul v-if="shortcuts && Object.keys(shortcuts).length">
+        <li v-for="(shortcut,key) in shortcuts"
             @mouseover="hoveredKey=key"
-            @mouseleave="hoveredKey=null"
-            v-for="(shortcut,key) in shortcuts">
-            <div class="shortcut-secondary" :title="shortcut.title">{{key}}</div>
-            <a class="shortcut-comment"
-               :href="shortcut.url"
-               :title="shortcut.url"
-               target="_blank">{{shortcut.comment || shortcut.title}}</a>
-            <img class="delete-button"
-                 v-visible="hoveredKey === key"
-                 src="../img/delete-light.svg"
-                 @click="$bus.emit('unbind-shortcut',shortcut)"/>
+            @mouseleave="hoveredKey=null">
+            <div class="list-item small"
+                 @click="$bus.emit('shortcut-key-click',shortcut)">
+                <img :src="shortcut.favicon" alt="">
+                <div :title="shortcut.title">
+                    <div>
+                        {{ shortcut.comment }}
+                    </div>
+                    <small>
+                        {{ shortcut.url }}
+                    </small>
+                </div>
+                <span class="shortcut-key">{{ shortcut.key }}</span>
+            </div>
         </li>
     </ul>
-    <div class="shortcut-empty-list" v-else>
+    <div class="empty-list" v-else>
         <img class="grey-balloons" alt="empty" src="../img/grey-balloons.svg">
         <p>No secondary shortcut bound yet</p>
     </div>
 </template>
-<style lang="scss">
+<style lang="scss" scoped>
     @import "../scss/_common.scss";
 
     ul {
         list-style: none outside;
-        margin: 0 auto;
-        padding: 0 10px 10px;
-    }
+        margin: 0;
+        padding: 0;
 
-    .shortcut-list-item {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        border-color: #f4f4f4;
-        border-width: 0;
-        border-bottom-width: 1px;
-        border-style: solid;
-        padding: 8px 10px;
-        font-size: 14px;
-
-        &:hover {
-            background: #f8f8f8;
-        }
-
-        &:last-child {
+        & > li {
+            border-color: #f4f4f4;
             border-width: 0;
+            border-bottom-width: 1px;
+            border-style: solid;
+            cursor: pointer;
+
+            &:hover {
+                background: #f8f8f8;
+            }
+
+            &:last-child {
+                border-width: 0;
+            }
         }
     }
 
-    .shortcut-secondary {
+    .list-item {
+        overflow: hidden;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        padding: 15px;
+
+        & img {
+            width: 32px;
+            height: 32px;
+        }
+
+        & > div {
+            overflow: hidden;
+            white-space: nowrap;
+            flex: 1;
+            margin-left: 10px;
+            text-align: start;
+
+            & > div {
+                line-height: 20px;
+                font-family: 'Poppins', sans-serif;
+                font-weight: 500;
+                color: #555555;
+                text-transform: capitalize;
+                letter-spacing: 0;
+                display: block;
+                font-size: 16px;
+            }
+        }
+
+        & small {
+            padding: 5px 0;
+            font-size: 14px;
+            color: #999;
+        }
+
+        & > span {
+            margin-left: auto;
+        }
+    }
+
+    .shortcut-key {
         @extend .shortcut;
         display: inline-block;
         letter-spacing: 0.6px;
@@ -57,46 +98,23 @@
         width: 42px;
     }
 
-    $shortcut-comment-color: #555555;
-    .shortcut-comment {
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        position: relative;
-        width: 80%;
-        margin: 0 10px;
-        text-transform: capitalize;
-        text-align: left;
-        color: $shortcut-comment-color;
-
-        &:visited, &:active {
-            color: $shortcut-comment-color;
-        }
-    }
-
-    .grey-balloons {
-        margin-top: 20px;
-        margin-bottom: 10px;
-    }
-
-    .shortcut-empty-list {
+    .empty-list {
+        box-sizing: border-box;
         display: flex;
         align-items: center;
         flex-direction: column;
-        width: 400px;
+        justify-content: center;
+        height: 100%;
         text-align: center;
-
-        p {
-            color: #999999;
-            padding: 8px 80px;
-            font-size: 14px;
-            line-height: 1.5;
-        }
+        color: #999999;
+        padding: 3rem 0;
+        font-size: 15px;
+        line-height: 1.5;
     }
 </style>
 <script type="es6">
     export default {
-        name: 'shortcut-list',
+        name: 'ShortcutList',
         data() {
             return {
                 hoveredKey: null

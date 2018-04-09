@@ -73,11 +73,11 @@
                 this.shortcut = null;
                 let activeTab = this.$background.activeTab;
                 let primaryShortcuts = _.cloneDeep(this.$background.primaryShortcuts);
-                let secondaryShortcuts = _.cloneDeep(this.$background.getSecondaryShortcutsByUrl(activeTab.url));
+                this.secondaryShortcuts = _.cloneDeep(this.$background.getSecondaryShortcutsByUrl(activeTab.url));
 
                 // Iterate both primary shortcuts firstly to find the bound shortcut,
                 // otherwise to iterate secondary shortcuts to ensure don't miss the bound shortcut.
-                this.checkShortcutBound(primaryShortcuts) || this.checkShortcutBound(secondaryShortcuts);
+                this.checkShortcutBound(primaryShortcuts) || this.checkShortcutBound(this.secondaryShortcuts);
                 return Promise.resolve();
             },
             checkShortcutBound(shortcuts) {
@@ -196,6 +196,7 @@
             border-right: #ececec solid 1px;
             overflow: hidden;
             white-space: nowrap;
+            text-align: start;
 
             & img {
                 width: 42px;
