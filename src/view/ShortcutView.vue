@@ -1,6 +1,6 @@
 <template>
     <div class="shortcut-view">
-        <div class="shortcut-detail-container" @click="$event.stopPropagation()">
+        <div class="shortcut-detail-container" @click.stop="showSecondaryKeyboard=false">
             <div class="left">
                 <div class="top-container">
                     <img :src="domainShortcut.favicon" alt="">
@@ -15,7 +15,6 @@
                         </a>
                     </div>
                     <p class="text">linked with
-                        <!--<span class="shortcut-key">ALT + {{ shortcut.key }}</span>-->
                         <shortcut-key :key-char="domainShortcut.key">
                         </shortcut-key>
                     </p>
@@ -37,6 +36,14 @@
                 </shortcut-list>
             </div>
         </div>
+        <secondary-bind v-if="showSecondaryKeyboard"
+                        class="secondary-bind"
+                        :domain-shortcut="domainShortcut"
+                        :shortcuts="secondaryShortcuts"
+                        @click="$event.stopPropagation()">
+        </secondary-bind>
+        <img class="keyboard-icon-right" src="../img/keyboard-icon.svg" alt="keyboard-icon"
+             @click.stop="showSecondaryKeyboard=!showSecondaryKeyboard">
     </div>
 </template>
 
@@ -44,6 +51,7 @@
     import client from "../js/client.js";
     import ShortcutList from "@/component/ShortcutList.vue";
     import ShortcutKey from "../component/ShortcutKey.vue";
+    import SecondaryBind from "../view/SecondaryBind.vue";
     import Chart from "../../node_modules/chart.js/src/chart";
     import common from "../js/common.js";
     import _ from "lodash";
@@ -52,8 +60,9 @@
         name: "ShortcutView",
         data() {
             return {
-                shortcut: {},
+                shortcut: null,
                 secondaryShortcuts: {},
+                showSecondaryKeyboard: false,
             }
         },
         props: {
@@ -67,10 +76,10 @@
         components: {
             ShortcutList,
             ShortcutKey,
+            SecondaryBind,
         },
         methods: {
             queryShortcuts() {
-                this.shortcut = null;
                 let activeTab = this.$background.activeTab;
                 let primaryShortcuts = _.cloneDeep(this.$background.primaryShortcuts);
                 this.secondaryShortcuts = _.cloneDeep(this.$background.getSecondaryShortcutsByUrl(activeTab.url));
@@ -145,7 +154,7 @@
                         }
                     }
                 });
-            }
+            },
         },
         created() {
             this.queryShortcuts().then(() => {
@@ -159,7 +168,7 @@
                     }).catch(error => {
                 });
             });
-        }
+        },
     }
 
 </script>
@@ -168,7 +177,6 @@
 
     .shortcut-view {
         box-sizing: border-box;
-        background: rgba(102, 102, 102, 0.5);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -238,6 +246,7 @@
             position: relative;
             margin-top: 30px;
             padding: 20px;
+            text-align: start;
 
             &:before {
                 content: '';
@@ -306,5 +315,33 @@
         }
     }
 
+    .secondary-bind {
+        background-color: #FFFFFF;
+        width: 560px;
+        height: 350px;
+        position: fixed;
+        bottom: 30px;
+        right: 40px;
+        border-top: #6BADF2 solid 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        border-radius: 5px 5px 0 0;
+        box-shadow: 0 5px 21px 0 rgba(128, 128, 128, 0.2);
+        z-index: 999;
+    }
+
+    .keyboard-icon-right {
+        position: fixed;
+        bottom: 0;
+        right: 5px;
+        z-index: 999;
+        cursor: pointer;
+
+        &:hover {
+            content: url("../img/keyboard-icon-blue.svg");
+        }
+    }
 
 </style>
