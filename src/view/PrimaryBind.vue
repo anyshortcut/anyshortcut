@@ -24,8 +24,6 @@
     @import "../scss/_common.scss";
 
     .bind-view {
-        display: flex;
-        flex-direction: column;
         padding-top: 10px;
     }
 

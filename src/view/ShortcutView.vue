@@ -1,6 +1,6 @@
 <template>
     <div class="shortcut-view">
-        <div class="shortcut-detail-container" @click.stop="showSecondaryKeyboard=false">
+        <div class="shortcut-detail-container" @click.stop="showPrimaryKeyboard=showSecondaryKeyboard=false">
             <div class="left">
                 <div class="top-container">
                     <img :src="domainShortcut.favicon" alt="">
@@ -36,8 +36,14 @@
                 </shortcut-list>
             </div>
         </div>
+
+        <bind-view v-if="showPrimaryKeyboard" class="primary-keyboard"></bind-view>
+
+        <img class="keyboard-icon-left" src="../img/keyboard-icon.svg" alt="keyboard-icon"
+             @click.stop="showPrimaryKeyboard=!showPrimaryKeyboard">
+
         <secondary-bind v-if="showSecondaryKeyboard"
-                        class="secondary-bind"
+                        class="secondary-keyboard"
                         :domain-shortcut="domainShortcut"
                         :shortcuts="secondaryShortcuts"
                         @click="$event.stopPropagation()">
@@ -52,6 +58,7 @@
     import ShortcutList from "@/component/ShortcutList.vue";
     import ShortcutKey from "../component/ShortcutKey.vue";
     import SecondaryBind from "../view/SecondaryBind.vue";
+    import BindView from "../view/BindView.vue";
     import Chart from "../../node_modules/chart.js/src/chart";
     import common from "../js/common.js";
     import _ from "lodash";
@@ -62,6 +69,7 @@
             return {
                 shortcut: null,
                 secondaryShortcuts: {},
+                showPrimaryKeyboard: false,
                 showSecondaryKeyboard: false,
             }
         },
@@ -77,6 +85,7 @@
             ShortcutList,
             ShortcutKey,
             SecondaryBind,
+            BindView,
         },
         methods: {
             queryShortcuts() {
@@ -315,13 +324,9 @@
         }
     }
 
-    .secondary-bind {
+    .popup-keyboard {
+        box-sizing: content-box;
         background-color: #FFFFFF;
-        width: 560px;
-        height: 350px;
-        position: fixed;
-        bottom: 30px;
-        right: 40px;
         border-top: #6BADF2 solid 5px;
         display: flex;
         justify-content: center;
@@ -330,6 +335,24 @@
         border-radius: 5px 5px 0 0;
         box-shadow: 0 5px 21px 0 rgba(128, 128, 128, 0.2);
         z-index: 999;
+    }
+
+    .primary-keyboard {
+        @extend .popup-keyboard;
+        width: 560px;
+        height: 530px;
+        position: fixed;
+        bottom: 5px;
+        left: 40px;
+    }
+
+    .secondary-keyboard {
+        @extend .popup-keyboard;
+        width: 560px;
+        height: 350px;
+        position: fixed;
+        bottom: 30px;
+        right: 40px;
     }
 
     .keyboard-icon-right {
@@ -341,6 +364,18 @@
 
         &:hover {
             content: url("../img/keyboard-icon-blue.svg");
+        }
+    }
+
+    .keyboard-icon-left {
+        position: fixed;
+        bottom: 0;
+        left: 5px;
+        z-index: 999;
+        cursor: pointer;
+
+        &:hover {
+            content: url("../img/keyboard-icon-white.svg");
         }
     }
 
