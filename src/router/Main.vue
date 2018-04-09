@@ -7,23 +7,8 @@
             </a>
             <router-link :to="{name:'preference'}" class="menu">Settings</router-link>
         </header>
-
-        <bound-view v-if="shortcut"
-                    :shortcut="shortcut"
-                    :secondary-shortcuts="shortcuts"
-                    :domain-primary-shortcut="domainPrimaryShortcut">
-        </bound-view>
-
-        <template v-else>
-            <bind-view :shortcuts="shortcuts"
-                       :primary="primary"
-                       :domain-primary-shortcut="domainPrimaryShortcut">
-            </bind-view>
-
-            <compound-bind v-if="primary && prefs.isCompoundShortcutEnable()"
-                           :shortcuts="compoundShortcuts">
-            </compound-bind>
-        </template>
+        <shortcut-view v-if="domainShortcut" :domain-shortcut="domainShortcut"></shortcut-view>
+        <bind-view v-else></bind-view>
     </div>
     <div class="unsupported-view" v-else>
         <header class="main-header">
@@ -50,7 +35,6 @@
     }
 
     .main-view {
-        width: $normal-width;
         display: flex;
         flex-direction: column;
         align-content: center;
@@ -91,80 +75,36 @@
 <script>
     import common from "../js/common.js";
     import _ from "lodash";
-    import BoundView from "../view/BoundView.vue";
+    import ShortcutView from "../view/ShortcutView.vue";
     import BindView from "../view/BindView.vue";
-    import CompoundBind from "../view/CompoundBind.vue";
-    import prefs from "../js/prefs.js";
 
     export default {
-        name: 'main-view',
+        name: 'MainView',
         data() {
             return {
-                shortcut: null,
-                domainPrimaryShortcut: null, //current tab domain primary shortcut.
-                primary: true,
-                shortcuts: null,
-                loading: false,
-                compoundShortcuts: null,
-                prefs: prefs,
+                domainShortcut: null,
             }
-        },
-        components: {
-            BoundView,
-            BindView,
-            CompoundBind,
         },
         methods: {
             queryShortcuts() {
-                this.shortcut = null;
-                this.domainPrimaryShortcut = null;
+                this.domainShortcut = null;
 
                 let activeTab = this.$background.activeTab;
                 let primaryShortcuts = _.cloneDeep(this.$background.primaryShortcuts);
-                let secondaryShortcuts = _.cloneDeep(this.$background.getSecondaryShortcutsByUrl(activeTab.url));
 
                 // Find current tab domain primary shortcut.
                 _.forOwn(primaryShortcuts, (shortcut) => {
                     if (common.isUrlEndsWithDomain(activeTab.url, shortcut.domain)) {
-                        this.domainPrimaryShortcut = shortcut;
+                        this.domainShortcut = shortcut;
                         // return false to exit the for iterate after find the result.
                         return false;
                     }
                 });
-
-
-                if (this.domainPrimaryShortcut) {
-                    // If current tab domain bound primary shortcut,
-                    // then only permit to bound secondary shortcuts.
-                    this.shortcuts = _.pickBy(secondaryShortcuts, (value, key) => {
-                        return key.length === 1;
-                    });
-                    this.primary = false;
-                } else {
-                    // Due to Javascript object reference, we need to pick by a new shortcuts Object,
-                    // otherwise can't trigger BindView shortcuts value change.
-                    this.shortcuts = _.pickBy(primaryShortcuts, (value, key) => {
-                        return key.length === 1;
-                    });
-                    this.compoundShortcuts = _.pickBy(primaryShortcuts, (value, key) => {
-                        return key.length === 2;
-                    });
-                    this.primary = true;
-                }
-
-                // Iterate both primary shortcuts firstly to find the bound shortcut,
-                // otherwise to iterate secondary shortcuts to ensure don't miss the bound shortcut.
-                this.checkShortcutBound(primaryShortcuts) || this.checkShortcutBound(secondaryShortcuts);
             },
-            checkShortcutBound(shortcuts) {
-                let url = this.$background.activeTab.url;
-                _.forOwn(shortcuts, shortcut => {
-                    if (common.isUrlEquivalent(shortcut.url, url)) {
-                        this.shortcut = shortcut;
-                        return false;
-                    }
-                });
-            }
+        },
+        components: {
+            ShortcutView,
+            BindView,
         },
         created: function() {
             this.queryShortcuts();

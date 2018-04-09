@@ -40,5 +40,8 @@ export default {
         return request.post('/shortcut/default', {
             keys: keys
         });
-    }
+    },
+    getShortcutWeekStats(shortcutId) {
+        return request.get(`/stats/shortcut?shortcut_id=${shortcutId}`);
+    },
 };
