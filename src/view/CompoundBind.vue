@@ -2,7 +2,7 @@
     <div class="compound-bind-view">
         <div>
             <span class="primary-title">
-                  Specify primary compound key
+                  Specify compound shortcut
             </span>
             <span data-balloon="Press key to auto-navigate the data grid"
                   data-balloon-pos="up">

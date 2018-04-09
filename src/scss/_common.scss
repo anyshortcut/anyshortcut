@@ -23,7 +23,7 @@
   box-sizing: border-box;
   color: $primary-color;
   background-color: white;
-  padding: 0 10px;
+  padding: 3px 10px;
   margin: 0 5px;
   border-radius: 3px;
   font-size: 14px;
@@ -32,13 +32,38 @@
   white-space: nowrap;
 }
 
-.shortcut-domain {
+.title {
+  font-size: 28px;
+  line-height: 42px;
+  font-family: 'Poppins', sans-serif;
   font-weight: 500;
-  letter-spacing: 0.6px;
+  color: #546496;
+  letter-spacing: 0;
 }
 
-.shortcut-favicon {
-  width: 20px;
-  height: 20px;
-  vertical-align: middle;
+.subtitle {
+  font-size: 20px;
+  line-height: 30px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #44485B;
+  letter-spacing: 0;
+}
+
+.text {
+  font-size: 17px;
+  line-height: 26px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: normal;
+  color: #6D7D93;
+  letter-spacing: 0;
+}
+
+.subtext {
+  font-size: 15px;
+  line-height: 26px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: normal;
+  color: #6D7D93;
+  letter-spacing: 0;
 }

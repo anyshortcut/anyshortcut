@@ -68,6 +68,24 @@
             border: solid $primary-color 1px;
         }
     }
+
+    .shortcut-favicon {
+        width: 20px;
+        height: 20px;
+        vertical-align: middle;
+    }
+
+    .shortcut-delete-button {
+        @include button;
+        @include negative-gradient;
+        padding: 2px 30px;
+    }
+
+    .shortcut-bind-button {
+        @include button;
+        @include positive-gradient;
+        padding: 2px 30px;
+    }
 </style>
 <script type="es6">
     import common from "../js/common.js";

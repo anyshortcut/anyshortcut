@@ -33,19 +33,13 @@ $message-danger-color: $color-danger;
   z-index: 1;
 }
 
-.primary-text {
-  font-size: 17px;
-  color: $primary-color;
-}
-
 .primary-title {
-  @extend .primary-text;
+  font-size: 18px;
+  color: $primary-color;
   line-height: 50px;
-}
-
-.primary-subtitle {
-  color: $secondary-color;
-  font-size: 16px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0;
 }
 
 .delete-button {
@@ -83,16 +77,4 @@ $message-danger-color: $color-danger;
   &:hover {
     background: linear-gradient(#aa3030, #902626);
   }
-}
-
-.shortcut-delete-button {
-  @include button;
-  @include negative-gradient;
-  padding: 2px 30px;
-}
-
-.shortcut-bind-button {
-  @include button;
-  @include positive-gradient;
-  padding: 2px 30px;
 }
