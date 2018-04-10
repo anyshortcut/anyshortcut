@@ -328,10 +328,6 @@
         box-sizing: content-box;
         background-color: #FFFFFF;
         border-top: #6BADF2 solid 5px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
         border-radius: 5px 5px 0 0;
         box-shadow: 0 5px 21px 0 rgba(128, 128, 128, 0.2);
         z-index: 999;
@@ -340,16 +336,14 @@
     .primary-keyboard {
         @extend .popup-keyboard;
         width: 560px;
-        height: 530px;
         position: fixed;
-        bottom: 5px;
+        bottom: 30px;
         left: 40px;
     }
 
     .secondary-keyboard {
         @extend .popup-keyboard;
         width: 560px;
-        height: 350px;
         position: fixed;
         bottom: 30px;
         right: 40px;

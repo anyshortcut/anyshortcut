@@ -3,7 +3,7 @@
         <li v-for="(shortcut,key) in shortcuts"
             @mouseover="hoveredKey=key"
             @mouseleave="hoveredKey=null">
-            <div class="list-item small"
+            <div class="list-item"
                  @click="$bus.emit('shortcut-key-click',shortcut)">
                 <img :src="shortcut.favicon" alt="">
                 <div :title="shortcut.title">

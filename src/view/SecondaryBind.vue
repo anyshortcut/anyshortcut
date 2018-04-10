@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="secondary-bind">
         <div class="primary-title">
             Specify secondary shortcut for this domain
         </div>
@@ -89,5 +89,11 @@
 </script>
 
 <style scoped>
-
+    .secondary-bind {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 300px
+    }
 </style>

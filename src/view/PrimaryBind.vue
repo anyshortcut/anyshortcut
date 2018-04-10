@@ -1,5 +1,5 @@
 <template>
-    <section class="bind-view">
+    <section class="primary-bind">
         <div class="primary-title">
             Specify primary shortcut
         </div>
@@ -21,12 +21,13 @@
     </section>
 </template>
 <style lang="scss">
-    @import "../scss/_common.scss";
-
-    .bind-view {
-        padding-top: 10px;
+    .primary-bind {
+        height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
     }
-
 </style>
 <script type="es6">
     import Keyboard from "../component/Keyboard.vue";

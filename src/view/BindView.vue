@@ -1,14 +1,57 @@
 <template>
-    <div>
-        <primary-bind :shortcuts="shortcuts">
+    <div class="bind-view" :style="{height:height}">
+        <primary-bind :shortcuts="shortcuts"
+                      v-if="bindType==='primary'">
         </primary-bind>
-        <compound-bind v-if="prefs.isCompoundShortcutEnable()"
+        <compound-bind v-else-if="bindType==='compound'"
                        :shortcuts="compoundShortcuts">
         </compound-bind>
+        <div class="bind-nav-bar" v-if="prefs.isCompoundShortcutEnable()">
+            <div :class="{active:bindType==='primary'}"
+                 @click="bindType='primary'">
+                Primary shortcut
+            </div>
+            <div :class="{active:bindType==='compound'}"
+                 @click="bindType='compound'">
+                Compound shortcut
+            </div>
+        </div>
     </div>
 </template>
-<style lang="css">
+<style lang="scss">
+    .bind-view {
+        width: 560px;
+        position: relative;
+    }
 
+    .bind-nav-bar {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height: 35px;
+        display: flex;
+        justify-content: space-around;
+
+        & div {
+            cursor: pointer;
+            user-select: none;
+            color: #666666;
+            text-align: center;
+            border-top: 1px solid #dbdbdb;
+            background-color: #fefefe;
+            flex: 1;
+            line-height: 35px;
+        }
+
+        & .active {
+            background-color: #ffffff;
+            color: #427DDB;
+            border: #DBDBDB solid 1px;
+            border-top: none;
+            border-radius: 2px;
+        }
+    }
 </style>
 <script type="es6">
     import PrimaryBind from "../view/PrimaryBind.vue";
@@ -20,9 +63,15 @@
         name: 'BindView',
         data() {
             return {
+                bindType: 'primary',
                 shortcuts: null,
                 compoundShortcuts: null,
                 prefs: prefs,
+            }
+        },
+        computed: {
+            height: function() {
+                return (this.prefs.isCompoundShortcutEnable() ? 350 : 300) + 'px';
             }
         },
         components: {
