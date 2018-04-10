@@ -9,6 +9,7 @@
         </header>
         <shortcut-view v-if="domainShortcut" :domain-shortcut="domainShortcut"></shortcut-view>
         <bind-view v-else></bind-view>
+        <div class="loading" v-show="loading"><i class="fa fa-spinner fa-spin fa-2x fa-fw"></i></div>
     </div>
     <div class="unsupported-view" v-else>
         <header class="main-header">
@@ -82,24 +83,81 @@
         name: 'MainView',
         data() {
             return {
+                loading: false,
                 domainShortcut: null,
             }
         },
         methods: {
             queryShortcuts() {
-                this.domainShortcut = null;
-
                 let activeTab = this.$background.activeTab;
                 let primaryShortcuts = _.cloneDeep(this.$background.primaryShortcuts);
 
+                let foundDomainShortcut = null;
                 // Find current tab domain primary shortcut.
                 _.forOwn(primaryShortcuts, (shortcut) => {
                     if (common.isUrlEndsWithDomain(activeTab.url, shortcut.domain)) {
-                        this.domainShortcut = shortcut;
+                        foundDomainShortcut = shortcut;
                         // return false to exit the for iterate after find the result.
                         return false;
                     }
                 });
+
+                if (this.domainShortcut && foundDomainShortcut
+                    && common.isUrlEquivalent(foundDomainShortcut.url, this.domainShortcut.url)) {
+                    // Notify children component refresh
+                    this.$bus.emit('refresh');
+                }
+
+                this.domainShortcut = foundDomainShortcut;
+            },
+            bindShortcut: function(primary, keyChar, comment) {
+                let bindFunction;
+                if (primary) {
+                    bindFunction = this.$background.bindPrimaryShortcut;
+                } else {
+                    bindFunction = this.$background.bindSecondaryShortcut;
+                }
+
+                this.loading = true;
+                bindFunction(keyChar, comment, (result, shortcut) => {
+                    this.loading = false;
+
+                    if (result) {
+                        this.queryShortcuts();
+
+                        this.$background.setPopupIcon(true);
+                        this.$toast.success('Great job! you have bound a shortcut for this url!');
+
+                        this.$background.notifyActiveTabShortcutBindSuccess(shortcut);
+                    }
+                    else {
+                        this.$toast.error('Ooops!');
+                    }
+                });
+            },
+            unbindShortcut: function(shortcut) {
+                if (shortcut) {
+                    let removeFunction;
+                    if (shortcut.primary) {
+                        removeFunction = this.$background.removePrimaryShortcut;
+                    } else {
+                        removeFunction = this.$background.removeSecondaryShortcut;
+                    }
+
+                    this.loading = true;
+                    removeFunction(shortcut, result => {
+                        this.loading = false;
+
+                        if (result) {
+                            this.queryShortcuts();
+
+                            this.$background.setPopupIcon(false);
+                            this.$toast.success('Delete Success!');
+                        } else {
+                            this.$toast.error('Ooops!');
+                        }
+                    });
+                }
             },
         },
         components: {
@@ -110,9 +168,8 @@
             this.queryShortcuts();
         },
         mounted() {
-            this.$bus.on('refresh-main-view', () => {
-                this.queryShortcuts();
-            });
+            this.$bus.on('bind-shortcut', this.bindShortcut);
+            this.$bus.on('unbind-shortcut', this.unbindShortcut);
         },
     }
 </script>

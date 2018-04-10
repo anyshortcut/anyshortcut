@@ -41,78 +41,11 @@ router.beforeEach((to, from, next) => {
 });
 
 let app = new Vue({
-    data: {
-        loading: false,
-    },
     router,
     render(createElement) {
-        return createElement('div', [
-            createElement('router-view'),
-            createElement('div', {
-                    class: 'loading',
-                    directives: [{
-                        name: 'show',
-                        value: this.loading,
-                    }]
-                },
-                [createElement('i', {class: 'fa fa-spinner fa-spin fa-2x fa-fw'})]
-            ),
-        ]);
-    },
-    methods: {
-        bindShortcut: function(primary, keyChar, comment) {
-            let bindFunction;
-            if (primary) {
-                bindFunction = this.$background.bindPrimaryShortcut;
-            } else {
-                bindFunction = this.$background.bindSecondaryShortcut;
-            }
-
-            this.loading = true;
-            bindFunction(keyChar, comment, (result, shortcut) => {
-                this.loading = false;
-
-                if (result) {
-                    this.$bus.emit('refresh-main-view');
-                    this.$background.setPopupIcon(true);
-                    this.$toast.success('Great job! you have bound a shortcut for this url!');
-
-                    this.$background.notifyActiveTabShortcutBindSuccess(shortcut);
-                }
-                else {
-                    this.$toast.error('Ooops!');
-                }
-            });
-        },
-        unbindShortcut: function(shortcut) {
-            if (shortcut) {
-                let removeFunction;
-                if (shortcut.primary) {
-                    removeFunction = this.$background.removePrimaryShortcut;
-                } else {
-                    removeFunction = this.$background.removeSecondaryShortcut;
-                }
-
-                this.loading = true;
-                removeFunction(shortcut, result => {
-                    this.loading = false;
-
-                    if (result) {
-                        this.$bus.emit('refresh-main-view');
-                        this.$background.setPopupIcon(false);
-                        this.$toast.success('Delete Success!');
-                    } else {
-                        this.$toast.error('Ooops!');
-                    }
-                });
-            }
-        },
+        return createElement('router-view');
     },
     mixins: [ga],
-    mounted() {
-        this.$bus.on('bind-shortcut', this.bindShortcut);
-        this.$bus.on('unbind-shortcut', this.unbindShortcut);
-    },
     destroyed() {
         Vue.prototype.$background = null;
     }

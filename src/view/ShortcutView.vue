@@ -178,6 +178,9 @@
                 });
             });
         },
+        mounted() {
+            this.$bus.on('refresh', this.queryShortcuts)
+        }
     }
 
 </script>
