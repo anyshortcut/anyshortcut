@@ -59,7 +59,7 @@
     import ShortcutKey from "../component/ShortcutKey.vue";
     import SecondaryBind from "../view/SecondaryBind.vue";
     import BindView from "../view/BindView.vue";
-    import Chart from "../../node_modules/chart.js/src/chart";
+    import Chart from "chart.js";
     import common from "../js/common.js";
     import _ from "lodash";
 
@@ -89,6 +89,8 @@
         },
         methods: {
             queryShortcuts() {
+                this.shortcut = null;
+                
                 let activeTab = this.$background.activeTab;
                 let primaryShortcuts = _.cloneDeep(this.$background.primaryShortcuts);
                 this.secondaryShortcuts = _.cloneDeep(this.$background.getSecondaryShortcutsByUrl(activeTab.url));
@@ -130,7 +132,7 @@
                         },
                         title: {
                             display: true,
-                            text: 'Shortcut week statstics',
+                            text: 'Shortcut week statistics',
                             fontStyle: 'normal',
                             padding: 15,
                             fontSize: 15,
@@ -300,24 +302,6 @@
         width: 50%;
         height: 100%;
         float: left;
-
-        .right-panel-header {
-            display: flex;
-            flex-direction: row;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 15px;
-            border-bottom: #ececec solid 1px;
-
-            .close {
-                color: #CECECE;
-                padding: 10px;
-                background-color: transparent;
-                border: none;
-                cursor: pointer;
-                outline: none;
-            }
-        }
 
         & > ul {
             padding-bottom: 50px;
