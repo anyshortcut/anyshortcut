@@ -28,10 +28,12 @@
                         <i class="icon-clock" aria-hidden="true"></i>
                         <p>Saved time: <span>{{ domainShortcut.open_times | savedTimes}}</span></p>
                     </div>
-                    <canvas id="chart" width="360" height="220"></canvas>
+                    <canvas id="primary-chart" width="360" height="220"></canvas>
                 </div>
             </div>
             <div class="right">
+                <secondary-shortcut-card :shortcut="shortcut" v-if="currentShortcutType==='secondary'">
+                </secondary-shortcut-card>
                 <shortcut-list :shortcuts="secondaryShortcuts">
                 </shortcut-list>
             </div>
@@ -57,6 +59,7 @@
     import client from "../js/client.js";
     import ShortcutList from "@/component/ShortcutList.vue";
     import ShortcutKey from "../component/ShortcutKey.vue";
+    import SecondaryShortcutCard from "../component/SecondaryShortcutCard.vue";
     import SecondaryBind from "../view/SecondaryBind.vue";
     import BindView from "../view/BindView.vue";
     import Chart from "chart.js";
@@ -86,11 +89,25 @@
             ShortcutKey,
             SecondaryBind,
             BindView,
+            SecondaryShortcutCard,
+        },
+        computed: {
+            currentShortcutType: function() {
+                if (this.shortcut) {
+                    if (common.isUrlEquivalent(this.domainShortcut.url, this.shortcut.url)) {
+                        return 'domain-primary';
+                    } else if (this.shortcut.primary === false) {
+                        return 'secondary';
+                    }
+                }
+
+                return 'none';
+            }
         },
         methods: {
             queryShortcuts() {
                 this.shortcut = null;
-                
+
                 let activeTab = this.$background.activeTab;
                 let primaryShortcuts = _.cloneDeep(this.$background.primaryShortcuts);
                 this.secondaryShortcuts = _.cloneDeep(this.$background.getSecondaryShortcutsByUrl(activeTab.url));
@@ -110,10 +127,10 @@
                 });
             },
             renderChart(data) {
-                let chart = document.getElementById('chart');
+                let chart = document.getElementById('primary-chart');
 
-                Chart.defaults.global.defaultFontColor = '#FFFFFF';
-                Chart.defaults.global.defaultFontFamily = "'Open Sans', sans-serif";
+                let chartFontColor = '#FEFEFE';
+                Chart.defaults.global.defaultFontFamily = "'Poppins', sans-serif";
                 new Chart(chart, {
                     type: 'bar',
                     data: {
@@ -122,7 +139,7 @@
                             // label: '# of times',
                             data: data,
                             backgroundColor: 'rgba(255,255,255,0.33)',
-                            hoverBackgroundColor: 'rgba(251, 251, 251, 0.33)',
+                            hoverBackgroundColor: 'rgba(251, 251, 251, 0.25)',
                         }],
                     },
                     options: {
@@ -132,9 +149,10 @@
                         },
                         title: {
                             display: true,
-                            text: 'Shortcut week statistics',
+                            text: 'Weekly statistics',
                             fontStyle: 'normal',
                             padding: 15,
+                            fontColor: chartFontColor,
                             fontSize: 15,
                         },
                         tooltips: {
@@ -147,6 +165,9 @@
                                 fontColor: '#B4D8FC',
                             },
                             xAxes: [{
+                                ticks: {
+                                    fontColor: chartFontColor,
+                                },
                                 barPercentage: 0.6,
                                 gridLines: {
                                     display: false,
@@ -154,6 +175,7 @@
                             }],
                             yAxes: [{
                                 ticks: {
+                                    fontColor: chartFontColor,
                                     beginAtZero: true,
                                     suggestedMin: 0,
                                     suggestedMax: 5,
