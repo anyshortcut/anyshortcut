@@ -4,7 +4,7 @@
             @mouseover="hoveredKey=key"
             @mouseleave="hoveredKey=null">
             <div class="list-item"
-                 @click="$bus.emit('shortcut-key-click',shortcut)">
+                 @click="$emit('shortcut-key-click',shortcut)">
                 <img :src="shortcut.favicon" alt="">
                 <div :title="shortcut.title">
                     <div>

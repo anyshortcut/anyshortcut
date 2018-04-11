@@ -31,6 +31,7 @@
             </div>
             <canvas id="secondary-chart" width="360" height="220"></canvas>
         </div>
+        <img class="right-arrow" src="../img/right-arrow.svg" alt="right-arrow" @click="$emit('close')">
     </div>
 </template>
 
@@ -235,7 +236,14 @@
                     padding: 0 10px;
                 }
             }
+        }
 
+        .right-arrow {
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 2px 10px;
         }
     }
 </style>

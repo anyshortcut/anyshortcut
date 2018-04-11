@@ -32,9 +32,11 @@
                 </div>
             </div>
             <div class="right">
-                <secondary-shortcut-card :shortcut="shortcut" v-if="currentShortcutType==='secondary'">
+                <secondary-shortcut-card :shortcut="shortcut" v-if="currentShortcutType==='secondary'"
+                                         @close="shortcut=null">
                 </secondary-shortcut-card>
-                <shortcut-list :shortcuts="secondaryShortcuts">
+                <shortcut-list :shortcuts="secondaryShortcuts"
+                               @shortcut-key-click="onShortcutListItemClick">
                 </shortcut-list>
             </div>
         </div>
@@ -125,6 +127,9 @@
                         return false;
                     }
                 });
+            },
+            onShortcutListItemClick(shortcut) {
+                this.shortcut = shortcut;
             },
             renderChart(data) {
                 let chart = document.getElementById('primary-chart');
