@@ -14,7 +14,7 @@
                             </small>
                         </a>
                     </div>
-                    <p class="text">linked with
+                    <p class="text">
                         <shortcut-key :key-char="domainShortcut.key">
                         </shortcut-key>
                     </p>
@@ -113,6 +113,9 @@
                 let activeTab = this.$background.activeTab;
                 let primaryShortcuts = _.cloneDeep(this.$background.primaryShortcuts);
                 this.secondaryShortcuts = _.cloneDeep(this.$background.getSecondaryShortcutsByUrl(activeTab.url));
+                _.forOwn(this.secondaryShortcuts, shortcut => {
+                    shortcut['parentKey'] = this.domainShortcut.key;
+                });
 
                 // Iterate both primary shortcuts firstly to find the bound shortcut,
                 // otherwise to iterate secondary shortcuts to ensure don't miss the bound shortcut.
@@ -271,8 +274,8 @@
 
             & > p {
                 text-align: center;
-                margin-top: 15px;
-                margin-bottom: 5px;
+                margin-top: 12px;
+                margin-bottom: 8px;
                 letter-spacing: 0.8px;
             }
 

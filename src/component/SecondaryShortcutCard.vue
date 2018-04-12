@@ -12,9 +12,14 @@
                     </small>
                 </a>
             </div>
-            <p class="text">linked with
-                <shortcut-key :key-char="shortcut.key">
-                </shortcut-key>
+            <p class="text">
+                <template v-if="shortcut.parentKey.length===1">
+                    <shortcut-key :key-char="shortcut.key"
+                                  :parentKeyChar="shortcut.parentKey">
+                    </shortcut-key>
+                    <span> / </span>
+                </template>
+                <span class="shortcut">{{ shortcut.key }}</span> in domain pages
             </p>
         </div>
         <div class="skew-line-container">
@@ -168,8 +173,8 @@
 
             & > p {
                 text-align: center;
-                margin-top: 15px;
-                margin-bottom: 5px;
+                margin-top: 12px;
+                margin-bottom: 8px;
                 letter-spacing: 0.8px;
             }
 
