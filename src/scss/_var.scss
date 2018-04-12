@@ -42,15 +42,6 @@ $message-danger-color: $color-danger;
   letter-spacing: 0;
 }
 
-.delete-button {
-  vertical-align: middle;
-  cursor: pointer;
-
-  &:hover {
-    content: url("../img/delete-red.svg");
-  }
-}
-
 @mixin button {
   cursor: pointer;
   padding: 5px 25px;

@@ -6,7 +6,7 @@
             <div class="list-item"
                  @click="$emit('shortcut-key-click',shortcut)">
                 <img :src="shortcut.favicon" alt="">
-                <div :title="shortcut.title">
+                <div :title="shortcut.title" class="list-item-content">
                     <div>
                         {{ shortcut.comment }}
                     </div>
@@ -15,6 +15,15 @@
                     </small>
                 </div>
                 <span class="shortcut-key">{{ shortcut.key }}</span>
+                <div class="list-item-action" v-visible="hoveredKey === key" @click="$event.stopPropagation()">
+
+                    <a :href="shortcut.url" target="_blank">
+                        <i class="icon-share-alt" aria-hidden="true" title="Open the link"></i>
+                    </a>
+                    <i class="icon-trash" aria-hidden="true" title="Delete the shortcut"
+                       @click="$bus.emit('unbind-shortcut',shortcut)">
+                    </i>
+                </div>
             </div>
         </li>
     </ul>
@@ -49,6 +58,7 @@
     }
 
     .list-item {
+        position: relative;
         overflow: hidden;
         white-space: nowrap;
         display: flex;
@@ -60,7 +70,7 @@
             height: 32px;
         }
 
-        & > div {
+        & .list-item-content {
             overflow: hidden;
             white-space: nowrap;
             flex: 1;
@@ -95,7 +105,32 @@
         display: inline-block;
         letter-spacing: 0.6px;
         font-size: 14px;
-        width: 42px;
+        padding: 0;
+        margin: 0;
+        width: 35px;
+    }
+
+    .list-item-action {
+        position: absolute;
+        right: 10px;
+        width: 80px;
+        padding: 2px 12px;
+        text-align: center;
+        background-color: #ffffff;
+        border-radius: 4px;
+        box-shadow: 0 2px 4px rgba(222, 222, 222, .12), 0 0 6px rgba(222, 222, 222, .04);
+
+        & i {
+            margin: 0 8px;
+            cursor: pointer;
+            vertical-align: middle;
+            color: #999999;
+
+            &:hover {
+                color: #1882ef;
+            }
+
+        }
     }
 
     .empty-list {
