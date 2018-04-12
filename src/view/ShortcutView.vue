@@ -35,6 +35,9 @@
                         </div>
                     </div>
                     <canvas id="primary-chart" width="360" height="220"></canvas>
+                    <div class="delete-text" @click="$bus.emit('unbind-shortcut',domainShortcut)">
+                        Delete shortcut?
+                    </div>
                 </div>
             </div>
             <div class="right">
@@ -346,7 +349,7 @@
 
                 & > i {
                     color: #b4d8fc;
-                    font-size: 20pt;
+                    font-size: 18pt;
                     align-self: center;
                     display: inline-block;
                 }
@@ -357,6 +360,22 @@
                     align-self: center;
                     text-align: center;
                     padding-top: 3px;
+                }
+            }
+
+            .delete-text {
+                margin: 12px auto;
+                width: 150px;
+                display: block;
+                cursor: pointer;
+                font-size: 14px;
+                padding: 5px;
+                color: #b4d8fc;
+                letter-spacing: 0.6px;
+                text-decoration: underline;
+
+                &:hover {
+                    color: #FDFDFD;
                 }
             }
         }
