@@ -26,13 +26,15 @@
             <div class="skew-line"></div>
         </div>
         <div class="skewed-container">
-            <div class="entry">
-                <i class="icon-chart" aria-hidden="true"></i>
-                <p>Used times: <span>{{ shortcut.open_times }}</span></p>
-            </div>
-            <div class="entry">
-                <i class="icon-clock" aria-hidden="true"></i>
-                <p>Saved time: <span>{{ shortcut.open_times | savedTimes}}</span></p>
+            <div class="secondary-stats">
+                <div class="entry">
+                    <i class="icon-chart" aria-hidden="true"></i>
+                    <p>{{ shortcut.open_times }} times</p>
+                </div>
+                <div class="entry">
+                    <i class="icon-clock" aria-hidden="true"></i>
+                    <p>{{ shortcut.open_times | savedTimes}}</p>
+                </div>
             </div>
             <canvas id="secondary-chart" width="360" height="220"></canvas>
         </div>
@@ -199,8 +201,7 @@
             width: 100%;
             display: block;
             position: relative;
-            padding: 20px;
-            text-align: start;
+            padding: 15px 20px;
 
             &:before {
                 content: "";
@@ -217,24 +218,28 @@
                 left: 0;
             }
 
+            .secondary-stats {
+                display: flex;
+                height: 70px;
+            }
+
             .entry {
                 overflow: hidden;
-                margin-top: 20px;
-                margin-left: 35px;
-                font-size: 15px;
+                flex: 1;
 
                 & > i {
-                    margin-top: 4px;
-                    margin-right: 15px;
-                    float: left;
+                    font-size: 20pt;
+                    align-self: center;
+                    display: inline-block;
                     color: #1882ef;;
                 }
 
-                & > p > span {
-                    font-family: "Poppins", sans-serif;
-                    font-weight: 500;
-                    letter-spacing: 1px;
-                    padding: 0 10px;
+                & > p {
+                    font-size: 15px;
+                    letter-spacing: 0.6px;
+                    align-self: center;
+                    text-align: center;
+                    padding-top: 3px;
                 }
             }
         }

@@ -20,13 +20,19 @@
                     </p>
                 </div>
                 <div class="skewed-container">
-                    <div class="entry">
-                        <i class="icon-chart" aria-hidden="true"></i>
-                        <p>Used times: <span>{{ domainShortcut.open_times }}</span></p>
-                    </div>
-                    <div class="entry">
-                        <i class="icon-clock" aria-hidden="true"></i>
-                        <p>Saved time: <span>{{ domainShortcut.open_times | savedTimes}}</span></p>
+                    <div class="primary-stats">
+                        <div class="entry">
+                            <i class="icon-graph" aria-hidden="true"></i>
+                            <p>{{ totalOpenTimes }} times</p>
+                        </div>
+                        <div class="entry">
+                            <i class="icon-chart" aria-hidden="true"></i>
+                            <p>{{ domainShortcut.open_times }} times</p>
+                        </div>
+                        <div class="entry">
+                            <i class="icon-clock" aria-hidden="true"></i>
+                            <p>{{ totalOpenTimes | savedTimes}}</p>
+                        </div>
                     </div>
                     <canvas id="primary-chart" width="360" height="220"></canvas>
                 </div>
@@ -73,6 +79,7 @@
         data() {
             return {
                 chart: null,
+                totalOpenTimes: 0,
                 shortcut: null,
                 secondaryShortcuts: {},
                 showPrimaryKeyboard: false,
@@ -233,6 +240,8 @@
                 client.getPrimarySecondaryShortcutWeekStats(this.domainShortcut.id).then(data => {
                     this.chart.data.datasets[1]['data'] = Object.values(data);
                     this.chart.update();
+
+                    this.totalOpenTimes = Object.values(data).reduce((accumulator, currentValue) => accumulator + currentValue);
                 });
             });
             this.$bus.on('refresh', this.queryShortcuts);
@@ -313,8 +322,7 @@
             display: block;
             position: relative;
             margin-top: 30px;
-            padding: 20px;
-            text-align: start;
+            padding: 15px 20px;
 
             &:before {
                 content: '';
@@ -327,27 +335,30 @@
                 left: 0;
             }
 
-            .entry {
-                overflow: hidden;
-                margin-top: 20px;
-                margin-left: 35px;
-                font-size: 15px;
-
-                & > i {
-                    margin-top: 4px;
-                    margin-right: 15px;
-                    float: left;
-                    color: #b4d8fc;
-                }
-
-                & > p > span {
-                    font-family: "Poppins", sans-serif;
-                    font-weight: 500;
-                    letter-spacing: 1px;
-                    padding: 0 10px;
-                }
+            .primary-stats {
+                display: flex;
+                height: 70px;
             }
 
+            .entry {
+                overflow: hidden;
+                flex: 1;
+
+                & > i {
+                    color: #b4d8fc;
+                    font-size: 20pt;
+                    align-self: center;
+                    display: inline-block;
+                }
+
+                & > p {
+                    font-size: 15px;
+                    letter-spacing: 0.6px;
+                    align-self: center;
+                    text-align: center;
+                    padding-top: 3px;
+                }
+            }
         }
     }
 
