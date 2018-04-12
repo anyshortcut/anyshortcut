@@ -126,7 +126,7 @@
                     this.$toast.success('Great job! you have bound a shortcut for this url!');
                 }).catch(error => {
                     this.loading = false;
-                    this.$toast.error('Ooops!');
+                    this.$toast.error(error.message);
                 });
             },
             unbindShortcut: function(shortcut) {
@@ -146,7 +146,7 @@
                         this.$toast.success('Delete Success!');
                     }).catch(error => {
                         this.loading = false;
-                        this.$toast.error('Ooops!');
+                        this.$toast.error(error.message);
                     });
                 }
             },
