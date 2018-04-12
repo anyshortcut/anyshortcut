@@ -72,6 +72,7 @@
         name: "ShortcutView",
         data() {
             return {
+                chart: null,
                 shortcut: null,
                 secondaryShortcuts: {},
                 showPrimaryKeyboard: false,
@@ -134,20 +135,29 @@
             onShortcutListItemClick(shortcut) {
                 this.shortcut = shortcut;
             },
-            renderChart(data) {
-                let chart = document.getElementById('primary-chart');
-
+            renderChart() {
+                let emptyData = [0, 0, 0, 0, 0, 0, 0];
                 let chartFontColor = '#FEFEFE';
                 Chart.defaults.global.defaultFontFamily = "'Poppins', sans-serif";
-                new Chart(chart, {
+                this.chart = new Chart(document.getElementById('primary-chart'), {
                     type: 'bar',
                     data: {
                         labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
                         datasets: [{
+                            type: 'bar',
                             // label: '# of times',
-                            data: data,
+                            data: emptyData,
                             backgroundColor: 'rgba(255,255,255,0.33)',
                             hoverBackgroundColor: 'rgba(251, 251, 251, 0.25)',
+                            yAxisID: 'primary',
+                        }, {
+                            type: 'line',
+                            // label: '# of times',
+                            data: emptyData,
+                            fill: false,
+                            borderColor: 'rgba(251, 251, 251, 0.25)',
+                            borderWidth: 1.2,
+                            yAxisID: 'secondaries',
                         }],
                     },
                     options: {
@@ -182,36 +192,50 @@
                                 }
                             }],
                             yAxes: [{
+                                id: 'primary',
                                 ticks: {
                                     fontColor: chartFontColor,
                                     beginAtZero: true,
                                     suggestedMin: 0,
                                     suggestedMax: 5,
                                 },
+                                position: 'left',
                                 gridLines: {
                                     display: false,
                                 }
-                            }]
+                            }, {
+                                id: 'secondaries',
+                                ticks: {
+                                    fontColor: chartFontColor,
+                                    beginAtZero: true,
+                                    suggestedMin: 0,
+                                    suggestedMax: 5,
+                                },
+                                position: 'right',
+                                gridLines: {
+                                    display: false,
+                                }
+                            },]
                         }
                     }
                 });
             },
         },
-        created() {
+        mounted() {
+            this.renderChart();
             this.queryShortcuts().then(() => {
-                client.getShortcutWeekStats(this.domainShortcut.id)
-                    .then(data => {
-                        const times = [];
-                        for (let i = 0; i < 7; i++) {
-                            times.push(data[i + 1] || 0);
-                        }
-                        this.renderChart(times);
-                    }).catch(error => {
+                client.getShortcutWeekStats(this.domainShortcut.id).then(data => {
+                    this.chart.data.datasets[0]['data'] = Object.values(data);
+                    this.chart.update();
+                }).catch(error => {
+                });
+
+                client.getPrimarySecondaryShortcutWeekStats(this.domainShortcut.id).then(data => {
+                    this.chart.data.datasets[1]['data'] = Object.values(data);
+                    this.chart.update();
                 });
             });
-        },
-        mounted() {
-            this.$bus.on('refresh', this.queryShortcuts)
+            this.$bus.on('refresh', this.queryShortcuts);
         }
     }
 

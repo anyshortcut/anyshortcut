@@ -125,11 +125,7 @@
         created() {
             client.getShortcutWeekStats(this.shortcut.id)
                 .then(data => {
-                    const times = [];
-                    for (let i = 0; i < 7; i++) {
-                        times.push(data[i + 1] || 0);
-                    }
-                    this.renderChart(times);
+                    this.renderChart(Object.values(data));
                 }).catch(error => {
             });
         }

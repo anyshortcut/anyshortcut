@@ -44,4 +44,7 @@ export default {
     getShortcutWeekStats(shortcutId) {
         return request.get(`/stats/shortcut?shortcut_id=${shortcutId}`);
     },
+    getPrimarySecondaryShortcutWeekStats(primaryShortcutId) {
+        return request.get(`/stats/primary?shortcut_id=${primaryShortcutId}`);
+    },
 };
