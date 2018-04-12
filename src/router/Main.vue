@@ -119,20 +119,14 @@
                 }
 
                 this.loading = true;
-                bindFunction(keyChar, comment, (result, shortcut) => {
+                bindFunction(keyChar, comment).then(() => {
+                    this.queryShortcuts();
                     this.loading = false;
 
-                    if (result) {
-                        this.queryShortcuts();
-
-                        this.$background.setPopupIcon(true);
-                        this.$toast.success('Great job! you have bound a shortcut for this url!');
-
-                        this.$background.notifyActiveTabShortcutBindSuccess(shortcut);
-                    }
-                    else {
-                        this.$toast.error('Ooops!');
-                    }
+                    this.$toast.success('Great job! you have bound a shortcut for this url!');
+                }).catch(error => {
+                    this.loading = false;
+                    this.$toast.error('Ooops!');
                 });
             },
             unbindShortcut: function(shortcut) {
@@ -145,17 +139,14 @@
                     }
 
                     this.loading = true;
-                    removeFunction(shortcut, result => {
+                    removeFunction(shortcut).then(() => {
+                        this.queryShortcuts();
                         this.loading = false;
 
-                        if (result) {
-                            this.queryShortcuts();
-
-                            this.$background.setPopupIcon(false);
-                            this.$toast.success('Delete Success!');
-                        } else {
-                            this.$toast.error('Ooops!');
-                        }
+                        this.$toast.success('Delete Success!');
+                    }).catch(error => {
+                        this.loading = false;
+                        this.$toast.error('Ooops!');
                     });
                 }
             },

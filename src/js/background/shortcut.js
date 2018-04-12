@@ -1,5 +1,6 @@
 import client from '../client.js';
 import common from '../common.js';
+import _ from "lodash";
 
 window.primaryShortcuts = {};
 window.secondaryShortcuts = {};
@@ -50,64 +51,77 @@ window.syncAllShortcuts = function(callback) {
     });
 };
 
-window.bindPrimaryShortcut = function(key, comment, callback) {
+window.bindPrimaryShortcut = function(key, comment) {
     let tab = window.activeTab;
-    client.bindShortcut({
-        key: key,
-        url: tab.url,
-        title: tab.title,
-        favicon: tab.favIconUrl,
-        comment: comment,
-        primary: true,
-    }).then(shortcut => {
-        assignShortcut(primaryShortcuts, shortcut);
-        callback(true, shortcut);
-    }).catch(error => {
-        console.log(error);
-        callback(false);
+    return new Promise((resolve, reject) => {
+        client.bindShortcut({
+            key: key,
+            url: tab.url,
+            title: tab.title,
+            favicon: tab.favIconUrl,
+            comment: comment,
+            primary: true,
+        }).then(shortcut => {
+            assignShortcut(primaryShortcuts, shortcut);
+            window.setPopupIcon(true);
+            window.notifyActiveTabShortcutBindSuccess(shortcut);
+
+            resolve();
+        }).catch(error => {
+            console.log(error);
+            reject(error);
+        });
     });
 };
 
-window.removePrimaryShortcut = function(shortcut, callback) {
-    client.unbindShortcut(shortcut.id)
-        .then(response => {
+window.removePrimaryShortcut = function(shortcut) {
+    return new Promise((resolve, reject) => {
+        client.unbindShortcut(shortcut.id).then(response => {
+            if (common.isUrlEquivalent(window.activeTab.url, shortcut.url)) {
+                window.setPopupIcon(false);
+            }
+
             delete primaryShortcuts[shortcut.key];
 
             // Remove all secondary shortcuts when delete primary shortcut
             delete secondaryShortcuts[shortcut.domain];
-            callback(true);
+
+            resolve();
         }).catch(error => {
-        console.log(error);
-        callback(false);
+            console.log(error);
+            reject(error);
+        });
     });
 };
 
 window.bindSecondaryShortcut = function(key, comment, callback) {
     let tab = window.activeTab;
-    client.bindShortcut({
-        key: key,
-        url: tab.url,
-        title: tab.title,
-        favicon: tab.favIconUrl,
-        comment: comment,
-        primary: false,
-    }).then(shortcut => {
-        let domain = shortcut['domain'];
-        if (!secondaryShortcuts.hasOwnProperty(domain)) {
-            secondaryShortcuts[domain] = {}
-        }
-        assignShortcut(secondaryShortcuts[domain], shortcut);
+    return new Promise((resolve, reject) => {
+        client.bindShortcut({
+            key: key,
+            url: tab.url,
+            title: tab.title,
+            favicon: tab.favIconUrl,
+            comment: comment,
+            primary: false,
+        }).then(shortcut => {
+            let domain = shortcut['domain'];
+            if (!secondaryShortcuts.hasOwnProperty(domain)) {
+                secondaryShortcuts[domain] = {}
+            }
+            assignShortcut(secondaryShortcuts[domain], shortcut);
 
-        callback(true, shortcut);
-    }).catch(error => {
-        console.log(error);
-        callback(false);
+            resolve();
+        }).catch(error => {
+            console.log(error);
+            reject(error);
+        });
     });
 };
 
-window.removeSecondaryShortcut = function(shortcut, callback) {
-    client.unbindShortcut(shortcut.id)
-        .then(response => {
+window.removeSecondaryShortcut = function(shortcut) {
+    return new Promise((resolve, reject) => {
+        client.unbindShortcut(shortcut.id).then(response => {
             let hostname = common.getHostnameFromUrl(shortcut.url);
             let domain = getBoundDomainByHostname(hostname);
             let shortcuts = secondaryShortcuts[domain];
@@ -119,10 +133,11 @@ window.removeSecondaryShortcut = function(shortcut, callback) {
                 delete secondaryShortcuts[domain];
             }
 
-            callback(true);
+            resolve();
         }).catch(error => {
-        console.log(error);
-        callback(false);
+            console.log(error);
+            reject(error);
+        });
     });
 };
 

@@ -248,7 +248,7 @@
             position: absolute;
             top: 0;
             right: 0;
-            padding: 2px 10px;
+            padding: 0 5px;
         }
     }
 </style>
