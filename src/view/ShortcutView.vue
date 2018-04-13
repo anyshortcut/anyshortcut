@@ -368,7 +368,7 @@
                 width: 150px;
                 display: block;
                 cursor: pointer;
-                font-size: 14px;
+                font-size: 13px;
                 padding: 5px;
                 color: #b4d8fc;
                 letter-spacing: 0.6px;

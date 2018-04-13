@@ -52,6 +52,11 @@
 
     export default {
         name: "SecondaryShortcutCard",
+        data() {
+            return {
+                chart: null,
+            };
+        },
         props: {
             shortcut: {
                 type: Object,
@@ -64,18 +69,16 @@
             ShortcutKey,
         },
         methods: {
-            renderChart(data) {
-                let chart = document.getElementById('secondary-chart');
-
+            renderChart() {
                 let chartFontColor = '#1882ef';
                 Chart.defaults.global.defaultFontFamily = "'Poppins', sans-serif";
-                new Chart(chart, {
+                this.chart = new Chart(document.getElementById('secondary-chart'), {
                     type: 'bar',
                     data: {
                         labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
                         datasets: [{
                             // label: '# of times',
-                            data: data,
+                            data: [0, 0, 0, 0, 0, 0, 0],
                             backgroundColor: 'rgba(26,132,237,1)',
                             hoverBackgroundColor: 'rgba(26,132,237,0.7)',
                         }],
@@ -127,10 +130,12 @@
                 });
             },
         },
-        created() {
+        mounted() {
+            this.renderChart();
             client.getShortcutWeekStats(this.shortcut.id)
                 .then(data => {
-                    this.renderChart(Object.values(data));
+                    this.chart.data.datasets[0]['data'] = Object.values(data);
+                    this.chart.update();
                 }).catch(error => {
             });
         }
@@ -251,7 +256,7 @@
                 width: 150px;
                 display: block;
                 cursor: pointer;
-                font-size: 14px;
+                font-size: 13px;
                 padding: 5px;
                 color: #6BADF2;
                 letter-spacing: 0.6px;
