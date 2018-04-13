@@ -1,11 +1,13 @@
 <template>
-    <div class="popper"
-         v-show="showing"
-         @mouseover="show"
-         @mouseleave="hidden">
-        <slot>Popover</slot>
-        <img class="popper-arrow" src="../img/triangle.svg" x-arrow/>
-    </div>
+    <transition name="fade">
+        <div class="popper"
+             v-show="showing"
+             @mouseover="show"
+             @mouseleave="hidden">
+            <slot>Popover</slot>
+            <img class="popper-arrow" src="../img/triangle.svg" x-arrow/>
+        </div>
+    </transition>
 </template>
 <style lang="scss">
     @import "../scss/_common.scss";
@@ -26,6 +28,14 @@
         left: calc(50% - 5px);
         margin-top: 0;
         margin-bottom: 0;
+    }
+
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity .5s ease-in-out;
+    }
+
+    .fade-enter, .fade-leave-to {
+        opacity: 0;
     }
 
 </style>
