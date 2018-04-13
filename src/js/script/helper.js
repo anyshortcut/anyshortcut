@@ -82,7 +82,7 @@ export default {
      * Mainly usage to prevent trigger shortcut when in these cases.
      */
     isActiveElementEditable() {
-        return document.activeElement.isContentEditable
+        return document.activeElement && document.activeElement.isContentEditable
             || ['INPUT', 'TEXTAREA', 'SELECT'].lastIndexOf(document.activeElement.tagName) !== -1;
     },
     /**
