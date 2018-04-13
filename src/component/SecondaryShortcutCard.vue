@@ -1,48 +1,52 @@
 <template>
-    <div class="shortcut-card">
-        <div class="top-container">
-            <img :src="shortcut.favicon" alt="">
-            <div>
-                <a :href="shortcut.url" target="_blank">
-                    <div class="subtitle">
-                        {{ shortcut.comment }}
+    <transition enter-active-class="slideInRight"
+                leave-active-class="slideOutRight"
+                @after-enter="fetchWeekStats()">
+        <div class="shortcut-card" v-if="shortcut">
+            <div class="top-container">
+                <img :src="shortcut.favicon" alt="">
+                <div>
+                    <a :href="shortcut.url" target="_blank">
+                        <div class="subtitle">
+                            {{ shortcut.comment }}
+                        </div>
+                        <small>
+                            {{ shortcut.url }}
+                        </small>
+                    </a>
+                </div>
+                <p class="text">
+                    <template v-if="shortcut.parentKey.length===1">
+                        <shortcut-key :key-char="shortcut.key"
+                                      :parentKeyChar="shortcut.parentKey">
+                        </shortcut-key>
+                        <span> / </span>
+                    </template>
+                    <span class="shortcut">{{ shortcut.key }}</span> in domain pages
+                </p>
+            </div>
+            <div class="skew-line-container">
+                <div class="skew-line"></div>
+            </div>
+            <div class="skewed-container">
+                <div class="secondary-stats">
+                    <div class="entry">
+                        <i class="icon-chart" aria-hidden="true"></i>
+                        <p>{{ shortcut.open_times }} times</p>
                     </div>
-                    <small>
-                        {{ shortcut.url }}
-                    </small>
-                </a>
-            </div>
-            <p class="text">
-                <template v-if="shortcut.parentKey.length===1">
-                    <shortcut-key :key-char="shortcut.key"
-                                  :parentKeyChar="shortcut.parentKey">
-                    </shortcut-key>
-                    <span> / </span>
-                </template>
-                <span class="shortcut">{{ shortcut.key }}</span> in domain pages
-            </p>
-        </div>
-        <div class="skew-line-container">
-            <div class="skew-line"></div>
-        </div>
-        <div class="skewed-container">
-            <div class="secondary-stats">
-                <div class="entry">
-                    <i class="icon-chart" aria-hidden="true"></i>
-                    <p>{{ shortcut.open_times }} times</p>
+                    <div class="entry">
+                        <i class="icon-clock" aria-hidden="true"></i>
+                        <p>{{ shortcut.open_times | savedTimes}}</p>
+                    </div>
                 </div>
-                <div class="entry">
-                    <i class="icon-clock" aria-hidden="true"></i>
-                    <p>{{ shortcut.open_times | savedTimes}}</p>
+                <canvas id="secondary-chart" width="360" height="220"></canvas>
+                <div class="delete-text" @click="$bus.emit('unbind-shortcut',shortcut)">
+                    Delete shortcut?
                 </div>
             </div>
-            <canvas id="secondary-chart" width="360" height="220"></canvas>
-            <div class="delete-text" @click="$bus.emit('unbind-shortcut',shortcut)">
-                Delete shortcut?
-            </div>
+            <img class="right-arrow" src="../img/right-arrow.svg" alt="right-arrow" @click="$emit('close')">
         </div>
-        <img class="right-arrow" src="../img/right-arrow.svg" alt="right-arrow" @click="$emit('close')">
-    </div>
+    </transition>
 </template>
 
 <script>
@@ -129,15 +133,17 @@
                     }
                 });
             },
+            fetchWeekStats() {
+                client.getShortcutWeekStats(this.shortcut.id)
+                    .then(data => {
+                        this.chart.data.datasets[0]['data'] = Object.values(data);
+                        this.chart.update();
+                    }).catch(error => {
+                });
+            },
         },
         mounted() {
             this.renderChart();
-            client.getShortcutWeekStats(this.shortcut.id)
-                .then(data => {
-                    this.chart.data.datasets[0]['data'] = Object.values(data);
-                    this.chart.update();
-                }).catch(error => {
-            });
         }
     }
 </script>
@@ -275,5 +281,41 @@
             right: 0;
             padding: 0 5px;
         }
+    }
+
+    @keyframes slideInRight {
+        from {
+            transform: translate(100%, 0);
+            visibility: visible;
+        }
+
+        to {
+            transform: translate(0, 0);
+        }
+    }
+
+    .slideInRight {
+        animation-name: slideInRight;
+        animation-duration: 0.38s;
+        animation-fill-mode: both;
+        animation-timing-function: ease-in;
+    }
+
+    @keyframes slideOutRight {
+        from {
+            transform: translate(0, 0);
+        }
+
+        to {
+            visibility: hidden;
+            transform: translate(100%, 0);
+        }
+    }
+
+    .slideOutRight {
+        animation-name: slideOutRight;
+        animation-duration: 0.38s;
+        animation-fill-mode: both;
+        animation-timing-function: ease-out;
     }
 </style>

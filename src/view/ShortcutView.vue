@@ -41,8 +41,10 @@
                 </div>
             </div>
             <div class="right">
-                <secondary-shortcut-card :shortcut="shortcut" v-if="currentShortcutType==='secondary'"
-                                         @close="shortcut=null">
+                <secondary-shortcut-card
+                        style="position: absolute;z-index: 9"
+                        :shortcut="shortcut" v-if="currentShortcutType==='secondary'"
+                        @close="shortcut=null">
                 </secondary-shortcut-card>
                 <shortcut-list :shortcuts="secondaryShortcuts"
                                @shortcut-key-click="onShortcutListItemClick">
