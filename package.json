@@ -17,8 +17,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "chart.js": "^2.7.2",
-    "popper.js": "^1.14.1",
-    "raven-js": "^3.23.3",
+    "popper.js": "^1.14.3",
+    "raven-js": "^3.24.1",
     "scroll-into-view": "^1.9.3",
     "vue": "^2.5.16",
     "vue-router": "^3.0.1"
@@ -43,7 +43,7 @@
     "uglifyjs-webpack-plugin": "^1.2.4",
     "vue-hot-reload-api": "^2.3.0",
     "vue-html-loader": "^1.2.4",
-    "vue-loader": "^14.2.1",
+    "vue-loader": "^14.2.2",
     "vue-style-loader": "^4.1.0",
     "vue-template-compiler": "^2.5.13",
     "webpack": "^3.8.1",

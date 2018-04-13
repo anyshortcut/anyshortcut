@@ -5,7 +5,7 @@
              @mouseover="show"
              @mouseleave="hidden">
             <slot>Popover</slot>
-            <img class="popper-arrow" src="../img/triangle.svg" x-arrow/>
+            <img v-if="showArrow" class="popper-arrow" src="../img/triangle.svg" x-arrow/>
         </div>
     </transition>
 </template>
@@ -20,9 +20,9 @@
         position: absolute;
         display: block;
         bottom: -12px;
-        left: calc(50% - 5px);
         margin-top: 0;
         margin-bottom: 0;
+        z-index: 1000;
     }
 
     .fade-enter-active, .fade-leave-active {
@@ -47,6 +47,12 @@
         props: {
             refId: {
                 type: String,
+            },
+            showArrow: {
+                type: Boolean,
+                default() {
+                    return true;
+                }
             }
         },
         watch: {
