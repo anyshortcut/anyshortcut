@@ -1,6 +1,6 @@
 <template>
     <div class="shortcut-view">
-        <div class="shortcut-detail-container" @click.stop="showPrimaryKeyboard=showSecondaryKeyboard=false">
+        <div class="shortcut-detail-container">
             <div class="left">
                 <div class="top-container">
                     <img :src="domainShortcut.favicon" alt="">
@@ -35,7 +35,8 @@
                         </div>
                     </div>
                     <canvas id="primary-chart" width="360" height="220"></canvas>
-                    <div class="delete-text" @click="$bus.emit('unbind-shortcut',domainShortcut)">
+                    <div class="delete-text"
+                         @click="$bus.emit('unbind-shortcut',domainShortcut)">
                         Delete shortcut?
                     </div>
                 </div>
@@ -52,19 +53,18 @@
             </div>
         </div>
 
-        <bind-view v-if="showPrimaryKeyboard" class="primary-keyboard"></bind-view>
+        <popover :ref-id="'keyboard-icon-left'" :show-arrow="false">
+            <bind-view class="primary-keyboard"></bind-view>
+        </popover>
+        <img id="keyboard-icon-left" class="keyboard-icon-left" src="../img/keyboard-icon.svg" alt="keyboard-icon">
 
-        <img class="keyboard-icon-left" src="../img/keyboard-icon.svg" alt="keyboard-icon"
-             @click.stop="showPrimaryKeyboard=!showPrimaryKeyboard">
-
-        <secondary-bind v-if="showSecondaryKeyboard"
-                        class="secondary-keyboard"
-                        :domain-shortcut="domainShortcut"
-                        :shortcuts="secondaryShortcuts"
-                        @click="$event.stopPropagation()">
-        </secondary-bind>
-        <img class="keyboard-icon-right" src="../img/keyboard-icon.svg" alt="keyboard-icon"
-             @click.stop="showSecondaryKeyboard=!showSecondaryKeyboard">
+        <popover :ref-id="'keyboard-icon-right'" :show-arrow="false">
+            <secondary-bind class="secondary-keyboard"
+                            :domain-shortcut="domainShortcut"
+                            :shortcuts="secondaryShortcuts">
+            </secondary-bind>
+        </popover>
+        <img id="keyboard-icon-right" class="keyboard-icon-right" src="../img/keyboard-icon.svg" alt="keyboard-icon">
     </div>
 </template>
 
@@ -72,6 +72,7 @@
     import client from "../js/client.js";
     import ShortcutList from "@/component/ShortcutList.vue";
     import ShortcutKey from "../component/ShortcutKey.vue";
+    import Popover from "../component/Popover.vue";
     import SecondaryShortcutCard from "../component/SecondaryShortcutCard.vue";
     import SecondaryBind from "../view/SecondaryBind.vue";
     import BindView from "../view/BindView.vue";
@@ -87,8 +88,6 @@
                 totalOpenTimes: 0,
                 shortcut: null,
                 secondaryShortcuts: {},
-                showPrimaryKeyboard: false,
-                showSecondaryKeyboard: false,
             }
         },
         props: {
@@ -102,6 +101,7 @@
         components: {
             ShortcutList,
             ShortcutKey,
+            Popover,
             SecondaryBind,
             BindView,
             SecondaryShortcutCard,
@@ -409,25 +409,25 @@
     .primary-keyboard {
         @extend .popup-keyboard;
         width: 560px;
-        position: fixed;
-        bottom: 30px;
-        left: 40px;
     }
 
     .secondary-keyboard {
         @extend .popup-keyboard;
         width: 560px;
-        position: fixed;
-        bottom: 30px;
-        right: 40px;
+    }
+
+    @mixin keyboard-icon {
+        position: absolute;
+        bottom: 0;
+        width: 30px;
+        height: 30px;
+        z-index: 99;
+        cursor: pointer;
     }
 
     .keyboard-icon-right {
-        position: fixed;
-        bottom: 0;
+        @include keyboard-icon;
         right: 5px;
-        z-index: 999;
-        cursor: pointer;
 
         &:hover {
             content: url("../img/keyboard-icon-blue.svg");
@@ -435,11 +435,8 @@
     }
 
     .keyboard-icon-left {
-        position: fixed;
-        bottom: 0;
+        @include keyboard-icon;
         left: 5px;
-        z-index: 999;
-        cursor: pointer;
 
         &:hover {
             content: url("../img/keyboard-icon-white.svg");
