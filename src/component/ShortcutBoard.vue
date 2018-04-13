@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="shortcut-board">
         <label for="comment" v-if="parentKeyChar && parentKeyChar.length===2">
             <span class="shortcut">
                 {{ keyChar }}
@@ -40,6 +40,13 @@
 </template>
 <style lang="scss">
     @import "../scss/_common.scss";
+
+    .shortcut-board {
+        padding: 5px;
+        border-radius: 3px;
+        background-color: #ffffff;
+        box-shadow: $box-shadow-base;
+    }
 
     .shortcut-bound, .shortcut-bind {
         display: flex;

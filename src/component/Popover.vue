@@ -13,11 +13,6 @@
     @import "../scss/_common.scss";
 
     .popper {
-        border-radius: 3px;
-        background-color: #ffffff;
-        box-shadow: $box-shadow-base;
-        padding: 5px;
-        margin-bottom: 5px;
         z-index: 999;
     }
 
