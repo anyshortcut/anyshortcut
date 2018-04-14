@@ -4,7 +4,7 @@
             <img class="brand-logo" alt="logo" src="../../extension/icon/logo.svg">
         </a>
         <img class="balloon-image" src="../img/computer-and-balloons.svg" alt="">
-        <div class="introduction">
+        <div class="subtitle introduction">
             Sign in to boost productivity and sync your shortcuts!
         </div>
         <div class="btn-google-sign-in"
@@ -44,11 +44,7 @@
     }
 
     .introduction {
-        padding: 10px;
-        margin: 30px 30px 15px;
-        font-weight: 500;
-        font-size: 17px;
-        line-height: 1.5;
+        margin: 30px 30px 20px;
     }
 
     a:focus {
