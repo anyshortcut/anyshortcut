@@ -136,12 +136,30 @@
             }
         },
         methods: {
+            refresh() {
+                this.queryShortcuts().then(() => {
+                    client.getShortcutWeekStats(this.domainShortcut.id).then(data => {
+                        this.chart.data.datasets[0]['data'] = Object.values(data);
+                        this.chart.update();
+                    }).catch(error => {
+                    });
+
+                    client.getPrimarySecondaryShortcutWeekStats(this.domainShortcut.id).then(data => {
+                        this.chart.data.datasets[1]['data'] = Object.values(data);
+                        this.chart.update();
+
+                        this.totalOpenTimes = Object.values(data).reduce((accumulator, currentValue) => accumulator + currentValue);
+                    });
+                });
+            },
             queryShortcuts() {
                 this.shortcut = null;
 
                 let activeTab = this.$background.activeTab;
                 let primaryShortcuts = _.cloneDeep(this.$background.primaryShortcuts);
                 this.secondaryShortcuts = _.cloneDeep(this.$background.getSecondaryShortcutsByUrl(activeTab.url));
+
+                // Add 'parentKey' property for all domain secondary shortcuts.
                 _.forOwn(this.secondaryShortcuts, shortcut => {
                     shortcut['parentKey'] = this.domainShortcut.key;
                 });
@@ -155,7 +173,7 @@
                 let url = this.$background.activeTab.url;
                 _.forOwn(shortcuts, shortcut => {
                     if (common.isUrlEquivalent(shortcut.url, url)) {
-                        this.shortcut = shortcut;
+                        this.shortcut = _.cloneDeep(shortcut);
                         return false;
                     }
                 });
@@ -251,21 +269,8 @@
         },
         mounted() {
             this.renderChart();
-            this.queryShortcuts().then(() => {
-                client.getShortcutWeekStats(this.domainShortcut.id).then(data => {
-                    this.chart.data.datasets[0]['data'] = Object.values(data);
-                    this.chart.update();
-                }).catch(error => {
-                });
-
-                client.getPrimarySecondaryShortcutWeekStats(this.domainShortcut.id).then(data => {
-                    this.chart.data.datasets[1]['data'] = Object.values(data);
-                    this.chart.update();
-
-                    this.totalOpenTimes = Object.values(data).reduce((accumulator, currentValue) => accumulator + currentValue);
-                });
-            });
-            this.$bus.on('refresh', this.queryShortcuts);
+            this.refresh();
+            this.$bus.on('refresh', this.refresh);
         }
     }
 

@@ -93,22 +93,29 @@
                 let primaryShortcuts = _.cloneDeep(this.$background.primaryShortcuts);
 
                 let foundDomainShortcut = null;
-                // Find current tab domain primary shortcut.
+                let foundActiveDomainShortcut = null;
+                // Find both active domain shortcut and a regular domain shortcut.
                 _.forOwn(primaryShortcuts, (shortcut) => {
-                    if (common.isUrlEndsWithDomain(activeTab.url, shortcut.domain)) {
+                    if (!foundDomainShortcut && common.isUrlEndsWithDomain(activeTab.url, shortcut.domain)) {
                         foundDomainShortcut = shortcut;
                         // return false to exit the for iterate after find the result.
+                    }
+
+                    if (common.isUrlEquivalent(activeTab.url, shortcut.url)) {
+                        foundActiveDomainShortcut = shortcut;
+                    }
+
+                    if (foundActiveDomainShortcut && foundDomainShortcut) {
                         return false;
                     }
                 });
+                // The active domain shortcut has higher priority than a regular domain shortcut.
+                this.domainShortcut = foundActiveDomainShortcut || foundDomainShortcut;
 
-                if (this.domainShortcut && foundDomainShortcut
-                    && common.isUrlEquivalent(foundDomainShortcut.url, this.domainShortcut.url)) {
-                    // Notify children component refresh
+                // Notify children component refresh in next ticket
+                this.$nextTick(() => {
                     this.$bus.emit('refresh');
-                }
-
-                this.domainShortcut = foundDomainShortcut;
+                });
             },
             bindShortcut: function(primary, keyChar, comment) {
                 let bindFunction;
