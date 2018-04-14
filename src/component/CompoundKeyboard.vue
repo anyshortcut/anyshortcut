@@ -29,6 +29,8 @@
     </div>
 </template>
 <style lang="scss">
+    @import "../scss/_keyboard.scss";
+
     $max-width: 410px;
 
     .compound-keyboard {
@@ -93,17 +95,12 @@
     }
 
     td {
+        @extend .key;
         position: relative;
-        color: #565656;
         min-width: 35px;
         height: 35px;
         line-height: 35px;
-        text-align: center;
         vertical-align: center;
-        background: white;
-        border: solid 1px #ededed;
-        border-radius: 2px;
-        cursor: pointer;
         font-size: 14px;
         padding: 0;
         margin: 0;
@@ -111,7 +108,7 @@
 
     .column-header, .row-header {
         border: 1px solid #E9EDFB;
-        color: #4F6EC8;
+        color: #1882ef;
         z-index: 1;
     }
 
@@ -127,19 +124,6 @@
         margin: 10px 0;
         display: block;
     }
-
-    .highlight {
-        background: #E9EDFB;
-        color: #4F6EC8;
-        font-weight: 500;
-        box-shadow: none;
-    }
-
-    .disabled {
-        background: #ececec;
-        cursor: text;
-    }
-
 </style>
 <script type="es6">
     import scrollIntoView from "scroll-into-view";
@@ -190,7 +174,7 @@
                 } else {
                     return this.boundKeys.indexOf(key) !== -1 ? {
                         'raw-key': true,
-                        'disabled': true,
+                        'occupied': true,
                     } : {
                         'raw-key': true,
                         'highlight': key === this.highlightKey ||

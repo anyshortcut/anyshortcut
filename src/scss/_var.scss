@@ -54,10 +54,10 @@ $message-danger-color: $color-danger;
 
 @mixin positive-gradient {
   color: #FFFFFF;
-  background: linear-gradient($secondary-color, $primary-color);
+  background: linear-gradient($primary-color, #1882ef);
 
   &:hover {
-    background: linear-gradient($primary-color, #3A56A8);
+    background: linear-gradient($secondary-color, $primary-color);
   }
 }
 

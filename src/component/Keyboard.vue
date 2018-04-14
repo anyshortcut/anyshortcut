@@ -73,9 +73,7 @@
     </div>
 </template>
 <style lang="scss">
-    * {
-        box-sizing: border-box;
-    }
+    @import "../scss/_keyboard.scss";
 
     .keyboard {
         max-width: 500px;
@@ -90,23 +88,14 @@
         position: relative;
         display: inline-block;
         vertical-align: middle;
-        text-align: center;
         height: 30px;
         width: 30px;
         margin: 6px;
         letter-spacing: 0.5px;
-        color: #3a3a3a;
-        background: #ffffff;
         flex: 1;
-        border-style: solid;
-        border-width: 1px;
-        border-color: #E5E5E5;
-        border-radius: 3px;
-        text-transform: uppercase;
         font-size: 15px;
         white-space: nowrap;
         overflow: hidden;
-        cursor: pointer;
 
         &::before {
             display: inline-block;
@@ -151,19 +140,6 @@
             box-shadow: none;
             cursor: text;
         }
-
-        &.highlight {
-            background: #E9EDFB;
-            color: #4F6EC8;
-            font-weight: 500;
-            box-shadow: none;
-        }
-
-        &.disabled {
-            background: #ececec;
-            cursor: text;
-        }
-
     }
 </style>
 <script type="es6">
@@ -211,7 +187,7 @@
             },
             keyClass: function(key) {
                 return this.boundKeys.indexOf(key) !== -1 ? {
-                    'disabled': true
+                    'occupied': true
                 } : {
                     'highlight': key === this.highlightKey
                 };

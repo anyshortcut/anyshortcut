@@ -1,0 +1,21 @@
+.key {
+  color: #1882ef;
+  background: #fff;
+  border: 1px solid #ededed;
+  border-radius: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: center;
+
+  &.highlight {
+    background: #E9EDFB;
+    color: #4F6EC8;
+    font-weight: 500;
+    box-shadow: none;
+  }
+
+  &.occupied {
+    border: 1px solid #1882ef;
+    cursor: text;
+  }
+}
