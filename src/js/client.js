@@ -24,8 +24,8 @@ export default {
     bindShortcut(shortcut) {
         return request.post('/shortcut/key', shortcut);
     },
-    unbindShortcut(id) {
-        return request.put(`/shortcut/${id}/unbind`);
+    unbindShortcut(id, including) {
+        return request.put(`/shortcut/${id}/unbind`, {including: including});
     },
     increaseShortcutOpenTimes(id) {
         return request.put(`/shortcut/${id}/times`);

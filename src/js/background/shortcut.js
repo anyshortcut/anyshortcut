@@ -74,17 +74,19 @@ window.bindPrimaryShortcut = function(key, comment) {
     });
 };
 
-window.removePrimaryShortcut = function(shortcut) {
+window.removePrimaryShortcut = function(shortcut, including) {
     return new Promise((resolve, reject) => {
-        client.unbindShortcut(shortcut.id).then(response => {
+        client.unbindShortcut(shortcut.id, including).then(response => {
             if (common.isUrlEquivalent(window.activeTab.url, shortcut.url)) {
                 window.setPopupIcon(false);
             }
 
             delete primaryShortcuts[shortcut.key];
 
-            // Remove all secondary shortcuts when delete primary shortcut
-            delete secondaryShortcuts[shortcut.domain];
+            if (including) {
+                // Remove all secondary shortcuts when delete primary shortcut
+                delete secondaryShortcuts[shortcut.domain];
+            }
 
             resolve();
         }).catch(error => {
@@ -94,7 +96,7 @@ window.removePrimaryShortcut = function(shortcut) {
     });
 };
 
-window.bindSecondaryShortcut = function(key, comment, callback) {
+window.bindSecondaryShortcut = function(key, comment) {
     let tab = window.activeTab;
     return new Promise((resolve, reject) => {
         client.bindShortcut({

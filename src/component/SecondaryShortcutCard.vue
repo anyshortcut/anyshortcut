@@ -258,8 +258,9 @@
             }
 
             .delete-text {
-                margin: 12px auto;
+                margin: 15px auto;
                 width: 150px;
+                height: 40px;
                 display: block;
                 cursor: pointer;
                 font-size: 13px;

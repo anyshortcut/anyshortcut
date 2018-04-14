@@ -35,8 +35,23 @@
                         </div>
                     </div>
                     <canvas id="primary-chart" width="360" height="220"></canvas>
-                    <div class="delete-text"
-                         @click="$bus.emit('unbind-shortcut',domainShortcut)">
+                    <popover :ref-id="'delete-text'">
+                        <div class="delete-confirm-popup">
+                            <p style="font-size: 16px;font-weight: 600;">Are you sure to delete?</p>
+                            <div>
+                                <input id="delete-domain-secondaries" type="checkbox"
+                                       v-model='includingSecondary'>
+                                <label for="delete-domain-secondaries">
+                                    including all secondary shortcuts in this domain
+                                </label>
+                            </div>
+                            <div class="shortcut-delete-button"
+                                 @click="$bus.emit('unbind-shortcut',domainShortcut,includingSecondary)">
+                                Delete
+                            </div>
+                        </div>
+                    </popover>
+                    <div id="delete-text" class="delete-text">
                         Delete shortcut?
                     </div>
                 </div>
@@ -54,12 +69,12 @@
         </div>
 
         <popover :ref-id="'keyboard-icon-left'" :show-arrow="false">
-            <bind-view class="primary-keyboard"></bind-view>
+            <bind-view class="popup-keyboard"></bind-view>
         </popover>
         <img id="keyboard-icon-left" class="keyboard-icon-left" src="../img/keyboard-icon.svg" alt="keyboard-icon">
 
         <popover :ref-id="'keyboard-icon-right'" :show-arrow="false">
-            <secondary-bind class="secondary-keyboard"
+            <secondary-bind class="popup-keyboard"
                             :domain-shortcut="domainShortcut"
                             :shortcuts="secondaryShortcuts">
             </secondary-bind>
@@ -88,6 +103,7 @@
                 totalOpenTimes: 0,
                 shortcut: null,
                 secondaryShortcuts: {},
+                includingSecondary: false,
             }
         },
         props: {
@@ -256,6 +272,7 @@
 </script>
 
 <style lang="scss" scoped>
+    @import "../scss/_common.scss";
 
     .shortcut-view {
         box-sizing: border-box;
@@ -366,8 +383,9 @@
             }
 
             .delete-text {
-                margin: 12px auto;
+                margin: 15px auto;
                 width: 150px;
+                height: 40px;
                 display: block;
                 cursor: pointer;
                 font-size: 13px;
@@ -398,22 +416,13 @@
     }
 
     .popup-keyboard {
+        width: 560px;
         box-sizing: content-box;
         background-color: #FFFFFF;
         border-top: #6BADF2 solid 5px;
         border-radius: 5px 5px 0 0;
         box-shadow: 0 5px 21px 0 rgba(128, 128, 128, 0.2);
         z-index: 999;
-    }
-
-    .primary-keyboard {
-        @extend .popup-keyboard;
-        width: 560px;
-    }
-
-    .secondary-keyboard {
-        @extend .popup-keyboard;
-        width: 560px;
     }
 
     @mixin keyboard-icon {
@@ -441,6 +450,25 @@
         &:hover {
             content: url("../img/keyboard-icon-white.svg");
         }
+    }
+
+    .delete-confirm-popup {
+        width: 388px;
+        padding: 15px;
+        font-size: 14px;
+        color: #dd4814;
+        background-color: #fff;
+        border-top: 5px solid #6badf2;
+        border-radius: 5px 5px 0 0;
+        box-shadow: 0 5px 21px 0 hsla(0, 0%, 50%, .2);
+        z-index: 999;
+    }
+
+    .shortcut-delete-button {
+        @include button;
+        @include negative-gradient;
+        padding: 2px 30px;
+        margin-top: 5px;
     }
 
 </style>

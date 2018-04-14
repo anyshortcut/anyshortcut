@@ -129,20 +129,20 @@
                     this.$toast.error(error.message);
                 });
             },
-            unbindShortcut: function(shortcut) {
+            unbindShortcut: function(shortcut, including) {
                 if (shortcut) {
-                    let removeFunction;
+                    this.loading = true;
+
+                    let unbindPromise = null;
                     if (shortcut.primary) {
-                        removeFunction = this.$background.removePrimaryShortcut;
+                        unbindPromise = this.$background.removePrimaryShortcut(shortcut, including);
                     } else {
-                        removeFunction = this.$background.removeSecondaryShortcut;
+                        unbindPromise = this.$background.removeSecondaryShortcut(shortcut);
                     }
 
-                    this.loading = true;
-                    removeFunction(shortcut).then(() => {
+                    unbindPromise.then(() => {
                         this.queryShortcuts();
                         this.loading = false;
-
                         this.$toast.success('Delete Success!');
                     }).catch(error => {
                         this.loading = false;
