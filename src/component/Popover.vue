@@ -1,5 +1,5 @@
 <template>
-    <transition name="fade">
+    <transition :name="transitionName">
         <div class="popper"
              v-show="showing"
              @mouseover="show"
@@ -53,7 +53,13 @@
                 default() {
                     return true;
                 }
-            }
+            },
+            transitionName: {
+                type: String,
+                default() {
+                    return 'fade';
+                }
+            },
         },
         watch: {
             showing: function(newValue) {

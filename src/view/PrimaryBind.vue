@@ -12,6 +12,7 @@
         </keyboard>
 
         <popover ref="popover"
+                 :transition-name="null"
                  style="width: 50%"
                  @on-show-change="onPopoverShowChange">
             <shortcut-board :shortcut="hoveredShortcut"
