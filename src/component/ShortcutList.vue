@@ -16,15 +16,17 @@
                     </small>
                 </div>
                 <span class="shortcut-key">{{ shortcut.key }}</span>
-                <div class="list-item-action" v-visible="hoveredKey === key" @click="$event.stopPropagation()">
+                <transition name="fade">
+                    <div class="list-item-action" v-show="hoveredKey === key" @click="$event.stopPropagation()">
 
-                    <a :href="shortcut.url" target="_blank">
-                        <i class="icon-share-alt" aria-hidden="true" title="Open the link"></i>
-                    </a>
-                    <i class="icon-trash" aria-hidden="true" title="Delete the shortcut"
-                       @click="$bus.emit('unbind-shortcut',shortcut)">
-                    </i>
-                </div>
+                        <a :href="shortcut.url" target="_blank">
+                            <i class="icon-share-alt" aria-hidden="true" title="Open the link"></i>
+                        </a>
+                        <i class="icon-trash" aria-hidden="true" title="Delete the shortcut"
+                           @click="$bus.emit('unbind-shortcut',shortcut)">
+                        </i>
+                    </div>
+                </transition>
             </div>
         </li>
     </ul>
@@ -131,6 +133,14 @@
                 color: #1882ef;
             }
 
+        }
+
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity .3s ease-in;
+        }
+
+        .fade-enter, .fade-leave-to {
+            opacity: 0;
         }
     }
 
