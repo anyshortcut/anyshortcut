@@ -3,7 +3,11 @@
         <div class="shortcut-detail-container">
             <div class="left">
                 <div class="top-container">
-                    <img :src="domainShortcut.favicon" alt="">
+                    <div class="favicon">
+                        <img :src="domainShortcut.favicon" alt="">
+                        <img class="pin" src="../img/pin.svg" alt="pin"
+                             v-if="isDomainShortcutPinned">
+                    </div>
                     <div>
                         <a :href="domainShortcut.url" target="_blank">
                             <div class="subtitle">
@@ -58,9 +62,10 @@
             </div>
             <div class="right">
                 <secondary-shortcut-card
+                        v-if="currentSecondaryShortcut"
                         style="position: absolute;z-index: 9"
-                        :shortcut="shortcut" v-if="currentShortcutType==='secondary'"
-                        @close="shortcut=null">
+                        :shortcut="currentSecondaryShortcut"
+                        @close="currentSecondaryShortcut=null">
                 </secondary-shortcut-card>
                 <shortcut-list :shortcuts="secondaryShortcuts"
                                @shortcut-key-click="onShortcutListItemClick">
@@ -101,7 +106,7 @@
             return {
                 chart: null,
                 totalOpenTimes: 0,
-                shortcut: null,
+                currentSecondaryShortcut: null,
                 secondaryShortcuts: {},
                 includingSecondary: false,
             }
@@ -123,16 +128,8 @@
             SecondaryShortcutCard,
         },
         computed: {
-            currentShortcutType: function() {
-                if (this.shortcut) {
-                    if (common.isUrlEquivalent(this.domainShortcut.url, this.shortcut.url)) {
-                        return 'domain-primary';
-                    } else if (this.shortcut.primary === false) {
-                        return 'secondary';
-                    }
-                }
-
-                return 'none';
+            isDomainShortcutPinned: function() {
+                return common.isUrlEquivalent(this.domainShortcut.url, this.$background.activeTab.url);
             }
         },
         methods: {
@@ -153,33 +150,24 @@
                 });
             },
             queryShortcuts() {
-                this.shortcut = null;
+                this.currentSecondaryShortcut = null;
 
                 let activeTab = this.$background.activeTab;
-                let primaryShortcuts = _.cloneDeep(this.$background.primaryShortcuts);
                 this.secondaryShortcuts = _.cloneDeep(this.$background.getSecondaryShortcutsByUrl(activeTab.url));
 
                 // Add 'parentKey' property for all domain secondary shortcuts.
+                // Iterate both secondary shortcuts to find the current secondary shortcut,
                 _.forOwn(this.secondaryShortcuts, shortcut => {
                     shortcut['parentKey'] = this.domainShortcut.key;
-                });
 
-                // Iterate both primary shortcuts firstly to find the bound shortcut,
-                // otherwise to iterate secondary shortcuts to ensure don't miss the bound shortcut.
-                this.checkShortcutBound(primaryShortcuts) || this.checkShortcutBound(this.secondaryShortcuts);
-                return Promise.resolve();
-            },
-            checkShortcutBound(shortcuts) {
-                let url = this.$background.activeTab.url;
-                _.forOwn(shortcuts, shortcut => {
-                    if (common.isUrlEquivalent(shortcut.url, url)) {
-                        this.shortcut = _.cloneDeep(shortcut);
-                        return false;
+                    if (common.isUrlEquivalent(shortcut.url, activeTab.url)) {
+                        this.currentSecondaryShortcut = _.cloneDeep(shortcut);
                     }
                 });
+                return Promise.resolve();
             },
             onShortcutListItemClick(shortcut) {
-                this.shortcut = shortcut;
+                this.currentSecondaryShortcut = shortcut;
             },
             renderChart() {
                 let emptyData = [0, 0, 0, 0, 0, 0, 0];
@@ -310,11 +298,27 @@
             white-space: nowrap;
             text-align: start;
 
+            .favicon {
+                position: relative;
+                overflow: visible;
+                display: inline-block;
+                vertical-align: middle;
+            }
+
             & img {
                 width: 42px;
                 height: 42px;
-                display: inline-block;
                 vertical-align: middle;
+            }
+
+            & .pin {
+                position: absolute;
+                bottom: -16px;
+                right: 0;
+                left: 0;
+                margin: auto;
+                width: 26px;
+                height: 26px;
             }
 
             & > div {
