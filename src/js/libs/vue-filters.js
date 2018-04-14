@@ -11,19 +11,6 @@ Vue.filter('capitalize', function(value) {
     value = value.toString();
     return value.charAt(0).toUpperCase() + value.slice(1)
 });
-Vue.filter('savedTimes', function(openTimes) {
-    let savedSecond = openTimes * 3;
-
-    if (savedSecond === 0) {
-        return '0 second';
-    }
-
-    if (savedSecond < 60 * 5) {
-        return savedSecond + ' seconds';
-    }
-
-    return savedSecond / 60.0 + ' minutes';
-});
 Vue.directive('visible', function(el, binding) {
     if (binding.value) {
         el.style.visibility = 'visible';

@@ -7,9 +7,10 @@
                 <div class="favicon">
                     <img :src="shortcut.favicon" alt="">
                     <img class="pin" src="../img/pin.svg" alt="pin"
+                         :title="'This shortcut has linked to current URL - ' + shortcut.url"
                          v-if="isShortcutPinned">
                 </div>
-                <div>
+                <div class="content">
                     <a :href="shortcut.url" target="_blank">
                         <div class="subtitle">
                             {{ shortcut.comment }}
@@ -34,14 +35,37 @@
             </div>
             <div class="skewed-container">
                 <div class="secondary-stats">
-                    <div class="entry">
+                    <div class="entry"
+                         id="secondary-open-times">
                         <i class="icon-chart" aria-hidden="true"></i>
-                        <p>{{ shortcut.open_times }} times</p>
+                        <p>{{ shortcut.open_times }}
+                            <small>times</small>
+                        </p>
                     </div>
-                    <div class="entry">
+                    <popover ref-id="secondary-open-times">
+                        <p class="tooltip">
+                            You have used this secondary shortcut <b>{{ shortcut.open_times }}</b> times
+                        </p>
+                    </popover>
+                    <div class="entry"
+                         id="secondary-save-time">
                         <i class="icon-clock" aria-hidden="true"></i>
-                        <p>{{ shortcut.open_times | savedTimes}}</p>
+                        <p v-if="shortcut.open_times > 100">{{ shortcut.open_times * 3 / 60.0 }}
+                            <small>minutes</small>
+                        </p>
+                        <p v-else>{{ shortcut.open_times * 3 }}
+                            <small>seconds</small>
+                        </p>
                     </div>
+                    <popover ref-id="secondary-save-time">
+                        <p class="tooltip" v-if="shortcut.open_times > 100">
+                            You have saved <b>{{ shortcut.open_times * 3 / 60.0 }}</b> minutes by this shortcut
+                        </p>
+                        <p class="tooltip" v-else>
+                            You have saved <b>{{ shortcut.open_times * 3 }}</b> seconds by use this shortcut
+                        </p>
+                    </popover>
+
                 </div>
                 <canvas id="secondary-chart" width="360" height="220"></canvas>
                 <div class="delete-text" @click="$bus.emit('unbind-shortcut',shortcut)">
@@ -58,6 +82,7 @@
     import common from "../js/common.js";
     import Chart from "chart.js";
     import ShortcutKey from "../component/ShortcutKey.vue";
+    import Popover from "../component/Popover.vue";
 
     export default {
         name: "SecondaryShortcutCard",
@@ -82,6 +107,7 @@
         },
         components: {
             ShortcutKey,
+            Popover,
         },
         methods: {
             renderChart() {
@@ -195,7 +221,7 @@
                 height: 26px;
             }
 
-            & > div {
+            & .content {
                 display: inline-block;
                 vertical-align: middle;
                 margin-left: 10px;

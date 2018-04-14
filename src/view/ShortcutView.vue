@@ -6,9 +6,10 @@
                     <div class="favicon">
                         <img :src="domainShortcut.favicon" alt="">
                         <img class="pin" src="../img/pin.svg" alt="pin"
+                             :title="'This shortcut has linked to current URL - ' + domainShortcut.url"
                              v-if="isDomainShortcutPinned">
                     </div>
-                    <div>
+                    <div class="content">
                         <a :href="domainShortcut.url" target="_blank">
                             <div class="subtitle">
                                 {{ domainShortcut.comment }}
@@ -25,18 +26,48 @@
                 </div>
                 <div class="skewed-container">
                     <div class="primary-stats">
-                        <div class="entry">
+                        <div class="entry"
+                             id="primary-total-times">
                             <i class="icon-graph" aria-hidden="true"></i>
-                            <p>{{ totalOpenTimes }} times</p>
+                            <p>{{ totalOpenTimes }}
+                                <small>times</small>
+                            </p>
                         </div>
-                        <div class="entry">
+                        <popover ref-id="primary-total-times">
+                            <p class="tooltip">
+                                You have used this primary and secondary shortcuts <b>{{ totalOpenTimes }}</b> times
+                            </p>
+                        </popover>
+                        <div class="entry"
+                             id="primary-open-times">
                             <i class="icon-chart" aria-hidden="true"></i>
-                            <p>{{ domainShortcut.open_times }} times</p>
+                            <p>{{ domainShortcut.open_times }}
+                                <small>times</small>
+                            </p>
                         </div>
-                        <div class="entry">
+                        <popover ref-id="primary-open-times">
+                            <p class="tooltip">
+                                You have used this primary shortcut <b>{{ domainShortcut.open_times }}</b> times
+                            </p>
+                        </popover>
+                        <div class="entry"
+                             id="primary-save-time">
                             <i class="icon-clock" aria-hidden="true"></i>
-                            <p>{{ totalOpenTimes | savedTimes}}</p>
+                            <p v-if="totalOpenTimes > 100">{{ totalOpenTimes * 3 / 60.0 }}
+                                <small>minutes</small>
+                            </p>
+                            <p v-else>{{ totalOpenTimes * 3 }}
+                                <small>seconds</small>
+                            </p>
                         </div>
+                        <popover ref-id="primary-save-time">
+                            <p class="tooltip" v-if="totalOpenTimes > 100">
+                                You have saved <b>{{ totalOpenTimes * 3 / 60.0 }}</b> minutes by use those shortcuts
+                            </p>
+                            <p class="tooltip" v-else>
+                                You have saved <b>{{ totalOpenTimes * 3 }}</b> seconds by use those shortcuts
+                            </p>
+                        </popover>
                     </div>
                     <canvas id="primary-chart" width="360" height="220"></canvas>
                     <popover :ref-id="'delete-text'">
@@ -322,7 +353,7 @@
                 height: 26px;
             }
 
-            & > div {
+            & .content {
                 display: inline-block;
                 vertical-align: middle;
                 margin-left: 10px;

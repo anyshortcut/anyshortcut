@@ -26,7 +26,7 @@
     }
 
     .fade-enter-active, .fade-leave-active {
-        transition: opacity .5s ease-in-out;
+        transition: opacity .5s ease-in;
     }
 
     .fade-enter, .fade-leave-to {
