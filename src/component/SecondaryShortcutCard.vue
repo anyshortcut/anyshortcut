@@ -4,7 +4,11 @@
                 @after-enter="fetchWeekStats()">
         <div class="shortcut-card" v-if="shortcut">
             <div class="top-container">
-                <img :src="shortcut.favicon" alt="">
+                <div class="favicon">
+                    <img :src="shortcut.favicon" alt="">
+                    <img class="pin" src="../img/pin.svg" alt="pin"
+                         v-if="isShortcutPinned">
+                </div>
                 <div>
                     <a :href="shortcut.url" target="_blank">
                         <div class="subtitle">
@@ -51,6 +55,7 @@
 
 <script>
     import client from "../js/client.js";
+    import common from "../js/common.js";
     import Chart from "chart.js";
     import ShortcutKey from "../component/ShortcutKey.vue";
 
@@ -67,6 +72,12 @@
                 default() {
                     return {};
                 },
+            }
+        },
+        computed: {
+            isShortcutPinned() {
+                return this.shortcut &&
+                    common.isUrlEquivalent(this.shortcut.url, this.$background.activeTab.url)
             }
         },
         components: {
@@ -161,11 +172,27 @@
             white-space: nowrap;
             text-align: start;
 
+            .favicon {
+                position: relative;
+                overflow: visible;
+                display: inline-block;
+                vertical-align: middle;
+            }
+
             & img {
                 width: 42px;
                 height: 42px;
-                display: inline-block;
                 vertical-align: middle;
+            }
+
+            & .pin {
+                position: absolute;
+                bottom: -14px;
+                right: 0;
+                left: 0;
+                margin: auto;
+                width: 26px;
+                height: 26px;
             }
 
             & > div {

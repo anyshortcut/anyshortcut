@@ -129,7 +129,8 @@
         },
         computed: {
             isDomainShortcutPinned: function() {
-                return common.isUrlEquivalent(this.domainShortcut.url, this.$background.activeTab.url);
+                return this.domainShortcut &&
+                    common.isUrlEquivalent(this.domainShortcut.url, this.$background.activeTab.url);
             }
         },
         methods: {
@@ -313,7 +314,7 @@
 
             & .pin {
                 position: absolute;
-                bottom: -16px;
+                bottom: -14px;
                 right: 0;
                 left: 0;
                 margin: auto;
