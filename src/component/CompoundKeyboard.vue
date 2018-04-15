@@ -228,7 +228,7 @@
         mounted: function() {
             // Query key elements exclude weak element, then add mouse event listener.
             document.getElementById('compound-tbody').querySelectorAll('.raw-key').forEach(element => {
-                element.addEventListener('mouseover', () => {
+                element.addEventListener('mouseenter', () => {
                     if (this.scrolling) return;
 
                     this.$emit('key-hover-over', element);

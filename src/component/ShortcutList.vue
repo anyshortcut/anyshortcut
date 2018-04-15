@@ -2,7 +2,7 @@
     <ul v-if="shortcuts && Object.keys(shortcuts).length">
         <li v-for="(shortcut,key) in shortcuts"
             :key="key"
-            @mouseover="hoveredKey=key"
+            @mouseenter="hoveredKey=key"
             @mouseleave="hoveredKey=null">
             <div class="list-item"
                  @click="$emit('shortcut-key-click',shortcut)">

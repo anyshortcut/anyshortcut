@@ -104,12 +104,6 @@
             content: '';
         }
 
-        &:hover {
-            position: relative;
-            top: 1px;
-            left: 1px;
-        }
-
         &.extra-size {
             flex: 1.25;
         }
@@ -196,7 +190,7 @@
         mounted: function() {
             // Query key elements exclude slide key element, then add mouse event listener.
             this.$el.querySelectorAll('.key:not(.slide-key)').forEach(element => {
-                element.addEventListener('mouseover', () => {
+                element.addEventListener('mouseenter', () => {
                     this.$emit('key-hover-over', element);
                 });
                 element.addEventListener('mouseleave', () => {

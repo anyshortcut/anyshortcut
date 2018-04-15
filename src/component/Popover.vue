@@ -2,7 +2,7 @@
     <transition :name="transitionName">
         <div class="popper"
              v-show="showing"
-             @mouseover="show"
+             @mouseenter="show"
              @mouseleave="hidden">
             <slot>Popover</slot>
             <img v-if="showArrow" class="popper-arrow" src="../img/triangle.svg" x-arrow/>
@@ -98,7 +98,7 @@
         mounted() {
             let refElement = this.refId ? document.getElementById(this.refId) : null;
             if (refElement) {
-                refElement.onmouseover = () => {
+                refElement.onmouseenter = () => {
                     this.render(refElement);
                 };
 
