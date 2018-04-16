@@ -64,7 +64,7 @@ export default {
         let windowFeatures = `width=${width},height=${height},top=${top},left=${left},
         resizable=yes,scrollbars=yes,status=no,toolbar=no,menubar=no,location=no`;
         let authWindow = window.open(url, 'AnyShortcut', windowFeatures);
-        authWindow.focus && authWindow.focus();
+        authWindow && authWindow.focus && authWindow.focus();
     }
 }
 
