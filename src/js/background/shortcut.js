@@ -2,6 +2,8 @@ import client from '../client.js';
 import common from '../common.js';
 import _ from "lodash";
 
+const defaultFaviconUrl = chrome.runtime.getURL('icon/default_favicon.svg');
+
 window.primaryShortcuts = {};
 window.secondaryShortcuts = {};
 
@@ -26,6 +28,12 @@ window.getBoundDomainByHostname = function(hostname) {
  * @param shortcut
  */
 window.assignShortcut = function(shortcuts, shortcut) {
+    if (!shortcut) return;
+
+    if (shortcut && !shortcut.favicon) {
+        shortcut['favicon'] = defaultFaviconUrl;
+    }
+
     const nestedShortcut = {};
     nestedShortcut[shortcut.key] = shortcut;
     Object.assign(shortcuts, nestedShortcut);
@@ -40,6 +48,17 @@ window.syncAllShortcuts = function(callback) {
             Object.assign(primaryShortcuts, item);
         });
         secondaryShortcuts = data.secondary || {};
+
+        // Iterate primary and secondary shortcuts to
+        // ensure all shortcut have a default favicon image.
+        _.forOwn(primaryShortcuts, shortcut => {
+            assignShortcut(primaryShortcuts, shortcut)
+        });
+        _.forOwn(secondaryShortcuts, domain => {
+            _.forOwn(domain, shortcut => {
+                assignShortcut(domain, shortcut);
+            });
+        });
 
         // Callback if exist
         callback && callback();

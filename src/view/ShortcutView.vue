@@ -294,7 +294,7 @@
             this.$bus.on('refresh', this.refresh);
 
             setTimeout(() => {
-                if (!this.currentSecondaryShortcut) {
+                if (!this.isDomainShortcutPinned && !this.currentSecondaryShortcut) {
                     this.$refs.secondary.render(document.getElementById('keyboard-icon-right'));
                 }
             }, 200);

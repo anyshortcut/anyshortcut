@@ -72,11 +72,11 @@ export default {
  * Remove trail slash.
  */
 function trimTrailSlash(url) {
-    return url.replace(/\/$/, '');
+    return url ? url.replace(/\/$/, '') : '';
 }
 
 function stripUrlSchema(url) {
-    if (url.includes('://')) {
+    if (url && url.includes('://')) {
         return url.split('://')[1]
     }
 
