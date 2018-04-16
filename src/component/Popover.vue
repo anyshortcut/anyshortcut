@@ -45,6 +45,7 @@
 </style>
 <script type="es6">
     import Popper from "popper";
+    import _ from "lodash";
 
     export default {
         name: 'Popover',
@@ -107,19 +108,21 @@
                 }
 
                 this.popper.reference = target;
-                this.popper.scheduleUpdate();
+                // Don't use scheduleUpdate() method because of has bad UI shake in Firefox
+                // this.popper.scheduleUpdate();
+                this.popper.update();
             },
         },
         mounted() {
             let refElement = this.refId ? document.getElementById(this.refId) : null;
             if (refElement) {
-                refElement.onmouseenter = () => {
+                refElement.onmouseenter = _.throttle(() => {
                     this.render(refElement);
-                };
+                }, 200);
 
-                refElement.onmouseleave = () => {
+                refElement.onmouseleave = _.throttle(() => {
                     this.hidden();
-                };
+                }, 200);
             }
         }
     }
