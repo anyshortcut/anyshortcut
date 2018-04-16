@@ -25,6 +25,15 @@
         z-index: 1000;
     }
 
+    .tooltip {
+        background: fade_out(#fefefe, 0.1);
+        font-size: 12px;
+        color: $primary-color;
+        padding: 5px;
+        border-radius: 3px;
+        box-shadow: 0 0 20px 4px rgba(154, 161, 177, 0.15), 0 4px 80px -8px rgba(36, 40, 47, 0.25), 0 4px 4px -2px rgba(91, 94, 105, 0.15);
+    }
+
     .fade-enter-active, .fade-leave-active {
         transition: opacity .5s ease-in;
     }

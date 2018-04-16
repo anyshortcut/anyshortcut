@@ -18,7 +18,7 @@
                 @key-hover-leave="onHoverLeave">
         </compound-keyboard>
 
-        <popover ref="popover"
+        <popover :ref="'popover'"
                  :transition-name="null"
                  style="width: 50%"
                  @on-show-change="onPopoverShowChange">

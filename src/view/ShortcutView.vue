@@ -109,7 +109,8 @@
         </popover>
         <img id="keyboard-icon-left" class="keyboard-icon-left" src="../img/keyboard-icon.svg" alt="keyboard-icon">
 
-        <popover :ref-id="'keyboard-icon-right'" :show-arrow="false">
+        <popover :ref-id="'keyboard-icon-right'" :show-arrow="false"
+                 :ref="'secondary'">
             <secondary-bind class="popup-keyboard"
                             :domain-shortcut="domainShortcut"
                             :shortcuts="secondaryShortcuts">
@@ -291,6 +292,12 @@
             this.renderChart();
             this.refresh();
             this.$bus.on('refresh', this.refresh);
+
+            setTimeout(() => {
+                if (!this.currentSecondaryShortcut) {
+                    this.$refs.secondary.render(document.getElementById('keyboard-icon-right'));
+                }
+            }, 200);
         }
     }
 
