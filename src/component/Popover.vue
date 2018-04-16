@@ -41,6 +41,7 @@
         name: 'Popover',
         data() {
             return {
+                popper: null,
                 showing: false,
             };
         },
@@ -83,16 +84,21 @@
             },
             render: function(target) {
                 this.show();
-
-                new Popper(target, this.$el, {
-                    placement: "top",
-                    modifiers: {
-                        preventOverflow: {
-                            // The default boundaries element is 'scrollParent', we should change to 'window'.
-                            boundariesElement: 'window',
+                if (!this.popper) {
+                    let emptyReference = {};
+                    this.popper = new Popper(emptyReference, this.$el, {
+                        placement: "top",
+                        modifiers: {
+                            preventOverflow: {
+                                // The default boundaries element is 'scrollParent', we should change to 'window'.
+                                boundariesElement: 'window',
+                            }
                         }
-                    }
-                });
+                    });
+                }
+
+                this.popper.reference = target;
+                this.popper.scheduleUpdate();
             },
         },
         mounted() {
