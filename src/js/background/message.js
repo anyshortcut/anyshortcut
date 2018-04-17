@@ -79,6 +79,13 @@ function onMessageReceiver(message, sender, sendResponse) {
         syncUserInfo();
         sendResponse('ok');
         return true;
+    } else if (message.jumpSecondary) {
+        // Get the secondary shortcut according to the domain url and secondary key.
+        let shortcut = window.getSecondaryShortcut(common.getHostnameFromUrl(message.url), message.key);
+        if (shortcut) {
+            chrome.tabs.update(window.activeTab.id, {url: shortcut.url});
+        }
+        return true;
     }
 
     if (!window.authenticated) {
@@ -104,7 +111,7 @@ function onMessageReceiver(message, sender, sendResponse) {
 
             let shortcut = window.getPrimaryShortcut(message.key);
             if (shortcut) {
-                openShortcut(shortcut);
+                window.openShortcut(shortcut);
             } else {
                 sendResponse({
                     shortcut: null
@@ -131,12 +138,12 @@ function onMessageReceiver(message, sender, sendResponse) {
                     secondaryShortcut: null
                 });
             } else {
-                openShortcut(primaryShortcut || secondaryShortcut);
+                window.openShortcut(primaryShortcut || secondaryShortcut);
             }
             break;
         }
         case message.open: {
-            openShortcut({url: message.url, id: message.shortcutId});
+            window.openShortcut({url: message.url, id: message.shortcutId});
             break;
         }
         case message.listSecondary: {
@@ -152,10 +159,6 @@ function onMessageReceiver(message, sender, sendResponse) {
             });
             break;
         }
-        case message.record: {
-            recordShortcutTriggerTimes(message.shortcutId);
-            break;
-        }
         default: {
             break;
         }
@@ -163,30 +166,6 @@ function onMessageReceiver(message, sender, sendResponse) {
     //Must return true otherwise sendResponse() not working.
     //More detail see official documentations [chrome.runtime.onMessage()].
     return true;
-}
-
-function openShortcut(shortcut) {
-    let url = shortcut.url;
-    if (pref.isShortcutOpenByBlank()) {
-        chrome.tabs.create({url: url});
-    } else {
-        chrome.tabs.update(window.activeTab.id, {url: url});
-    }
-
-    recordShortcutTriggerTimes(shortcut.id);
-}
-
-function recordShortcutTriggerTimes(shortcutId) {
-    client.increaseShortcutOpenTimes(shortcutId)
-        .then(shortcut => {
-            if (shortcut.primary) {
-                window.assignShortcut(window.primaryShortcuts, shortcut);
-            } else {
-                window.assignShortcut(window.secondaryShortcuts[shortcut.domain], shortcut);
-            }
-        }).catch(error => {
-        console.log(error);
-    });
 }
 
 /**

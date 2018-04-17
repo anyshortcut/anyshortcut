@@ -1,6 +1,7 @@
 import client from '../client.js';
 import common from '../common.js';
 import _ from "lodash";
+import pref from "../prefs";
 
 const defaultFaviconUrl = chrome.runtime.getURL('icon/default_favicon.svg');
 
@@ -20,6 +21,28 @@ window.getBoundDomainByHostname = function(hostname) {
         }
     }
     return null;
+};
+
+window.openShortcut = function(shortcut) {
+    if (!shortcut) return;
+
+    let url = shortcut.url;
+    if (pref.isShortcutOpenByBlank()) {
+        chrome.tabs.create({url: url});
+    } else {
+        chrome.tabs.update(window.activeTab.id, {url: url});
+    }
+
+    client.increaseShortcutOpenTimes(shortcut.id)
+        .then(shortcut => {
+            if (shortcut.primary) {
+                window.assignShortcut(window.primaryShortcuts, shortcut);
+            } else {
+                window.assignShortcut(window.secondaryShortcuts[shortcut.domain], shortcut);
+            }
+        }).catch(error => {
+        console.log(error);
+    });
 };
 
 /**

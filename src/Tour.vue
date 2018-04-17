@@ -168,10 +168,6 @@
             openAuthPopupWindow() {
                 common.openPopupWindow(config.googleAuthURL);
             },
-            openShortcut(url) {
-                window.open(url);
-                this.currentStep += 1;
-            },
             onStepItemClick(step) {
                 if (1 < step && step <= this.currentMaxStep) {
                     this.currentStep = step;

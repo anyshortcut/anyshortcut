@@ -63,62 +63,47 @@ function hideShortcutPopup() {
 export default {
     injectCircle() {
         // Register key and click event in all iframe.
-        chrome.runtime.sendMessage({
-            listSecondary: true, url: location.href
-        }, response => {
-            let shortcuts = response.shortcuts;
+        document.addEventListener('keydown', e => {
+            if (helper.isActiveElementEditable()) {
+                return;
+            }
+            if (helper.isValidKeyCode(e.keyCode) && helper.withoutAnyModifier(e)) {
+                let keyCodeChar = String.fromCharCode(e.keyCode);
 
-            document.addEventListener('keydown', e => {
-                if (helper.isActiveElementEditable()) {
-                    return;
-                }
-                if (helper.isValidKeyCode(e.keyCode) && helper.withoutAnyModifier(e)) {
-                    let keyCodeChar = String.fromCharCode(e.keyCode);
-
-                    if (window.isQueryShortcutChooserShowing && ['1', '2'].includes(keyCodeChar)) {
-                        return;
-                    }
-
-                    // Prevent repeat
-                    if (e.repeat) {
-                        return;
-                    }
-
-                    if (shortcuts && shortcuts.hasOwnProperty(keyCodeChar)) {
-                        keyPressed = true;
-                    }
-                }
-            });
-
-            document.addEventListener('keyup', e => {
-                if (helper.isActiveElementEditable()) {
+                if (window.isQueryShortcutChooserShowing && ['1', '2'].includes(keyCodeChar)) {
                     return;
                 }
 
-                if (helper.isValidKeyCode(e.keyCode) && helper.withoutAnyModifier(e)) {
-                    let keyCodeChar = String.fromCharCode(e.keyCode);
-
-                    if (window.isQueryShortcutChooserShowing && ['1', '2'].includes(keyCodeChar)) {
-                        return;
-                    }
-
-                    if (shortcuts && shortcuts.hasOwnProperty(keyCodeChar) && keyPressed) {
-                        let shortcut = shortcuts[keyCodeChar];
-                        window.top.location.href = shortcut.url;
-                        chrome.runtime.sendMessage({
-                            record: true,
-                            shortcutId: shortcut.id,
-                        });
-
-                        keyPressed = false;
-                    }
+                // Prevent repeat
+                if (e.repeat) {
+                    return;
                 }
-            });
 
-            // Auto hide shortcut popup when user click outside of popup.
-            document.addEventListener('click', hideShortcutPopup);
+                keyPressed = true;
+            }
         });
 
+        document.addEventListener('keyup', e => {
+            if (helper.isActiveElementEditable()) {
+                return;
+            }
+
+            if (helper.isValidKeyCode(e.keyCode) && helper.withoutAnyModifier(e)) {
+                let keyCodeChar = String.fromCharCode(e.keyCode);
+
+                if (window.isQueryShortcutChooserShowing && ['1', '2'].includes(keyCodeChar)) {
+                    return;
+                }
+
+                if (keyPressed) {
+                    chrome.runtime.sendMessage({jumpSecondary: true, url: location.href, key: keyCodeChar});
+                    keyPressed = false;
+                }
+            }
+        });
+
+        // Auto hide shortcut popup when user click outside of popup.
+        document.addEventListener('click', hideShortcutPopup);
 
         // Only inject circle in top window, ignore all iframe
         if (helper.isTopWindow()) {
