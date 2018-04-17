@@ -90,7 +90,7 @@
         methods: {
             queryShortcuts() {
                 let activeTab = this.$background.activeTab;
-                let primaryShortcuts = _.cloneDeep(this.$background.primaryShortcuts);
+                let primaryShortcuts = _.sortBy(_.cloneDeep(this.$background.primaryShortcuts, ['created_time']));
 
                 let foundDomainShortcut = null;
                 let foundActiveDomainShortcut = null;

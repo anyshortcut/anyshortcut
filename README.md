@@ -10,7 +10,7 @@ Reference: [https://lodash.com/custom-builds](https://lodash.com/custom-builds)
 
 ```shell
 npm i -g  lodash
-lodash include=isEmpty,pickBy,extend,escape,cloneDeep,forOwn,forEach,debounce,throttle -p -o src/js/vendor/lodash.includes.min.js
+lodash include=isEmpty,pickBy,extend,escape,cloneDeep,forOwn,forEach,debounce,throttle,sortBy  -p -o src/js/vendor/lodash.includes.min.js
 ```
 
 then configure in webpack config file,

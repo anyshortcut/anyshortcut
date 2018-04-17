@@ -329,6 +329,7 @@
         }
 
         .right-arrow {
+            width: 30px;
             cursor: pointer;
             position: absolute;
             top: 0;
