@@ -5,7 +5,7 @@
         <div class="shortcut-card" v-if="shortcut">
             <div class="top-container">
                 <div class="favicon">
-                    <img :src="shortcut.favicon" alt="">
+                    <img class="icon" :src="shortcut.favicon" alt="">
                     <img class="pin" src="../img/pin.svg" alt="pin"
                          :title="'This shortcut has linked to current URL - ' + shortcut.url"
                          v-if="isShortcutPinned">
@@ -80,7 +80,7 @@
 <script>
     import client from "../js/client.js";
     import common from "../js/common.js";
-    import Chart from "chart.js";
+    import Chart from "../../node_modules/chart.js/src/chart";
     import ShortcutKey from "../component/ShortcutKey.vue";
     import Popover from "../component/Popover.vue";
 
@@ -203,13 +203,18 @@
                 overflow: visible;
                 display: inline-block;
                 vertical-align: middle;
+            }
+
+            & .icon {
                 min-width: 42px;
                 min-height: 42px;
+                width: 42px;
+                height: 42px;
             }
 
             & .pin {
                 position: absolute;
-                bottom: -14px;
+                bottom: 0;
                 right: 0;
                 left: 0;
                 margin: auto;

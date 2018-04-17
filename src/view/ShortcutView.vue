@@ -4,7 +4,7 @@
             <div class="left">
                 <div class="top-container">
                     <div class="favicon">
-                        <img :src="domainShortcut.favicon" alt="">
+                        <img class="icon" :src="domainShortcut.favicon" alt="">
                         <img class="pin" src="../img/pin.svg" alt="pin"
                              :title="'This shortcut has linked to current URL - ' + domainShortcut.url"
                              v-if="isDomainShortcutPinned">
@@ -122,10 +122,10 @@
 
 <script>
     import client from "../js/client.js";
-    import ShortcutList from "@/component/ShortcutList.vue";
+    import ShortcutList from "../component/ShortcutList.vue";
     import ShortcutKey from "../component/ShortcutKey.vue";
     import Popover from "../component/Popover.vue";
-    import SecondaryShortcutCard from "../component/SecondaryShortcutCard.vue";
+    import SecondaryShortcutCard from "./SecondaryShortcutCard.vue";
     import SecondaryBind from "../view/SecondaryBind.vue";
     import BindView from "../view/BindView.vue";
     import Chart from "chart.js";
@@ -341,14 +341,19 @@
                 position: relative;
                 overflow: visible;
                 display: inline-block;
+                vertical-align: middle;
+            }
+
+            & .icon {
                 min-width: 42px;
                 min-height: 42px;
-                vertical-align: middle;
+                width: 42px;
+                height: 42px;
             }
 
             & .pin {
                 position: absolute;
-                bottom: -14px;
+                bottom: 0;
                 right: 0;
                 left: 0;
                 margin: auto;
