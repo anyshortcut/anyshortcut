@@ -341,12 +341,8 @@
                 position: relative;
                 overflow: visible;
                 display: inline-block;
-                vertical-align: middle;
-            }
-
-            & img {
-                width: 42px;
-                height: 42px;
+                min-width: 42px;
+                min-height: 42px;
                 vertical-align: middle;
             }
 
