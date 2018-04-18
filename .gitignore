@@ -1,5 +1,6 @@
 .DS_Store
 .idea
+raw
 extension/manifest.json
 node_modules
 dist

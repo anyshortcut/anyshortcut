@@ -6,11 +6,17 @@
                  src="./img/computer-and-balloons.svg" alt="">
             <img v-else-if="currentStep===2"
                  class="step-cover full-width"
-                 src="./img/2.jpg" alt="">
+                 src="./assets/primary.gif" alt="">
             <img v-else-if="currentStep===3"
                  class="step-cover full-width"
-                 src="./img/3.jpg" alt="">
+                 src="./assets/secondary.gif" alt="">
             <img v-else-if="currentStep===4"
+                 class="step-cover full-width"
+                 src="./assets/compound.gif" alt="">
+            <img v-else-if="currentStep===5"
+                 class="step-cover full-width"
+                 src="./assets/shortcut-circle.gif" alt="">
+            <img v-else-if="currentStep===6"
                  class="step-cover half-width"
                  src="./img/4.svg" alt="">
         </div>
@@ -40,14 +46,15 @@
                 <p>
                     Open the page you'd like to set a shortcut to and activate the extension popup. Hover your mouse
                     over any key on the on-screen keyboard, add a comment if you wish and click the <b>Bind</b> button.
-                    There can only be one primary shortcut per domain.
+                    No limitation for how many primary shortcuts are linking per domain ever.
                 </p>
                 <p>
                     In this example, we bound <span class="tour-shortcut">G</span> to Google
-                    <small>(https://www.google.com)</small>.
+                    <small>(https://www.google.com)</small>
+                    .
                 </p>
                 <p class="subtitle">
-                    Now you can use <span class="tour-shortcut">ALT + G</span>
+                    Try use <span class="tour-shortcut">ALT + G</span>
                     <span data-balloon="ALT is the default combination key for all shortcut. You can customize in Settings!"
                           data-balloon-pos="up">
                     <img src="./img/info-grey.svg" alt="info">
@@ -87,6 +94,57 @@
             </section>
 
             <section v-else-if="currentStep===4">
+                <div class="title">Don't forget compound shortcut</div>
+                <p>
+                    The primary shortcut is limited and precious. Hence compound shortcut is a strong supplement to
+                    this. Using a compound shortcut is an excellent way to access websites which you visit less
+                    frequently, by using two keys at once.
+                </p>
+
+                <p>
+                    For example, <span class="tour-shortcut">DB</span> for Dropbox
+                    <small>(https://dropbox.com)</small>
+                    , <span class="tour-shortcut">LD</span> for lodash documentation page
+                    <small>(https://lodash.com)</small>
+                    , or <span class="tour-shortcut">AW</span> for AWS Consosle
+                    <small>(https://console.amazonaws.com)</small>
+                    , etc.
+                </p>
+
+                <p>If you don't need it, feel free to disable it in <i>Popup -> Settings</i>.</p>
+
+                <div>
+                    <div class="line-divider"> or</div>
+                    <div class="tour-button" @click="currentStep=5">Skip to next step ></div>
+                </div>
+            </section>
+
+            <section v-else-if="currentStep===5">
+                <div class="title">Shortcut circle</div>
+                <p>
+                    Shortcut circle is a tiny circle which positions in the left-bottom corner for every domain page by
+                    default if you activate any secondary shortcut for that domain.
+                </p>
+
+                <p><b>What can the shortcut circle do for you?</b></p>
+                <ul>
+                    <li>List your domain secondary shortcut for quickly referring</li>
+                    <li>Pressing a specific key to jump/redirect to that sub-section page in any page of the domain</li>
+                </ul>
+
+                <p>
+                    You can customize shortcut circle showing behavior in <i>Popup -> Settings</i>.
+                    Don't like it? Turn if off.
+                </p>
+
+                <div>
+                    <div class="line-divider"> or</div>
+                    <div class="tour-button" @click="currentStep=6">Skip to next step ></div>
+                </div>
+
+            </section>
+
+            <section v-else-if="currentStep===6">
                 <div class="title">Congratulations!</div>
                 <p>
                     Here are some frequently visited websites that you can use Anyshortcut on!
@@ -129,7 +187,7 @@
             </section>
         </template>
         <ul class="step-indicator">
-            <li v-for="step in 4">
+            <li v-for="step in 6">
                 <div class="step-indicator-item"
                      :class="{'step-indicator-current':currentStep===step}"
                      @click="onStepItemClick(step)">
@@ -169,7 +227,7 @@
                 common.openPopupWindow(config.googleAuthURL);
             },
             onStepItemClick(step) {
-                if (1 < step && step <= this.currentMaxStep) {
+                if (step > 1) {
                     this.currentStep = step;
                 }
             },
