@@ -293,11 +293,11 @@
             this.refresh();
             this.$bus.on('refresh', this.refresh);
 
-            setTimeout(() => {
-                if (!this.isDomainShortcutPinned && !this.currentSecondaryShortcut) {
-                    this.$refs.secondary.render(document.getElementById('keyboard-icon-right'));
-                }
-            }, 200);
+            // setTimeout(() => {
+            //     if (!this.isDomainShortcutPinned && !this.currentSecondaryShortcut) {
+            //         this.$refs.secondary.render(document.getElementById('keyboard-icon-right'));
+            //     }
+            // }, 200);
         }
     }
 
