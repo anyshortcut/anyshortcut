@@ -74,6 +74,9 @@ export default {
                     return;
                 }
 
+                // Stop event propagation in capture phase.
+                e.stopPropagation();
+
                 // Prevent repeat
                 if (e.repeat) {
                     return;
@@ -81,7 +84,7 @@ export default {
 
                 keyPressed = true;
             }
-        });
+        }, true);
 
         document.addEventListener('keyup', e => {
             if (helper.isActiveElementEditable()) {
@@ -96,11 +99,14 @@ export default {
                 }
 
                 if (keyPressed) {
+                    // Stop event propagation in capture phase.
+                    e.stopPropagation();
+
                     chrome.runtime.sendMessage({jumpSecondary: true, url: location.href, key: keyCodeChar});
                     keyPressed = false;
                 }
             }
-        });
+        }, true);
 
         // Auto hide shortcut popup when user click outside of popup.
         document.addEventListener('click', hideShortcutPopup);
