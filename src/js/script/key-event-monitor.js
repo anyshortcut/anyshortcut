@@ -133,6 +133,8 @@ export default {
             return;
         }
 
+        event.preventDefault();
+
         if (!firstKey.releasedAt) {
             firstKey.releasedAt = Date.now();
         } else if (!secondKey.releasedAt) {
@@ -148,6 +150,8 @@ export default {
             cleanUp();
             return;
         }
+
+        event.preventDefault();
 
         // Prevent repeat trigger down event.
         if (event.repeat) {
