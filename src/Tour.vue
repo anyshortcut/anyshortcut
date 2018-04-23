@@ -94,11 +94,11 @@
             </section>
 
             <section v-else-if="currentStep===4">
-                <div class="title">Don't forget compound shortcut</div>
+                <div class="title">Try out a compound shortcut</div>
                 <p>
-                    The primary shortcut is limited and precious. Hence compound shortcut is a strong supplement to
-                    this. Using a compound shortcut is an excellent way to access websites which you visit less
-                    frequently, by using two keys at once.
+                    Primary shortcuts are useful, but limited to a handful of keys. Compound shortcuts offer greater
+                    combinations of keys at your disposal to improve efficiency. Use them to access websites which you
+                    visit less frequently, by pressing two keys at once.
                 </p>
 
                 <p>
@@ -122,14 +122,14 @@
             <section v-else-if="currentStep===5">
                 <div class="title">Shortcut circle</div>
                 <p>
-                    Shortcut circle is a tiny circle which positions in the left-bottom corner for every domain page by
-                    default if you activate any secondary shortcut for that domain.
+                    The shortcut circle is a list of your secondary shortcuts active for the domain you are on. You can
+                    see this list buy clicking on the small circle on the bottom-left corner of your screen.
                 </p>
 
                 <p><b>What can the shortcut circle do for you?</b></p>
                 <ul>
-                    <li>List your domain secondary shortcut for quickly referring</li>
-                    <li>Pressing a specific key to jump/redirect to that sub-section page in any page of the domain</li>
+                    <li>List all the secondary shortcuts linked to the domain for your reference</li>
+                    <li>Allows you to press a specific key to jump/redirect to that page anywhere in that domain</li>
                 </ul>
 
                 <p>
