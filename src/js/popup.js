@@ -3,7 +3,6 @@ require('./libs/vue-filters.js');
 
 import Vue from "vue";
 import VueRouter from 'vue-router';
-import ga from "./mixin-ga.js";
 import router from "@/router";
 import Toast from "../component/toast.js";
 import Bus from "./libs/vue-bus.js";
@@ -45,7 +44,6 @@ let app = new Vue({
     render(createElement) {
         return createElement('router-view');
     },
-    mixins: [ga],
     destroyed() {
         Vue.prototype.$background = null;
     }

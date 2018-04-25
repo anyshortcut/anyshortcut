@@ -1,6 +1,5 @@
 import Vue from "vue";
 import Tour from "../Tour.vue";
-import ga from "./mixin-ga.js";
 import Raven from "raven-js";
 import RavenVue from 'raven-js/plugins/vue';
 
@@ -10,5 +9,4 @@ Raven.config('https://0aa6274679824a129c33c2cc4ae0d22b@sentry.io/144189').addPlu
 new Vue({
     el: '#app',
     render: h => h(Tour),
-    mixins: [ga],
 });
