@@ -123,7 +123,7 @@
                 <div class="title">Shortcut circle</div>
                 <p>
                     The shortcut circle is a list of your secondary shortcuts active for the domain you are on. You can
-                    see this list buy clicking on the small circle on the bottom-left corner of your screen.
+                    see this list by clicking on the small circle on the bottom-left corner of your screen.
                 </p>
 
                 <p><b>What can the shortcut circle do for you?</b></p>
@@ -212,14 +212,8 @@
         data() {
             return {
                 currentStep: 1,
-                currentMaxStep: 1,
                 defaultShortcuts: [],
                 done: false,
-            }
-        },
-        watch: {
-            currentStep: function(newValue) {
-                this.currentMaxStep = Math.max(this.currentMaxStep, newValue);
             }
         },
         methods: {
@@ -227,7 +221,7 @@
                 common.openPopupWindow(config.googleAuthURL);
             },
             onStepItemClick(step) {
-                if (step > 1) {
+                if ($background.authenticated && step > 1) {
                     this.currentStep = step;
                 }
             },
