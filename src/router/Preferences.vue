@@ -12,7 +12,7 @@
            class="preference-item-link">
             <div class="preference-item flex-vertical" v-if="$background.subscriptionStatus==='active'">
                 <div class="flex-horizontal">
-                    Account <span class="subscription-status status-active">subscribing</span>
+                    Account <span class="subscription-status status-active">subscribed</span>
                 </div>
                 <div class="preference-subtitle">
                     <span>
@@ -62,10 +62,6 @@
                 <input type="radio" id="shift" v-model="combinationKey" :value="'shift'">
                 <label for="shift" class="preference-subtitle">
                     <b>SHIFT</b> + KEY
-                    <span data-balloon="Prefer for Firefox of Windows"
-                          data-balloon-pos="up">
-                        <img class="info-img" src="../img/info-grey.svg" alt="info">
-                    </span>
                 </label>
             </div>
         </div>
@@ -95,7 +91,7 @@
                        v-model='compoundEnable'>
             </div>
             <div class="preference-subtitle">
-                A type of primary shortcut but with two letters key.
+                A type of primary shortcut but supports two alphanumeric keys.
             </div>
         </div>
 
@@ -134,18 +130,20 @@
 
         <div class="preference-divider"></div>
         <div class="preference-item flex-horizontal">
-            Follow us:
+            More about us:
             <div>
-            <span class="social-icon">
-                <a href="https://twitter.com/anyshortcut" target="_blank" title="@anyshortcut">
-                        <img src="../img/twitter.svg" alt="">
+                <a class="social-icon"
+                   href="https://twitter.com/anyshortcut" target="_blank" title="@anyshortcut">
+                    <img src="../img/twitter.svg" alt="">
                 </a>
-            </span>
-                <span class="social-icon">
-                <a href="https://telegram.me/anyshortcut" target="_blank" title="https://t.me/anyshortcut">
+                <a class="social-icon"
+                   href="https://telegram.me/anyshortcut" target="_blank" title="https://t.me/anyshortcut">
                     <img src="../img/telegram.svg" alt="">
                 </a>
-            </span>
+                <a class="social-icon"
+                   href="https://github.com/anyshortcut" target="_blank" title="https://github.com/anyshortcut">
+                    <img src="../img/github.svg" alt="">
+                </a>
             </div>
         </div>
     </div>
@@ -178,6 +176,10 @@
 
         .social-icon {
             margin: 0 5px;
+
+            & img {
+                vertical-align: middle;
+            }
         }
     }
 
