@@ -70,7 +70,7 @@
                         </popover>
                     </div>
                     <canvas id="primary-chart" width="360" height="220"></canvas>
-                    <popover :ref-id="'delete-text'">
+                    <popover :ref-id="'delete-primary-text'">
                         <div class="delete-confirm-popup">
                             <p style="font-size: 16px;font-weight: 600;">Are you sure to delete?</p>
                             <div>
@@ -86,7 +86,7 @@
                             </div>
                         </div>
                     </popover>
-                    <div id="delete-text" class="delete-text">
+                    <div id="delete-primary-text" class="delete-text">
                         Delete shortcut?
                     </div>
                 </div>

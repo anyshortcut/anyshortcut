@@ -68,7 +68,16 @@
 
                 </div>
                 <canvas id="secondary-chart" width="360" height="220"></canvas>
-                <div class="delete-text" @click="$bus.emit('unbind-shortcut',shortcut)">
+                <popover :ref-id="'delete-secondary-text'">
+                    <div class="delete-confirm-popup">
+                        <p style="font-size: 16px;font-weight: 600;">Are you sure to delete?</p>
+                        <div class="shortcut-delete-button"
+                             @click="$bus.emit('unbind-shortcut',shortcut)">
+                            Delete
+                        </div>
+                    </div>
+                </popover>
+                <div id="delete-secondary-text" class="delete-text">
                     Delete shortcut?
                 </div>
             </div>
@@ -186,6 +195,8 @@
 </script>
 
 <style lang="scss" scoped>
+    @import "../scss/_common.scss";
+
     .shortcut-card {
         width: 400px;
         height: 100%;
@@ -337,6 +348,25 @@
             right: 0;
             padding: 0 5px;
         }
+    }
+
+    .delete-confirm-popup {
+        width: 388px;
+        padding: 15px;
+        font-size: 14px;
+        color: #dd4814;
+        background-color: #fff;
+        border-top: 5px solid #6badf2;
+        border-radius: 5px 5px 0 0;
+        box-shadow: 0 5px 21px 0 hsla(0, 0%, 50%, .2);
+        z-index: 999;
+    }
+
+    .shortcut-delete-button {
+        @include button;
+        @include negative-gradient;
+        padding: 2px 30px;
+        margin-top: 5px;
     }
 
     @keyframes slideInRight {
