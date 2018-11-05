@@ -1,7 +1,7 @@
 <template>
     <div class="compound-keyboard">
         <div :style="{top:-scrollTop+'px'}" class="left-column">
-            <span class="column-header" v-for="rowKey in alphabet">
+            <span class="column-header" v-for="rowKey in alphanumeric">
                     {{ rowKey }}
             </span>
         </div>
@@ -9,17 +9,17 @@
         <table>
             <thead :style="{left:-scrollLeft+'px'}">
             <tr>
-                <th v-for="rowKey in alphabet"
+                <th v-for="rowKey in alphanumeric"
                     class='row-header'>
                     {{ rowKey }}
                 </th>
             </tr>
             </thead>
             <tbody ref="tbody" @scroll="onScroll" id="compound-tbody">
-            <tr v-for="rowKey in alphabet">
+            <tr v-for="rowKey in alphanumeric">
                 <td :id="rowKey + columnKey"
                     :class="rowClass(rowKey + columnKey)"
-                    v-for="columnKey in alphabet">
+                    v-for="columnKey in alphanumeric">
                     {{rowKey + columnKey }}
                 </td>
             </tr>
@@ -132,8 +132,7 @@
         name: 'CompoundKeyboard',
         data() {
             return {
-                alphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
-                numbers: '0123456789',
+                alphanumeric: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
                 scrolling: false,
                 scrollLeft: 0,
                 scrollTop: 0,
@@ -204,7 +203,7 @@
                 }
 
                 let keyCode = String.fromCharCode(event.keyCode);
-                if (this.alphabet.includes(keyCode)) {
+                if (this.alphanumeric.includes(keyCode)) {
                     if (this.filterTimes % 2 === 0) {
                         this.firstFilterKey = keyCode;
                     } else {
