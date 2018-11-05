@@ -16,7 +16,7 @@ export default {
         return localStorage.setItem('openByBlank', value);
     },
     isCompoundShortcutEnable() {
-        return nullOrDefault(JSON.parse(localStorage.getItem('compoundEnable')), false);
+        return nullOrDefault(JSON.parse(localStorage.getItem('compoundEnable')), true);
     },
     setCompoundShortcutEnable(value) {
         return localStorage.setItem('compoundEnable', value);
