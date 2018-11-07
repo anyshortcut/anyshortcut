@@ -104,10 +104,10 @@
                 <p>
                     For example, <span class="tour-shortcut">DB</span> for Dropbox
                     <small>(https://dropbox.com)</small>
-                    , <span class="tour-shortcut">LD</span> for lodash documentation page
-                    <small>(https://lodash.com)</small>
-                    , or <span class="tour-shortcut">AW</span> for AWS Consosle
-                    <small>(https://console.amazonaws.com)</small>
+                    , <span class="tour-shortcut">SC</span> for SoundCloud
+                    <small>(https://soundcloud.com)</small>
+                    , or <span class="tour-shortcut">YH</span> for Yahooo
+                    <small>(https://www.yahoo.com)</small>
                     , etc.
                 </p>
 

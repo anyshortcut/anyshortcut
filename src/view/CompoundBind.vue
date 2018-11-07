@@ -4,8 +4,10 @@
             <span class="primary-title">
                   Specify compound shortcut
             </span>
-            <span data-balloon="Press key to auto-navigate the data grid"
-                  data-balloon-pos="up">
+            <span data-balloon="Enter the keys you want to bind can scroll the table automatically.
+             You needn't scroll your mouse to achieve this."
+                  data-balloon-length="large"
+                  data-balloon-pos="down">
                 <img id="tooltip-compound-shortcut-filter" class="info-img" src="../img/info-grey.svg" alt="info">
             </span>
         </div>
