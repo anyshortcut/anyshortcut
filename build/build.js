@@ -1,6 +1,5 @@
 require('./check-versions')();
 
-const utils = require('./utils');
 const ora = require('ora');
 const chalk = require('chalk');
 const webpack = require('webpack');
