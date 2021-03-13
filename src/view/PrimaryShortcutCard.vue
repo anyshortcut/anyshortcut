@@ -143,6 +143,7 @@
                             backgroundColor: 'rgba(255,255,255,0.33)',
                             hoverBackgroundColor: 'rgba(251, 251, 251, 0.25)',
                             yAxisID: 'primary',
+                            barPercentage: 0.6,
                         }, {
                             type: 'line',
                             // label: '# of times',
@@ -179,7 +180,6 @@
                                 ticks: {
                                     fontColor: chartFontColor,
                                 },
-                                barPercentage: 0.6,
                                 gridLines: {
                                     display: false,
                                 }
@@ -191,6 +191,7 @@
                                     beginAtZero: true,
                                     suggestedMin: 0,
                                     suggestedMax: 5,
+                                    precision: 0,
                                 },
                                 position: 'left',
                                 gridLines: {
@@ -203,6 +204,7 @@
                                     beginAtZero: true,
                                     suggestedMin: 0,
                                     suggestedMax: 5,
+                                    precision: 0,
                                 },
                                 position: 'right',
                                 gridLines: {

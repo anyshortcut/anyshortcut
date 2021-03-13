@@ -1,7 +1,6 @@
 <template>
     <transition enter-active-class="slideInRight"
-                leave-active-class="slideOutRight"
-                @after-enter="fetchWeekStats()">
+                leave-active-class="slideOutRight">
         <div class="shortcut-card" v-if="shortcut">
             <div class="top-container">
                 <div class="favicon">
@@ -89,7 +88,7 @@
 <script>
     import client from "../js/client.js";
     import common from "../js/common.js";
-    import Chart from "../../node_modules/chart.js/src/chart";
+    import Chart from "chart.js";
     import ShortcutKey from "../component/ShortcutKey.vue";
     import Popover from "../component/Popover.vue";
 
@@ -131,6 +130,7 @@
                             data: [0, 0, 0, 0, 0, 0, 0],
                             backgroundColor: 'rgba(26,132,237,1)',
                             hoverBackgroundColor: 'rgba(26,132,237,0.7)',
+                            barPercentage: 0.6,
                         }],
                     },
                     options: {
@@ -159,7 +159,6 @@
                                 ticks: {
                                     fontColor: chartFontColor,
                                 },
-                                barPercentage: 0.6,
                                 gridLines: {
                                     display: false,
                                 }
@@ -170,6 +169,7 @@
                                     beginAtZero: true,
                                     suggestedMin: 0,
                                     suggestedMax: 5,
+                                    precision: 0,
                                 },
                                 gridLines: {
                                     display: false,
@@ -190,6 +190,7 @@
         },
         mounted() {
             this.renderChart();
+            this.fetchWeekStats();
         }
     }
 </script>
