@@ -11,7 +11,7 @@
   },
   "homepage": "https://anyshortcut.com",
   "dependencies": {
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "chart.js": "^2.9.4",
     "popper.js": "^1.16.1",
     "raven-js": "^3.27.2",
