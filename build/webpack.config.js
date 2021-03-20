@@ -12,16 +12,16 @@ const extractCss = new ExtractTextPlugin({
 module.exports = {
     context: path.resolve('./src'),
     entry: {
-        content_script: ['./js/script/content-script.js', './scss/content-script.scss'],
-        firefox_auth_helper: './js/script/firefox-auth-helper.js',
+        content_script: ['./script/content-script.js', './scss/content-script.scss'],
+        firefox_auth_helper: './script/firefox-auth-helper.js',
         background: [
-            './js/background/extension.js',
-            './js/background/shortcut.js',
-            './js/background/message.js',
-            './js/background/app.js',
+            './background/extension.js',
+            './background/shortcut.js',
+            './background/message.js',
+            './background/app.js',
         ],
-        popup: ['./js/popup.js'],
-        tour: ['./js/tour.js', './scss/tour.scss'],
+        popup: ['./popup/index.js'],
+        tour: ['./tour/index.js', './scss/tour.scss'],
     },
     output: {
         path: path.resolve(__dirname, '../extension/dist'),
@@ -87,7 +87,7 @@ module.exports = {
     resolve: {
         alias: {
             '@': path.join(__dirname, '..', 'src'),
-            'lodash$': path.join(__dirname, '..', 'src/js/vendor/lodash.includes.min.js'),
+            'lodash$': path.join(__dirname, '..', 'src/vendor/lodash.includes.min.js'),
             'vue$': 'vue/dist/vue.runtime.esm.js',
             'popper$': 'popper.js',
         }

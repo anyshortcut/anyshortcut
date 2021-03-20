@@ -84,8 +84,8 @@
     }
 </style>
 <script type="es6">
-    import config from "../js/config.js";
-    import common from "../js/common.js";
+    import config from "../config.js";
+    import common from "../common.js";
 
     export default {
         name: 'welcome-view',

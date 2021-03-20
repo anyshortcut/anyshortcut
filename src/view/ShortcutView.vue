@@ -43,7 +43,7 @@
     import SecondaryShortcutCard from "./SecondaryShortcutCard.vue";
     import SecondaryBind from "../view/SecondaryBind.vue";
     import BindView from "../view/BindView.vue";
-    import common from "../js/common.js";
+    import common from "../common.js";
     import _ from "lodash";
 
     export default {

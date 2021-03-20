@@ -1,8 +1,8 @@
 import Vue from "vue";
 import VueRouter from 'vue-router';
-import Welcome from '@/router/Welcome.vue';
-import Main from '@/router/Main.vue';
-import Preferences from '@/router/Preferences.vue';
+import Welcome from './Welcome.vue';
+import Main from './Main.vue';
+import Preferences from './Preferences.vue';
 
 Vue.use(VueRouter);
 

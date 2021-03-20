@@ -1,5 +1,5 @@
 import Vue from "vue";
-import Tour from "../Tour.vue";
+import Tour from "./Tour.vue";
 import Raven from "raven-js";
 import RavenVue from 'raven-js/plugins/vue';
 

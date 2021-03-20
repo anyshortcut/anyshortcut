@@ -86,8 +86,8 @@
 </template>
 
 <script>
-    import client from "../js/client.js";
-    import common from "../js/common.js";
+    import client from "../client.js";
+    import common from "../common.js";
     import Chart from "chart.js";
     import ShortcutKey from "../component/ShortcutKey.vue";
     import Popover from "../component/Popover.vue";

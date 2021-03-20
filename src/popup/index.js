@@ -1,12 +1,12 @@
-require('./libs/vue-filters.js');
-require('./libs/vue-filters.js');
+require('../libs/vue-filters.js');
+require('../libs/vue-filters.js');
 
 import Vue from "vue";
 import VueRouter from 'vue-router';
-import router from "@/router";
+import router from "./router.js";
 import Toast from "../component/toast.js";
-import Bus from "./libs/vue-bus.js";
-import config from "./config.js";
+import Bus from "../libs/vue-bus.js";
+import config from "../config.js";
 
 import Raven from "raven-js";
 import RavenVue from 'raven-js/plugins/vue';

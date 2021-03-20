@@ -56,7 +56,7 @@
 <script type="es6">
     import PrimaryBind from "../view/PrimaryBind.vue";
     import CompoundBind from "../view/CompoundBind.vue";
-    import prefs from "../js/prefs.js";
+    import prefs from "../prefs.js";
     import _ from "lodash";
 
     export default {

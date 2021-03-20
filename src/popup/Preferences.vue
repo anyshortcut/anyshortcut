@@ -149,7 +149,7 @@
     </div>
 </template>
 <style lang="scss">
-    @import "../scss/common.scss";
+    @import "../scss/common";
 
     .preference-view {
         width: 300px;
@@ -233,7 +233,7 @@
     }
 </style>
 <script type="es6">
-    import prefs from "../js/prefs.js";
+    import prefs from "../prefs.js";
 
     export default {
         name: 'preference-view',

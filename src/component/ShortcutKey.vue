@@ -13,7 +13,7 @@
 <style lang="scss" scoped>
 </style>
 <script type="es6">
-    import prefs from "../js/prefs.js";
+    import prefs from "../prefs.js";
 
     export default {
         name: 'ShortcutKey',

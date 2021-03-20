@@ -3,22 +3,22 @@
         <div class="tour-illustration">
             <img v-if="currentStep===1"
                  class="step-cover half-width"
-                 src="./img/computer-and-balloons.svg" alt="">
+                 src="../img/computer-and-balloons.svg" alt="">
             <img v-else-if="currentStep===2"
                  class="step-cover full-width"
-                 src="./assets/primary.gif" alt="">
+                 src="../assets/primary.gif" alt="">
             <img v-else-if="currentStep===3"
                  class="step-cover full-width"
-                 src="./assets/secondary.gif" alt="">
+                 src="../assets/secondary.gif" alt="">
             <img v-else-if="currentStep===4"
                  class="step-cover full-width"
-                 src="./assets/compound.gif" alt="">
+                 src="../assets/compound.gif" alt="">
             <img v-else-if="currentStep===5"
                  class="step-cover full-width"
-                 src="./assets/shortcut-circle.gif" alt="">
+                 src="../assets/shortcut-circle.gif" alt="">
             <img v-else-if="currentStep===6"
                  class="step-cover half-width"
-                 src="./img/4.svg" alt="">
+                 src="../img/4.svg" alt="">
         </div>
 
         <section v-if="currentStep===1">
@@ -57,7 +57,7 @@
                     Try use <span class="tour-shortcut">ALT + G</span>
                     <span data-balloon="ALT is the default combination key for all shortcut. You can customize in Settings!"
                           data-balloon-pos="up">
-                    <img src="./img/info-grey.svg" alt="info">
+                    <img src="../img/info-grey.svg" alt="info">
                 </span>
                     to open Google instantly.
                 </p>
@@ -82,7 +82,7 @@
                     Try use <span class="tour-shortcut">ALT + G + I</span>
                     <span data-balloon="Here, 'G' represents the primary shortcut linked to Google"
                           data-balloon-pos="up">
-                    <img src="./img/info-grey.svg" alt="info">
+                    <img src="../img/info-grey.svg" alt="info">
                 </span> to open Google Inbox instantly.
                 </p>
 
@@ -172,7 +172,7 @@
                         </li>
                     </ul>
                     <div v-if="done" class="default-shortcut-linked-success">
-                        <img src="./img/success-blue.svg" alt="">
+                        <img src="../img/success-blue.svg" alt="">
                         You have linked those websites!
                     </div>
                 </div>
@@ -198,10 +198,10 @@
 </template>
 
 <script>
-    import common from "./js/common.js";
-    import client from "./js/client.js";
-    import config from "./js/config.js";
-    import monitor from './js/script/key-event-monitor.js';
+    import common from "../common.js";
+    import client from "../client.js";
+    import config from "../config.js";
+    import monitor from '../script/key-event-monitor.js';
 
 
     let $background = chrome.extension.getBackgroundPage();

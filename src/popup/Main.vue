@@ -24,7 +24,7 @@
     </div>
 </template>
 <style lang="scss">
-    @import "../scss/common.scss";
+    @import "../scss/common";
 
     body {
         font-family: "Poppins", sans-serif;
@@ -74,7 +74,7 @@
 
 </style>
 <script>
-    import common from "../js/common.js";
+    import common from "../common.js";
     import _ from "lodash";
     import ShortcutView from "../view/ShortcutView.vue";
     import BindView from "../view/BindView.vue";

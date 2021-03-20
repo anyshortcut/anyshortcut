@@ -92,11 +92,11 @@
 </template>
 
 <script>
-    import client from "../js/client.js";
+    import client from "../client.js";
     import ShortcutKey from "../component/ShortcutKey.vue";
     import Popover from "../component/Popover.vue";
     import Chart from "chart.js";
-    import common from "../js/common.js";
+    import common from "../common.js";
 
     export default {
         name: "PrimaryShortcutCard",

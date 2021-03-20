@@ -95,7 +95,7 @@
     }
 </style>
 <script type="es6">
-    import common from "../js/common.js";
+    import common from "../common.js";
     import ShortcutKey from "../component/ShortcutKey.vue";
 
     export default {

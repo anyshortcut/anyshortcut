@@ -26,7 +26,7 @@
 <script>
     import Keyboard from "../component/Keyboard.vue";
     import KeyboardBind from "./mixin-keyboard-bind.js";
-    import prefs from "../js/prefs.js";
+    import prefs from "../prefs.js";
 
     export default {
         name: "SecondaryBind",

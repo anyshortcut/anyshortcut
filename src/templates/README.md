@@ -7,5 +7,5 @@ There is an awesome way to precompile templates by [custom build](https://lodash
 > **Note**: Precompiled templates are assigned to the` _.templates` object.
 
 ```
-lodash settings="{variable:'data'}"  template="./src/templates/*.html" -d -o src/js/script/templates.js
+lodash settings="{variable:'data'}"  template="./src/templates/*.html" -d -o src/script/templates.js
 ```
