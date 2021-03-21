@@ -6,9 +6,13 @@ BRANCH="gh-pages"
 build() {
   echo "Starting building..."
   npm install
+
+  export NODE_ENV=production
   npm run build
+
   sudo snap install --edge zola
   zola build
+
   mv public /tmp/public
   cd ..
 }
