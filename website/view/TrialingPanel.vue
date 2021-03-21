@@ -26,7 +26,7 @@
                         <div v-if="redeem">
                             <span>
                                 <img id="tooltip-redeem-code" class="info-img"
-                                     src="/static/img/info-grey.svg" alt="info">
+                                     src="/img/info-grey.svg" alt="info">
                             </span>
                             -{{ receipt.redeem | dollar }}
                         </div>

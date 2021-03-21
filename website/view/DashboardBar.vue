@@ -7,7 +7,7 @@
             </span>
 
             <img id="setting-icon"
-                 src="/static/img/settings.svg" alt=""
+                 src="/img/settings.svg" alt=""
                  style="margin-left: auto;cursor: pointer">
         </div>
 

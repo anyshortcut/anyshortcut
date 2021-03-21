@@ -193,7 +193,7 @@
             },
             keyFavicon(key) {
                 let shortcut = this.keyShortcuts[key];
-                return shortcut.favicon || '/static/img/image-unknown.png';
+                return shortcut.favicon || '/img/image-unknown.png';
             },
             keyTitle(key) {
                 if (this.isKeyActive(key)) {

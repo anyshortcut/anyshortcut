@@ -1,7 +1,7 @@
 <template>
     <div class="account-sign-in">
         <a href="/" target="_blank" style="z-index: 10;">
-            <img src="/static/img/logo-white.svg" alt="" style="height: 32px;">
+            <img src="/img/logo-white.svg" alt="" style="height: 32px;">
         </a>
         <div class="section has-text-centered" style="z-index: 10;">
             <div class="sign-in-form">
@@ -28,7 +28,7 @@
 
     .account-sign-in {
         //background: linear-gradient(135deg, $primary-blue, #2b72dc);
-        background: $primary-blue url("/static/img/icons-background.svg") no-repeat;
+        background: $primary-blue url("/img/icons-background.svg") no-repeat;
         width: 100%;
         height: 100vh;
         align-items: center;

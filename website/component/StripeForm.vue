@@ -2,7 +2,7 @@
     <div class="section">
         <div class="form-title">
             <span>Enter your payment details securely</span>
-            <span><img src="/static/img/padlock.png" alt=""></span>
+            <span><img src="/img/padlock.png" alt=""></span>
         </div>
         <form action="#" @submit="onSubmit">
             <div class="group">
@@ -26,7 +26,7 @@
                 <div class="success"></div>
             </div>
             <a href="https://stripe.com" target="_blank">
-                <img src="/static/img/powered-by-stripe.svg" alt="">
+                <img src="/img/powered-by-stripe.svg" alt="">
             </a>
         </form>
     </div>

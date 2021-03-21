@@ -4,7 +4,7 @@
             <div class="pipe-title subtitle">Your redeem cards
                 <span>
                     <img id="tooltip-exclusive" class="info-img"
-                         src="/static/img/info-grey.svg" alt="info">
+                         src="/img/info-grey.svg" alt="info">
                 </span>
             </div>
             <ul>
@@ -18,7 +18,7 @@
                 Claimed by you
                 <span>
                     <img id="tooltip-claimed" class="info-img"
-                         src="/static/img/info-grey.svg" alt="info">
+                         src="/img/info-grey.svg" alt="info">
                 </span>
             </div>
             <ul>
@@ -31,7 +31,7 @@
             <div class="pipe-title subtitle">Your referral cards
                 <span>
                     <img id="tooltip-referral" class="info-img"
-                         src="/static/img/info-grey.svg" alt="info">
+                         src="/img/info-grey.svg" alt="info">
                 </span>
             </div>
             <ul>

@@ -25,7 +25,7 @@
         </div>
         <div class="right">
             <div class="sub-header">
-                <img src="/static/img/stripe.svg">
+                <img src="/img/stripe.svg">
             </div>
             <div class="subtitle" style="margin-top: 35px;text-align: center;">
                 Anyshortcut subscription (1 year)
