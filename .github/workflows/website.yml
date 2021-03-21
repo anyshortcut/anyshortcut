@@ -15,4 +15,6 @@ jobs:
     - run: |
         git fetch --no-tags --prune --depth=1 origin +refs/heads/*:refs/remotes/origin/*
     - name: Deloy websites
-      run: ./website/deploy.sh
+      run: |
+        cd website
+        ./deploy.sh
