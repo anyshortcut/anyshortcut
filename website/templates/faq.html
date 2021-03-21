@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'common/head.html' %}
+    <meta name="description"
+          content="Here are some frequently asked questions by user. If you can't find a solution
+          for your problem here, feel free to contact us.">
+    <link rel="stylesheet" href="/static/css/faq.css">
+</head>
+<body>
+{% include 'common/nav-header.html' %}
+<div class="container section has-text-centered">
+    <p class="heading">Frequently asked questions</p>
+    <div class="text">
+        <p>Here are some frequently asked questions by user.</p>
+        <p>If you can't find a solution for your problem here, feel free to contact us.</p>
+    </div>
+</div>
+<div class="container content">
+    <div class="section">
+        <p class="title question-title" id="general">General questions</p>
+
+        <div class="columns is-multiline">
+            <div class="column is-half question">
+                <p class="subtitle">
+                    Which browsers does Anyshortcut support?
+                </p>
+                <p class="text">
+                    We fully support of Firefox and Chromium browser, including Chrome, Opera,
+                    Yandex browser, etc. Currently, Safari is not in our support plan.
+                </p>
+            </div>
+            <div class="column is-half question">
+                <p class="subtitle">
+                    What combination key does Anyshortcut support?
+                </p>
+                <p class="text">
+                    <b>ALT</b> is the default combination key, meanwhile we also support
+                    <b>SHIFT</b> as an option. Please feel free to customize it in
+                    <i>Popup</i> -> <i>Setting</i> page.
+                </p>
+            </div>
+            <div class="column is-half question">
+                <p class="subtitle">
+                    What should I do if I have a shortcut conflict?
+                </p>
+                <p class="text">
+                    Anyshortcut has no idea with other application's or extension's shortcuts.
+                    Please customize you combination key to avoid the conflicts.
+                </p>
+            </div>
+            <div class="column is-half question">
+                <p class="subtitle">How can I report a bug, get help, or give feedback?</p>
+                <p class="text">
+                    We are more than happy to help you! We have a
+                    <a href="https://t.me/anyshortcut_group" target="_blank">Telegram
+                        group</a> to provide our instant support. Contact an account representative
+                    by emailing <a href="mailto:support@anyshortcut.com">support@anyshortcut.com</a>
+                    is also welcome. When reporting a bug, please include details to help us fix it
+                    as soon as possible.
+                </p>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="section">
+        <p class="title question-title" id="subscriptions">Subscription questions</p>
+        <div class="columns is-multiline">
+            <div class="column is-half question">
+                <p class="subtitle">
+                    Which payment methods do your accepted?
+                </p>
+                <p class="text">
+                    Our payments are securely processed by Stripe. We accept major credit cards
+                    including Visa, Mastercard, and American Express.
+                </p>
+            </div>
+            <div class="column is-half question">
+                <p class="subtitle">
+                    What currency are subscriptions charged in?
+                </p>
+                <p class="text">
+                    All of our plans are charged in USD.
+                </p>
+            </div>
+            <div class="column is-half question">
+                <p class="subtitle">What will happen if my trial ends?</p>
+                <p class="text">
+                    Every new user has 30 days free trial, and all your features would be disabled
+                    after the free trial expired. Please subscribe the plan to reactivate it.
+                </p>
+            </div>
+            <div class="column is-half question">
+                <p class="subtitle">Can I get my refund if I don't satisfy?</p>
+                <p class="text">
+                    Surely, you can get the refund in 7 days for any reason, just send us an email
+                    at <a href="mailto:bills@anyshortcut.com">bills@anyshortcut.com</a>.
+                    We'll deal it in one work day.
+                </p>
+            </div>
+            <div class="column is-half question">
+                <p class="subtitle">Can I cancel my subscription?</p>
+                <p class="text">
+                    Your annual plans will automatically renew until you cancel them.
+                    You can cancel at any time by reach us with
+                    <a href="mailto:bills@anyshortcut.com">bills@anyshortcut.com</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'common/footer.html' %}
+</body>
+</html>

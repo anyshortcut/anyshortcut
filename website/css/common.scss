@@ -1,0 +1,113 @@
+@import "footer.scss";
+@import "bulma-basic.scss";
+
+.navbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.navbar .nav-menu-item {
+  margin: 0 1.0rem;
+  font-size: 15px;
+  font-family: 'Poppins', sans-serif;
+  color: #919DAD;
+  //color: #ADADAD;
+  font-weight: 500;
+
+  &:hover, &.is-active {
+    color: #44485B;
+  }
+}
+
+.heading {
+  font-size: 36px;
+  line-height: 60px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  color: #234689;
+  letter-spacing: 0;
+}
+
+.title {
+  font-size: 28px;
+  line-height: 42px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #546496;
+  letter-spacing: 0;
+}
+
+.subtitle {
+  font-size: 22px;
+  line-height: 30px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  color: #44485B;
+  letter-spacing: 0;
+}
+
+.text {
+  font-size: 17px;
+  line-height: 26px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: normal;
+  color: #6D7D93;
+  letter-spacing: 0;
+}
+
+.subtext {
+  font-size: 15px;
+  line-height: 26px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: normal;
+  color: #6D7D93;
+  letter-spacing: 0;
+}
+
+.pipe-title {
+  border-left: 5px solid #1882ef;
+  padding: 0 10px;
+  margin-bottom: 15px;
+  display: flex;
+}
+
+.shortcut-key {
+  color: #525252;
+  background-color: white;
+  padding: 3px 12px;
+  margin: 0 5px;
+  border-radius: 3px;
+  font-size: 14px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
+}
+
+.round-button {
+  cursor: pointer;
+  padding: 0 30px;
+  border-radius: 100px;
+  background-clip: padding-box;
+  border: none;
+  font-weight: 400;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-transform: capitalize;
+  outline: none;
+}
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .nav-menu {
+    margin-top: 10px;
+  }
+}

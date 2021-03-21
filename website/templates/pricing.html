@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'common/head.html' %}
+    <meta name="description"
+          content="One simple plan, no ads, no additional cost. Subscribe by year.">
+    <link rel="stylesheet" href="/static/css/pricing.css">
+</head>
+<body>
+{% include 'common/nav-header.html' %}
+<div class="container section has-text-centered">
+    <p class="heading">One simple plan</p>
+    <p class="text">No Ads. No additional cost. Subscribe by year.</p>
+</div>
+<div class="container has-text-centered">
+    <div style="padding: 0 1.5rem">
+        <div class="card">
+            <img src="/static/img/gorgeous.svg" alt="" style="width: 150px">
+            <div class="has-text-grey"
+                 style="margin-top: 1.5rem; text-decoration: line-through">
+                $9.99 / year
+            </div>
+            <div class="pricing-card-heading">
+                $4.99 / year, 50% off
+            </div>
+            <div class="columns is-mobile is-centered">
+                <div class="column has-text-left is-narrow">
+                    <div class="price-item">
+                        All kind of shortcuts
+                    </div>
+                    <div class="price-item">
+                        Shortcut frequency statistics
+                    </div>
+                    <div class="price-item">
+                        Unlimited shortcut supported
+                    </div>
+                    <div class="price-item">
+                        Shortcut sync everywhere
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="button subscribe-button">
+                Subscribe Now !
+            </div>
+        </div>
+    </div>
+    <div class="columns is-centered section">
+        <div class="column">
+            <img class="price-item-icon" src="/static/img/product.svg"/>
+
+            <div class="text">
+                Get started with <b>30 days</b> free trial, no credit card
+                required
+            </div>
+        </div>
+        <div class="column">
+            <img class="price-item-icon" src="/static/img/refund.svg"/>
+            <div class="text">
+                Hassle-free refund in <b>7 days</b> for any reason
+            </div>
+        </div>
+        <div class="column">
+            <img class="price-item-icon" src="/static/img/payment.svg"/>
+            <div class="text">
+                Payment powered by
+                <a href="https://stripe.com" target="_blank">Stripe</a> securely
+            </div>
+        </div>
+        <div class="column">
+            <img class="price-item-icon" src="/static/img/faq.svg"/>
+            <div class="text">
+                Any question? Please visit our <a href="/faq" target="_blank">FAQ</a> or
+                <a href="/contact" target="_blank">contact us</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% include 'common/footer.html' %}
+<script src="/static/js/pricing.js"></script>
+</body>
+</html>

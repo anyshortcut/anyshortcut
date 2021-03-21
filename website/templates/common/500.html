@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>500</title>
+</head>
+<body>
+Oops, something wrong happened.
+</body>
+<script src="https://cdn.ravenjs.com/3.15.0/raven.min.js"></script>
+{% if event_id %}
+    <script>
+        Raven.showReportDialog({
+            eventId: '{{ event_id }}',
+            dsn: '{{ public_dsn }}'
+        });
+    </script>
+{% endif %}
+</html>

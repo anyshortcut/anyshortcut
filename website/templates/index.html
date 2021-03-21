@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'common/head.html' %}
+    <meta name="theme-color" content="#507CE8">
+    <meta name="description"
+          content="Anyshortcut is a productive browser plugin to help you customize shortcuts for your frequently visited websites. ">
+    <link rel="stylesheet" href="/static/css/index.css">
+</head>
+<body>
+<section class="primary-background"
+         style="background-image: url('/static/img/icons-background.svg')">
+    <div class="container">
+        <nav class="navbar">
+            <a href="/" style="display: flex;align-items: center;">
+                <img src="/static/img/logo-white.svg" alt="">
+            </a>
+
+            <div class="nav-menu">
+                <a class="nav-menu-item has-text-light" href="/pricing">Pricing</a>
+                <a class="nav-menu-item has-text-light" href="/faq">FAQ</a>
+                <a class="nav-menu-item has-text-light" href="/contact">Contact</a>
+                {% if authenticated %}
+                    <a class="nav-menu-item has-text-light" href="/account">Account</a>
+                {% else %}
+                    <a class="nav-menu-item has-text-light" href="/account">Sign in</a>
+                {% endif %}
+            </div>
+        </nav>
+    </div>
+    <section class="section has-text-centered">
+        <div class="section">
+            <p class="heading has-text-white">
+                Forget mouse clicks, embrace shortcuts!
+            </p>
+            <p class="has-text-white" style="font-size: 20px;margin-bottom: 40px;">
+                Customize keyboard shortcuts for your frequently visited websites
+            </p>
+        </div>
+            <button class="round-button installation firefox-installation"
+                    onclick="window.open('https://addons.mozilla.org/addon/anyshortcut-firefox/')">
+                Add to Firefox
+            </button>
+            <button class="round-button installation chrome-installation"
+                    onclick="window.open('https://chrome.google.com/webstore/detail/anyshortcut/ginilcdjefkbpeelgekodpmmabppcfao')">
+                Add to Chrome
+            </button>
+    </section>
+</section>
+
+<section id="app">
+    <div class="container">
+        <h2 class="section heading has-text-centered">How it works</h2>
+        <div class="section">
+            <div class="columns">
+                <div class="column feature-box">
+                    <div class="title">
+                        Primary Shortcut
+                    </div>
+                    <div class="text">
+                        You can link a website to the keys of your choice by using ALT + 'KEY'.
+                        The 'KEY' used can be alphanumeric (letters A-Z, numbers 0-9).
+                    </div>
+                </div>
+                <div class="column">
+                    <img class="image-box border-shadow " src="/static/img/shortcut-keyboard.jpg"
+                         alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="section">
+            <div class="columns reverse-in-mobile">
+                <div class="column">
+                    <img class="image-box border-shadow " src="/static/img/secondary-keyboard.jpg"
+                         alt="">
+                </div>
+                <div class="column feature-box">
+                    <div class="title">
+                        Secondary Shortcut
+                    </div>
+                    <div class="text">
+                        After activating the primary shortcut, you can use a secondary command to
+                        enhance your experience by linking to any other page in the domain.
+                        It's a good way to access subdomain pages effortlessly.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="section">
+            <div class="columns">
+                <div class="column feature-box">
+                    <div class="title">
+                        Compound Shortcut
+                    </div>
+                    <div class="text">
+                        Using a compound shortcut is an excellent way to access websites which you
+                        visit less frequently, by using two keys at once.
+                    </div>
+                </div>
+                <div class="column">
+                    <img class="image-box border-shadow" src="/static/img/compound-keyboard.jpg"
+                         alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="section">
+            <div class="columns reverse-in-mobile">
+                <div class="column">
+                    <div class="shortcut-stats-group">
+                        <div class="shortcut-stats border-shadow is-hidden-mobile"
+                             style="top: -65px; right: -60px;">
+                            <img class="shortcut-stats-icon" src="/static/img/slack.png" alt="">
+                            <div>
+                                <span class="shortcut-key">ALT + S</span> linked with
+                                <b>Slack</b>
+                            </div>
+                            <ul>
+                                <li>used 417 times</li>
+                                <li>saved 20.85 minutes</li>
+                            </ul>
+                            <img class="shortcut-stats-chart" src="/static/img/stats1.png" alt="">
+                        </div>
+                        <div class="shortcut-stats border-shadow">
+                            <img class="shortcut-stats-icon" src="/static/img/reddit.svg" alt="">
+                            <div>
+                                <span class="shortcut-key">ALT + R</span> linked with
+                                <b>Reddit</b>
+                            </div>
+                            <ul>
+                                <li>used 810 times</li>
+                                <li>saved 40.5 minutes</li>
+                            </ul>
+                            <img class="shortcut-stats-chart" src="/static/img/stats2.png" alt="">
+                        </div>
+                        <div class="shortcut-stats border-shadow is-hidden-mobile"
+                             style="bottom: -65px; left: -60px;">
+                            <img class="shortcut-stats-icon" src="/static/img/youtube.svg" alt="">
+                            <div>
+                                <span class="shortcut-key">ALT + Y</span> linked with
+                                <b>Youtube</b>
+                            </div>
+                            <ul>
+                                <li>used 516 times</li>
+                                <li>saved 25.8 minutes</li>
+                            </ul>
+                            <img class="shortcut-stats-chart" src="/static/img/stats2.png" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="column feature-box">
+                    <div class="title">
+                        Shortcut Statistics
+                    </div>
+                    <div class="text">
+                        Each shortcut trigger is logged privately, so only you can see which
+                        triggers are used most often. This gives you more power over how you save
+                        time.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="margin-top: 3rem">
+        <div class="container">
+            <div class="section">
+                <div class="title has-text-centered">Auxiliary Shortcuts</div>
+                <div class="columns is-centered">
+                    <div class="column is-narrow is-two-fifths section has-text-centered"
+                         style="margin: 0 1rem">
+                        <div class="subtitle">
+                            Switch tabs
+                        </div>
+                        <div class="text" style="height: 100px;margin-top: 1rem">
+                            Use <span class="shortcut-key">ALT + Period</span> to switch between
+                            two recent tabs freely
+                        </div>
+                        <img src="/static/img/switch-tabs.gif" alt="">
+                    </div>
+                    <div class="column is-narrow is-two-fifths section has-text-centered"
+                         style="margin: 0 1rem">
+                        <div class="subtitle">
+                            Jump to home
+                        </div>
+                        <div class="text" style="height: 100px;margin-top: 1rem">
+                            Use <span class="shortcut-key">SHIFT + ALT + Space</span> to to remove
+                            query strings or path in URLs then jump to homepage automatically
+                        </div>
+                        <img src="/static/img/jump-to-home.gif" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section primary-background"
+         style="background-image: url('/static/img/icons-background.svg');background-position: bottom">
+    <div class="container footer-section">
+        <div class="has-text-centered">
+            <p class="title is-spaced has-text-white">It's time to boost your productivity!</p>
+            <p class="text is-size-5 has-text-white">Get started for free!</p>
+        </div>
+            <button class="round-button installation firefox-installation installation"
+                    style="margin: 2rem"
+                    onclick="window.open('https://addons.mozilla.org/addon/anyshortcut-firefox/')">
+                Add to Firefox
+            </button>
+            <button class="round-button chrome-installation installation"
+                    style="margin: 2rem"
+                    onclick="window.open('https://chrome.google.com/webstore/detail/anyshortcut/ginilcdjefkbpeelgekodpmmabppcfao')">
+                Add to Chrome
+            </button>
+    </div>
+</section>
+{% include 'common/footer.html' %}
+</body>
+</html>

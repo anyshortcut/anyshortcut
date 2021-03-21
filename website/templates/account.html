@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'common/head.html' %}
+    <meta name="theme-color" content="#507CE8">
+    <meta name="description"
+          content="Sign in with Google to manage your shortcut, subscription etc">
+    <link rel="stylesheet" href="/static/css/account.css">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/simple-line-icons/2.3.2/css/simple-line-icons.css">
+    <style>
+        .loading {
+            position: fixed;
+            bottom: 50%;
+            right: 50%;
+            color: gray;
+            text-align: center;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="loading">
+        loading...
+    </div>
+</div>
+</body>
+<script src="/static/js/account.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
+</html>

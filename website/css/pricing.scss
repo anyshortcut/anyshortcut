@@ -1,0 +1,78 @@
+@import "common.scss";
+@import "~bulma/sass/elements/button.sass";
+@import "sign-in-form.scss";
+
+.card {
+  border: none;
+  padding: 2rem 0;
+  text-align: center;
+  margin: auto;
+  margin-bottom: 2rem;
+  background: #ffffff;
+  box-shadow: 0 1px 12px 0 rgba(211, 211, 211, 0.8);
+  border-radius: 14px;
+  max-width: 425px;
+}
+
+.pricing-card-heading {
+  font-size: 28px;
+  line-height: 60px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 600;
+  letter-spacing: 0;
+  color: #527FE5;
+}
+
+.price-item {
+  margin: 10px 0;
+  color: #556594;
+  font-size: 15px;
+
+  &:before {
+    content: url("/static/img/right.svg");
+    padding: 0 15px;
+    vertical-align: middle;
+  }
+}
+
+.price-item-icon {
+  width: 48px;
+  height: 48px;
+  text-align: center;
+  margin: 30px auto 10px;
+}
+
+.subscribe-button {
+  background-color: #DD4814;
+  color: white;
+  border-radius: 4px;
+  padding: 5px 35px;
+  border: none;
+
+  &:hover {
+    color: hsl(0, 0%, 92%);
+    background-color: hsl(12, 82%, 60%);
+  }
+}
+
+.sign-in-form-modal {
+  box-sizing: border-box;
+  background: rgba(102, 102, 102, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  margin: 0 auto;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  transition: opacity .2s ease-in;
+}
+
+@media screen and (min-width: 768px) {
+  .card {
+    width: 425px;
+  }
+}

@@ -1,0 +1,18 @@
+@import "~bulma/sass/utilities/initial-variables.sass";
+@import url('https://fonts.googleapis.com/css?family=Poppins|Open+Sans');
+
+$primary-blue: #507CE8;
+
+$primary: $primary-blue;
+$light: #C9D6F5;
+$family-primary: 'Open Sans', sans-serif;
+
+$table-cell-heading-color: #77858B;
+$table-cell-border: 1px solid #EAEFF2;
+
+@import "~bulma/sass/utilities/_all.sass";
+@import "~bulma/sass/base/_all.sass";
+@import "~bulma/sass/grid/columns.sass";
+@import "~bulma/sass/elements/container.sass";
+@import "~bulma/sass/elements/content.sass";
+@import "~bulma/sass/layout/_all.sass";

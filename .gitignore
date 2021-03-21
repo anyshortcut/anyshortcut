@@ -9,3 +9,9 @@ target
 *.pem
 *.zip
 npm-debug.log
+
+# Ignore the website/static but keep the inside img directory
+!website/static
+website/public
+website/static/*
+!website/static/img/

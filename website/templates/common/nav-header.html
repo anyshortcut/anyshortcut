@@ -1,0 +1,23 @@
+<div class="container">
+    <nav class="navbar">
+        <a href="/" style="display: flex;align-items: center;">
+            <img src="/static/img/logo.svg" alt="">
+        </a>
+
+        <div class="nav-menu">
+            {% for name in ['Pricing','FAQ','Contact'] %}
+                {% if page.extra and page.extra.name == name %}
+                <a class="nav-menu-item is-active" href="/{{ name | lower }}">{{ name }}</a>
+                {% else %}
+                <a class="nav-menu-item" href="/{{ name | lower }}">{{ name }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if authenticated %}
+                <a class="nav-menu-item" href="/account">Account</a>
+            {% else %}
+                <a class="nav-menu-item" href="/account">Sign in</a>
+            {% endif %}
+        </div>
+    </nav>
+</div>
+

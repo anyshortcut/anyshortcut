@@ -1,0 +1,121 @@
+@import "common.scss";
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+.primary-background {
+  background-color: #507CE8;
+  color: #FFFFFF;
+}
+
+.installation {
+  height: 50px;
+  width: 280px;
+  background-color: #FFFFFF;
+  background-repeat: no-repeat;
+  background-size: 26px 26px;
+  background-position: 39px center;
+  padding-left: 51px;
+  color: #507CE8;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.chrome-installation {
+  background-image: url('/static/img/chrome.svg');
+}
+
+.firefox-installation {
+  background-image: url('/static/img/firefox.svg');
+}
+
+.feature-box {
+  margin: 4rem;
+  align-self: center
+}
+
+.border-shadow {
+  box-shadow: 0 8px 33px 0 rgba(0, 0, 0, 0.07);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.image-box {
+  border: none;
+  padding: 4rem;
+  text-align: center;
+  margin: auto;
+}
+
+.shortcut-stats-group {
+  position: relative;
+  margin: auto;
+  width: 360px;
+  height: 420px;
+
+  .shortcut-stats {
+    position: absolute;
+    width: 360px;
+    height: 420px;
+    background: #ffffff;
+    padding: 1.5rem 2rem;
+    margin: auto;
+    box-shadow: 0 8px 33px 0 rgba(0, 0, 0, 0.07);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .shortcut-stats-icon {
+    width: 120px;
+    margin-bottom: 2rem;
+  }
+
+  .shortcut-stats-chart {
+    margin-top: 2rem;
+  }
+
+  ul {
+    list-style: disc;
+  }
+}
+
+.footer-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+@media screen and (max-width: 768px) {
+  .reverse-in-mobile {
+    display: flex;
+    flex-direction: column-reverse;
+  }
+
+  .feature-box {
+    margin: 2rem;
+    align-self: center
+  }
+
+  .shortcut-stats-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .footer-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}

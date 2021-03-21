@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Auth success</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: table;
+            text-align: center;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        body > div {
+            display: table-row;
+            width: 100%;
+            height: 100%;
+        }
+
+        body > div > div {
+            display: table-cell;
+            vertical-align: middle;
+            width: 100%;
+            height: 100%;
+        }
+
+        #message article {
+            margin-top: 20px;
+        }
+
+        #message.en article#en {
+            display: block;
+        }
+
+        img {
+            border-radius: 6px;
+            border: 1px solid;
+            border-color: rgba(0, 0, 0, .11) rgba(0, 0, 0, .15) rgba(0, 0, 0, .2);
+            box-shadow: 0px 3px 15px rgba(0, 0, 0, .12);
+        }
+    </style>
+</head>
+<body onload="onload();">
+<div>
+    <div>
+        <section id="message">
+            <img src="/static/img/icon128.png" alt=""/>
+            <article id="en">
+                <b>You have successfully logged in.</b><br> Just close this window/tab!
+            </article>
+        </section>
+    </div>
+</div>
+</body>
+<script>
+    function onload() {
+        if (window.chrome && window.chrome.runtime) {
+            var extensionId = "{{ extension_id }}";
+            chrome.runtime.sendMessage(extensionId, {authenticated: true}, function (response) {
+            });
+        }
+
+        if (window.opener) {
+            window.opener.postMessage({action: 'logged-in'}, '*');
+        }
+        window.close();
+    }
+</script>
+</html>

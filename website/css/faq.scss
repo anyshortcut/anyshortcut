@@ -1,0 +1,12 @@
+@import "common.scss";
+
+.question {
+  padding: 30px;
+}
+
+.question-title {
+  border-left: 5px solid $primary-blue;
+  padding-left: 10px;
+  margin-left: 15px;
+  font-weight: 600
+}

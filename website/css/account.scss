@@ -1,0 +1,9 @@
+@import "common.scss";
+@import "~bulma/sass/elements/button.sass";
+@import "~bulma/sass/elements/table.sass";
+@import "sign-in-form.scss";
+
+.empty-grey-balloons {
+  content: url("/static/img/grey-balloons.svg");
+  margin-bottom: 15px;
+}
