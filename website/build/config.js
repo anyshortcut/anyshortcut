@@ -10,13 +10,6 @@ const env = {
         stripeKey: 'pk_live_vbcxpb3yDyRpkvSLaJYmL1T4',
         extensionId: 'ginilcdjefkbpeelgekodpmmabppcfao',
     },
-    stage: {
-        debug: false,
-        schema: 'https://',
-        domain: 'stage.anyshortcut.com',
-        stripeKey: 'pk_test_THOKo3pPiJob3LBHC86GKVbx',
-        extensionId: 'bombllbobpdmocjdggjphjblfdbdjbdb',
-    },
     development: {
         debug: true,
         schema: 'http://',
