@@ -22,7 +22,9 @@ deploy() {
   git config --global url."https://".insteadOf git://
   git config --global url."https://github.com/".insteadOf git@github.com:
 
-  git checkout ${BRANCH}
+  # fatal: 'website' could be both a local file and a tracking branch.
+  # Please use -- (and optionally --no-guess) to disambiguate
+  git checkout ${BRANCH} --
   cp -vr /tmp/public/* .
   git config user.name "GitHub Actions"
   git config user.email "github-actions-bot@users.noreply.github.com"
