@@ -33,7 +33,7 @@
     "ora": "^2.1.0",
     "sass-loader": "^6.0.7",
     "semver": "^5.5.0",
-    "shelljs": "^0.8.1",
+    "shelljs": "^0.8.5",
     "vue-hot-reload-api": "^2.3.0",
     "vue-html-loader": "^1.2.4",
     "vue-loader": "^14.2.3",
