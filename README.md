@@ -49,7 +49,7 @@ Reference: [https://lodash.com/custom-builds](https://lodash.com/custom-builds)
 
 ```shell
 npm i -g lodash-cli
-lodash include=isEmpty,pickBy,extend,escape,cloneDeep,forOwn,forEach,debounce,throttle,sortBy -p -o src/js/vendor/lodash.includes.js
+lodash include=isEmpty,pickBy,extend,escape,cloneDeep,forOwn,forEach,debounce,throttle,sortBy -d -o src/js/vendor/lodash.includes.js
 ```
 
 then configure in webpack config file,
