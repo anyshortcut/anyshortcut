@@ -48,15 +48,15 @@ The **extension/** directory is the destination directory of extension.
 Reference: [https://lodash.com/custom-builds](https://lodash.com/custom-builds)
 
 ```shell
-npm i -g  lodash
-lodash include=isEmpty,pickBy,extend,escape,cloneDeep,forOwn,forEach,debounce,throttle,sortBy  -p -o src/js/vendor/lodash.includes.min.js
+npm i -g lodash-cli
+lodash include=isEmpty,pickBy,extend,escape,cloneDeep,forOwn,forEach,debounce,throttle,sortBy -p -o src/js/vendor/lodash.includes.js
 ```
 
 then configure in webpack config file,
 
     resolve: {
         alias: {
-            'lodash$': path.join(__dirname, '..', 'src/js/vendor/lodash.includes.min.js'),
+            'lodash$': path.join(__dirname, '..', 'src/js/vendor/lodash.includes.js'),
         }
     }
 

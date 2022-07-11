@@ -29,8 +29,7 @@ module.exports = {
         filename: '[name].js'
     },
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.js$/,
                 loader: 'babel-loader',
                 include: [path.resolve(__dirname, '../src')],
@@ -87,7 +86,7 @@ module.exports = {
     resolve: {
         alias: {
             '@': path.join(__dirname, '..', 'src'),
-            'lodash$': path.join(__dirname, '..', 'src/vendor/lodash.includes.min.js'),
+            'lodash$': path.join(__dirname, '..', 'src/vendor/lodash.includes.js'),
             'vue$': 'vue/dist/vue.runtime.esm.js',
             'popper$': 'popper.js',
         }
