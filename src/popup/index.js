@@ -1,51 +1,40 @@
-require('../libs/vue-filters.js');
-require('../libs/vue-filters.js');
+import { createApp } from 'vue';
+import { RouterView } from 'vue-router';
+import router from './router.js';
+import Toast from '../component/toast.js';
+import Bus from '../libs/vue-bus.js';
+import config from '../config.js';
 
-import Vue from "vue";
-import VueRouter from 'vue-router';
-import router from "./router.js";
-import Toast from "../component/toast.js";
-import Bus from "../libs/vue-bus.js";
-import config from "../config.js";
-
-import Raven from "raven-js";
-import RavenVue from 'raven-js/plugins/vue';
+import Raven from 'raven-js';
 
 if (!config.debug) {
-    Raven.config('https://0aa6274679824a129c33c2cc4ae0d22b@sentry.io/144189').addPlugin(RavenVue, Vue).install();
+  Raven.config('https://0aa6274679824a129c33c2cc4ae0d22b@sentry.io/144189').install();
 }
 
-Vue.prototype.$toast = Toast;
-let $background = chrome.extension.getBackgroundPage();
-Vue.prototype.$background = $background;
-
-Vue.use(VueRouter);
-Vue.use(Bus);
+const $background = chrome.extension.getBackgroundPage();
 
 router.beforeEach((to, from, next) => {
-    if (to.matched.some(record => record.meta.auth)) {
-        if ($background.authenticated) {
-            next();
-        } else {
-            next({
-                path: '/welcome',
-                query: {
-                    redirect: to.fullPath,
-                }
-            });
-        }
+  if (to.matched.some((record) => record.meta.auth)) {
+    if ($background.authenticated) {
+      next();
     } else {
-        next();
+      next({
+        path: '/welcome',
+        query: {
+          redirect: to.fullPath,
+        },
+      });
     }
+  } else {
+    next();
+  }
 });
 
-let app = new Vue({
-    router,
-    render(createElement) {
-        return createElement('router-view');
-    },
-    destroyed() {
-        Vue.prototype.$background = null;
-    }
-});
-app.$mount('#vue');
+const app = createApp(RouterView);
+
+app.config.globalProperties.$toast = Toast;
+app.config.globalProperties.$background = $background;
+app.use(router);
+app.use(Bus);
+
+app.mount('#vue');
