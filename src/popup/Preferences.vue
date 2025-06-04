@@ -7,46 +7,16 @@
       Setting
     </header>
 
-    <a href="https://anyshortcut.com/account" target="_blank" class="preference-item-link">
-      <div class="preference-item flex-vertical" v-if="$background.subscriptionStatus === 'active'">
-        <div class="flex-horizontal">
-          Account <span class="subscription-status status-active">subscribed</span>
-        </div>
-        <div class="preference-subtitle">
-          <span>
-            Your next bill on
-            {{ new Date($background.subscriptionEndAt * 1000).toLocaleDateString() }}
-          </span>
-        </div>
+    <div class="preference-item flex-vertical">
+      <div class="flex-horizontal">
+        Storage <span class="subscription-status status-active">local</span>
       </div>
-      <div
-        class="preference-item flex-vertical"
-        v-else-if="$background.subscriptionStatus === 'trialing'"
-      >
-        <div class="flex-horizontal">
-          Account <span class="subscription-status status-trailing">trialing</span>
-        </div>
-        <div class="preference-subtitle">
-          <span>
-            Your trial will expire on
-            {{ new Date($background.subscriptionEndAt * 1000).toLocaleDateString() }}
-          </span>
-        </div>
+      <div class="preference-subtitle">
+        <span>
+          Your shortcuts are stored locally in your browser
+        </span>
       </div>
-      <div class="preference-item flex-vertical" v-else>
-        <div class="flex-horizontal">
-          Account
-          <span class="subscription-status status-failed">
-            {{ $background.subscriptionStatus.replace('_', ' ') }}</span
-          >
-        </div>
-        <div class="preference-subtitle">
-          <span>
-            Your subscription was {{ $background.subscriptionStatus.replace('_', ' ') }}.
-          </span>
-        </div>
-      </div>
-    </a>
+    </div>
 
     <div class="preference-divider"></div>
 
@@ -110,45 +80,8 @@
     <div class="preference-divider"></div>
 
     <a href="tour.html" target="_blank" class="preference-item-link">
-      <div class="preference-item flex-horizontal">Tour</div>
+      <div class="preference-item flex-horizontal">Tutorial</div>
     </a>
-
-    <div class="preference-divider"></div>
-
-    <a :href="reviewUrl" target="_blank" class="preference-item-link">
-      <div class="preference-item flex-horizontal">Rate us!</div>
-    </a>
-
-    <div class="preference-divider"></div>
-    <div class="preference-item flex-horizontal">
-      More about us:
-      <div>
-        <a
-          class="social-icon"
-          href="https://twitter.com/anyshortcut"
-          target="_blank"
-          title="@anyshortcut"
-        >
-          <img src="../img/twitter.svg" alt="" />
-        </a>
-        <a
-          class="social-icon"
-          href="https://telegram.me/anyshortcut"
-          target="_blank"
-          title="https://t.me/anyshortcut"
-        >
-          <img src="../img/telegram.svg" alt="" />
-        </a>
-        <a
-          class="social-icon"
-          href="https://github.com/anyshortcut"
-          target="_blank"
-          title="https://github.com/anyshortcut"
-        >
-          <img src="../img/github.svg" alt="" />
-        </a>
-      </div>
-    </div>
   </div>
 </template>
 <style lang="scss">
@@ -246,8 +179,6 @@ export default {
             openByBlank: prefs.isShortcutOpenByBlank(),
             compoundEnable: prefs.isCompoundShortcutEnable(),
             showCircle: prefs.getShowCircleConfig(),
-            reviewUrl: window.browser ? 'https://addons.mozilla.org/addon/anyshortcut-firefox/'
-                : 'https://chrome.google.com/webstore/detail/anyshortcut/ginilcdjefkbpeelgekodpmmabppcfao/reviews',
         }
     },
     watch: {

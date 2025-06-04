@@ -1,53 +1,31 @@
-import axios from 'axios';
-import config from './config.js';
-
-let request = axios.create({
-  baseURL: config.apiURL,
-  contentType: 'application/json; charset=utf-8',
-});
-
-// Add custom axios interceptor for custom error handle.
-request.interceptors.response.use(
-  (response) => {
-    let code = response.data.code;
-    if (code !== 200) {
-      return Promise.reject(response.data);
-    }
-    return response.data.data;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
+import storage from './storage.js';
 
 export default {
   getUserInfo() {
-    return request.get('/user/info');
+    return storage.getUserInfo();
   },
   bindShortcut(shortcut) {
-    return request.post('/shortcut/key', shortcut);
+    return storage.bindShortcut(shortcut);
   },
   unbindShortcut(id, including) {
-    return request.put(`/shortcut/${id}/unbind`, { including: including });
+    return storage.unbindShortcut(id, including);
   },
   increaseShortcutOpenTimes(id) {
-    return request.put(`/shortcut/${id}/times`);
+    return storage.increaseShortcutOpenTimes(id);
   },
   getAllShortcuts() {
-    return request.get('/shortcuts/all');
+    return storage.getAllShortcuts();
   },
   getDefaultShortcuts() {
-    return request.get('/shortcuts/default');
+    return storage.getDefaultShortcuts();
   },
   bindDefaultShortcuts(keys) {
-    return request.post('/shortcut/default', {
-      keys: keys,
-    });
+    return storage.bindDefaultShortcuts(keys);
   },
   getShortcutWeekStats(shortcutId) {
-    return request.get(`/stats/shortcut?shortcut_id=${shortcutId}`);
+    return storage.getShortcutWeekStats(shortcutId);
   },
   getPrimarySecondaryShortcutWeekStats(primaryShortcutId) {
-    return request.get(`/stats/primary?shortcut_id=${primaryShortcutId}`);
+    return storage.getPrimarySecondaryShortcutWeekStats(primaryShortcutId);
   },
 };

@@ -10,25 +10,16 @@ export default createRouter({
       name: 'welcome',
       path: '/welcome',
       component: Welcome,
-      meta: {
-        auth: false,
-      },
     },
     {
       name: 'preference',
       path: '/preference',
       component: Preferences,
-      meta: {
-        auth: true,
-      },
     },
     {
       name: 'main',
       path: '/',
       component: Main,
-      meta: {
-        auth: true,
-      },
     },
   ],
 });

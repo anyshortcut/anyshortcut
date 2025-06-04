@@ -38,17 +38,20 @@
       <div class="title">Welcome to Anyshortcut!</div>
 
       <p>
-        Sign in with google to create an account so we can safely store your shortcuts and sync
-        everywhere.
+        Create keyboard shortcuts for any website to boost your productivity. Your shortcuts are stored locally in your browser - no account required!
       </p>
 
-      <div class="btn-google-sign-in" @click="openAuthPopupWindow">Sign in with Google</div>
+      <div class="btn-get-started" @click="getStarted">Get Started</div>
 
-      <small
-        >By signing up, I agree to
-        <a target="_blank" href="https://anyshortcut.com/terms">Terms of Service</a> and
-        <a target="_blank" href="https://anyshortcut.com/privacy">Privacy Policy</a>.
-      </small>
+      <div class="features">
+        <h3>What you'll learn:</h3>
+        <ul>
+          <li>How to create primary shortcuts</li>
+          <li>How to set up secondary shortcuts</li>
+          <li>Using compound shortcuts for more options</li>
+          <li>Managing your shortcuts efficiently</li>
+        </ul>
+      </div>
     </section>
     <template v-else>
       <section v-if="currentStep === 2">
@@ -208,6 +211,54 @@
   </div>
 </template>
 
+<style scoped>
+.btn-get-started {
+  padding: 12px 30px;
+  background: #1882ef;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 500;
+  margin: 20px 0;
+}
+
+.btn-get-started:hover {
+  background: #1670d1;
+}
+
+.features {
+  margin-top: 30px;
+  text-align: left;
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.features h3 {
+  color: #1882ef;
+  margin-bottom: 15px;
+}
+
+.features ul {
+  list-style: none;
+  padding: 0;
+}
+
+.features li {
+  padding: 8px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.features li:before {
+  content: "→ ";
+  color: #1882ef;
+  font-weight: bold;
+}
+</style>
+
 <script>
 import common from '../common.js';
 import client from '../client.js';
@@ -227,11 +278,12 @@ export default {
     };
   },
   methods: {
-    openAuthPopupWindow() {
-      common.openPopupWindow(config.googleAuthURL);
+    getStarted() {
+      this.currentStep = 2;
+      this.initialize();
     },
     onStepItemClick(step) {
-      if ($background.authenticated && step > 1) {
+      if (step > 1) {
         this.currentStep = step;
       }
     },
@@ -253,8 +305,6 @@ export default {
      * Initialize to determine which step current tour should be.
      */
     initialize() {
-      this.currentStep = 2;
-
       client.getDefaultShortcuts().then((data) => {
         this.defaultShortcuts = data;
       });
@@ -266,23 +316,7 @@ export default {
     },
   },
   mounted() {
-    if ($background.authenticated) {
-      this.initialize();
-    }
-
-    window.addEventListener('storage', (event) => {
-      // A storage event fired because of localStorage value changed.
-      // Here we can detect user info has synced success.
-      if (this.currentStep === 1 && event.storageArea['user']) {
-        this.initialize();
-      }
-    });
-
-    chrome.runtime.onMessageExternal.addListener((message, sender, sendResponse) => {
-      if (message.authenticated) {
-        this.initialize();
-      }
-    });
+    // Auto-start tour - no authentication needed
   },
 };
 </script>

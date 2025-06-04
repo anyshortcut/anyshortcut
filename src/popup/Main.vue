@@ -2,7 +2,7 @@
   <div v-if="$background.isActiveTabUrlSupported()" class="main-view">
     <header class="main-header">
       <a class="brand" href="https://anyshortcut.com" target="_blank">
-        <img class="brand-logo" alt="logo" src="../../extension/icon/logo.svg" />
+        <img class="brand-logo" alt="logo" src="../img/logo.svg" />
       </a>
       <router-link :to="{ name: 'preference' }" class="menu">Settings</router-link>
     </header>
@@ -13,7 +13,7 @@
   <div class="unsupported-view" v-else>
     <header class="main-header">
       <a class="brand" href="https://anyshortcut.com" target="_blank">
-        <img class="brand-logo" alt="logo" src="../../extension/icon/logo.svg" />
+        <img class="brand-logo" alt="logo" src="../img/logo.svg" />
       </a>
       <router-link :to="{ name: 'preference' }" class="menu">Settings</router-link>
     </header>

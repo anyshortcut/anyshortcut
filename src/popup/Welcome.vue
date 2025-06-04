@@ -1,15 +1,21 @@
 <template>
   <main>
-    <a class="anyshortcut" href="https://anyshortcut.com" target="_blank">
-      <img class="brand-logo" alt="logo" src="../../extension/icon/logo.svg" />
-    </a>
+    <div class="anyshortcut">
+      <img class="brand-logo" alt="logo" src="../img/logo.svg" />
+      <h2>AnyShortcut</h2>
+    </div>
     <img class="balloon-image" src="../img/computer-and-balloons.svg" alt="" />
-    <div class="subtitle introduction">Sign in to boost productivity and sync your shortcuts!</div>
-    <div class="btn-google-sign-in" @click="openAuthPopupWindow">Sign in with Google</div>
-    <footer>
-      <a :href="config.baseURL + '/terms'" target="_blank" class="grey-link">Terms Of Service</a>
-      <a :href="config.baseURL + '/privacy'" target="_blank" class="grey-link">Privacy Policy</a>
-    </footer>
+    <div class="subtitle introduction">Welcome to AnyShortcut! Start creating keyboard shortcuts to boost your productivity.</div>
+    <div class="btn-get-started" @click="getStarted">Get Started</div>
+    <div class="features">
+      <h3>Features:</h3>
+      <ul>
+        <li>Create custom keyboard shortcuts for any website</li>
+        <li>Works completely offline - no account required</li>
+        <li>Data stored locally in your browser</li>
+        <li>Support for primary and secondary shortcuts</li>
+      </ul>
+    </div>
   </main>
 </template>
 <style lang="scss">
@@ -47,51 +53,63 @@ a:focus {
   outline: none;
 }
 
-.btn-google-sign-in {
-  padding: 3px 25px;
+.btn-get-started {
+  padding: 12px 25px;
   letter-spacing: 0.1em;
-  background: #fff;
+  background: #1882ef;
+  color: white;
   border: none;
   width: 70%;
   border-radius: 4px;
   margin: auto;
-  color: #777;
   text-transform: none;
   font-size: 15px;
   text-shadow: none;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-  background-image: url('../img/google-g.png');
-  background-repeat: no-repeat;
-  background-size: 18px;
-  background-position: 10% 50%;
   cursor: pointer;
+  font-weight: 500;
+
+  &:hover {
+    background: #1670d1;
+  }
 }
 
-footer {
-  font-size: 12px;
-  margin: 30px 0 0;
+.features {
+  margin-top: 30px;
+  text-align: left;
+  width: 80%;
+
+  h3 {
+    margin-bottom: 10px;
+    color: #1882ef;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+
+    li {
+      padding: 5px 0;
+      font-size: 14px;
+      color: #666;
+      
+      &:before {
+        content: "✓ ";
+        color: #1882ef;
+        font-weight: bold;
+      }
+    }
+  }
 }
 
-.grey-link {
-  margin: 0 10px;
-  text-decoration: underline;
-  color: grey;
-}
 </style>
 <script type="es6">
-import config from "../config.js";
-import common from "../common.js";
-
 export default {
     name: 'welcome-view',
-    data() {
-        return {
-            config: config,
-        }
-    },
     methods: {
-        openAuthPopupWindow() {
-            common.openPopupWindow(config.googleAuthURL);
+        getStarted() {
+            // Navigate to main view
+            this.$router.push({ name: 'main' });
         },
     }
 }
