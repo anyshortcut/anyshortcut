@@ -12,9 +12,7 @@
         Storage <span class="subscription-status status-active">local</span>
       </div>
       <div class="preference-subtitle">
-        <span>
-          Your shortcuts are stored locally in your browser
-        </span>
+        <span> Your shortcuts are stored locally in your browser </span>
       </div>
     </div>
 

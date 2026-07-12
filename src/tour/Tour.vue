@@ -38,7 +38,8 @@
       <div class="title">Welcome to Anyshortcut!</div>
 
       <p>
-        Create keyboard shortcuts for any website to boost your productivity. Your shortcuts are stored locally in your browser - no account required!
+        Create keyboard shortcuts for any website to boost your productivity. Your shortcuts are
+        stored locally in your browser - no account required!
       </p>
 
       <div class="btn-get-started" @click="getStarted">Get Started</div>
@@ -253,19 +254,17 @@
 }
 
 .features li:before {
-  content: "→ ";
+  content: '→ ';
   color: #1882ef;
   font-weight: bold;
 }
 </style>
 
 <script>
-import common from '../common.js';
 import client from '../client.js';
-import config from '../config.js';
 import monitor from '../script/key-event-monitor.js';
+import $background from '../extension-api.js';
 
-let $background = chrome.extension.getBackgroundPage();
 window.delay = true;
 
 export default {
@@ -295,7 +294,7 @@ export default {
         }
       });
 
-      client.bindDefaultShortcuts(keys).then((data) => {
+      client.bindDefaultShortcuts(keys).then(() => {
         $background.syncAllShortcuts();
         // Disable default shortcut list
         this.done = true;

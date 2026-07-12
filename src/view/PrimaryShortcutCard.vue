@@ -236,7 +236,7 @@ export default {
         this.chart.data.datasets[0]['data'] = Object.values(data);
         this.chart.update();
       })
-      .catch((error) => {});
+      .catch(() => {});
     client.getPrimarySecondaryShortcutWeekStats(this.shortcut.id).then((data) => {
       this.chart.data.datasets[1]['data'] = Object.values(data);
       this.chart.update();

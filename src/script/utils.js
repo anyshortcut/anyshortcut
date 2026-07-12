@@ -1,5 +1,4 @@
-require('./templates.js');
-import _ from 'lodash';
+import templates from './templates.js';
 
 export default {
   createDiv(className) {
@@ -8,6 +7,6 @@ export default {
     return div;
   },
   compile(template, data) {
-    return _.templates[template](data);
+    return templates[template](data);
   },
 };

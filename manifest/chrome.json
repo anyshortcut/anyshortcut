@@ -1,8 +1,7 @@
 {
-  "externally_connectable": {
-    "matches": [
-      "*://*.anyshortcut.com/*"
-    ]
+  "minimum_chrome_version": "102",
+  "background": {
+    "service_worker": "background.js"
   },
   "key": ""
 }

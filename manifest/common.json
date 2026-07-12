@@ -1,10 +1,10 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Anyshortcut",
   "description": "__MSG_extension_description__",
   "version": "",
   "default_locale": "en",
-  "browser_action": {
+  "action": {
     "default_icon": {
       "16": "icon/icon32.png",
       "48": "icon/icon48.png"
@@ -18,44 +18,46 @@
     "128": "icon/icon128.png"
   },
   "options_ui": {
-    "page": "popup.html#/preference",
-    "chrome_style": false
-  },
-  "background": {
-    "scripts": [
-      "dist/background.js"
-    ],
-    "persistent": true
+    "page": "popup.html#/preference"
   },
   "permissions": [
     "tabs",
     "activeTab",
-    "<all_urls>",
-    "file://*/*",
-    "ftp://*/*"
+    "storage",
+    "scripting"
   ],
-  "content_security_policy": "script-src 'self'; object-src 'self'",
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
   "content_scripts": [
     {
       "matches": [
-        "<all_urls>",
-        "file://*/*",
-        "ftp://*/*"
+        "<all_urls>"
       ],
       "match_about_blank": true,
       "js": [
-        "dist/content_script.js"
+        "content-script.js"
       ],
       "css": [
-        "dist/css/content_script.css"
+        "content-script.css"
       ],
       "all_frames": true,
       "run_at": "document_start"
     }
   ],
   "web_accessible_resources": [
-    "dist/img/*",
-    "icon/*"
+    {
+      "resources": [
+        "img/*",
+        "icon/*"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
+    }
   ],
   "commands": {
     "toggle_recent_tab": {

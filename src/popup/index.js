@@ -3,8 +3,7 @@ import { RouterView } from 'vue-router';
 import router from './router.js';
 import Toast from '../component/toast.js';
 import Bus from '../libs/vue-bus.js';
-
-const $background = chrome.extension.getBackgroundPage();
+import $background from '../extension-api.js';
 
 const app = createApp(RouterView);
 
@@ -13,4 +12,8 @@ app.config.globalProperties.$background = $background;
 app.use(router);
 app.use(Bus);
 
-app.mount('#vue');
+// Load active tab, platform and shortcuts before mounting so components
+// can keep reading $background synchronously, like the MV2 background page.
+$background.init().then(() => {
+  app.mount('#vue');
+});
