@@ -31,16 +31,6 @@ jobs:
       - name: Build for Chrome
         run: npm run build
 
-      # extension/ is committed and holds the Chrome build, so a source
-      # change that was not rebuilt would ship stale code. manifest.json is
-      # generated and gitignored, so it is not part of this comparison.
-      - name: Check the committed build is up to date
-        run: |
-          if ! git diff --exit-code --stat -- extension; then
-            echo "::error::extension/ is out of date. Run 'npm run build' and commit the result."
-            exit 1
-          fi
-
       - name: Build for Firefox
         run: npm run build_production:firefox
 

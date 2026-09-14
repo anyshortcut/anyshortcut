@@ -39,7 +39,9 @@ $ npm run build_production # For Chromium
 $ npm run build_production:firefox # For Firefox
 ```
 
-The **extension/** directory is the destination directory of extension.
+The **extension/** directory is where the build writes the loadable
+extension. It is generated, not committed: run one of the builds above
+before loading it into a browser.
 
 ## Custom build lodash
 
