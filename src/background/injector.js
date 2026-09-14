@@ -1,58 +1,28 @@
 /**
- * Helper function that returns appropriate chrome.tabs function to load resource
+ * Injects the content script and its stylesheet into a tab with the
+ * MV3 chrome.scripting API (chrome.tabs.executeScript is gone in MV3).
  */
-function loadFunctionForExtension(ext) {
-  switch (ext) {
-    case 'js':
-      return chrome.tabs.executeScript;
-    case 'css':
-      return chrome.tabs.insertCSS;
-    default:
-      throw new Error('Unsupported resource type');
-  }
-}
+import webext from '../webext.js';
 
-/**
- * Injects resources provided as paths into active tab in chrome
- * @param tabId   defaults to the active tab of the current window
- * @param files {string[]}
- * @returns {Promise}
- */
-function injectResources(tabId, files) {
-  let getFileExtension = /(?:\.([^.]+))?$/;
-
-  return Promise.all(
-    files.map((resource) => {
-      new Promise((resolve, reject) => {
-        let ext = getFileExtension.exec(resource)[1];
-        let injectFunction = loadFunctionForExtension(ext);
-
-        injectFunction(
-          tabId,
-          {
-            file: resource,
-            runAt: 'document_start',
-          },
-          () => {
-            if (chrome.runtime.lastError) {
-              reject(chrome.runtime.lastError);
-            } else {
-              resolve();
-            }
-          }
-        );
-      });
-    })
-  );
+async function injectResources(tabId) {
+  await webext.scripting.executeScript({
+    target: { tabId, allFrames: true },
+    files: ['content-script.js'],
+  });
+  await webext.scripting.insertCSS({
+    target: { tabId, allFrames: true },
+    files: ['content-script.css'],
+  });
 }
 
 export default {
   injectTabContentScriptManually(tabId) {
-    injectResources(tabId, ['dist/content_script.js'])
+    injectResources(tabId)
       .then(() => {
         console.log('inject success!');
       })
       .catch((error) => {
+        // Expected on chrome://, the Web Store and other restricted pages.
         console.log(`Error occur ${error}`);
       });
   },

@@ -197,7 +197,7 @@ export default {
           this.chart.data.datasets[0]['data'] = Object.values(data);
           this.chart.update();
         })
-        .catch((error) => {});
+        .catch(() => {});
     },
   },
   mounted() {

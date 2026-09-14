@@ -1,6 +1,6 @@
 {
   "name": "anyshortcut",
-  "version": "1.0.0",
+  "version": "1.12.0",
   "description": "A productive browser plugin to help you open your frequently visited websites instantly.",
   "main": "index.js",
   "keywords": [],
@@ -20,28 +20,30 @@
     "vue-router": "^4.0.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.0.0",
-    "@vue/compiler-sfc": "^3.4.0",
+    "@vitejs/plugin-vue": "^6.0.7",
     "@vue/eslint-config-prettier": "^9.0.0",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.20.0",
     "prettier": "^3.2.0",
-    "sass": "^1.70.0",
-    "vite": "^5.0.0"
+    "sass": "^1.101.0",
+    "vite": "^8.1.4"
   },
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "npm run build:pages && npm run build:content && npm run build:background",
+    "build:pages": "vite build",
+    "build:content": "BUILD_TARGET=content vite build",
+    "build:background": "BUILD_TARGET=background vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext .vue,.js,.jsx,.cjs,.mjs --fix",
     "format": "prettier --write src/",
-    "build_dev": "vite build --mode development",
-    "build_production": "vite build --mode production",
-    "build_dev:firefox": "PLATFORM=firefox vite build --mode development",
-    "build_production:firefox": "PLATFORM=firefox vite build --mode production"
+    "build_dev": "vite build --mode development && BUILD_TARGET=content vite build --mode development && BUILD_TARGET=background vite build --mode development",
+    "build_production": "npm run build",
+    "build_dev:firefox": "PLATFORM=firefox npm run build_dev",
+    "build_production:firefox": "PLATFORM=firefox npm run build"
   },
   "engines": {
-    "node": ">= 4.0.0",
-    "npm": ">= 3.0.0"
+    "node": "^20.19.0 || >=22.12.0",
+    "npm": ">= 8.0.0"
   }
 }

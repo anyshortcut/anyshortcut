@@ -129,8 +129,18 @@
 <script type="es6">
 export default {
     name: 'Keyboard',
-    data() {
-        return {}
+    directives: {
+        // Vue has no built-in v-visible, and the Vue 2 global directive this
+        // template relied on did not survive the Vue 3 upgrade. Unlike v-show
+        // it keeps the element's box, so the slide keys hold their space.
+        visible: {
+            mounted(el, binding) {
+                el.style.visibility = binding.value ? 'visible' : 'hidden';
+            },
+            updated(el, binding) {
+                el.style.visibility = binding.value ? 'visible' : 'hidden';
+            },
+        },
     },
     props: {
         combinationKey: {

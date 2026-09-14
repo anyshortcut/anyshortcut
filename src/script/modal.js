@@ -43,11 +43,11 @@ function buildModal(content) {
   let container = utils.createDiv('anyshortcut-modal-container');
 
   removeElementDelay(modal);
-  container.onmouseover = function (e) {
+  container.onmouseover = function () {
     window.clearTimeout(timeoutId);
     timeoutId = undefined;
   };
-  container.onmouseout = function (e) {
+  container.onmouseout = function () {
     removeElementDelay(modal);
   };
   modal.addEventListener('keyup', function (e) {

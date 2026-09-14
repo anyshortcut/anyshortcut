@@ -36,7 +36,7 @@ function showShortcutPopup() {
         popup.innerHTML = utils.compile('shortcut-popup', { shortcuts: response.shortcuts });
       } else {
         popup.innerHTML = utils.compile('shortcut-list-empty', {
-          image: chrome.runtime.getURL('dist/img/grey-balloons.svg'),
+          image: chrome.runtime.getURL('img/grey-balloons.svg'),
         });
       }
       // Stop popup click event propagation to document.
@@ -128,7 +128,7 @@ export default {
     // Only inject circle in top window, ignore all iframe
     if (helper.isTopWindow()) {
       circle = buildCircle();
-      circle.onclick = (event) => {
+      circle.onclick = () => {
         if (popup) {
           hideShortcutPopup();
         } else {

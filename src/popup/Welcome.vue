@@ -5,7 +5,9 @@
       <h2>AnyShortcut</h2>
     </div>
     <img class="balloon-image" src="../img/computer-and-balloons.svg" alt="" />
-    <div class="subtitle introduction">Welcome to AnyShortcut! Start creating keyboard shortcuts to boost your productivity.</div>
+    <div class="subtitle introduction">
+      Welcome to AnyShortcut! Start creating keyboard shortcuts to boost your productivity.
+    </div>
     <div class="btn-get-started" @click="getStarted">Get Started</div>
     <div class="features">
       <h3>Features:</h3>
@@ -92,16 +94,15 @@ a:focus {
       padding: 5px 0;
       font-size: 14px;
       color: #666;
-      
+
       &:before {
-        content: "✓ ";
+        content: '✓ ';
         color: #1882ef;
         font-weight: bold;
       }
     }
   }
 }
-
 </style>
 <script type="es6">
 export default {
