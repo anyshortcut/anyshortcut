@@ -3,5 +3,8 @@
   "background": {
     "service_worker": "background.js"
   },
+  "externally_connectable": {
+    "matches": ["*://*.anyshortcut.com/*"]
+  },
   "key": ""
 }

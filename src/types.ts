@@ -27,11 +27,44 @@ export type SecondaryShortcuts = Record<string, DomainShortcuts>;
 export type WeekStats = Record<number, number>;
 
 /**
+ * Where shortcuts live.
+ *
+ * - `cloud`: anyshortcut.com is the source of truth, reached with the session
+ *   cookie from signing in on the website. Shortcuts are mirrored into
+ *   chrome.storage so the service worker can answer key presses without a
+ *   network round trip and while offline.
+ * - `local`: chrome.storage is the source of truth; nothing leaves the browser.
+ *
+ * Each mode keeps its own data, so switching back and forth loses nothing.
+ */
+export type BackendMode = 'cloud' | 'local';
+
+export interface Subscription {
+  status: string | null;
+  end_at: string | null;
+}
+
+export interface User {
+  id?: number;
+  email?: string;
+  name?: string;
+  avatar?: string;
+  access_token?: string;
+}
+
+export interface UserInfo {
+  user: User;
+  subscription: Subscription;
+}
+
+/**
  * Content script → background message. The protocol is flag-based
  * (one boolean flag selects the request type) for backwards compatibility.
  */
 export interface BackgroundRequest {
   info?: boolean;
+  /** Firefox-only: forwarded by the auth helper content script. */
+  firefoxRefresh?: boolean;
   jumpSecondary?: boolean;
   request?: boolean;
   query?: boolean;
@@ -43,6 +76,16 @@ export interface BackgroundRequest {
   firstKey?: string;
   secondKey?: string;
   shortcutId?: string;
+}
+
+/**
+ * anyshortcut.com → extension message, delivered through
+ * chrome.runtime.onMessageExternal (Chrome) when the user signs in or
+ * edits shortcuts on the website.
+ */
+export interface ExternalRequest {
+  authenticated?: boolean;
+  refresh?: boolean;
 }
 
 /** Background → content script push message (bind success toast). */

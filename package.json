@@ -39,18 +39,19 @@
   },
   "scripts": {
     "dev": "vite",
-    "build": "npm run build:pages && npm run build:content && npm run build:background",
+    "build": "npm run build:pages && npm run build:content && npm run build:background && npm run build:auth-helper",
     "build:pages": "vite build",
     "build:content": "BUILD_TARGET=content vite build",
     "build:background": "BUILD_TARGET=background vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext .vue,.js,.ts --fix",
     "format": "prettier --write src/",
-    "build_dev": "vite build --mode development && BUILD_TARGET=content vite build --mode development && BUILD_TARGET=background vite build --mode development",
+    "build_dev": "vite build --mode development && BUILD_TARGET=content vite build --mode development && BUILD_TARGET=background vite build --mode development && BUILD_TARGET=auth-helper vite build --mode development",
     "build_production": "npm run build",
     "build_dev:firefox": "PLATFORM=firefox npm run build_dev",
     "build_production:firefox": "PLATFORM=firefox npm run build",
-    "typecheck": "vue-tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit",
+    "build:auth-helper": "BUILD_TARGET=auth-helper vite build"
   },
   "engines": {
     "node": "^20.19.0 || >=22.12.0",

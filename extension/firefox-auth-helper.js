@@ -1,0 +1,1 @@
+(function(){chrome.runtime.sendMessage({firefoxRefresh:!0},e=>{console.log(`Anyshortcut sync requested:`,e)})})();

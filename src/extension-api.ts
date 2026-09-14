@@ -9,16 +9,19 @@
 //
 // Methods are standalone functions (not `this`-bound) because callers
 // detach them, e.g. `bindFunction = this.$background.bindPrimaryShortcut`.
-import storage from './storage';
+import backend, { NotAuthenticatedError } from './backend';
 import common from './common';
+import config from './config';
 import prefs from './prefs';
 import webext from './webext';
 import type {
+  BackendMode,
   BindSuccessMessage,
   DomainShortcuts,
   PrimaryShortcuts,
   SecondaryShortcuts,
   Shortcut,
+  User,
 } from './types';
 
 const DEFAULT_FAVICON = chrome.runtime.getURL('icon/default_favicon.svg');
@@ -27,12 +30,18 @@ const BIND_TIMES_KEY = 'anyshortcut_bind_success_times';
 export interface ExtensionApi {
   activeTab: chrome.tabs.Tab | null;
   platformOs: string | null;
+  /** Cloud mode only: false until the user has signed in on the website. */
   authenticated: boolean;
+  user: User | null;
   subscriptionStatus: string;
   subscriptionEndAt: string | null;
   primaryShortcuts: PrimaryShortcuts;
   secondaryShortcuts: SecondaryShortcuts;
+  /** Where to send the user to sign in to cloud mode. */
+  signInUrl: string;
   init(): Promise<ExtensionApi>;
+  getMode(): BackendMode;
+  setMode(mode: BackendMode): Promise<void>;
   isActiveTabUrlSupported(): boolean;
   checkSubscriptionExpired(): boolean;
   syncAllShortcuts(): Promise<void>;
@@ -47,11 +56,15 @@ const api: ExtensionApi = {
   activeTab: null,
   platformOs: null,
   authenticated: true,
+  user: null,
   subscriptionStatus: 'active',
   subscriptionEndAt: null,
   primaryShortcuts: {},
   secondaryShortcuts: {},
+  signInUrl: config.accountURL,
   init,
+  getMode,
+  setMode,
   isActiveTabUrlSupported,
   checkSubscriptionExpired,
   syncAllShortcuts,
@@ -66,12 +79,50 @@ async function init(): Promise<ExtensionApi> {
   const [tabs, platformInfo] = await Promise.all([
     webext.tabs.query({ active: true, currentWindow: true }),
     webext.runtime.getPlatformInfo(),
+    // prefs must land before anything reads the mode.
     prefs.init(),
-    syncAllShortcuts(),
   ]);
   api.activeTab = tabs[0] || null;
   api.platformOs = platformInfo.os;
+  await loadAccount();
+  await syncAllShortcuts();
   return api;
+}
+
+function getMode(): BackendMode {
+  return prefs.getMode();
+}
+
+/** Switch data source and reload everything from it. */
+async function setMode(mode: BackendMode): Promise<void> {
+  await prefs.setMode(mode);
+  await loadAccount();
+  await syncAllShortcuts();
+}
+
+/**
+ * Read the signed-in account. Local mode has none, so this only really does
+ * anything in cloud mode, where it also decides whether the popup should ask
+ * the user to sign in.
+ */
+async function loadAccount(): Promise<void> {
+  try {
+    const info = await backend.getUserInfo();
+    api.user = info.user ?? null;
+    api.subscriptionStatus = info.subscription?.status ?? 'active';
+    api.subscriptionEndAt = info.subscription?.end_at ?? null;
+    api.authenticated = true;
+  } catch (error) {
+    if (error instanceof NotAuthenticatedError) {
+      api.authenticated = false;
+      api.user = null;
+      return;
+    }
+    // The server is unreachable: keep working from the mirrored shortcuts
+    // rather than locking the user out of a popup that would otherwise work.
+    console.error('Failed to load account:', error);
+    api.authenticated = true;
+  }
 }
 
 function isActiveTabUrlSupported(): boolean {
@@ -86,12 +137,24 @@ function isActiveTabUrlSupported(): boolean {
 }
 
 function checkSubscriptionExpired(): boolean {
-  // Always active in offline mode.
-  return false;
+  // Local mode has no subscription to expire.
+  if (prefs.getMode() === 'local') return false;
+  return !['active', 'trialing'].includes(api.subscriptionStatus);
 }
 
 async function syncAllShortcuts(): Promise<void> {
-  const { primary, secondary } = await storage.getAllShortcuts();
+  let primary: PrimaryShortcuts;
+  let secondary: SecondaryShortcuts;
+  try {
+    ({ primary, secondary } = await backend.getAllShortcuts());
+  } catch (error) {
+    if (!(error instanceof NotAuthenticatedError)) throw error;
+    // Signed out of cloud mode: show nothing rather than another mode's data.
+    api.authenticated = false;
+    api.primaryShortcuts = {};
+    api.secondaryShortcuts = {};
+    return;
+  }
   // Ensure all shortcuts have a default favicon image.
   Object.values(primary).forEach((shortcut) => {
     if (!shortcut.favicon) shortcut.favicon = DEFAULT_FAVICON;
@@ -195,7 +258,7 @@ async function bindShortcut(
     throw new Error('No active tab to bind.');
   }
 
-  const shortcut = await storage.bindShortcut({
+  const shortcut = await backend.bindShortcut({
     key: key,
     url: tab.url,
     title: tab.title,
@@ -222,7 +285,7 @@ function bindSecondaryShortcut(key: string, comment?: string): Promise<Shortcut>
 }
 
 async function removePrimaryShortcut(shortcut: Shortcut, including?: boolean): Promise<void> {
-  await storage.unbindShortcut(shortcut.id, including);
+  await backend.unbindShortcut(shortcut.id, including);
   await syncAllShortcuts();
 
   if (api.activeTab && common.isUrlEquivalent(api.activeTab.url, shortcut.url)) {
@@ -231,7 +294,7 @@ async function removePrimaryShortcut(shortcut: Shortcut, including?: boolean): P
 }
 
 async function removeSecondaryShortcut(shortcut: Shortcut): Promise<void> {
-  await storage.unbindShortcut(shortcut.id);
+  await backend.unbindShortcut(shortcut.id);
   await syncAllShortcuts();
 }
 

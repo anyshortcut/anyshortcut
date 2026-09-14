@@ -1,5 +1,6 @@
 import webext from './webext';
 import type {
+  BackendMode,
   DefaultShortcut,
   PrimaryShortcuts,
   SecondaryShortcuts,
@@ -18,19 +19,64 @@ export interface BindShortcutInput {
   primary: boolean;
 }
 
-// Local storage manager for offline-first extension.
+// chrome.storage access.
 //
 // Data model:
 // - PRIMARY_SHORTCUTS:   { [key]: shortcut }
 // - SECONDARY_SHORTCUTS: { [domain]: { [key]: shortcut } }
+//
+// Local mode owns the PRIMARY/SECONDARY keys outright. Cloud mode mirrors
+// the server into the CLOUD_* keys, so the two modes never overwrite each
+// other and switching back and forth loses nothing.
 class LocalStorage {
   STORAGE_KEYS = {
     SHORTCUTS: 'anyshortcut_shortcuts',
     PRIMARY_SHORTCUTS: 'anyshortcut_primary_shortcuts',
     SECONDARY_SHORTCUTS: 'anyshortcut_secondary_shortcuts',
+    CLOUD_PRIMARY_SHORTCUTS: 'anyshortcut_cloud_primary_shortcuts',
+    CLOUD_SECONDARY_SHORTCUTS: 'anyshortcut_cloud_secondary_shortcuts',
     SETTINGS: 'anyshortcut_settings',
     STATS: 'anyshortcut_stats',
   } as const;
+
+  /** The pair of keys holding the shortcuts the given mode reads from. */
+  keysForMode(mode: BackendMode) {
+    return mode === 'cloud'
+      ? {
+          primary: this.STORAGE_KEYS.CLOUD_PRIMARY_SHORTCUTS,
+          secondary: this.STORAGE_KEYS.CLOUD_SECONDARY_SHORTCUTS,
+        }
+      : {
+          primary: this.STORAGE_KEYS.PRIMARY_SHORTCUTS,
+          secondary: this.STORAGE_KEYS.SECONDARY_SHORTCUTS,
+        };
+  }
+
+  /**
+   * Read the shortcuts the given mode is currently serving. This is what the
+   * service worker hydrates from; in cloud mode it is the mirror of the last
+   * successful sync, which is also what keeps shortcuts working offline.
+   */
+  async readSnapshot(
+    mode: BackendMode
+  ): Promise<{ primary: PrimaryShortcuts; secondary: SecondaryShortcuts }> {
+    const keys = this.keysForMode(mode);
+    return {
+      primary: (await this.get<PrimaryShortcuts>(keys.primary)) || {},
+      secondary: (await this.get<SecondaryShortcuts>(keys.secondary)) || {},
+    };
+  }
+
+  /** Replace the cloud mirror after a successful sync. */
+  async writeCloudCache(shortcuts: {
+    primary: PrimaryShortcuts;
+    secondary: SecondaryShortcuts;
+  }): Promise<void> {
+    await webext.storage.local.set({
+      [this.STORAGE_KEYS.CLOUD_PRIMARY_SHORTCUTS]: shortcuts.primary,
+      [this.STORAGE_KEYS.CLOUD_SECONDARY_SHORTCUTS]: shortcuts.secondary,
+    });
+  }
 
   // Chrome extension storage API wrapper
   async get<T>(key: string): Promise<T | null> {
@@ -298,14 +344,6 @@ class LocalStorage {
       5: Math.floor(total * 0.15),
       6: Math.floor(total * 0.05),
     };
-  }
-
-  // No-op methods for removed server features
-  getUserInfo(): Promise<{ authenticated: boolean; subscriptionStatus: string }> {
-    return Promise.resolve({
-      authenticated: true,
-      subscriptionStatus: 'active',
-    });
   }
 }
 

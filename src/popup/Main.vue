@@ -1,5 +1,22 @@
 <template>
-  <div v-if="$background.isActiveTabUrlSupported()" class="main-view">
+  <div v-if="needsSignIn" class="main-view">
+    <header class="main-header">
+      <a class="brand" href="https://anyshortcut.com" target="_blank">
+        <img class="brand-logo" alt="logo" src="../img/logo.svg" />
+      </a>
+      <router-link :to="{ name: 'preference' }" class="menu">Settings</router-link>
+    </header>
+    <div class="sign-in-view">
+      <p>Cloud mode keeps your shortcuts on your Anyshortcut account.</p>
+      <a class="sign-in-button" :href="$background.signInUrl" target="_blank">Sign in</a>
+      <p class="sign-in-hint">
+        Already signed in? Reopen this popup. You can also switch to
+        <router-link :to="{ name: 'preference' }">this browser only</router-link>
+        in Settings.
+      </p>
+    </div>
+  </div>
+  <div v-else-if="$background.isActiveTabUrlSupported()" class="main-view">
     <header class="main-header">
       <a class="brand" href="https://anyshortcut.com" target="_blank">
         <img class="brand-logo" alt="logo" src="../img/logo.svg" />
@@ -63,6 +80,41 @@ body {
   }
 }
 
+.sign-in-view {
+  width: 450px;
+  padding: 20px;
+  text-align: center;
+  background: var(--content-bgcolor);
+
+  & p {
+    font-size: 14px;
+    color: #515151;
+    margin: 10px auto;
+  }
+}
+
+.sign-in-button {
+  display: inline-block;
+  cursor: pointer;
+  padding: 5px 25px;
+  height: 28px;
+  border-radius: 3px;
+  font-size: 14px;
+  box-shadow: var(--box-shadow-base);
+  text-align: center;
+  color: #ffffff;
+  background: linear-gradient(var(--primary-color), #1882ef);
+
+  &:hover {
+    background: linear-gradient(var(--secondary-color), var(--primary-color));
+  }
+}
+
+.sign-in-hint {
+  font-size: 12px !important;
+  color: #797979 !important;
+}
+
 .unsupported-view {
   width: 450px;
   height: 150px;
@@ -94,8 +146,15 @@ export default defineComponent({
       domainShortcut: null as Shortcut | null,
     };
   },
+  computed: {
+    /** Cloud mode with no session: there is nothing to show until they sign in. */
+    needsSignIn(): boolean {
+      return this.$background.getMode() === 'cloud' && !this.$background.authenticated;
+    },
+  },
   methods: {
     queryShortcuts() {
+      if (this.needsSignIn) return;
       let activeTab = this.$background.activeTab;
       let primaryShortcuts = sortBy(cloneDeep(this.$background.primaryShortcuts));
 

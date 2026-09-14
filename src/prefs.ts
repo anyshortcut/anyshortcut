@@ -6,8 +6,9 @@
 // `await prefs.init()` once (popup does it before mounting, the background
 // does it while hydrating state) before using the getters.
 import webext from './webext';
+import type { BackendMode } from './types';
 
-const PREFS_KEY = 'anyshortcut_prefs';
+export const PREFS_KEY = 'anyshortcut_prefs';
 
 export type CombinationKey = 'alt' | 'shift';
 export type ShowCircleConfig = 'always' | 'only' | 'never';
@@ -17,6 +18,7 @@ interface Prefs {
   openByBlank: boolean;
   compoundEnable: boolean;
   showCircle: ShowCircleConfig;
+  mode: BackendMode;
 }
 
 const DEFAULTS: Prefs = {
@@ -24,6 +26,10 @@ const DEFAULTS: Prefs = {
   openByBlank: true,
   compoundEnable: true,
   showCircle: 'only',
+  // Local by default so a fresh install works without an account, and so
+  // installs that only ever had local shortcuts are not moved out from
+  // under their data by an update. Cloud is opt-in from Settings.
+  mode: 'local',
 };
 
 let cache: Prefs = { ...DEFAULTS };
@@ -41,7 +47,10 @@ function save<K extends keyof Prefs>(key: K, value: Prefs[K]): Promise<void> {
 }
 
 // Keys used by the MV2 build, which stored preferences in localStorage.
-const LEGACY_KEYS: Record<keyof Prefs, string> = {
+// `mode` is not here: cloud was the only mode back then.
+type LegacyPref = 'combinationKey' | 'openByBlank' | 'compoundEnable' | 'showCircle';
+
+const LEGACY_KEYS: Record<LegacyPref, string> = {
   combinationKey: 'combinationKey',
   openByBlank: 'openByBlank',
   compoundEnable: 'compoundEnable',
@@ -126,5 +135,11 @@ export default {
   },
   setShowCircleConfig(value: ShowCircleConfig): Promise<void> {
     return save('showCircle', value);
+  },
+  getMode(): BackendMode {
+    return cache.mode;
+  },
+  setMode(value: BackendMode): Promise<void> {
+    return save('mode', value);
   },
 };

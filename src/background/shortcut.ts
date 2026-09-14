@@ -1,7 +1,7 @@
 // Shortcut lookups over the hydrated background state.
 // Binding/unbinding happens in the popup (see src/extension-api.ts);
 // the background only reads shortcuts to answer content-script messages.
-import storage from '../storage';
+import backend from '../backend';
 import common from '../common';
 import prefs from '../prefs';
 import state from './state';
@@ -28,8 +28,10 @@ export function openShortcut(shortcut: Pick<Shortcut, 'id' | 'url'> | null): voi
     chrome.tabs.update(state.activeTab.id, { url: shortcut.url });
   }
 
-  // The storage.onChanged listener in state.ts refreshes the in-memory copy.
-  storage.increaseShortcutOpenTimes(shortcut.id).catch((error) => {
+  // In local mode this write fires storage.onChanged, which refreshes the
+  // in-memory copy. In cloud mode it records the open on the server; the
+  // mirrored open_times catches up on the next sync.
+  backend.increaseShortcutOpenTimes(shortcut.id).catch((error) => {
     console.log(error);
   });
 }

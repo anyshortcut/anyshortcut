@@ -34,10 +34,14 @@ function extensionManifestPlugin(mode: string) {
   return {
     name: 'generate-extension-manifest',
     closeBundle() {
-      const manifest = {
-        ...readJson('./manifest/common.json'),
-        ...readJson(`./manifest/${platform}.json`),
-      };
+      const common = readJson('./manifest/common.json');
+      const overrides = readJson(`./manifest/${platform}.json`);
+      const manifest = { ...common, ...overrides };
+      // A platform file adds content scripts rather than replacing the
+      // shared ones (Firefox needs an extra one for the sign-in handshake).
+      if (Array.isArray(common.content_scripts) && Array.isArray(overrides.content_scripts)) {
+        manifest.content_scripts = [...common.content_scripts, ...overrides.content_scripts];
+      }
       manifest.version = readJson('./package.json').version;
       if (mode === 'development') {
         manifest.name = 'Anyshortcut-Dev';
@@ -73,16 +77,36 @@ const shared = {
 };
 
 /**
- * The extension is built in three passes because the outputs need
+ * The extension is built in several passes because the outputs need
  * different module formats:
  * - pages (default): popup.html + tour.html as regular ESM pages
  * - content: content-script.js as a single IIFE (content scripts
  *   cannot be ES modules, so no code-splitting is allowed)
  * - background: background.js as a single IIFE so the same bundle
  *   works as a Chrome service worker and a Firefox background script
+ * - auth-helper: firefox-auth-helper.js, the content script that stands in
+ *   for externally_connectable on Firefox
  */
 export default defineConfig(({ mode }) => {
   const target = process.env.BUILD_TARGET || 'pages';
+
+  if (target === 'auth-helper') {
+    return {
+      ...shared,
+      publicDir: false,
+      build: {
+        outDir: 'extension',
+        emptyOutDir: false,
+        rollupOptions: {
+          input: r('./src/script/firefox-auth-helper.ts'),
+          output: {
+            format: 'iife',
+            entryFileNames: 'firefox-auth-helper.js',
+          },
+        },
+      },
+    };
+  }
 
   if (target === 'content') {
     return {

@@ -91,7 +91,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import client from '../client';
+import client from '../backend';
 import common from '../common';
 import Chart from 'chart.js';
 import ShortcutKey from '../component/ShortcutKey.vue';

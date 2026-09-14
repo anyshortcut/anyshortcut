@@ -262,7 +262,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import client from '../client';
+import client from '../backend';
 import monitor from '../script/key-event-monitor';
 import $background from '../extension-api';
 import type { DefaultShortcut } from '../types';

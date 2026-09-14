@@ -96,7 +96,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import client from '../client';
+import client from '../backend';
 import ShortcutKey from '../component/ShortcutKey.vue';
 import Popover from '../component/Popover.vue';
 import Chart from 'chart.js';

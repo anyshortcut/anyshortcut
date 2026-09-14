@@ -8,11 +8,36 @@
     </header>
 
     <div class="preference-item flex-vertical">
-      <div class="flex-horizontal">
-        Storage <span class="subscription-status status-active">local</span>
+      Where your shortcuts live:
+      <div>
+        <input type="radio" id="mode-local" v-model="mode" :value="'local'" />
+        <label for="mode-local" class="preference-subtitle">
+          <b>This browser</b> — nothing leaves your device
+        </label>
+      </div>
+      <div>
+        <input type="radio" id="mode-cloud" v-model="mode" :value="'cloud'" />
+        <label for="mode-cloud" class="preference-subtitle">
+          <b>Anyshortcut account</b> — synced across your browsers
+        </label>
       </div>
       <div class="preference-subtitle">
-        <span> Your shortcuts are stored locally in your browser </span>
+        Each mode keeps its own shortcuts, so you can switch back at any time.
+      </div>
+
+      <div v-if="mode === 'cloud'" class="flex-horizontal" style="margin-top: 8px">
+        <span v-if="!$background.authenticated">Not signed in</span>
+        <span v-else>{{ $background.user?.email || 'Signed in' }}</span>
+        <span
+          v-if="$background.authenticated"
+          class="subscription-status"
+          :class="subscriptionClass"
+        >
+          {{ $background.subscriptionStatus }}
+        </span>
+        <a v-else :href="$background.signInUrl" target="_blank" class="preference-subtitle">
+          Sign in
+        </a>
       </div>
     </div>
 
@@ -175,18 +200,39 @@
 import { defineComponent } from 'vue';
 import prefs from '../prefs';
 import type { CombinationKey, ShowCircleConfig } from '../prefs';
+import type { BackendMode } from '../types';
 
 export default defineComponent({
   name: 'preference-view',
   data() {
     return {
+      mode: this.$background.getMode(),
+      switching: false,
       combinationKey: prefs.getDefaultCombinationKey(),
       openByBlank: prefs.isShortcutOpenByBlank(),
       compoundEnable: prefs.isCompoundShortcutEnable(),
       showCircle: prefs.getShowCircleConfig(),
     };
   },
+  computed: {
+    subscriptionClass(): string {
+      const status = this.$background.subscriptionStatus;
+      if (status === 'active') return 'status-active';
+      return status === 'trialing' ? 'status-trailing' : 'status-failed';
+    },
+  },
   watch: {
+    mode: function (newValue: BackendMode) {
+      // Reloads the account and the shortcuts for the newly selected source;
+      // going back to the main view then renders whatever it found.
+      this.switching = true;
+      this.$background
+        .setMode(newValue)
+        .catch((error: Error) => this.$toast.error(error.message))
+        .finally(() => {
+          this.switching = false;
+        });
+    },
     combinationKey: function (newValue: CombinationKey) {
       prefs.setDefaultCombinationKey(newValue);
     },

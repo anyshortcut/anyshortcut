@@ -21,6 +21,14 @@ module.exports = {
     'no-unused-vars': 'off',
     '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
   },
+  overrides: [
+    {
+      // TypeScript resolves identifiers itself, including type-only ones such
+      // as RequestInit that no-undef cannot see.
+      files: ['*.ts', '*.vue'],
+      rules: { 'no-undef': 'off' },
+    },
+  ],
   globals: {
     chrome: 'readonly',
   },

@@ -3,7 +3,7 @@
 // checks remain, everything answers from local state.
 import prefs from '../prefs';
 import common from '../common';
-import state, { ready } from './state';
+import state, { ready, refreshCloudShortcuts } from './state';
 import {
   getBoundDomainByHostname,
   getPrimaryShortcut,
@@ -13,7 +13,7 @@ import {
   getSecondaryShortcutsByUrl,
   openShortcut,
 } from './shortcut';
-import type { BackgroundRequest } from '../types';
+import type { BackgroundRequest, ExternalRequest } from '../types';
 
 function isSecondaryShortcutActivatedUrl(url: string): boolean {
   const hostname = common.getHostnameFromUrl(url);
@@ -66,6 +66,16 @@ async function handleMessage(
       }
     }
     return undefined;
+  }
+
+  // Cloud mode can be signed out or lapsed; the content script shows a modal
+  // for each rather than reporting every shortcut as unbound. Local mode
+  // never reaches either branch.
+  if (!state.authenticated) {
+    return { authenticateRequired: true };
+  }
+  if (prefs.getMode() === 'cloud' && !['active', 'trialing'].includes(state.subscriptionStatus)) {
+    return { expired: true, status: state.subscriptionStatus };
   }
 
   const combinationKey = prefs.getDefaultCombinationKey();
@@ -125,6 +135,13 @@ async function handleMessage(
 }
 
 chrome.runtime.onMessage.addListener((message: BackgroundRequest, sender, sendResponse) => {
+  // Firefox has no externally_connectable, so the website reaches us through
+  // the auth helper content script, which forwards this internal message.
+  if (message.firefoxRefresh) {
+    refreshCloudShortcuts().then(() => sendResponse('ok'));
+    return true;
+  }
+
   handleMessage(message, sender)
     .then(sendResponse)
     .catch((error) => {
@@ -134,3 +151,19 @@ chrome.runtime.onMessage.addListener((message: BackgroundRequest, sender, sendRe
   // Keep the message channel open for the async response.
   return true;
 });
+
+/**
+ * anyshortcut.com tells the extension when the user signs in or changes
+ * their shortcuts on the website, so cloud mode can pull a fresh copy
+ * without waiting for the next service worker start.
+ */
+if (chrome.runtime.onMessageExternal) {
+  chrome.runtime.onMessageExternal.addListener((message: ExternalRequest, sender, sendResponse) => {
+    if (message.authenticated || message.refresh) {
+      refreshCloudShortcuts().then(() => sendResponse(true));
+      return true;
+    }
+    sendResponse(false);
+    return false;
+  });
+}
