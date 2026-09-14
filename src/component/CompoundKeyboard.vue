@@ -128,122 +128,133 @@ td {
   display: block;
 }
 </style>
-<script type="es6">
-import scrollIntoView from "scroll-into-view";
+<script lang="ts">
+import { defineComponent } from 'vue';
+import scrollIntoView from 'scroll-into-view';
 
-export default {
-    name: 'CompoundKeyboard',
-    data() {
+export default defineComponent({
+  name: 'CompoundKeyboard',
+  data() {
+    return {
+      alphanumeric: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
+      scrolling: false,
+      scrollLeft: 0,
+      scrollTop: 0,
+      firstFilterKey: null as string | null,
+      secondFilterKey: null as string | null,
+      filterTimes: 0,
+    };
+  },
+  props: {
+    boundKeys: {
+      type: Array,
+      default: function () {
+        return [];
+      },
+    },
+    highlightKey: {
+      type: String,
+      default: function () {
+        return null;
+      },
+    },
+  },
+  computed: {
+    columnHeaderStyle: function () {
+      if (this.scrollLeft <= 10) return;
+
+      return {
+        left: this.scrollLeft - 10 + 'px',
+      };
+    },
+  },
+  methods: {
+    rowClass: function (key: string) {
+      if (key.trim().length === 1) {
         return {
-            alphanumeric: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789',
-            scrolling: false,
-            scrollLeft: 0,
-            scrollTop: 0,
-            firstFilterKey: null,
-            secondFilterKey: null,
-            filterTimes: 0,
+          'row-header': true,
         };
-    },
-    props: {
-        boundKeys: {
-            type: Array,
-            default: function() {
-                return [];
+      } else {
+        return this.boundKeys.indexOf(key) !== -1
+          ? {
+              'raw-key': true,
+              occupied: true,
             }
-        },
-        highlightKey: {
-            type: String,
-            default: function() {
-                return null;
-            }
-        },
-    },
-    computed: {
-        columnHeaderStyle: function() {
-            if (this.scrollLeft <= 10) return;
-
-            return {
-                left: this.scrollLeft - 10 + 'px',
+          : {
+              'raw-key': true,
+              highlight:
+                key === this.highlightKey ||
+                (!this.highlightKey && key === this.firstFilterKey + this.secondFilterKey),
             };
+      }
+    },
+    onScroll: function ($event: Event) {
+      this.scrollLeft = ($event.target as HTMLElement).scrollLeft;
+      this.scrollTop = ($event.target as HTMLElement).scrollTop;
+      this.scrolling = true;
+      this.$emit('on-table-scroll');
+
+      if ((this as any)._scrollTimeoutId) {
+        window.clearTimeout((this as any)._scrollTimeoutId);
+      }
+
+      (this as any)._scrollTimeoutId = window.setTimeout(() => {
+        this.scrolling = false;
+      }, 200);
+    },
+    onFilterKeyUp: function (event: KeyboardEvent) {
+      // Ignore activeElement input event
+      if (
+        (document.activeElement as HTMLElement).isContentEditable ||
+        ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)
+      ) {
+        return;
+      }
+
+      let keyCode = String.fromCharCode(event.keyCode);
+      if (this.alphanumeric.includes(keyCode)) {
+        if (this.filterTimes % 2 === 0) {
+          this.firstFilterKey = keyCode;
+        } else {
+          this.secondFilterKey = keyCode;
         }
-    },
-    methods: {
-        rowClass: function(key) {
-            if (key.trim().length === 1) {
-                return {
-                    'row-header': true,
-                }
-            } else {
-                return this.boundKeys.indexOf(key) !== -1 ? {
-                    'raw-key': true,
-                    'occupied': true,
-                } : {
-                    'raw-key': true,
-                    'highlight': key === this.highlightKey ||
-                    (!this.highlightKey && key === this.firstFilterKey + this.secondFilterKey),
-                };
-            }
-        },
-        onScroll: function($event) {
-            this.scrollLeft = $event.target.scrollLeft;
-            this.scrollTop = $event.target.scrollTop;
-            this.scrolling = true;
-            this.$emit('on-table-scroll');
 
-            if (this._scrollTimeoutId) {
-                window.clearTimeout(this._scrollTimeoutId);
-            }
-
-            this._scrollTimeoutId = window.setTimeout(() => {
-                this.scrolling = false;
-            }, 200);
-        },
-        onFilterKeyUp: function(event) {
-            // Ignore activeElement input event
-            if (document.activeElement.isContentEditable
-                || ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) {
-                return;
-            }
-
-            let keyCode = String.fromCharCode(event.keyCode);
-            if (this.alphanumeric.includes(keyCode)) {
-                if (this.filterTimes % 2 === 0) {
-                    this.firstFilterKey = keyCode;
-                } else {
-                    this.secondFilterKey = keyCode;
-                }
-
-                let target = document.getElementById((this.firstFilterKey || 'A') + (this.secondFilterKey || 'A'));
-                scrollIntoView(target, (type) => {
-                    if (type === 'complete') {
-                        // Delay 100 ms to emit the 'key-hover-over'.
-                        window.setTimeout(() => {
-                            this.$emit('key-hover-over', target);
-                        }, 100);
-                    }
-                });
-
-                this.filterTimes += 1;
-            }
-        },
-    },
-    mounted: function() {
-        // Query key elements exclude weak element, then add mouse event listener.
-        document.getElementById('compound-tbody').querySelectorAll('.raw-key').forEach(element => {
-            element.addEventListener('mouseenter', () => {
-                if (this.scrolling) return;
-
-                this.$emit('key-hover-over', element);
-            });
-            element.addEventListener('mouseleave', () => {
-                this.$emit('key-hover-leave', element);
-            });
+        let target = document.getElementById(
+          (this.firstFilterKey || 'A') + (this.secondFilterKey || 'A')
+        );
+        scrollIntoView(target, (type: string) => {
+          if (type === 'complete') {
+            // Delay 100 ms to emit the 'key-hover-over'.
+            window.setTimeout(() => {
+              this.$emit('key-hover-over', target);
+            }, 100);
+          }
         });
 
-        document.addEventListener('keyup', this.onFilterKeyUp);
+        this.filterTimes += 1;
+      }
     },
-    unmounted() {
-        document.removeEventListener('keyup', this.onFilterKeyUp);
-    },
-}
+  },
+  mounted: function () {
+    // Query key elements exclude weak element, then add mouse event listener.
+    document
+      .getElementById('compound-tbody')
+      .querySelectorAll('.raw-key')
+      .forEach((element) => {
+        element.addEventListener('mouseenter', () => {
+          if (this.scrolling) return;
+
+          this.$emit('key-hover-over', element);
+        });
+        element.addEventListener('mouseleave', () => {
+          this.$emit('key-hover-leave', element);
+        });
+      });
+
+    document.addEventListener('keyup', this.onFilterKeyUp);
+  },
+  unmounted() {
+    document.removeEventListener('keyup', this.onFilterKeyUp);
+  },
+});
 </script>

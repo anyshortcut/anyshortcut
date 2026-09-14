@@ -260,19 +260,21 @@
 }
 </style>
 
-<script>
-import client from '../client.js';
-import monitor from '../script/key-event-monitor.js';
-import $background from '../extension-api.js';
+<script lang="ts">
+import { defineComponent } from 'vue';
+import client from '../client';
+import monitor from '../script/key-event-monitor';
+import $background from '../extension-api';
+import type { DefaultShortcut } from '../types';
 
 window.delay = true;
 
-export default {
+export default defineComponent({
   name: 'Tour',
   data() {
     return {
       currentStep: 1,
-      defaultShortcuts: [],
+      defaultShortcuts: [] as DefaultShortcut[],
       done: false,
     };
   },
@@ -281,7 +283,7 @@ export default {
       this.currentStep = 2;
       this.initialize();
     },
-    onStepItemClick(step) {
+    onStepItemClick(step: number) {
       if (step > 1) {
         this.currentStep = step;
       }
@@ -317,5 +319,5 @@ export default {
   mounted() {
     // Auto-start tour - no authentication needed
   },
-};
+});
 </script>

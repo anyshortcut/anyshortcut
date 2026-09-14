@@ -11,22 +11,32 @@
   },
   "homepage": "https://anyshortcut.com",
   "dependencies": {
+    "balloon-css": "^1.2.0",
     "chart.js": "^2.9.4",
-    "lodash": "^4.17.21",
+    "font-awesome": "^4.7.0",
+    "lodash-es": "^4.18.1",
     "mitt": "^3.0.1",
     "popper.js": "^1.16.1",
     "scroll-into-view": "^1.15.0",
+    "simple-line-icons": "^2.5.5",
     "vue": "^3.4.0",
     "vue-router": "^4.0.0"
   },
   "devDependencies": {
+    "@types/chrome": "^0.2.2",
+    "@types/lodash-es": "^4.17.12",
+    "@types/node": "^26.1.1",
+    "@typescript-eslint/eslint-plugin": "^8.63.0",
+    "@typescript-eslint/parser": "^8.63.0",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vue/eslint-config-prettier": "^9.0.0",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.20.0",
     "prettier": "^3.2.0",
     "sass": "^1.101.0",
-    "vite": "^8.1.4"
+    "typescript": "~5.9.0",
+    "vite": "^8.1.4",
+    "vue-tsc": "^3.3.7"
   },
   "scripts": {
     "dev": "vite",
@@ -35,12 +45,13 @@
     "build:content": "BUILD_TARGET=content vite build",
     "build:background": "BUILD_TARGET=background vite build",
     "preview": "vite preview",
-    "lint": "eslint src --ext .vue,.js,.jsx,.cjs,.mjs --fix",
+    "lint": "eslint src --ext .vue,.js,.ts --fix",
     "format": "prettier --write src/",
     "build_dev": "vite build --mode development && BUILD_TARGET=content vite build --mode development && BUILD_TARGET=background vite build --mode development",
     "build_production": "npm run build",
     "build_dev:firefox": "PLATFORM=firefox npm run build_dev",
-    "build_production:firefox": "PLATFORM=firefox npm run build"
+    "build_production:firefox": "PLATFORM=firefox npm run build",
+    "typecheck": "vue-tsc --noEmit"
   },
   "engines": {
     "node": "^20.19.0 || >=22.12.0",

@@ -72,7 +72,7 @@
         <popover :ref-id="'delete-secondary-text'">
           <div class="delete-confirm-popup">
             <p style="font-size: 16px; font-weight: 600">Are you sure to delete?</p>
-            <div class="shortcut-delete-button" @click="$bus.emit('unbind-shortcut', shortcut)">
+            <div class="shortcut-delete-button" @click="$bus.emit('unbind-shortcut', { shortcut })">
               Delete
             </div>
           </div>
@@ -89,23 +89,25 @@
   </transition>
 </template>
 
-<script>
-import client from '../client.js';
-import common from '../common.js';
+<script lang="ts">
+import { defineComponent } from 'vue';
+import client from '../client';
+import common from '../common';
 import Chart from 'chart.js';
 import ShortcutKey from '../component/ShortcutKey.vue';
 import Popover from '../component/Popover.vue';
+import type { Shortcut } from '../types';
 
-export default {
+export default defineComponent({
   name: 'SecondaryShortcutCard',
   data() {
     return {
-      chart: null,
+      chart: null as any,
     };
   },
   props: {
     shortcut: {
-      type: Object,
+      type: Object as () => Shortcut,
       default() {
         return {};
       },
@@ -126,7 +128,7 @@ export default {
     renderChart() {
       let chartFontColor = '#1882ef';
       Chart.defaults.global.defaultFontFamily = "'Poppins', sans-serif";
-      this.chart = new Chart(document.getElementById('secondary-chart'), {
+      this.chart = new Chart(document.getElementById('secondary-chart') as HTMLCanvasElement, {
         type: 'bar',
         data: {
           labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -204,7 +206,7 @@ export default {
     this.renderChart();
     this.fetchWeekStats();
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

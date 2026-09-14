@@ -73,31 +73,31 @@ body {
   }
 }
 </style>
-<script>
-import common from '../common.js';
-import _ from 'lodash';
+<script lang="ts">
+import { defineComponent } from 'vue';
+import { cloneDeep, sortBy, forOwn } from 'lodash-es';
+import common from '../common';
 import ShortcutView from '../view/ShortcutView.vue';
 import BindView from '../view/BindView.vue';
+import type { BindShortcutEvent, Shortcut, UnbindShortcutEvent } from '../types';
 
-export default {
+export default defineComponent({
   name: 'MainView',
   data() {
     return {
       loading: false,
-      domainShortcut: null,
+      domainShortcut: null as Shortcut | null,
     };
   },
   methods: {
     queryShortcuts() {
       let activeTab = this.$background.activeTab;
-      let primaryShortcuts = _.sortBy(
-        _.cloneDeep(this.$background.primaryShortcuts, ['created_time'])
-      );
+      let primaryShortcuts = sortBy(cloneDeep(this.$background.primaryShortcuts));
 
-      let foundDomainShortcut = null;
-      let foundActiveDomainShortcut = null;
+      let foundDomainShortcut: Shortcut | null = null;
+      let foundActiveDomainShortcut: Shortcut | null = null;
       // Find both active domain shortcut and a regular domain shortcut.
-      _.forOwn(primaryShortcuts, (shortcut) => {
+      forOwn(primaryShortcuts, (shortcut) => {
         if (!foundDomainShortcut && common.isUrlEndsWithDomain(activeTab.url, shortcut.domain)) {
           foundDomainShortcut = shortcut;
           // return false to exit the for iterate after find the result.
@@ -119,7 +119,7 @@ export default {
         this.$bus.emit('refresh');
       });
     },
-    bindShortcut: function (primary, keyChar, comment) {
+    bindShortcut: function ({ primary, keyChar, comment }: BindShortcutEvent) {
       let bindFunction;
       if (primary) {
         bindFunction = this.$background.bindPrimaryShortcut;
@@ -140,11 +140,11 @@ export default {
           this.$toast.error(error.message);
         });
     },
-    unbindShortcut: function (shortcut, including) {
+    unbindShortcut: function ({ shortcut, including }: UnbindShortcutEvent) {
       if (shortcut) {
         this.loading = true;
 
-        let unbindPromise = null;
+        let unbindPromise: Promise<unknown> | null = null;
         if (shortcut.primary) {
           unbindPromise = this.$background.removePrimaryShortcut(shortcut, including);
         } else {
@@ -179,5 +179,5 @@ export default {
     this.$bus.off('bind-shortcut', this.bindShortcut);
     this.$bus.off('unbind-shortcut', this.unbindShortcut);
   },
-};
+});
 </script>

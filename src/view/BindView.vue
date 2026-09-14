@@ -48,53 +48,55 @@
   }
 }
 </style>
-<script type="es6">
-import PrimaryBind from "../view/PrimaryBind.vue";
-import CompoundBind from "../view/CompoundBind.vue";
-import prefs from "../prefs.js";
-import _ from "lodash";
+<script lang="ts">
+import { defineComponent } from 'vue';
+import PrimaryBind from '../view/PrimaryBind.vue';
+import CompoundBind from '../view/CompoundBind.vue';
+import prefs from '../prefs';
+import { cloneDeep, pickBy } from 'lodash-es';
+import type { PrimaryShortcuts } from '../types';
 
-export default {
-    name: 'BindView',
-    data() {
-        return {
-            bindType: 'primary',
-            shortcuts: null,
-            compoundShortcuts: null,
-            prefs: prefs,
-        }
+export default defineComponent({
+  name: 'BindView',
+  data() {
+    return {
+      bindType: 'primary',
+      shortcuts: null as PrimaryShortcuts | null,
+      compoundShortcuts: null as PrimaryShortcuts | null,
+      prefs: prefs,
+    };
+  },
+  computed: {
+    height: function () {
+      return (this.prefs.isCompoundShortcutEnable() ? 350 : 300) + 'px';
     },
-    computed: {
-        height: function() {
-            return (this.prefs.isCompoundShortcutEnable() ? 350 : 300) + 'px';
-        }
-    },
-    components: {
-        PrimaryBind,
-        CompoundBind,
-    },
-    methods: {
-        queryShortcuts() {
-            let primaryShortcuts = _.cloneDeep(this.$background.primaryShortcuts);
+  },
+  components: {
+    PrimaryBind,
+    CompoundBind,
+  },
+  methods: {
+    queryShortcuts() {
+      let primaryShortcuts = cloneDeep(this.$background.primaryShortcuts);
 
-            // Due to Javascript object reference, we need to pick by a new shortcuts Object,
-            // otherwise can't trigger a props value change.
-            this.shortcuts = _.pickBy(primaryShortcuts, (value, key) => {
-                return key.length === 1;
-            });
-            this.compoundShortcuts = _.pickBy(primaryShortcuts, (value, key) => {
-                return key.length === 2;
-            });
-        },
+      // Due to Javascript object reference, we need to pick by a new shortcuts Object,
+      // otherwise can't trigger a props value change.
+      this.shortcuts = pickBy(primaryShortcuts, (value, key) => {
+        return key.length === 1;
+      });
+      this.compoundShortcuts = pickBy(primaryShortcuts, (value, key) => {
+        return key.length === 2;
+      });
     },
-    created: function() {
-        this.queryShortcuts();
-    },
-    mounted() {
-        this.$bus.on('refresh', this.queryShortcuts)
-    },
-    unmounted() {
-        this.$bus.off('refresh', this.queryShortcuts)
-    }
-}
+  },
+  created: function () {
+    this.queryShortcuts();
+  },
+  mounted() {
+    this.$bus.on('refresh', this.queryShortcuts);
+  },
+  unmounted() {
+    this.$bus.off('refresh', this.queryShortcuts);
+  },
+});
 </script>

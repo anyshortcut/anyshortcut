@@ -7,50 +7,51 @@
   </span>
 </template>
 <style lang="scss" scoped></style>
-<script type="es6">
-import prefs from "../prefs.js";
+<script lang="ts">
+import { defineComponent } from 'vue';
+import prefs from '../prefs';
 
-export default {
-    name: 'ShortcutKey',
-    data() {
-        return {
-            combinationKey: prefs.getDefaultCombinationKey().toUpperCase(),
-            conflictKeys: ['D', 'F'],
-        };
+export default defineComponent({
+  name: 'ShortcutKey',
+  data() {
+    return {
+      combinationKey: prefs.getDefaultCombinationKey().toUpperCase(),
+      conflictKeys: ['D', 'F'],
+    };
+  },
+  props: {
+    keyChar: {
+      type: String,
+      default: function () {
+        return null;
+      },
     },
-    props: {
-        keyChar: {
-            type: String,
-            default: function() {
-                return null;
-            }
-        },
-        parentKeyChar: {
-            type: String,
-            default: function() {
-                return null;
-            }
-        },
+    parentKeyChar: {
+      type: String,
+      default: function () {
+        return null;
+      },
     },
-    computed: {
-        shortcutKey: function() {
-            return this.parentKeyChar ? this.parentKeyChar + this.keyChar : this.keyChar;
-        },
-        shortcutKeyChar: function() {
-            return this.parentKeyChar ? [this.parentKeyChar, this.keyChar].join(' + ') : this.keyChar;
-        },
-        isConflict: function() {
-            if (this.$background.platformOs === 'mac') {
-                return false;
-            }
+  },
+  computed: {
+    shortcutKey: function () {
+      return this.parentKeyChar ? this.parentKeyChar + this.keyChar : this.keyChar;
+    },
+    shortcutKeyChar: function () {
+      return this.parentKeyChar ? [this.parentKeyChar, this.keyChar].join(' + ') : this.keyChar;
+    },
+    isConflict: function () {
+      if (this.$background.platformOs === 'mac') {
+        return false;
+      }
 
-            for (let key of this.conflictKeys) {
-                if (this.shortcutKey && this.shortcutKey.includes(key)) {
-                    return true;
-                }
-            }
-            return false;
+      for (let key of this.conflictKeys) {
+        if (this.shortcutKey && this.shortcutKey.includes(key)) {
+          return true;
         }
+      }
+      return false;
     },
-}
+  },
+});
 </script>
