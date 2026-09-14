@@ -1,0 +1,116 @@
+name: Release
+
+# Tag a commit to publish it, e.g.
+#   npm version minor && git push --follow-tags
+#
+# Required repository secrets, see docs/RELEASING.md for how to obtain them:
+#   CHROME_EXTENSION_ID, CHROME_CLIENT_ID, CHROME_CLIENT_SECRET,
+#   CHROME_REFRESH_TOKEN, AMO_JWT_ISSUER, AMO_JWT_SECRET
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Build and attach the packages without submitting them
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Publish to both stores
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # A tag that disagrees with package.json would publish a version
+      # number nobody can find again, so stop before anything is uploaded.
+      - name: Check the tag matches package.json
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+          tag="${GITHUB_REF_NAME#v}"
+          pkg="$(node -p "require('./package.json').version")"
+          if [ "$tag" != "$pkg" ]; then
+            echo "::error::Tag $GITHUB_REF_NAME does not match package.json version $pkg"
+            exit 1
+          fi
+
+      - name: Verify the build
+        run: |
+          npm run typecheck
+          npm run lint
+
+      # Each package step rebuilds extension/ for its platform, so these run
+      # one after another and each store is handed the build meant for it.
+      - name: Package for Chrome
+        run: npm run package:chrome
+
+      - name: Publish to the Chrome Web Store
+        if: ${{ !inputs.dry_run }}
+        env:
+          EXTENSION_ID: ${{ secrets.CHROME_EXTENSION_ID }}
+          CLIENT_ID: ${{ secrets.CHROME_CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CHROME_CLIENT_SECRET }}
+          REFRESH_TOKEN: ${{ secrets.CHROME_REFRESH_TOKEN }}
+        run: |
+          npx --yes chrome-webstore-upload-cli@4 upload \
+            --source dist/anyshortcut-chrome-*.zip \
+            --auto-publish
+
+      - name: Package for Firefox
+        run: |
+          npm run package:firefox
+          npm run package:source
+
+      # web-ext lint validates against Firefox's rules, so it runs on the
+      # Firefox build only; it rejects the Chrome one for using a service
+      # worker with no `scripts` fallback.
+      - name: Lint the Firefox package
+        run: npm run lint:ext
+
+      # The bundle AMO receives is minified, so reviewers get the sources
+      # it was built from. Listed versions go to human review, so this does
+      # not wait for the signed result.
+      - name: Submit to Firefox Add-ons
+        if: ${{ !inputs.dry_run }}
+        run: |
+          npx --yes web-ext sign \
+            --source-dir extension \
+            --artifacts-dir dist \
+            --channel listed \
+            --approval-timeout 0 \
+            --upload-source-code dist/anyshortcut-source-*.zip \
+            --api-key "$AMO_JWT_ISSUER" \
+            --api-secret "$AMO_JWT_SECRET"
+        env:
+          AMO_JWT_ISSUER: ${{ secrets.AMO_JWT_ISSUER }}
+          AMO_JWT_SECRET: ${{ secrets.AMO_JWT_SECRET }}
+
+      - name: Attach the packages to a GitHub release
+        if: startsWith(github.ref, 'refs/tags/')
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            --title "$GITHUB_REF_NAME" \
+            --generate-notes \
+            dist/anyshortcut-chrome-*.zip \
+            dist/anyshortcut-firefox-*.zip \
+            dist/anyshortcut-source-*.zip
+
+      - name: Keep the packages when nothing was published
+        if: ${{ inputs.dry_run }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: dist/*.zip

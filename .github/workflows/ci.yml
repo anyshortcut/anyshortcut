@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+jobs:
+  check:
+    name: Typecheck, lint and build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Lint sources
+        run: npm run lint
+
+      - name: Check formatting
+        run: npx prettier --check "src/**/*.{ts,vue,css}"
+
+      - name: Build for Chrome
+        run: npm run build
+
+      # extension/ is committed and holds the Chrome build, so a source
+      # change that was not rebuilt would ship stale code. manifest.json is
+      # generated and gitignored, so it is not part of this comparison.
+      - name: Check the committed build is up to date
+        run: |
+          if ! git diff --exit-code --stat -- extension; then
+            echo "::error::extension/ is out of date. Run 'npm run build' and commit the result."
+            exit 1
+          fi
+
+      - name: Build for Firefox
+        run: npm run build_production:firefox
+
+      # web-ext lint validates against Firefox's rules, so it only makes
+      # sense on the Firefox build: it rejects the Chrome one for using a
+      # service worker with no `scripts` fallback.
+      - name: Lint the packaged extension
+        run: npm run lint:ext

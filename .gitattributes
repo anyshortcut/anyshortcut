@@ -1,0 +1,9 @@
+# Keep the archive produced by `npm run package:source` — the one AMO
+# reviewers get — to the sources the extension is actually built from.
+website export-ignore
+website/** export-ignore
+extension export-ignore
+extension/** export-ignore
+.github export-ignore
+.github/** export-ignore
+.gitattributes export-ignore
