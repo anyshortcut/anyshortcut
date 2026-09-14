@@ -13,7 +13,7 @@
     </div>
   </div>
 </template>
-<style lang="scss">
+<style>
 .bind-view {
   width: 560px;
   position: relative;

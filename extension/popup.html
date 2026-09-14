@@ -3,43 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Anyshortcut</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        }
-
-        body {
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
-
-        p {
-            margin: 0 auto;
-        }
-
-        a {
-            text-decoration: none;
-            outline: none;
-        }
-
-        a:focus {
-            text-decoration: none;
-            outline: none;
-        }
-
-        div.loading {
-            position: fixed;
-            bottom: 50%;
-            right: 50%;
-            color: gray;
-            text-align: center;
-            z-index: 9999;
-        }
-    </style>
+    <style>*{box-sizing:border-box}body{scroll-behavior:smooth;overflow-x:hidden}p{margin:0 auto}a,a:focus{outline:none;text-decoration:none}div.loading{color:gray;text-align:center;z-index:9999;position:fixed;bottom:50%;right:50%}</style>
   <script type="module" crossorigin src="/popup.js"></script>
   <link rel="modulepreload" crossorigin href="/chunks/rolldown-runtime.js">
-  <link rel="modulepreload" crossorigin href="/chunks/extension-api.js">
+  <link rel="modulepreload" crossorigin href="/chunks/common.js">
   <link rel="modulepreload" crossorigin href="/chunks/vendor.js">
+  <link rel="stylesheet" crossorigin href="/assets/common.css">
   <link rel="stylesheet" crossorigin href="/assets/vendor.css">
   <link rel="stylesheet" crossorigin href="/assets/popup.css">
 </head>

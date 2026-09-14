@@ -209,22 +209,20 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-@import '../scss/_common.scss';
-
+<style scoped>
 .shortcut-card {
   width: 400px;
   height: 100%;
   background-color: #ffffff;
 
-  .top-container {
+  & .top-container {
     padding: 20px 20px 0;
     border-right: #ececec solid 1px;
     overflow: hidden;
     white-space: nowrap;
     text-align: start;
 
-    .favicon {
+    & .favicon {
       position: relative;
       overflow: visible;
       display: inline-block;
@@ -271,13 +269,13 @@ export default defineComponent({
     }
   }
 
-  .skew-line-container {
+  & .skew-line-container {
     width: 100%;
     height: 30px;
     padding: 0;
     margin: 0;
 
-    .skew-line {
+    & .skew-line {
       width: 402px;
       height: 1px;
       border-bottom: 2px solid #1882ef;
@@ -286,9 +284,8 @@ export default defineComponent({
     }
   }
 
-  $skew-color: #fafafa;
-  .skewed-container {
-    background-color: $skew-color;
+  & .skewed-container {
+    background-color: #fafafa;
     color: #1882ef;
     height: 100%;
     width: 100%;
@@ -302,8 +299,8 @@ export default defineComponent({
       height: 0;
 
       border-right: 200px solid transparent;
-      border-bottom: 13px solid $skew-color;
-      border-left: 200px solid $skew-color;
+      border-bottom: 13px solid #fafafa;
+      border-left: 200px solid #fafafa;
       border-top: 13px solid transparent;
 
       position: absolute;
@@ -311,12 +308,12 @@ export default defineComponent({
       left: 0;
     }
 
-    .secondary-stats {
+    & .secondary-stats {
       display: flex;
       height: 70px;
     }
 
-    .entry {
+    & .entry {
       overflow: hidden;
       flex: 1;
 
@@ -336,7 +333,7 @@ export default defineComponent({
       }
     }
 
-    .delete-text {
+    & .delete-text {
       margin: 15px auto;
       width: 150px;
       height: 40px;
@@ -354,7 +351,7 @@ export default defineComponent({
     }
   }
 
-  .right-arrow {
+  & .right-arrow {
     width: 30px;
     cursor: pointer;
     position: absolute;
@@ -377,8 +374,21 @@ export default defineComponent({
 }
 
 .shortcut-delete-button {
-  @include button;
-  @include negative-gradient;
+  cursor: pointer;
+  padding: 5px 25px;
+  height: 28px;
+  border-radius: 3px;
+  font-size: 14px;
+  box-shadow: var(--box-shadow-base);
+  text-align: center;
+
+  background: linear-gradient(#d85b52, #aa3030);
+  color: #ffffff;
+
+  &:hover {
+    background: linear-gradient(#aa3030, #902626);
+  }
+
   padding: 2px 30px;
   margin-top: 5px;
 }

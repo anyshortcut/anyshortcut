@@ -43,9 +43,7 @@
     <p>No secondary shortcut bound yet</p>
   </div>
 </template>
-<style lang="scss" scoped>
-@import '../scss/_common.scss';
-
+<style scoped>
 ul {
   list-style: none outside;
   margin: 0;
@@ -112,7 +110,6 @@ ul {
 }
 
 .shortcut-key {
-  @extend .shortcut;
   display: inline-block;
   letter-spacing: 0.6px;
   font-size: 14px;
@@ -144,13 +141,13 @@ ul {
     }
   }
 
-  .fade-enter-active,
-  .fade-leave-active {
+  & .fade-enter-active,
+  & .fade-leave-active {
     transition: opacity 0.3s ease-in;
   }
 
-  .fade-enter-from,
-  .fade-leave-to {
+  & .fade-enter-from,
+  & .fade-leave-to {
     opacity: 0;
   }
 }

@@ -21,7 +21,7 @@
     </popover>
   </section>
 </template>
-<style lang="scss">
+<style>
 .primary-bind {
   height: 300px;
   display: flex;

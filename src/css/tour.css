@@ -1,4 +1,10 @@
-@import "_common.scss";
+/*
+ * The onboarding tour page (tour.html).
+ *
+ * The shared page styles are imported once by the entry
+ * (src/tour/index.ts imports ../css/common.css before this file),
+ * so this stylesheet no longer pulls them in itself.
+ */
 
 * {
   box-sizing: border-box;
@@ -17,8 +23,11 @@ a {
   text-decoration: underline;
   outline: none;
 
-  &:focus, &:active, &:visited, &:hover {
-    color: #8E8E8E;
+  &:focus,
+  &:active,
+  &:visited,
+  &:hover {
+    color: #8e8e8e;
   }
 }
 
@@ -32,7 +41,7 @@ li {
   line-height: 1.42857;
   color: #333;
   background-color: #fff;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
   font-weight: 300;
   display: flex;
   flex-direction: row;
@@ -61,10 +70,10 @@ section {
   margin: 0 35px;
   max-width: 650px;
   text-align: center;
-  color: #8E8E8E;
+  color: #8e8e8e;
   letter-spacing: 0.5px;
 
-  .title {
+  & .title {
     text-align: center;
     margin: 35px auto;
     color: #666666;
@@ -72,21 +81,20 @@ section {
     font-weight: 600;
   }
 
-  .subtitle {
+  & .subtitle {
     font-size: 18px;
     font-family: 'Poppins', sans-serif;
     font-weight: 500;
-    color: #44485B;
+    color: #44485b;
     margin: 30px auto;
   }
 
-  p {
+  & p {
     font-size: 16px;
     line-height: 1.8;
     margin: 10px 0;
     text-align: left;
   }
-
 }
 
 .step-indicator {
@@ -111,18 +119,18 @@ section {
   width: 0;
   height: 0;
   border-width: 5px;
-  border-color: #E9EDFB;
+  border-color: #e9edfb;
   border-style: solid;
   cursor: pointer;
 }
 
 .step-indicator-current {
-  border-color: $primary-color;
+  border-color: var(--primary-color);
 }
 
 .btn-google-sign-in {
   padding: 10px 25px;
-  letter-spacing: .1em;
+  letter-spacing: 0.1em;
   background: #fff;
   border: none;
   width: 320px;
@@ -131,16 +139,23 @@ section {
   color: #777;
   text-transform: none;
   text-shadow: none;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .2);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
   padding-left: 50px;
-  background-image: url("../img/google-g.png");
+  background-image: url('../img/google-g.png');
   background-repeat: no-repeat;
   background-size: 18px;
   background-position: 8% 50%;
   cursor: pointer;
 }
 
-.tour-shortcut {
+/*
+ * `.default-shortcut-list .default-shortcut-key` is listed alongside
+ * `.tour-shortcut` because it used to reach this rule through
+ * `@extend .tour-shortcut`. Its own padding override stays with the rest of
+ * the list styles below.
+ */
+.tour-shortcut,
+.default-shortcut-list .default-shortcut-key {
   color: #525252;
   background-color: white;
   padding: 0 10px;
@@ -148,7 +163,7 @@ section {
   border-radius: 3px;
   font-size: 14px;
   text-align: center;
-  box-shadow: $box-shadow-base;
+  box-shadow: var(--box-shadow-base);
 }
 
 .line-divider {
@@ -156,8 +171,9 @@ section {
   margin: 25px auto;
   overflow: hidden;
 
-  &:before, &:after {
-    content: "";
+  &:before,
+  &:after {
+    content: '';
     vertical-align: middle;
     display: inline-block;
     width: 50%;
@@ -186,7 +202,7 @@ section {
 .default-shortcut-list {
   padding: 0;
   margin: 15px;
-  box-shadow: $box-shadow-base;
+  box-shadow: var(--box-shadow-base);
   list-style: none;
   min-height: 445px;
   max-height: 445px;
@@ -194,7 +210,7 @@ section {
   border-radius: 5px;
   position: relative;
 
-  .default-shortcut-list-item {
+  & .default-shortcut-list-item {
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -211,20 +227,20 @@ section {
     }
   }
 
-  .default-shortcut-favicon {
+  & .default-shortcut-favicon {
     width: 30px;
     height: 30px;
     margin: 3px 10px;
   }
 
-  .default-shortcut-name {
+  & .default-shortcut-name {
     font-size: 16px;
     color: #515151;
   }
 
-  .default-shortcut-url {
+  & .default-shortcut-url {
     padding: 0 5px;
-    font-family: "Roboto", sans-serif !important;
+    font-family: 'Roboto', sans-serif !important;
     font-size: 12px;
     color: #bbbbbb;
     max-width: 200px;
@@ -233,8 +249,7 @@ section {
     text-align: left;
   }
 
-  .default-shortcut-key {
-    @extend .tour-shortcut;
+  & .default-shortcut-key {
     padding: 3px 12px;
   }
 }
@@ -254,7 +269,7 @@ section {
   font-size: 20px;
   background: #ffffff;
 
-  img {
+  & img {
     display: block;
     margin: 10px auto;
   }

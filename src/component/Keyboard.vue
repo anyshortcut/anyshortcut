@@ -62,9 +62,7 @@
     </div>
   </div>
 </template>
-<style lang="scss">
-@import '../scss/_keyboard.scss';
-
+<style>
 .keyboard {
   max-width: 500px;
   margin: 5px auto 0;

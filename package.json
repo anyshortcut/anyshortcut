@@ -33,7 +33,6 @@
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.20.0",
     "prettier": "^3.2.0",
-    "sass": "^1.101.0",
     "typescript": "~5.9.0",
     "vite": "^8.1.4",
     "vue-tsc": "^3.3.7"

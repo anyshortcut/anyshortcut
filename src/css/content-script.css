@@ -1,10 +1,15 @@
-$modal-z-index: 999999999;
-$primary-color: #517CE8;
-$secondary-color: #2b72dc;
-$box-shadow-base: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-$box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500i,600i|Roboto');
 
-@import url("https://fonts.googleapis.com/css?family=Poppins:400,500i,600i|Roboto");
+/*
+ * The in-page overlay (modal, shortcut popup and circle button).
+ *
+ * This stylesheet is injected into arbitrary third-party pages, so it
+ * deliberately does NOT use the custom properties from theme.css: those would
+ * have to be declared on the host page's :root, where they could collide with
+ * the host's own variables. The theme values are inlined as literals instead.
+ *
+ * Inlined values: primary #517CE8, secondary #2b72dc, and the two box shadows.
+ */
 
 .anyshortcut-modal {
   box-sizing: border-box !important;
@@ -17,9 +22,9 @@ $box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
   top: 0 !important;
   bottom: 0 !important;
   left: 0 !important;
-  z-index: ($modal-z-index - 1) !important;
+  z-index: 999999998 !important;
 
-  ul {
+  & ul {
     list-style: none outside !important;
     margin: auto !important;
     padding: 0 !important;
@@ -28,15 +33,17 @@ $box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
 
 .anyshortcut-modal-container {
   width: 480px !important;
-  font-family: "Poppins", sans-serif !important;
+  font-family: 'Poppins', sans-serif !important;
   display: flex !important;
   flex-direction: column !important;
   color: #515151 !important;
   margin-top: 80px !important;
   background: white !important;
   border-radius: 5px !important;
-  z-index: $modal-z-index !important;
-  box-shadow: 0 -2px 4px rgba(0, 0, 0, .12), 0 4px 6px rgba(0, 0, 0, .12) !important;
+  z-index: 999999999 !important;
+  box-shadow:
+    0 -2px 4px rgba(0, 0, 0, 0.12),
+    0 4px 6px rgba(0, 0, 0, 0.12) !important;
 }
 
 .anyshortcut-modal-header {
@@ -49,7 +56,7 @@ $box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
 }
 
 .anyshortcut-brand {
-  color: $primary-color;
+  color: #517ce8;
   font-size: 16px;
   cursor: pointer;
   display: flex;
@@ -57,9 +64,9 @@ $box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
   font-weight: 600;
   text-decoration: none;
   outline: none;
-  letter-spacing: .03em;
+  letter-spacing: 0.03em;
 
-  .anyshortcut-brand-logo {
+  & .anyshortcut-brand-logo {
     vertical-align: middle;
     margin: 6px 10px;
     height: 20px;
@@ -72,7 +79,7 @@ $box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
 }
 
 .anyshortcut-modal-close {
-  color: #CECECE;
+  color: #cecece;
   padding: 10px;
   background-color: transparent;
   border: none;
@@ -93,21 +100,28 @@ $box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
   margin: 0 5px !important;
 }
 
-.anyshortcut-shortcut {
+/*
+ * `.anyshortcut-secondary-shortcut` is listed here because it used to reach
+ * this rule through `@extend .anyshortcut-shortcut`; its own overrides follow
+ * in the rule below.
+ */
+.anyshortcut-shortcut,
+.anyshortcut-secondary-shortcut {
   box-sizing: border-box;
-  color: $primary-color;
+  color: #517ce8;
   background-color: white;
   padding: 0 10px;
   margin: 0 5px;
   border-radius: 3px;
   text-align: center;
-  box-shadow: $box-shadow-base;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.12),
+    0 0 6px rgba(0, 0, 0, 0.04);
   white-space: nowrap;
   font-size: 15px !important;
 }
 
 .anyshortcut-secondary-shortcut {
-  @extend .anyshortcut-shortcut;
   margin-right: 15px !important;
   width: 32px !important;
   letter-spacing: 0.6px !important;
@@ -135,7 +149,7 @@ $box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
     border-width: 0 !important;
   }
 
-  a {
+  & a {
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -148,34 +162,37 @@ $box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
     margin: 0 !important;
     text-decoration: none !important;
     outline: none !important;
-    color: $secondary-color !important;
+    color: #2b72dc !important;
 
-    &:focus, &:active, &:visited, &:hover {
-      color: $secondary-color !important;
+    &:focus,
+    &:active,
+    &:visited,
+    &:hover {
+      color: #2b72dc !important;
     }
   }
 }
 
 .anyshortcut-text-description {
-  color: #8E8E8E !important;
+  color: #8e8e8e !important;
   font-size: 14px !important;
 
-  ul li {
+  & ul li {
     margin: 5px 0 !important;
   }
 }
 
 .anyshortcut-small-description {
-  color: #8E8E8E !important;
+  color: #8e8e8e !important;
   margin: auto !important;
   font-size: 12px !important;
 }
 
 .anyshortcut-subscribe-button {
   font-size: 16px;
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   text-decoration: none !important;
-  background-color: #DD4814 !important;
+  background-color: #dd4814 !important;
   color: white !important;
   border-radius: 4px !important;
   padding: 5px 25px !important;
@@ -191,21 +208,24 @@ $box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
   bottom: 15px !important;
   width: 40px !important;
   height: 40px !important;
-  background-color: $primary-color !important;
-  box-shadow: $box-shadow-dark !important;
+  background-color: #517ce8 !important;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.12),
+    0 0 6px rgba(0, 0, 0, 0.12) !important;
   border-radius: 50% 50% !important;
   cursor: pointer !important;
-  z-index: ($modal-z-index - 1) !important;
+  z-index: 999999998 !important;
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
   opacity: 0.3 !important;
 
-  .anyshortcut-circle-icon {
+  & .anyshortcut-circle-icon {
     width: 30px !important;
     height: 30px !important;
   }
-  .anyshortcut-circle-close {
+
+  & .anyshortcut-circle-close {
     width: 20px !important;
     height: 20px !important;
   }
@@ -227,15 +247,17 @@ $box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
   width: 350px !important;
   display: flex !important;
   flex-direction: column !important;
-  font-family: "Poppins", sans-serif !important;
+  font-family: 'Poppins', sans-serif !important;
   padding: 10px !important;
-  background-color: #FFFFFF !important;
-  box-shadow: $box-shadow-dark !important;
+  background-color: #ffffff !important;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.12),
+    0 0 6px rgba(0, 0, 0, 0.12) !important;
   border-radius: 5px !important;
   text-align: center !important;
-  z-index: ($modal-z-index - 1) !important;
+  z-index: 999999998 !important;
 
-  ul {
+  & ul {
     list-style: none outside !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -249,19 +271,18 @@ $box-shadow-dark: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .12);
 
 .anyshortcut-url {
   padding: 5px !important;
-  font-family: "Roboto", sans-serif !important;
+  font-family: 'Roboto', sans-serif !important;
   font-size: 12px !important;
   color: #bbbbbb !important;
 }
 
 .anyshortcut-sign-in-link {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.5px;
   margin-bottom: 10px;
-  //text-decoration: none !important;
-  color: $primary-color !important;
+  color: #517ce8 !important;
 
   &:hover {
     opacity: 0.8 !important;

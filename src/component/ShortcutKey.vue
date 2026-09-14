@@ -6,7 +6,7 @@
     </span>
   </span>
 </template>
-<style lang="scss" scoped></style>
+<style scoped></style>
 <script lang="ts">
 import { defineComponent } from 'vue';
 import prefs from '../prefs';

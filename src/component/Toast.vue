@@ -9,11 +9,9 @@
     </div>
   </transition>
 </template>
-<style lang="scss">
-@import '../scss/_var.scss';
-
+<style>
 .toast {
-  box-shadow: $box-shadow-base;
+  box-shadow: var(--box-shadow-base);
   min-width: 300px;
   padding: 10px 12px;
   box-sizing: border-box;
@@ -28,7 +26,7 @@
     transform 0.4s;
   overflow: hidden;
 
-  .toast-group {
+  & .toast-group {
     margin-left: 38px;
     position: relative;
     height: 20px;
@@ -44,13 +42,13 @@
       text-align: justify;
     }
   }
-  .toast-img {
+  & .toast-img {
     size: 40px;
     position: absolute;
     left: 0;
     top: 0;
   }
-  .toast-close-button {
+  & .toast-close-button {
     position: absolute;
     right: 3px;
     cursor: pointer;

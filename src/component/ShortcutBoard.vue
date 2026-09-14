@@ -40,14 +40,12 @@
     </div>
   </div>
 </template>
-<style lang="scss">
-@import '../scss/_common.scss';
-
+<style>
 .shortcut-board {
   padding: 5px;
   border-radius: 3px;
   background-color: #ffffff;
-  box-shadow: $box-shadow-base;
+  box-shadow: var(--box-shadow-base);
 }
 
 .shortcut-bound,
@@ -59,11 +57,11 @@
 }
 
 .shortcut-comment-link {
-  color: $content-font-color;
+  color: var(--content-font-color);
 
   &:visited,
   &:active {
-    color: $content-font-color;
+    color: var(--content-font-color);
   }
 }
 
@@ -76,7 +74,7 @@
   border: solid #cecece 1px;
 
   &:focus {
-    border: solid $primary-color 1px;
+    border: solid var(--primary-color) 1px;
   }
 }
 
@@ -87,14 +85,38 @@
 }
 
 .shortcut-delete-button {
-  @include button;
-  @include negative-gradient;
+  cursor: pointer;
+  padding: 5px 25px;
+  height: 28px;
+  border-radius: 3px;
+  font-size: 14px;
+  box-shadow: var(--box-shadow-base);
+  text-align: center;
+  background: linear-gradient(#d85b52, #aa3030);
+  color: #ffffff;
+
+  &:hover {
+    background: linear-gradient(#aa3030, #902626);
+  }
+
   padding: 2px 30px;
 }
 
 .shortcut-bind-button {
-  @include button;
-  @include positive-gradient;
+  cursor: pointer;
+  padding: 5px 25px;
+  height: 28px;
+  border-radius: 3px;
+  font-size: 14px;
+  box-shadow: var(--box-shadow-base);
+  text-align: center;
+  color: #ffffff;
+  background: linear-gradient(var(--primary-color), #1882ef);
+
+  &:hover {
+    background: linear-gradient(var(--secondary-color), var(--primary-color));
+  }
+
   padding: 2px 30px;
 }
 </style>

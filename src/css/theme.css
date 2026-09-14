@@ -1,0 +1,31 @@
+/*
+ * Design tokens for the extension pages (popup and tour).
+ *
+ * These were Sass variables that `additionalData` prepended to every
+ * stylesheet, which also copied the `.primary-title` rule below into all
+ * eleven popup style blocks. As custom properties they are declared once
+ * and inherit from :root.
+ *
+ * The content script deliberately does not use these and inlines its
+ * values instead: it is injected into third-party pages, where declaring
+ * custom properties on :root would leak into the host document.
+ */
+:root {
+  --primary-color: #517ce8;
+  --secondary-color: #2b72dc;
+  --header-bgcolor: #fafbfc;
+  --content-bgcolor: #ffffff;
+  --content-font-color: #131916;
+  --menu-color: #6e6e6e;
+  --box-shadow-base: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+  --box-shadow-dark: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.12);
+}
+
+.primary-title {
+  font-size: 18px;
+  color: var(--primary-color);
+  line-height: 50px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  letter-spacing: 0;
+}

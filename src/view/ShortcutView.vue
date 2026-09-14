@@ -123,9 +123,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-@import '../scss/_common.scss';
-
+<style scoped>
 .shortcut-view {
   box-sizing: border-box;
   display: flex;
@@ -175,17 +173,13 @@ export default defineComponent({
   z-index: 999;
 }
 
-@mixin keyboard-icon {
+.keyboard-icon-right {
   position: absolute;
   bottom: 0;
   width: 30px;
   height: 30px;
   z-index: 99;
   cursor: pointer;
-}
-
-.keyboard-icon-right {
-  @include keyboard-icon;
   right: 5px;
 
   &:hover {
@@ -194,7 +188,12 @@ export default defineComponent({
 }
 
 .keyboard-icon-left {
-  @include keyboard-icon;
+  position: absolute;
+  bottom: 0;
+  width: 30px;
+  height: 30px;
+  z-index: 99;
+  cursor: pointer;
   left: 5px;
 
   &:hover {

@@ -82,16 +82,21 @@
     </a>
   </div>
 </template>
-<style lang="scss">
-@import '../scss/common';
-
+<style>
 .preference-view {
   width: 300px;
-  background: $content-bgcolor;
+  background: var(--content-bgcolor);
 }
 
 .preference-header {
-  @include header;
+  background: var(--header-bgcolor);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  border-bottom: #eeeeee solid 1.3px;
+  z-index: 1;
   justify-content: flex-start;
 }
 
@@ -108,7 +113,7 @@
     background: #f8f8f8;
   }
 
-  .social-icon {
+  & .social-icon {
     margin: 0 5px;
 
     & img {

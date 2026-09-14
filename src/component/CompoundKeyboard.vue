@@ -30,11 +30,7 @@
     <div class="table-action"></div>
   </div>
 </template>
-<style lang="scss">
-@import '../scss/_keyboard.scss';
-
-$max-width: 410px;
-
+<style>
 .compound-keyboard {
   position: relative;
   display: flex;
@@ -42,7 +38,7 @@ $max-width: 410px;
   overflow: hidden;
   height: 280px;
 
-  .table-action {
+  & .table-action {
     position: absolute;
     left: 0;
     top: 0;
@@ -71,7 +67,7 @@ table {
 thead {
   position: relative;
   display: block;
-  max-width: $max-width;
+  max-width: 410px;
   overflow: visible;
   border-spacing: 10px 0;
   padding: 2px 0;
@@ -91,13 +87,12 @@ thead th {
 tbody {
   position: relative;
   display: block;
-  max-width: $max-width;
+  max-width: 410px;
   height: 250px;
   overflow: scroll;
 }
 
 td {
-  @extend .key;
   position: relative;
   min-width: 35px;
   height: 35px;

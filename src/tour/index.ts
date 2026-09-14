@@ -1,9 +1,11 @@
 import { createApp } from 'vue';
 import Tour from './Tour.vue';
 import $background from '../extension-api';
+import '../css/theme.css';
+import '../css/common.css';
 // The tour page demos the in-page shortcut UI, so it needs both stylesheets.
-import '../scss/tour.scss';
-import '../scss/content-script.scss';
+import '../css/tour.css';
+import '../css/content-script.css';
 import 'balloon-css';
 
 $background

@@ -3,9 +3,20 @@ import vue from '@vitejs/plugin-vue';
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath, URL } from 'node:url';
 
-const r = (path) => fileURLToPath(new URL(path, import.meta.url));
+const r = (path: string) => fileURLToPath(new URL(path, import.meta.url));
 
 const platform = process.env.PLATFORM === 'firefox' ? 'firefox' : 'chrome';
+
+const readJson = (path: string) => JSON.parse(readFileSync(r(path), 'utf-8'));
+
+// Browsers the manifests claim to support, read from the manifests themselves
+// so the CSS target cannot drift away from what the extension advertises.
+const MIN_CHROME = Number(readJson('./manifest/chrome.json').minimum_chrome_version);
+const MIN_FIREFOX = Number(
+  readJson('./manifest/firefox.json').browser_specific_settings.gecko.strict_min_version.split(
+    '.'
+  )[0]
+);
 
 // Chrome Web Store extension keys (moved from the old build/config.js).
 const CHROME_KEYS = {
@@ -19,13 +30,15 @@ const CHROME_KEYS = {
  * Merge manifest/common.json with the platform overrides and write
  * extension/manifest.json after the bundle is done.
  */
-function extensionManifestPlugin(mode) {
+function extensionManifestPlugin(mode: string) {
   return {
     name: 'generate-extension-manifest',
     closeBundle() {
-      const read = (path) => JSON.parse(readFileSync(r(path), 'utf-8'));
-      const manifest = { ...read('./manifest/common.json'), ...read(`./manifest/${platform}.json`) };
-      manifest.version = read('./package.json').version;
+      const manifest = {
+        ...readJson('./manifest/common.json'),
+        ...readJson(`./manifest/${platform}.json`),
+      };
+      manifest.version = readJson('./package.json').version;
       if (mode === 'development') {
         manifest.name = 'Anyshortcut-Dev';
       }
@@ -46,9 +59,14 @@ const shared = {
     },
   },
   css: {
-    preprocessorOptions: {
-      scss: {
-        additionalData: `@import "@/scss/_var.scss";`,
+    // Styles are plain CSS with native nesting. Lightning CSS compiles the
+    // nesting away for the oldest browsers the manifest claims to support,
+    // which predate it (Chrome 112 / Firefox 117).
+    transformer: 'lightningcss' as const,
+    lightningcss: {
+      targets: {
+        chrome: MIN_CHROME << 16,
+        firefox: MIN_FIREFOX << 16,
       },
     },
   },

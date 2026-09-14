@@ -20,9 +20,7 @@
     </div>
   </main>
 </template>
-<style lang="scss">
-@import '../scss/common';
-
+<style>
 main {
   line-height: 2em;
   width: 400px;
@@ -33,7 +31,6 @@ main {
 }
 
 .anyshortcut {
-  @extend .brand;
   font-size: 18px;
   position: relative;
   top: 0;
@@ -81,16 +78,16 @@ a:focus {
   text-align: left;
   width: 80%;
 
-  h3 {
+  & h3 {
     margin-bottom: 10px;
     color: #1882ef;
   }
 
-  ul {
+  & ul {
     list-style: none;
     padding: 0;
 
-    li {
+    & li {
       padding: 5px 0;
       font-size: 14px;
       color: #666;

@@ -2,7 +2,7 @@ import modal from './modal';
 import monitor from './key-event-monitor';
 import circle from './circle';
 import type { BindSuccessMessage } from '../types';
-import '../scss/content-script.scss';
+import '../css/content-script.css';
 
 // Register key events as early as possible.
 document.addEventListener('keyup', monitor.onKeyUp, false);

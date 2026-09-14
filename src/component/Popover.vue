@@ -6,9 +6,7 @@
     </div>
   </transition>
 </template>
-<style lang="scss">
-@import '../scss/_common.scss';
-
+<style>
 .popper {
   z-index: 999;
 }
@@ -23,9 +21,9 @@
 }
 
 .tooltip {
-  background: fade_out(#fefefe, 0.1);
+  background: rgba(254, 254, 254, 0.9);
   font-size: 12px;
-  color: $primary-color;
+  color: var(--primary-color);
   padding: 5px;
   border-radius: 3px;
   box-shadow:

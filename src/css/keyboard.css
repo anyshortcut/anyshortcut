@@ -1,4 +1,11 @@
-.key {
+/*
+ * The on-screen keyboard keys.
+ *
+ * `td` is listed alongside `.key` because the compound keyboard renders its
+ * keys as table cells; it used to reach this rule through `@extend .key`.
+ */
+.key,
+td {
   color: #1882ef;
   background: #fff;
   border: 1px solid #ededed;
@@ -8,8 +15,8 @@
   text-align: center;
 
   &.highlight {
-    background: #E9EDFB;
-    color: #4F6EC8;
+    background: #e9edfb;
+    color: #4f6ec8;
     font-weight: 500;
     box-shadow: none;
   }

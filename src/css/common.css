@@ -1,8 +1,14 @@
-@import "var.scss";
-@import url("https://fonts.googleapis.com/css?family=Poppins:400,500i,600i|Roboto");
+/*
+ * Shared page styles. Imported once per entry rather than by each
+ * component, so these rules are no longer duplicated per style block.
+ */
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500i,600i|Roboto');
 
-.brand {
-  color: $primary-color;
+/* `.anyshortcut` (the tour's brand link) reached this rule through
+   `@extend .brand`. */
+.brand,
+.anyshortcut {
+  color: var(--primary-color);
   font-size: 16px;
   cursor: pointer;
   display: flex;
@@ -10,25 +16,28 @@
   font-weight: 600;
   text-decoration: none;
   outline: none;
-  letter-spacing: .03em;
+  letter-spacing: 0.03em;
 
-  .brand-logo {
+  & .brand-logo {
     vertical-align: middle;
     margin: 6px 10px;
     height: 20px;
   }
 }
 
-.shortcut {
+/* `.shortcut-key` (the shortcut list) reached this rule through
+   `@extend .shortcut`. */
+.shortcut,
+.shortcut-key {
   box-sizing: border-box;
-  color: $primary-color;
+  color: var(--primary-color);
   background-color: white;
   padding: 3px 10px;
   margin: 0 5px;
   border-radius: 3px;
   font-size: 14px;
   text-align: center;
-  box-shadow: $box-shadow-base;
+  box-shadow: var(--box-shadow-base);
   white-space: nowrap;
 }
 
@@ -46,7 +55,7 @@
   line-height: 30px;
   font-family: 'Poppins', sans-serif;
   font-weight: 500;
-  color: #44485B;
+  color: #44485b;
   letter-spacing: 0;
 }
 
@@ -55,7 +64,7 @@
   line-height: 26px;
   font-family: 'Open Sans', sans-serif;
   font-weight: normal;
-  color: #6D7D93;
+  color: #6d7d93;
   letter-spacing: 0;
 }
 
@@ -64,6 +73,6 @@
   line-height: 26px;
   font-family: 'Open Sans', sans-serif;
   font-weight: normal;
-  color: #6D7D93;
+  color: #6d7d93;
   letter-spacing: 0;
 }

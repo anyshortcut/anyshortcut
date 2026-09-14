@@ -5,6 +5,11 @@ import Toast from '../component/toast';
 import Bus from '../libs/vue-bus';
 import $background from '../extension-api';
 // Icon fonts and tooltip css, bundled from npm instead of CDN links.
+// Shared styles are imported once here rather than by each component, which
+// is what the Sass build ended up doing through per-component @import.
+import '../css/theme.css';
+import '../css/common.css';
+import '../css/keyboard.css';
 import 'font-awesome/css/font-awesome.css';
 import 'simple-line-icons/css/simple-line-icons.css';
 import 'balloon-css';

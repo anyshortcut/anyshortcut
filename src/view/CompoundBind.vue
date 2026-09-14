@@ -36,14 +36,12 @@
     </popover>
   </div>
 </template>
-<style lang="scss">
-@import '../scss/common';
-
+<style>
 .compound-bind-view {
   width: 560px;
   display: flex;
   flex-direction: column;
-  background: $content-bgcolor;
+  background: var(--content-bgcolor);
 }
 </style>
 <script lang="ts">

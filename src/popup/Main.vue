@@ -23,14 +23,12 @@
     </p>
   </div>
 </template>
-<style lang="scss">
-@import '../scss/common';
-
+<style>
 body {
   font-family: 'Poppins', sans-serif;
   font-weight: 400;
   font-size: 100%;
-  color: $content-font-color;
+  color: var(--content-font-color);
   text-align: center;
   margin: 0 auto;
 }
@@ -39,22 +37,29 @@ body {
   display: flex;
   flex-direction: column;
   align-content: center;
-  background: $content-bgcolor;
+  background: var(--content-bgcolor);
 }
 
 .main-header {
-  @include header;
+  background: var(--header-bgcolor);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  border-bottom: #eeeeee solid 1.3px;
+  z-index: 1;
 }
 
 .menu {
-  color: $menu-color;
+  color: var(--menu-color);
   font-size: 12.5px;
   letter-spacing: 0.6px;
   margin: 0 5px;
 
-  a:visited,
-  a:active {
-    color: $menu-color;
+  & a:visited,
+  & a:active {
+    color: var(--menu-color);
   }
 }
 
@@ -64,9 +69,9 @@ body {
   display: flex;
   flex-direction: column;
   align-content: center;
-  background: $content-bgcolor;
+  background: var(--content-bgcolor);
 
-  p {
+  & p {
     font-size: 16px;
     color: #515151;
     margin: auto 20px;

@@ -251,9 +251,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss" scoped>
-@import '../scss/_common.scss';
-
+<style scoped>
 .top-container {
   padding: 20px 20px 0;
   border-right: #ececec solid 1px;
@@ -261,7 +259,7 @@ export default defineComponent({
   white-space: nowrap;
   text-align: start;
 
-  .favicon {
+  & .favicon {
     position: relative;
     overflow: visible;
     display: inline-block;
@@ -329,12 +327,12 @@ export default defineComponent({
     left: 0;
   }
 
-  .primary-stats {
+  & .primary-stats {
     display: flex;
     height: 70px;
   }
 
-  .entry {
+  & .entry {
     overflow: hidden;
     flex: 1;
 
@@ -354,7 +352,7 @@ export default defineComponent({
     }
   }
 
-  .delete-text {
+  & .delete-text {
     margin: 15px auto;
     width: 150px;
     height: 40px;
@@ -385,8 +383,21 @@ export default defineComponent({
 }
 
 .shortcut-delete-button {
-  @include button;
-  @include negative-gradient;
+  cursor: pointer;
+  padding: 5px 25px;
+  height: 28px;
+  border-radius: 3px;
+  font-size: 14px;
+  box-shadow: var(--box-shadow-base);
+  text-align: center;
+
+  background: linear-gradient(#d85b52, #aa3030);
+  color: #ffffff;
+
+  &:hover {
+    background: linear-gradient(#aa3030, #902626);
+  }
+
   padding: 2px 30px;
   margin-top: 5px;
 }
