@@ -30,7 +30,7 @@
               class="icon-trash"
               aria-hidden="true"
               title="Delete the shortcut"
-              @click="$bus.emit('unbind-shortcut', shortcut)"
+              @click="$bus.emit('unbind-shortcut', { shortcut })"
             >
             </i>
           </div>
@@ -169,21 +169,24 @@ ul {
   line-height: 1.5;
 }
 </style>
-<script type="es6">
-export default {
-    name: 'ShortcutList',
-    data() {
-        return {
-            hoveredKey: null
-        }
+<script lang="ts">
+import { defineComponent } from 'vue';
+import type { DomainShortcuts } from '../types';
+
+export default defineComponent({
+  name: 'ShortcutList',
+  data() {
+    return {
+      hoveredKey: null as string | null,
+    };
+  },
+  props: {
+    shortcuts: {
+      type: Object as () => DomainShortcuts,
+      default: function () {
+        return {};
+      },
     },
-    props: {
-        shortcuts: {
-            type: Object,
-            default: function() {
-                return {};
-            }
-        }
-    },
-}
+  },
+});
 </script>

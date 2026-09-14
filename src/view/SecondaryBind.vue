@@ -27,12 +27,14 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
 import Keyboard from '../component/Keyboard.vue';
-import KeyboardBind from './mixin-keyboard-bind.js';
-import prefs from '../prefs.js';
+import KeyboardBind from './mixin-keyboard-bind';
+import prefs from '../prefs';
+import type { Shortcut } from '../types';
 
-export default {
+export default defineComponent({
   name: 'SecondaryBind',
   data() {
     return {
@@ -41,7 +43,7 @@ export default {
   },
   props: {
     domainShortcut: {
-      type: Object,
+      type: Object as () => Shortcut,
       default() {
         return {};
       },
@@ -51,7 +53,7 @@ export default {
     Keyboard,
   },
   mixins: [KeyboardBind],
-};
+});
 </script>
 
 <style scoped>

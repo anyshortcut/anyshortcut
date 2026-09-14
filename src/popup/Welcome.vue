@@ -104,14 +104,16 @@ a:focus {
   }
 }
 </style>
-<script type="es6">
-export default {
-    name: 'welcome-view',
-    methods: {
-        getStarted() {
-            // Navigate to main view
-            this.$router.push({ name: 'main' });
-        },
-    }
-}
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+  name: 'welcome-view',
+  methods: {
+    getStarted() {
+      // Navigate to main view
+      this.$router.push({ name: 'main' });
+    },
+  },
+});
 </script>

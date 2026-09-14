@@ -47,27 +47,29 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from 'vue';
 import ShortcutList from '../component/ShortcutList.vue';
 import Popover from '../component/Popover.vue';
 import PrimaryShortcutCard from './PrimaryShortcutCard.vue';
 import SecondaryShortcutCard from './SecondaryShortcutCard.vue';
 import SecondaryBind from '../view/SecondaryBind.vue';
 import BindView from '../view/BindView.vue';
-import common from '../common.js';
-import _ from 'lodash';
+import common from '../common';
+import { cloneDeep, forOwn } from 'lodash-es';
+import type { DomainShortcuts, Shortcut } from '../types';
 
-export default {
+export default defineComponent({
   name: 'ShortcutView',
   data() {
     return {
-      currentSecondaryShortcut: null,
-      secondaryShortcuts: {},
+      currentSecondaryShortcut: null as Shortcut | null,
+      secondaryShortcuts: {} as DomainShortcuts,
     };
   },
   props: {
     domainShortcut: {
-      type: Object,
+      type: Object as () => Shortcut,
       default() {
         return {};
       },
@@ -86,22 +88,22 @@ export default {
       this.currentSecondaryShortcut = null;
 
       let activeTab = this.$background.activeTab;
-      this.secondaryShortcuts = _.cloneDeep(
+      this.secondaryShortcuts = cloneDeep(
         this.$background.getSecondaryShortcutsByUrl(activeTab.url)
       );
 
       // Add 'parentKey' property for all domain secondary shortcuts.
       // Iterate both secondary shortcuts to find the current secondary shortcut,
-      _.forOwn(this.secondaryShortcuts, (shortcut) => {
+      forOwn(this.secondaryShortcuts, (shortcut) => {
         shortcut['parentKey'] = this.domainShortcut.key;
 
         if (common.isUrlEquivalent(shortcut.url, activeTab.url)) {
-          this.currentSecondaryShortcut = _.cloneDeep(shortcut);
+          this.currentSecondaryShortcut = cloneDeep(shortcut);
         }
       });
       return Promise.resolve();
     },
-    onShortcutListItemClick(shortcut) {
+    onShortcutListItemClick(shortcut: Shortcut) {
       this.currentSecondaryShortcut = shortcut;
     },
   },
@@ -118,7 +120,7 @@ export default {
   unmounted() {
     this.$bus.off('refresh', this.queryShortcuts);
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

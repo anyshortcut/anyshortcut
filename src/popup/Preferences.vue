@@ -166,32 +166,34 @@
   background-color: #fc0d1b;
 }
 </style>
-<script type="es6">
-import prefs from "../prefs.js";
+<script lang="ts">
+import { defineComponent } from 'vue';
+import prefs from '../prefs';
+import type { CombinationKey, ShowCircleConfig } from '../prefs';
 
-export default {
-    name: 'preference-view',
-    data() {
-        return {
-            combinationKey: prefs.getDefaultCombinationKey(),
-            openByBlank: prefs.isShortcutOpenByBlank(),
-            compoundEnable: prefs.isCompoundShortcutEnable(),
-            showCircle: prefs.getShowCircleConfig(),
-        }
+export default defineComponent({
+  name: 'preference-view',
+  data() {
+    return {
+      combinationKey: prefs.getDefaultCombinationKey(),
+      openByBlank: prefs.isShortcutOpenByBlank(),
+      compoundEnable: prefs.isCompoundShortcutEnable(),
+      showCircle: prefs.getShowCircleConfig(),
+    };
+  },
+  watch: {
+    combinationKey: function (newValue: CombinationKey) {
+      prefs.setDefaultCombinationKey(newValue);
     },
-    watch: {
-        combinationKey: function(newValue) {
-            prefs.setDefaultCombinationKey(newValue);
-        },
-        openByBlank: function(newValue) {
-            prefs.setShortcutOpenByBlank(newValue);
-        },
-        compoundEnable: function(newValue) {
-            prefs.setCompoundShortcutEnable(newValue);
-        },
-        showCircle: function(newValue) {
-            prefs.setShowCircleConfig(newValue);
-        }
+    openByBlank: function (newValue: boolean) {
+      prefs.setShortcutOpenByBlank(newValue);
     },
-};
+    compoundEnable: function (newValue: boolean) {
+      prefs.setCompoundShortcutEnable(newValue);
+    },
+    showCircle: function (newValue: ShowCircleConfig) {
+      prefs.setShowCircleConfig(newValue);
+    },
+  },
+});
 </script>

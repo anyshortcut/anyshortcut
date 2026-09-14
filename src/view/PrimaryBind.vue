@@ -30,21 +30,22 @@
   align-items: center;
 }
 </style>
-<script type="es6">
-import Keyboard from "../component/Keyboard.vue";
-import prefs from "../prefs.js";
-import KeyboardBind from "./mixin-keyboard-bind.js";
+<script lang="ts">
+import { defineComponent } from 'vue';
+import Keyboard from '../component/Keyboard.vue';
+import prefs from '../prefs';
+import KeyboardBind from './mixin-keyboard-bind';
 
-export default {
-    name: 'PrimaryBind',
-    data() {
-        return {
-            prefs: prefs,
-        };
-    },
-    components: {
-        Keyboard,
-    },
-    mixins: [KeyboardBind],
-}
+export default defineComponent({
+  name: 'PrimaryBind',
+  data() {
+    return {
+      prefs: prefs,
+    };
+  },
+  components: {
+    Keyboard,
+  },
+  mixins: [KeyboardBind],
+});
 </script>

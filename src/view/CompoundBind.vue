@@ -20,7 +20,7 @@
     <compound-keyboard
       :bound-keys="boundKeys"
       :highlight-key="highlightKey"
-      @on-table-scroll="$refs.popover.dismiss()"
+      @on-table-scroll="onTableScroll"
       @key-hover-over="onHoverOver"
       @key-hover-leave="onHoverLeave"
     >
@@ -46,15 +46,16 @@
   background: $content-bgcolor;
 }
 </style>
-<script type="es6">
-import CompoundKeyboard from "../component/CompoundKeyboard.vue";
-import KeyboardBind from "./mixin-keyboard-bind.js";
+<script lang="ts">
+import { defineComponent } from 'vue';
+import CompoundKeyboard from '../component/CompoundKeyboard.vue';
+import KeyboardBind from './mixin-keyboard-bind';
 
-export default {
-    name: 'CompoundBindView',
-    components: {
-        CompoundKeyboard,
-    },
-    mixins: [KeyboardBind],
-}
+export default defineComponent({
+  name: 'CompoundBindView',
+  components: {
+    CompoundKeyboard,
+  },
+  mixins: [KeyboardBind],
+});
 </script>

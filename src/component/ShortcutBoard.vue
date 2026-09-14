@@ -15,7 +15,7 @@
         <img class="shortcut-favicon" :src="shortcut.favicon" />
         {{ shortcut.comment }}
       </a>
-      <div class="shortcut-delete-button" @click="$bus.emit('unbind-shortcut', shortcut)">
+      <div class="shortcut-delete-button" @click="$bus.emit('unbind-shortcut', { shortcut })">
         Delete
       </div>
     </div>
@@ -28,12 +28,12 @@
         placeholder="Comment for this url"
         maxlength="30"
         autofocus
-        @focus="$event.target.select()"
+        @focus="onCommentFocus"
         required
       />
       <div
         class="shortcut-bind-button"
-        @click="$bus.emit('bind-shortcut', primary, keyChar, comment)"
+        @click="$bus.emit('bind-shortcut', { primary, keyChar, comment })"
       >
         Bind
       </div>
@@ -98,52 +98,59 @@
   padding: 2px 30px;
 }
 </style>
-<script type="es6">
-import common from "../common.js";
-import ShortcutKey from "../component/ShortcutKey.vue";
+<script lang="ts">
+import { defineComponent } from 'vue';
+import common from '../common';
+import ShortcutKey from '../component/ShortcutKey.vue';
+import type { Shortcut } from '../types';
 
-export default {
-    name: 'ShortcutBoard',
-    data() {
-        return {
-            comment: this.$background.activeTab.title.slice(0, 30),
-        };
+export default defineComponent({
+  name: 'ShortcutBoard',
+  data() {
+    return {
+      comment: this.$background.activeTab.title.slice(0, 30),
+    };
+  },
+  props: {
+    shortcut: {
+      type: Object as () => Shortcut,
+      default: function () {
+        return null;
+      },
     },
-    props: {
-        shortcut: {
-            type: Object,
-            default: function() {
-                return null;
-            }
-        },
-        keyChar: {
-            type: String,
-            default: function() {
-                return null;
-            }
-        },
-        parentKeyChar: {
-            type: String,
-            default: function() {
-                return null;
-            }
-        },
+    keyChar: {
+      type: String,
+      default: function () {
+        return null;
+      },
     },
-    components: {
-        ShortcutKey,
+    parentKeyChar: {
+      type: String,
+      default: function () {
+        return null;
+      },
     },
-    computed: {
-        // Whether is the primary shortcut
-        primary: function() {
-            return this.parentKeyChar === null;
-        },
-        shortcutDomain: function() {
-            if (this.shortcut.primary) {
-                return this.shortcut.domain;
-            } else {
-                return common.getHostnameFromUrl(this.shortcut.url);
-            }
-        },
+  },
+  components: {
+    ShortcutKey,
+  },
+  methods: {
+    onCommentFocus(event: FocusEvent) {
+      (event.target as HTMLInputElement).select();
     },
-}
+  },
+  computed: {
+    // Whether is the primary shortcut
+    primary: function () {
+      return this.parentKeyChar === null;
+    },
+    shortcutDomain: function () {
+      if (this.shortcut.primary) {
+        return this.shortcut.domain;
+      } else {
+        return common.getHostnameFromUrl(this.shortcut.url);
+      }
+    },
+  },
+});
 </script>

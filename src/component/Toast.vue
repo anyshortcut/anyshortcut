@@ -1,3 +1,14 @@
+<template>
+  <transition name="toast-fade" @after-leave="destroyElement">
+    <div class="toast" v-show="visible" @mouseenter="clearTimer" @mouseleave="startTimer">
+      <img class="toast-img" :src="typeImg" alt="" />
+      <div class="toast-group">
+        <p>{{ message }}</p>
+        <div class="toast-close-button" @click="close">X</div>
+      </div>
+    </div>
+  </transition>
+</template>
 <style lang="scss">
 @import '../scss/_var.scss';
 
@@ -52,113 +63,75 @@
   }
 }
 
-.toast-fade-enter,
-.toast-fade-leave-active {
+.toast-fade-enter-from,
+.toast-fade-leave-to {
   opacity: 0;
   transform: translate(-50%, -100%);
 }
 </style>
-<script type="es6">
-export default {
-    data() {
-        return {
-            visible: false,
-            message: '',
-            type: 'info',
-            duration: 2000,
-            timer: null,
-            closed: false,
-        }
-    },
-    /*
-    <transition name="toast-fade">
-    <div class="toast"
-         v-show="visible"
-         @mouseenter="clearTimer"
-         @mouseleave="startTimer">
-        <img class="toast-img" :src="typeImg" alt="">
-        <div class="toast-group">
-            <p>{{ message }}</p>
-            <div class="toast-close-button" @click="close">x</div>
-        </div>
-    </div>
-    </transition>
-     */
-    render(createElement) {
-        return createElement('transition', {
-            attrs: {
-                name: 'toast-fade',
-            }
-        }, [
-            createElement('div', {
-                class: 'toast',
-                directives: [{
-                    name: 'show',
-                    value: this.visible,
-                },],
-                on: {
-                    mouseenter: this.clearTimer,
-                    mouseleave: this.startTimer,
-                },
-            }, [
-                createElement('img', {
-                    class: 'toast-img',
-                    domProps: {
-                        src: this.typeImg,
-                    }
-                }),
-                createElement('div', {class: 'toast-group'}, [
-                    createElement('p', this.message),
-                    createElement('div', {
-                        class: 'toast-close-button',
-                        on: {
-                            click: this.close,
-                        }
-                    }, ['X']),
-                ]),
-            ]),
-        ]);
-    },
-    computed: {
-        typeImg() {
-            return require(`../img/${ this.type }.svg`);
-        }
-    },
-    watch: {
-        closed(newVal) {
-            if (newVal) {
-                this.visible = false;
-                this.$el.addEventListener('transitionend', this.destroyElement);
-            }
-        }
-    },
-    methods: {
-        close() {
-            this.closed = true;
-            if (typeof this.onClose === 'function') {
-                this.onClose(this);
-            }
-        },
-        destroyElement() {
-            this.$el.removeEventListener('transitionend', this.destroyElement);
-            this.$destroy(true);
-            this.$el.parentNode.removeChild(this.$el);
-        },
-        clearTimer() {
-            clearTimeout(this.timer);
-        },
-        startTimer() {
-            if (this.duration > 0) {
-                this.timer = setTimeout(() => {
-                    if (!this.closed) {
-                        this.close();
-                    }
-                }, this.duration);
-            }
-        }
-    },
-    mounted() {
-        this.startTimer();
-    }
+<script lang="ts">
+import { defineComponent } from 'vue';
+import type { PropType } from 'vue';
+import successImg from '../img/success.svg';
+import infoImg from '../img/info.svg';
+import errorImg from '../img/error.svg';
+import warningImg from '../img/exclamation.svg';
+
+const TYPE_IMAGES: Record<string, string> = {
+  success: successImg,
+  info: infoImg,
+  error: errorImg,
+  warning: warningImg,
 };
+
+export default defineComponent({
+  name: 'ToastMessage',
+  props: {
+    message: { type: String, default: '' },
+    type: { type: String, default: 'info' },
+    duration: { type: Number, default: 2000 },
+    onClose: { type: Function as PropType<(instance: unknown) => void>, default: null },
+  },
+  data() {
+    return {
+      visible: false,
+      timer: null as ReturnType<typeof setTimeout> | null,
+      closed: false,
+    };
+  },
+  computed: {
+    typeImg(): string {
+      return TYPE_IMAGES[this.type] || TYPE_IMAGES.info;
+    },
+  },
+  methods: {
+    close() {
+      this.closed = true;
+      this.visible = false;
+    },
+    destroyElement() {
+      // Unmounting and DOM removal happen in toast.ts (Toast.close → app.unmount()).
+      if (typeof this.onClose === 'function') {
+        this.onClose(this);
+      }
+    },
+    clearTimer() {
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
+    },
+    startTimer() {
+      if (this.duration > 0) {
+        this.timer = setTimeout(() => {
+          if (!this.closed) {
+            this.close();
+          }
+        }, this.duration);
+      }
+    },
+  },
+  mounted() {
+    this.startTimer();
+  },
+});
 </script>

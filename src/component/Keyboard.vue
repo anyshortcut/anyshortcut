@@ -126,77 +126,82 @@
   }
 }
 </style>
-<script type="es6">
-export default {
-    name: 'Keyboard',
-    directives: {
-        // Vue has no built-in v-visible, and the Vue 2 global directive this
-        // template relied on did not survive the Vue 3 upgrade. Unlike v-show
-        // it keeps the element's box, so the slide keys hold their space.
-        visible: {
-            mounted(el, binding) {
-                el.style.visibility = binding.value ? 'visible' : 'hidden';
-            },
-            updated(el, binding) {
-                el.style.visibility = binding.value ? 'visible' : 'hidden';
-            },
-        },
-    },
-    props: {
-        combinationKey: {
-            type: String,
-            default() {
-                return 'alt';
-            }
-        },
-        boundKeys: {
-            type: Array,
-            default: function() {
-                return [];
-            }
-        },
-        showSlideKeys: {
-            type: Boolean,
-            default: function() {
-                return true;
-            }
-        },
-        highlightKey: {
-            type: String,
-            default: function() {
-                return null;
-            }
-        },
-    },
-    computed: {
-        slideKeyVisibility: function() {
-            return this.showSlideKeys && this.highlightKey !== null;
-        }
-    },
-    methods: {
-        onKeyClick: function(event) {
-            //What difference between e.currentTarget and e.target,
-            // refer to http://jsfiddle.net/misteroneill/kmn4A/3/
-            this.$emit('key-changed', event.target.innerText);
-        },
-        keyClass: function(key) {
-            return this.boundKeys.indexOf(key) !== -1 ? {
-                'occupied': true
-            } : {
-                'highlight': key === this.highlightKey
-            };
-        }
-    },
-    mounted: function() {
-        // Query key elements exclude slide key element, then add mouse event listener.
-        this.$el.querySelectorAll('.key:not(.slide-key)').forEach(element => {
-            element.addEventListener('mouseenter', () => {
-                this.$emit('key-hover-over', element);
-            });
-            element.addEventListener('mouseleave', () => {
-                this.$emit('key-hover-leave', element);
-            });
-        });
-    },
+<script lang="ts">
+import { defineComponent } from 'vue';
+import type { DirectiveBinding } from 'vue';
+
+function applyVisibility(el: HTMLElement, binding: DirectiveBinding<boolean>) {
+  el.style.visibility = binding.value ? 'visible' : 'hidden';
 }
+
+export default defineComponent({
+  name: 'Keyboard',
+  directives: {
+    // Vue has no built-in v-visible, and the Vue 2 global directive this
+    // template relied on did not survive the Vue 3 upgrade. Unlike v-show
+    // it keeps the element's box, so the slide keys hold their space.
+    visible: {
+      mounted: applyVisibility,
+      updated: applyVisibility,
+    },
+  },
+  props: {
+    combinationKey: {
+      type: String,
+      default() {
+        return 'alt';
+      },
+    },
+    boundKeys: {
+      type: Array,
+      default: function () {
+        return [];
+      },
+    },
+    showSlideKeys: {
+      type: Boolean,
+      default: function () {
+        return true;
+      },
+    },
+    highlightKey: {
+      type: String,
+      default: function () {
+        return null;
+      },
+    },
+  },
+  computed: {
+    slideKeyVisibility: function () {
+      return this.showSlideKeys && this.highlightKey !== null;
+    },
+  },
+  methods: {
+    onKeyClick: function (event: MouseEvent) {
+      //What difference between e.currentTarget and e.target,
+      // refer to http://jsfiddle.net/misteroneill/kmn4A/3/
+      this.$emit('key-changed', (event.target as HTMLElement).innerText);
+    },
+    keyClass: function (key: string) {
+      return this.boundKeys.indexOf(key) !== -1
+        ? {
+            occupied: true,
+          }
+        : {
+            highlight: key === this.highlightKey,
+          };
+    },
+  },
+  mounted: function () {
+    // Query key elements exclude slide key element, then add mouse event listener.
+    this.$el.querySelectorAll('.key:not(.slide-key)').forEach((element) => {
+      element.addEventListener('mouseenter', () => {
+        this.$emit('key-hover-over', element);
+      });
+      element.addEventListener('mouseleave', () => {
+        this.$emit('key-hover-leave', element);
+      });
+    });
+  },
+});
 </script>

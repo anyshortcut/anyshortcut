@@ -44,87 +44,88 @@
   opacity: 0;
 }
 </style>
-<script type="es6">
-import Popper from "popper.js";
-import _ from "lodash";
+<script lang="ts">
+import { defineComponent } from 'vue';
+import Popper from 'popper.js';
+import { throttle } from 'lodash-es';
 
-export default {
-    name: 'Popover',
-    data() {
-        return {
-            popper: null,
-            showing: false,
-        };
+export default defineComponent({
+  name: 'Popover',
+  data() {
+    return {
+      popper: null as Popper | null,
+      showing: false,
+    };
+  },
+  props: {
+    refId: {
+      type: String,
     },
-    props: {
-        refId: {
-            type: String,
-        },
-        showArrow: {
-            type: Boolean,
-            default() {
-                return true;
-            }
-        },
-        transitionName: {
-            type: String,
-            default() {
-                return 'fade';
-            }
-        },
+    showArrow: {
+      type: Boolean,
+      default() {
+        return true;
+      },
     },
-    watch: {
-        showing: function(newValue) {
-            this.$emit('on-show-change', newValue);
-        }
+    transitionName: {
+      type: String,
+      default() {
+        return 'fade';
+      },
     },
-    methods: {
-        dismiss: function() {
-            // Dismiss popover immediately
-            this.showing = false;
-        },
-        hidden: function() {
-            // Dismiss popover with delay
-            this._timeoutId = setTimeout(() => {
-                this.showing = false;
-            }, 200);
-        },
-        show: function() {
-            this.showing = true;
-            clearTimeout(this._timeoutId);
-        },
-        render: function(target) {
-            this.show();
-            if (!this.popper) {
-                let emptyReference = {};
-                this.popper = new Popper(emptyReference, this.$el, {
-                    placement: "top",
-                    modifiers: {
-                        preventOverflow: {
-                            // The default boundaries element is 'scrollParent', we should change to 'window'.
-                            boundariesElement: 'window',
-                        }
-                    }
-                });
-            }
+  },
+  watch: {
+    showing: function (newValue: boolean) {
+      this.$emit('on-show-change', newValue);
+    },
+  },
+  methods: {
+    dismiss: function () {
+      // Dismiss popover immediately
+      this.showing = false;
+    },
+    hidden: function () {
+      // Dismiss popover with delay
+      (this as any)._timeoutId = setTimeout(() => {
+        this.showing = false;
+      }, 200);
+    },
+    show: function () {
+      this.showing = true;
+      clearTimeout((this as any)._timeoutId);
+    },
+    render: function (target: Element) {
+      this.show();
+      if (!this.popper) {
+        let emptyReference = {} as any;
+        this.popper = new Popper(emptyReference, this.$el, {
+          placement: 'top',
+          modifiers: {
+            preventOverflow: {
+              // The default boundaries element is 'scrollParent', we should change to 'window'.
+              boundariesElement: 'window',
+            },
+          },
+        });
+      }
 
-            this.popper.reference = target;
-            // Don't use scheduleUpdate() method because of has bad UI shake in Firefox
-            // this.popper.scheduleUpdate();
-            this.popper.update();
-        },
+      this.popper.reference = target;
+      // Don't use scheduleUpdate() method because of has bad UI shake in Firefox
+      // this.popper.scheduleUpdate();
+      this.popper.update();
     },
-    mounted() {
-        let refElement = this.refId ? document.getElementById(this.refId) : null;
-        if (refElement) {
-            refElement.onmouseenter = _.throttle(() => {
-                this.render(refElement);
-            }, 200);
+  },
+  mounted() {
+    let refElement = this.refId ? document.getElementById(this.refId) : null;
+    if (refElement) {
+      refElement.onmouseenter = throttle(() => {
+        this.render(refElement);
+      }, 200);
 
-            refElement.onmouseleave = _.throttle(() => {
-                this.hidden();
-            }, 200);
-        }
+      refElement.onmouseleave = throttle(() => {
+        this.hidden();
+      }, 200);
     }
-}
+  },
+});
 </script>

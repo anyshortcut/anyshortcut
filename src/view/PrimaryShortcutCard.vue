@@ -83,7 +83,7 @@
           </div>
           <div
             class="shortcut-delete-button"
-            @click="$bus.emit('unbind-shortcut', shortcut, includingSecondary)"
+            @click="$bus.emit('unbind-shortcut', { shortcut, including: includingSecondary })"
           >
             Delete
           </div>
@@ -94,18 +94,20 @@
   </div>
 </template>
 
-<script>
-import client from '../client.js';
+<script lang="ts">
+import { defineComponent } from 'vue';
+import client from '../client';
 import ShortcutKey from '../component/ShortcutKey.vue';
 import Popover from '../component/Popover.vue';
 import Chart from 'chart.js';
-import common from '../common.js';
+import common from '../common';
+import type { Shortcut } from '../types';
 
-export default {
+export default defineComponent({
   name: 'PrimaryShortcutCard',
   data() {
     return {
-      chart: null,
+      chart: null as any,
       totalOpenTimes: 0,
       // A flag indicates whether include secondary shortcut
       // when delete primary shortcut.
@@ -114,7 +116,7 @@ export default {
   },
   props: {
     shortcut: {
-      type: Object,
+      type: Object as () => Shortcut,
       default() {
         return {};
       },
@@ -136,7 +138,7 @@ export default {
       let emptyData = [0, 0, 0, 0, 0, 0, 0];
       let chartFontColor = '#FEFEFE';
       Chart.defaults.global.defaultFontFamily = "'Poppins', sans-serif";
-      this.chart = new Chart(document.getElementById('primary-chart'), {
+      this.chart = new Chart(document.getElementById('primary-chart') as HTMLCanvasElement, {
         type: 'bar',
         data: {
           labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
@@ -246,7 +248,7 @@ export default {
       );
     });
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>
