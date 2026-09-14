@@ -14,6 +14,14 @@ app.use(Bus);
 
 // Load active tab, platform and shortcuts before mounting so components
 // can keep reading $background synchronously, like the MV2 background page.
-$background.init().then(() => {
-  app.mount('#vue');
-});
+$background
+  .init()
+  .then(() => {
+    app.mount('#vue');
+  })
+  .catch((error) => {
+    // Mounting is skipped on failure, so say why instead of showing a blank popup.
+    console.error('Failed to initialize Anyshortcut:', error);
+    document.getElementById('vue').textContent =
+      'Anyshortcut failed to load. Please reopen the popup.';
+  });

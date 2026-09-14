@@ -149,7 +149,7 @@ ul {
     transition: opacity 0.3s ease-in;
   }
 
-  .fade-enter,
+  .fade-enter-from,
   .fade-leave-to {
     opacity: 0;
   }

@@ -39,7 +39,7 @@
   transition: opacity 0.5s ease-in;
 }
 
-.fade-enter,
+.fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
